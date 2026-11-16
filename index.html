@@ -155,8 +155,9 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .salud-modal{position:fixed;inset:0;z-index:900;display:none;align-items:flex-end}
 .salud-modal.open{display:flex}
 .salud-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.salud-modal-sheet{position:relative;background:rgba(18,18,30,0.92);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:0.5px solid rgba(255,255,255,0.12);border-radius:28px 28px 0 0;width:100%;max-height:88vh;overflow-y:auto;padding:0 0 32px;box-shadow:0 -8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.14)}
-.salud-modal-handle{width:100%;height:44px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;flex-shrink:0}.salud-modal-handle::after{content:'';display:block;width:38px;height:4px;background:rgba(255,255,255,0.22);border-radius:2px}
+.salud-modal-sheet{position:relative;background:rgba(18,18,30,0.92);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:0.5px solid rgba(255,255,255,0.12);border-radius:28px 28px 0 0;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.14)}
+.salud-modal-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;padding:0 0 32px}
+.salud-modal-handle{width:100%;height:28px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;flex-shrink:0}.salud-modal-handle::after{content:'';display:block;width:38px;height:4px;background:rgba(255,255,255,0.22);border-radius:2px}
 .sm-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;padding:16px 20px 4px;text-align:center}
 .sm-score-big{text-align:center;padding:8px 20px 16px;border-bottom:0.5px solid rgba(255,255,255,0.08)}
 .sm-components{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
@@ -708,6 +709,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1 · Nov 2026</div>
   </div>
 </div>
 
@@ -716,12 +718,14 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 <div class="salud-modal" id="salud-modal" onclick="closeSaludModal(event)">
   <div class="salud-modal-bg"></div>
   <div class="salud-modal-sheet" id="salud-modal-sheet">
-    <div class="salud-modal-handle"></div>
-    <div class="sm-title">Salud Financiera</div>
-    <div class="sm-score-big" id="sm-score-big"></div>
-    <div class="sm-parcial" id="sm-parcial" style="display:none"></div>
-    <div class="sm-components" id="sm-components"></div>
-    <div class="sm-evolucion" id="sm-evolucion"></div>
+    <div class="salud-modal-handle" id="salud-modal-handle"></div>
+    <div class="salud-modal-scroll">
+      <div class="sm-title">Salud Financiera</div>
+      <div class="sm-score-big" id="sm-score-big"></div>
+      <div class="sm-parcial" id="sm-parcial" style="display:none"></div>
+      <div class="sm-components" id="sm-components"></div>
+      <div class="sm-evolucion" id="sm-evolucion"></div>
+    </div>
   </div>
 </div>
 
@@ -8565,42 +8569,44 @@ init();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
 (function(){
-  // salud-modal — swipe on handle (not scrollable area)
+  // salud-modal — handle is outside scroll area, iOS won't intercept
   (function(){
     var modal=document.getElementById('salud-modal');
     var sheet=document.getElementById('salud-modal-sheet');
-    var handle=sheet&&sheet.querySelector('.salud-modal-handle');
+    var handle=document.getElementById('salud-modal-handle');
     if(!modal||!sheet||!handle) return;
-    var startY=0,dragging=false;
-    function onStart(e){startY=(e.touches||e.changedTouches)[0].clientY;dragging=true;}
-    function onMove(e){
+    var startY=0,curY=0,dragging=false;
+    handle.addEventListener('touchstart',function(e){
+      startY=e.touches[0].clientY;curY=startY;dragging=true;
+      sheet.style.transition='none';
+    },{passive:true});
+    handle.addEventListener('touchmove',function(e){
       if(!dragging) return;
-      var dy=(e.touches||e.changedTouches)[0].clientY-startY;
+      curY=e.touches[0].clientY;
+      var dy=curY-startY;
       if(dy>0){
-        sheet.style.transform='translateY('+Math.min(dy*0.65,180)+'px)';
-        sheet.style.transition='none';
-        sheet.style.opacity=String(Math.max(0.35,1-dy/280));
+        sheet.style.transform='translateY('+dy+'px)';
+        sheet.style.opacity=String(Math.max(0.3,1-dy/320));
       }
       e.preventDefault();
-    }
-    function onEnd(e){
+    },{passive:false});
+    handle.addEventListener('touchend',function(){
       if(!dragging) return;
       dragging=false;
-      var dy=(e.changedTouches)[0].clientY-startY;
-      sheet.style.transition='transform .25s ease,opacity .25s ease';
-      if(dy>70){
+      var dy=curY-startY;
+      sheet.style.transition='transform .28s cubic-bezier(.4,0,.2,1),opacity .28s ease';
+      if(dy>90){
         sheet.style.transform='translateY(100%)';
         sheet.style.opacity='0';
         setTimeout(function(){
           modal.classList.remove('open');
           sheet.style.transform='';sheet.style.opacity='';sheet.style.transition='';
           document.body.style.overflow='';
-        },230);
-      } else {sheet.style.transform='';sheet.style.opacity='';}
-    }
-    handle.addEventListener('touchstart',onStart,{passive:true});
-    handle.addEventListener('touchmove',onMove,{passive:false});
-    handle.addEventListener('touchend',onEnd,{passive:true});
+        },280);
+      } else {
+        sheet.style.transform='';sheet.style.opacity='';
+      }
+    },{passive:true});
   })();
 
   var modalIds=['kits-modal','detail-modal','avance-modal'];
