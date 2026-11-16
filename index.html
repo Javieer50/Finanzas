@@ -132,8 +132,8 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 @keyframes wa-pulse{0%,100%{box-shadow:0 2px 8px rgba(255,59,48,0.5),inset 0 1px 0 rgba(255,255,255,0.25)}50%{box-shadow:0 0 20px rgba(255,59,48,1),0 2px 8px rgba(255,59,48,0.6),inset 0 1px 0 rgba(255,255,255,0.25)}}
 .wa-badge.pulse{animation:wa-pulse 1.4s infinite}
 .wa-action-bg{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:10px;font-weight:800;letter-spacing:0.4px;opacity:0;transition:opacity .15s;pointer-events:none;padding:0 14px;min-width:70px;gap:3px;white-space:nowrap}
-.wa-action-open{left:0;background:linear-gradient(90deg,rgba(48,209,88,0.95),rgba(52,199,89,0.85));color:#fff;border-radius:13px 0 0 13px}
-.wa-action-dismiss{right:0;background:linear-gradient(270deg,rgba(255,59,48,0.95),rgba(255,69,58,0.85));color:#fff;border-radius:0 13px 13px 0}
+.wa-action-open{right:0;background:linear-gradient(270deg,rgba(48,209,88,0.95),rgba(52,199,89,0.85));color:#fff;border-radius:0 13px 13px 0}
+.wa-action-dismiss{left:0;background:linear-gradient(90deg,rgba(255,59,48,0.95),rgba(255,69,58,0.85));color:#fff;border-radius:13px 0 0 13px}
 .wa-pagar{font-size:10px;font-weight:800;padding:4px 10px;border-radius:7px;cursor:pointer;border:none;letter-spacing:0.2px}
 /* ── SALUD FINANCIERA WIDGET ── */
 .widget-salud{background:rgba(255,255,255,0.055);border:0.5px solid rgba(255,255,255,0.11);border-radius:22px;margin-top:10px;overflow:hidden;backdrop-filter:blur(52px) saturate(200%);-webkit-backdrop-filter:blur(52px) saturate(200%);box-shadow:0 8px 32px rgba(0,0,0,0.38),inset 0 1px 0 rgba(255,255,255,0.14);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
@@ -711,7 +711,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1 · Nov 2026</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.1 · Nov 2026</div>
   </div>
 </div>
 
@@ -2459,7 +2459,8 @@ function initNotifSwipe(){
       e.preventDefault();
       card.style.transform='translateX('+dx+'px)';
       var pct=Math.min(Math.abs(dx)/TH,1);
-      if(dx>0){if(aO)aO.style.opacity=pct;if(aD)aD.style.opacity=0;}
+      // izquierda = abrir (verde, derecha), derecha = descartar (rojo, izquierda)
+      if(dx<0){if(aO)aO.style.opacity=pct;if(aD)aD.style.opacity=0;}
       else{if(aD)aD.style.opacity=pct;if(aO)aO.style.opacity=0;}
     },{passive:false});
     wrap.addEventListener('touchend',function(){
@@ -2467,17 +2468,19 @@ function initNotifSwipe(){
       card.style.transition='';
       if(aO) aO.style.opacity=0; if(aD) aD.style.opacity=0;
       var nid=wrap.dataset.nid, nav=wrap.dataset.nav;
-      if(dx>TH){
-        card.style.transform='translateX(120%)';
+      if(dx<-TH){
+        // swipe izquierda → abrir y desaparecer
+        card.style.transform='translateX(-120%)';
         setTimeout(function(){
           wrap.style.maxHeight=wrap.offsetHeight+'px';
           wrap.style.overflow='hidden';
           wrap.style.transition='max-height .3s,opacity .3s';
           requestAnimationFrame(function(){wrap.style.maxHeight='0';wrap.style.opacity='0';});
-          setTimeout(function(){notifGoTo(nid,nav);},320);
+          setTimeout(function(){notifDescartar(nid);if(nav) goTo(nav);},320);
         },160);
-      } else if(dx<-TH){
-        card.style.transform='translateX(-120%)';
+      } else if(dx>TH){
+        // swipe derecha → solo descartar
+        card.style.transform='translateX(120%)';
         setTimeout(function(){
           var h=wrap.offsetHeight;
           wrap.style.maxHeight=h+'px';
@@ -3372,7 +3375,7 @@ function updateHomeWidget(){
         }
         var isNew=state.notifVistas[n.id]!==hoyStr;
         // Swipe hint icons
-        var iconSvgOpen='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+        var iconSvgOpen='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
         var iconSvgDismiss='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>';
         return '<div class="wa-notif-wrap" data-nid="'+n.id+'" data-nav="'+(n.navigateTo||'')+'" style="background:'+cardBg+'">'
           +'<div class="wa-accent-bar" style="background:'+accent+'"></div>'
@@ -3911,18 +3914,17 @@ function renderDashboard(){
   var proximoIngreso=null;
   (function(){
     var p=state.perfil||{};
-    // EQ paga quincena día 1 y sueldo completo día 15 de cada mes
-    // Usamos los días de pago conocidos: 1 y 15
-    var diasPagoEQ=[1,15];
+    // EQ paga quincena el día 15 y sueldo restante el último día del mes
     var daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+    var diasPagoEQ=[15,daysInMonth];
     var futuros=diasPagoEQ.filter(function(d){return d>today;}).sort(function(a,b){return a-b;});
     if(futuros.length>0){
       var dia=futuros[0];
-      var montoEsp=dia===15?(p.sueldoCompleto||p.saldoSueldo||0):(p.quincena||0);
+      var montoEsp=dia===15?(p.quincena||0):(p.sueldoRestante||p.saldoSueldo||0);
       proximoIngreso={dia:dia,diasHasta:dia-today,monto:montoEsp,desc:'Pago EQ día '+dia};
     } else {
-      // siguiente mes día 1
-      proximoIngreso={dia:1,diasHasta:(daysInMonth-today)+1,monto:p.quincena||0,desc:'Quincena EQ mes siguiente',nextMonth:true};
+      // siguiente mes día 15 (quincena)
+      proximoIngreso={dia:15,diasHasta:(daysInMonth-today)+15,monto:p.quincena||0,desc:'Quincena EQ mes siguiente',nextMonth:true};
     }
   })();
 
