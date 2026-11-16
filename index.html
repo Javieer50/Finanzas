@@ -2194,7 +2194,19 @@ function init(){
     if(saved.obligaciones) state.obligaciones = saved.obligaciones;
     if(saved.perfil) state.perfil = Object.assign({}, state.perfil, saved.perfil);
     if(saved.obligNuevoVisto) state.obligNuevoVisto = saved.obligNuevoVisto;
-    if(saved.notifDescartadas) state.notifDescartadas = saved.notifDescartadas;
+    if(saved.notifDescartadas){
+      // Limpiar descartados de hoy para consejos financieros (no obligaciones)
+      // Permite que consejos vuelvan a aparecer si se descartaron por error
+      var hoyReset=new Date().toISOString().slice(0,10);
+      var ndClean={};
+      Object.keys(saved.notifDescartadas).forEach(function(k){
+        // Conservar solo: obligaciones, reembolsos, deudas, cobros descartados hoy
+        // Los consejos financieros (E1,E2,R1,O1,P1 etc.) se resetean siempre
+        var esEstable=k.startsWith('oblig_')||k.startsWith('reimb_')||k.startsWith('deuda_')||k.startsWith('cobro_');
+        if(esEstable) ndClean[k]=saved.notifDescartadas[k];
+      });
+      state.notifDescartadas=ndClean;
+    }
     if(saved.notifVistas) state.notifVistas = saved.notifVistas;
     if(saved.saludHistorico) state.saludHistorico = saved.saludHistorico;
     if(saved.presupuesto) state.presupuesto = saved.presupuesto;
@@ -2393,11 +2405,6 @@ function togglePendientes(){
   if(!body) return;
   var open = body.classList.toggle('open');
   toggle.classList.toggle('open', open);
-  if(!open){
-    // Al cerrar: re-renderiza para ocultar las notificaciones ya leídas
-    setTimeout(updateHomeWidget, 300);
-    return;
-  }
   if(open){
     // Marcar todas las notificaciones visibles como vistas hoy
     var today=new Date().toISOString().slice(0,10);
@@ -2439,49 +2446,28 @@ function initNotifSwipe(){
     var aO=wrap.querySelector('.wa-action-open');
     var aD=wrap.querySelector('.wa-action-dismiss');
     if(!card) return;
-    var sx=0,sy=0,dx=0,dy=0,go=false,dir=null,TH=65,THv=60;
+    var sx=0,sy=0,dx=0,go=false,TH=65;
     wrap.addEventListener('touchstart',function(e){
       sx=e.touches[0].clientX; sy=e.touches[0].clientY;
-      go=true; dx=0; dy=0; dir=null; card.style.transition='none';
+      go=true; dx=0; card.style.transition='none';
     },{passive:true});
     wrap.addEventListener('touchmove',function(e){
       if(!go) return;
       var cx=e.touches[0].clientX,cy=e.touches[0].clientY;
-      dx=cx-sx; dy=cy-sy;
-      if(!dir){
-        if(Math.abs(dy)>12&&Math.abs(dy)>Math.abs(dx)) dir='v';
-        else if(Math.abs(dx)>12) dir='h';
-        else return;
-      }
+      var dy=Math.abs(cy-sy); dx=cx-sx;
+      if(dy>28&&Math.abs(dx)<dy){go=false;card.style.transform='';return;}
       e.preventDefault();
-      if(dir==='v'){
-        // deslizar hacia abajo
-        if(dy>0){
-          card.style.transform='translateY('+dy+'px)';
-          card.style.opacity=String(Math.max(0.2,1-dy/120));
-        }
-      } else {
-        card.style.transform='translateX('+dx+'px)';
-        var pct=Math.min(Math.abs(dx)/TH,1);
-        if(dx>0){if(aO)aO.style.opacity=pct;if(aD)aD.style.opacity=0;}
-        else{if(aD)aD.style.opacity=pct;if(aO)aO.style.opacity=0;}
-      }
+      card.style.transform='translateX('+dx+'px)';
+      var pct=Math.min(Math.abs(dx)/TH,1);
+      if(dx>0){if(aO)aO.style.opacity=pct;if(aD)aD.style.opacity=0;}
+      else{if(aD)aD.style.opacity=pct;if(aO)aO.style.opacity=0;}
     },{passive:false});
     wrap.addEventListener('touchend',function(){
       if(!go) return; go=false;
-      card.style.transition='transform .25s ease,opacity .25s ease';
+      card.style.transition='';
       if(aO) aO.style.opacity=0; if(aD) aD.style.opacity=0;
       var nid=wrap.dataset.nid, nav=wrap.dataset.nav;
-      if(dir==='v'&&dy>THv){ // deslizar abajo → descartar
-        card.style.transform='translateY(100px)'; card.style.opacity='0';
-        setTimeout(function(){
-          var h=wrap.offsetHeight;
-          wrap.style.maxHeight=h+'px'; wrap.style.overflow='hidden';
-          wrap.style.transition='max-height .3s,opacity .3s';
-          requestAnimationFrame(function(){wrap.style.maxHeight='0';wrap.style.opacity='0';});
-          setTimeout(function(){notifDescartar(nid);},100);
-        },200);
-      } else if(dir==='h'&&dx>TH){ // deslizar derecha → ir a pantalla
+      if(dx>TH){
         card.style.transform='translateX(120%)';
         setTimeout(function(){
           wrap.style.maxHeight=wrap.offsetHeight+'px';
@@ -2490,17 +2476,18 @@ function initNotifSwipe(){
           requestAnimationFrame(function(){wrap.style.maxHeight='0';wrap.style.opacity='0';});
           setTimeout(function(){notifGoTo(nid,nav);},320);
         },160);
-      } else if(dir==='h'&&dx<-TH){ // deslizar izquierda → descartar
+      } else if(dx<-TH){
         card.style.transform='translateX(-120%)';
         setTimeout(function(){
           var h=wrap.offsetHeight;
-          wrap.style.maxHeight=h+'px'; wrap.style.overflow='hidden';
+          wrap.style.maxHeight=h+'px';
+          wrap.style.overflow='hidden';
           wrap.style.transition='max-height .3s,opacity .3s';
           requestAnimationFrame(function(){wrap.style.maxHeight='0';wrap.style.opacity='0';});
           setTimeout(function(){notifDescartar(nid);},100);
         },160);
       } else {
-        card.style.transform=''; card.style.opacity='';
+        card.style.transform='';
       }
     });
   });
@@ -3259,19 +3246,11 @@ function updateHomeWidget(){
     return a.diffDays-b.diffDays;
   });
 
-  // Ocultar notificaciones ya leídas, excepto deudas y cobros (reaparecen al día siguiente)
-  var PERSISTENTES=['deuda_','cobro_'];
-  function esPersistente(id){ return PERSISTENTES.some(function(p){return id.startsWith(p);}); }
-  notifs=notifs.filter(function(n){
-    if(!state.notifVistas||state.notifVistas[n.id]!==hoyStr) return true;
-    return esPersistente(n.id); // leída hoy → solo dejas las persistentes
-  });
-
   // Guardar todas para filtrado por tabs
   notifAll=notifs.slice();
 
   // Detectar si hay notifs nuevas (no vistas hoy)
-  var hayNuevas=notifs.some(function(n){return !state.notifVistas||state.notifVistas[n.id]!==hoyStr;});
+  var hayNuevas=notifs.some(function(n){return state.notifVistas[n.id]!==hoyStr;});
 
   var waItems=document.getElementById('wa-items');
   var waBadge=document.getElementById('wa-badge-count');
@@ -3422,7 +3401,7 @@ function updateHomeWidget(){
     waBadge.className='wa-badge'+(notifAll.length===0?' zero':'')+(hayNuevas&&notifAll.length>0?' pulse':'');
   }
   var bellDot=document.getElementById('wa-bell-dot');
-  if(bellDot) bellDot.style.display=notifAll.length>0?'block':'none';
+  if(bellDot) bellDot.style.display=(hayNuevas&&notifAll.length>0)?'block':'none';
   var nuevoTag=document.getElementById('wa-nuevo-tag');
   if(nuevoTag) nuevoTag.className='wa-nuevo-tag'+(hayNuevas&&notifAll.length>0?' show':'');
   // Auto-abrir si hay obligaciones urgentes (vencidas o hoy)
@@ -8620,44 +8599,48 @@ init();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
 (function(){
-  // salud-modal — handle is outside scroll area, iOS won't intercept
+  // salud-modal — drag anywhere on handle to close
   (function(){
     var modal=document.getElementById('salud-modal');
     var sheet=document.getElementById('salud-modal-sheet');
     var handle=document.getElementById('salud-modal-handle');
     if(!modal||!sheet||!handle) return;
-    var startY=0,curY=0,dragging=false;
-    handle.addEventListener('touchstart',function(e){
-      startY=e.touches[0].clientY;curY=startY;dragging=true;
+    var startY=0,active=false;
+    function closeSalud(){
+      sheet.style.transition='transform .3s ease,opacity .3s ease';
+      sheet.style.transform='translateY(100%)';
+      sheet.style.opacity='0';
+      setTimeout(function(){
+        modal.classList.remove('open');
+        document.body.style.overflow='';
+        sheet.style.cssText='';
+      },300);
+    }
+    handle.addEventListener('pointerdown',function(e){
+      active=true; startY=e.clientY;
+      handle.setPointerCapture(e.pointerId);
       sheet.style.transition='none';
-    },{passive:true});
-    handle.addEventListener('touchmove',function(e){
-      if(!dragging) return;
-      curY=e.touches[0].clientY;
-      var dy=curY-startY;
+    });
+    handle.addEventListener('pointermove',function(e){
+      if(!active) return;
+      var dy=e.clientY-startY;
       if(dy>0){
         sheet.style.transform='translateY('+dy+'px)';
-        sheet.style.opacity=String(Math.max(0.3,1-dy/320));
+        sheet.style.opacity=String(Math.max(0.2,1-dy/300));
       }
-      e.preventDefault();
-    },{passive:false});
-    handle.addEventListener('touchend',function(){
-      if(!dragging) return;
-      dragging=false;
-      var dy=curY-startY;
-      sheet.style.transition='transform .28s cubic-bezier(.4,0,.2,1),opacity .28s ease';
-      if(dy>90){
-        sheet.style.transform='translateY(100%)';
-        sheet.style.opacity='0';
-        setTimeout(function(){
-          modal.classList.remove('open');
-          sheet.style.transform='';sheet.style.opacity='';sheet.style.transition='';
-          document.body.style.overflow='';
-        },280);
-      } else {
-        sheet.style.transform='';sheet.style.opacity='';
-      }
-    },{passive:true});
+    });
+    handle.addEventListener('pointerup',function(e){
+      if(!active) return;
+      active=false;
+      var dy=e.clientY-startY;
+      if(dy>60){ closeSalud(); }
+      else{ sheet.style.transition='transform .2s ease,opacity .2s ease'; sheet.style.transform=''; sheet.style.opacity=''; }
+    });
+    handle.addEventListener('pointercancel',function(){
+      if(!active) return;
+      active=false;
+      sheet.style.transition='transform .2s ease'; sheet.style.transform=''; sheet.style.opacity='';
+    });
   })();
 
   var modalIds=['kits-modal','detail-modal','avance-modal'];
