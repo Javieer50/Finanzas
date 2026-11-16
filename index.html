@@ -2165,7 +2165,7 @@ function ejecutarDebitosAutomaticos(){
       cuenta:cuentaOrigen,
       monto:montoPago,
       tipo:'EGRESO',
-      cat:c.catPago||'Obligación '+c.banco||'Obligación crédito',
+      cat:c.catPago||(c.banco?'Obligación '+c.banco:'Obligación crédito'),
       reimb:'NO',
       empresa:'',
       nota:'Débito auto día '+c.debitoDia+' · '+mesActual
@@ -4172,27 +4172,30 @@ function renderDashboard(){
       h+='<div style="font-size:13px;color:rgba(255,255,255,0.35);text-align:center;padding:14px 0">Sin objetivos aún.<br><span style="font-size:12px">Crea metas de ahorro para mantenerte enfocado.</span></div>';
     } else {
       objetivos.forEach(function(obj){
-        var pct=obj.meta>0?Math.min(100,obj.acumulado/obj.meta*100):0;
-        var restante=Math.max(0,obj.meta-obj.acumulado);
-        var fechaStr=obj.fecha?obj.fecha:'—';
-        var mesesAun=1;
-        if(obj.fecha){
-          var parts=obj.fecha.split('-');
-          var metaDate=new Date(parseInt(parts[0]),parseInt(parts[1])-1,1);
-          mesesAun=Math.max(1,Math.ceil((metaDate-now)/(1000*60*60*24*30)));
-        }
-        var aporteMens=obj.aporte||Math.ceil(restante/mesesAun);
-        h+='<div class="cc-obj-item">'
-          +'<div class="cc-obj-icon">'+obj.icono+'</div>'
-          +'<div class="cc-obj-info">'
-            +'<div class="cc-obj-name">'+obj.nombre+'</div>'
-            +'<div class="cc-obj-progress">$'+obj.acumulado.toFixed(2)+' de $'+obj.meta.toFixed(2)+' · hasta '+fechaStr+'</div>'
-            +'<div class="cc-obj-bar-bg"><div class="cc-obj-bar" style="width:'+pct.toFixed(1)+'%"></div></div>'
+        var acum=obj.acumulado||0;
+        var pct=obj.meta>0?Math.min(100,acum/obj.meta*100):0;
+        var restante=Math.max(0,obj.meta-acum);
+        var mesesObj=obj.meses||1;
+        var aporteMens=Math.ceil(restante/mesesObj);
+        var sliqCard=(state.perfil&&state.perfil.sueldoLiquido)||0;
+        var pctS=sliqCard>0?((aporteMens/sliqCard)*100):0;
+        var colCard=pctS>30?'#ff453a':pctS>15?'#ff9f0a':'#34d399';
+        h+='<div class="cc-obj-item" style="flex-direction:column;align-items:stretch;gap:8px">'
+          +'<div style="display:flex;align-items:center;gap:10px">'
+            +'<div class="cc-obj-icon">'+obj.icono+'</div>'
+            +'<div style="flex:1;min-width:0">'
+              +'<div class="cc-obj-name">'+obj.nombre+'</div>'
+              +'<div class="cc-obj-progress">$'+acum.toFixed(0)+' de $'+obj.meta.toFixed(0)+' · '+mesesObj+' meses</div>'
+            +'</div>'
+            +'<div style="text-align:right;flex-shrink:0">'
+              +'<div style="font-size:17px;font-weight:800;color:'+colCard+'">$'+aporteMens+'<span style="font-size:10px;font-weight:400">/mes</span></div>'
+              +(sliqCard>0?'<div style="font-size:10px;color:rgba(255,255,255,0.3)">'+pctS.toFixed(0)+'% sueldo</div>':'')
+            +'</div>'
           +'</div>'
-          +'<div>'
-            +'<div class="cc-obj-pct">'+pct.toFixed(0)+'%</div>'
-            +'<div style="font-size:10px;color:rgba(255,255,255,0.3);text-align:right;margin-top:2px">$'+aporteMens+'/mes</div>'
-            +'<button onclick="ccEditObjetivo(\''+obj.id+'\')" style="font-size:11px;color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;padding:2px 0;font-family:-apple-system,sans-serif">editar</button>'
+          +'<div class="cc-obj-bar-bg"><div class="cc-obj-bar" style="width:'+pct.toFixed(1)+'%;background:'+colCard+'"></div></div>'
+          +'<div style="display:flex;gap:8px">'
+            +'<button onclick="ccVerPlanObjetivo((state.objetivos||[]).find(function(o){return o.id==='+obj.id+'}))" style="flex:1;font-size:12px;font-weight:600;color:#fff;background:rgba(10,132,255,0.2);border:0.5px solid rgba(10,132,255,0.4);border-radius:10px;padding:7px;cursor:pointer;font-family:-apple-system,sans-serif">📋 Ver plan</button>'
+            +'<button onclick="ccEditObjetivo(\''+obj.id+'\')" style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:7px 12px;cursor:pointer;font-family:-apple-system,sans-serif">Editar</button>'
           +'</div>'
         +'</div>';
       });
@@ -4352,6 +4355,7 @@ function ccEditPresupuesto(){
       });
       state.presupuesto=pres;
       saveState();
+      closeKitsModal();
       renderDashboard();
       showToast('✅ Presupuesto guardado');
     }
@@ -4392,46 +4396,50 @@ function ccSugerirPresupuesto(){
 // ── OBJETIVOS ──
 function ccAddObjetivo(){ ccEditObjetivo(null); }
 function ccEditObjetivo(id){
-  var obj=id?((state.objetivos||[]).find(function(o){return o.id===id;})||{}):null;
+  var obj=id?((state.objetivos||[]).find(function(o){return o.id===id;})||null):null;
   var isEdit=!!obj;
   var ICONOS=['🏆','🏠','🚗','✈️','💊','📱','🎓','💍','🐾','🎁','💰','🛡','🌍','🛒'];
-  var iconPicker=ICONOS.map(function(ic){ return '<span onclick="this.closest(\'form,div\').querySelector(\'#obj-icon\').value=\''+ic+'\';[...this.parentElement.querySelectorAll(\'.oiPick\')].forEach(function(x){x.style.background=\'rgba(255,255,255,0.05)\';});this.style.background=\'rgba(10,132,255,0.3)\';" class="oiPick" style="cursor:pointer;padding:6px;border-radius:8px;font-size:20px;background:\''+((obj&&obj.icono===ic)?'rgba(10,132,255,0.3)':'rgba(255,255,255,0.05)')+'\'>'+ic+'</span>'; }).join('');
+  var curIcon=(obj&&obj.icono)?obj.icono:'🏆';
+  var iconPicker=ICONOS.map(function(ic){
+    var sel=(ic===curIcon)?'rgba(10,132,255,0.35)':'rgba(255,255,255,0.05)';
+    return '<span onclick="document.getElementById(\'obj-icon\').value=\''+ic+'\';[...document.querySelectorAll(\'.oiPick\')].forEach(function(x){x.style.background=\'rgba(255,255,255,0.05)\'});this.style.background=\'rgba(10,132,255,0.35)\'" class="oiPick" style="cursor:pointer;padding:6px;border-radius:8px;font-size:20px;display:inline-block;background:'+sel+'">'+ic+'</span>';
+  }).join('');
   var html='<div style="padding:8px 0">'
-    +'<input type="hidden" id="obj-icon" value="'+(obj&&obj.icono?obj.icono:'🏆')+'">'
+    +'<input type="hidden" id="obj-icon" value="'+curIcon+'">'
     +'<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px">'+iconPicker+'</div>'
-    +'<input id="obj-nombre" type="text" placeholder="Nombre del objetivo" value="'+(obj&&obj.nombre?obj.nombre:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:11px 14px;color:#fff;font-size:15px;font-family:-apple-system,sans-serif;outline:none;margin-bottom:10px">'
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">'
-      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">Meta ($)</div><input id="obj-meta" type="number" inputmode="decimal" placeholder="0" value="'+(obj&&obj.meta?obj.meta:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px;color:#fff;font-size:15px;font-weight:700;font-family:-apple-system,sans-serif;outline:none"></div>'
-      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">Acumulado ($)</div><input id="obj-acum" type="number" inputmode="decimal" placeholder="0" value="'+(obj&&obj.acumulado?obj.acumulado:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px;color:#fff;font-size:15px;font-weight:700;font-family:-apple-system,sans-serif;outline:none"></div>'
-    +'</div>'
+    +'<input id="obj-nombre" type="text" placeholder="Nombre del objetivo (ej: Viaje a México)" value="'+(obj?obj.nombre:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:11px 14px;color:#fff;font-size:15px;font-family:-apple-system,sans-serif;outline:none;margin-bottom:10px">'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
-      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">Fecha objetivo</div><input id="obj-fecha" type="month" value="'+(obj&&obj.fecha?obj.fecha:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px;color:#fff;font-size:14px;font-family:-apple-system,sans-serif;outline:none"></div>'
-      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">Aporte mensual ($)</div><input id="obj-aporte" type="number" inputmode="decimal" placeholder="auto" value="'+(obj&&obj.aporte?obj.aporte:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:10px 12px;color:#fff;font-size:15px;font-weight:700;font-family:-apple-system,sans-serif;outline:none"></div>'
+      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">¿Cuánto necesitas? ($)</div>'
+        +'<input id="obj-meta" type="number" inputmode="decimal" placeholder="0" value="'+(obj?obj.meta:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:11px 12px;color:#fff;font-size:16px;font-weight:700;font-family:-apple-system,sans-serif;outline:none"></div>'
+      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:4px">¿En cuántos meses?</div>'
+        +'<input id="obj-meses" type="number" inputmode="numeric" placeholder="6" min="1" value="'+(obj&&obj.meses?obj.meses:'')+'" style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);border-radius:12px;padding:11px 12px;color:#fff;font-size:16px;font-weight:700;font-family:-apple-system,sans-serif;outline:none"></div>'
     +'</div>'
-  +(isEdit?'<button onclick="ccDeleteObjetivo(\''+id+'\')" style="margin-top:14px;width:100%;background:rgba(255,59,48,0.12);border:0.5px solid rgba(255,59,48,0.3);color:#ff453a;padding:11px;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:-apple-system,sans-serif">Eliminar objetivo</button>':'')
+    +(isEdit?'<button onclick="ccDeleteObjetivo(\''+obj.id+'\')" style="margin-top:16px;width:100%;background:rgba(255,59,48,0.1);border:0.5px solid rgba(255,59,48,0.25);color:#ff453a;padding:11px;border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;font-family:-apple-system,sans-serif">Eliminar objetivo</button>':'')
   +'</div>';
   ccShowModal({
-    title:(isEdit?'Editar':'Nuevo')+' objetivo',
+    title:(isEdit?'Editar':'Nueva meta'),
     html:html,
-    btnLabel:'Guardar',
+    btnLabel:'Guardar y ver plan',
     onConfirm:function(){
       var nombre=document.getElementById('obj-nombre').value.trim();
       var meta=parseFloat(document.getElementById('obj-meta').value)||0;
-      var acum=parseFloat(document.getElementById('obj-acum').value)||0;
-      var fecha=document.getElementById('obj-fecha').value||'';
-      var aporte=parseFloat(document.getElementById('obj-aporte').value)||0;
+      var meses=parseInt(document.getElementById('obj-meses').value)||0;
       var icono=document.getElementById('obj-icon').value||'🏆';
-      if(!nombre||meta<=0){ showToast('Completa nombre y meta'); return; }
+      if(!nombre||meta<=0||meses<=0){ showToast('Completa nombre, meta y meses'); return; }
       if(!state.objetivos) state.objetivos=[];
+      var savedId;
       if(isEdit){
-        var idx=state.objetivos.findIndex(function(o){return o.id===id;});
-        if(idx>=0) state.objetivos[idx]={id:id,nombre:nombre,meta:meta,acumulado:acum,fecha:fecha,aporte:aporte,icono:icono};
+        var idx=state.objetivos.findIndex(function(o){return o.id===obj.id;});
+        if(idx>=0){ state.objetivos[idx]=Object.assign({},state.objetivos[idx],{nombre:nombre,meta:meta,meses:meses,icono:icono}); savedId=obj.id; }
       } else {
-        state.objetivos.push({id:Date.now(),nombre:nombre,meta:meta,acumulado:acum,fecha:fecha,aporte:aporte,icono:icono});
+        savedId=Date.now();
+        state.objetivos.push({id:savedId,nombre:nombre,meta:meta,meses:meses,acumulado:0,icono:icono});
       }
       saveState();
       renderDashboard();
-      showToast('✅ Objetivo '+(isEdit?'actualizado':'creado'));
+      // Abrir panel de consejos
+      var saved=state.objetivos.find(function(o){return o.id===savedId;});
+      if(saved) ccVerPlanObjetivo(saved);
     }
   });
 }
@@ -4442,6 +4450,105 @@ function ccDeleteObjetivo(id){
   closeKitsModal();
   renderDashboard();
   showToast('Objetivo eliminado');
+}
+function ccVerPlanObjetivo(obj){
+  var meta=obj.meta||0;
+  var meses=obj.meses||1;
+  var acum=obj.acumulado||0;
+  var restante=Math.max(0,meta-acum);
+  var aporteMens=Math.ceil(restante/meses);
+  var sliq=(state.perfil&&state.perfil.sueldoLiquido)||0;
+  var pctSueldo=sliq>0?((aporteMens/sliq)*100):0;
+  // Semáforo y nivel
+  var nivel=pctSueldo>30?'alto':pctSueldo>15?'medio':'bajo';
+  var colNivel=nivel==='alto'?'#ff453a':nivel==='medio'?'#ff9f0a':'#34d399';
+  // Fecha estimada
+  var now=getLocalDate();
+  var metaDate=new Date(now.getFullYear(),now.getMonth()+meses,1);
+  var mesNames=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var fechaStr=mesNames[metaDate.getMonth()]+' '+metaDate.getFullYear();
+  // Gastos promedio últimos 3 meses (excluyendo transferencias e ingresos)
+  var gastosProm=0;
+  (function(){
+    var totales=[];
+    for(var i=1;i<=3;i++){
+      var d=new Date(now.getFullYear(),now.getMonth()-i,1);
+      var mesStr=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+      var tot=0;
+      state.transactions.forEach(function(t){
+        if(t.fecha.startsWith(mesStr)&&t.tipo==='EGRESO'&&t.cat!=='Transferencia interna'&&t.cat!=='Custodia/Paso') tot+=t.monto;
+      });
+      if(tot>0) totales.push(tot);
+    }
+    if(totales.length) gastosProm=totales.reduce(function(a,b){return a+b;},0)/totales.length;
+  })();
+  // Top categoría de gasto
+  var catTotales={};
+  state.transactions.forEach(function(t){
+    if(t.tipo==='EGRESO'&&t.cat!=='Transferencia interna'&&t.cat!=='Custodia/Paso'){
+      catTotales[t.cat]=(catTotales[t.cat]||0)+t.monto;
+    }
+  });
+  var topCat=Object.keys(catTotales).sort(function(a,b){return catTotales[b]-catTotales[a];})[0]||'';
+  var topCatMonto=topCat?catTotales[topCat]:0;
+  // Construir consejos
+  var haz=[];
+  var noHagas=[];
+  if(sliq>0){
+    var disponibleParaAhorro=Math.max(0,sliq-gastosProm);
+    if(disponibleParaAhorro>=aporteMens){
+      haz.push('Destina <strong>$'+aporteMens+' cada mes</strong> apenas recibes tu sueldo — antes de gastar nada más.');
+    } else {
+      haz.push('Busca reducir gastos para liberar <strong>$'+aporteMens+'/mes</strong> (actualmente te sobran ~$'+disponibleParaAhorro.toFixed(0)+' después de gastos).');
+    }
+  } else {
+    haz.push('Aparta <strong>$'+aporteMens+' al mes</strong> apenas recibes tu ingreso, como si fuera una obligación fija.');
+  }
+  haz.push('Usa una cuenta o sobre separado solo para este objetivo — no mezcles con tus gastos diarios.');
+  haz.push('Registra cada aporte aquí como INGRESO en categoría "Ahorro '+obj.nombre+'" para llevar el seguimiento.');
+  if(meses>3) haz.push('Revisa tu avance cada mes. Si un mes ahorras más, adelantarás la meta.');
+  if(topCat&&topCatMonto>aporteMens*0.5){
+    noHagas.push('No ignores <strong>'+topCat+'</strong> — es tu mayor categoría de gasto ($'+topCatMonto.toFixed(0)+' acumulado). Revisa si puedes recortar algo ahí.');
+  }
+  noHagas.push('No "prestarte" del fondo del objetivo — cada retiro retrasa la meta.');
+  if(nivel==='alto') noHagas.push('No dependas solo de fuerza de voluntad con un 30%+ del sueldo — automatiza el ahorro si puedes.');
+  noHagas.push('No esperar a "que sobre" al final del mes para ahorrar — casi nunca sobra.');
+  // HTML del panel
+  var pctBar=meta>0?Math.min(100,(acum/meta)*100):0;
+  var html='<div style="padding:4px 0">'
+    // Header
+    +'<div style="text-align:center;margin-bottom:16px">'
+      +'<div style="font-size:40px;margin-bottom:4px">'+obj.icono+'</div>'
+      +'<div style="font-size:17px;font-weight:800;color:#fff">'+obj.nombre+'</div>'
+      +'<div style="font-size:13px;color:rgba(255,255,255,0.4);margin-top:2px">Meta: $'+meta.toFixed(0)+' · '+meses+' meses · hasta '+fechaStr+'</div>'
+    +'</div>'
+    // Números clave
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">'
+      +'<div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:12px;text-align:center">'
+        +'<div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Ahorras por mes</div>'
+        +'<div style="font-size:22px;font-weight:800;color:'+colNivel+'">$'+aporteMens+'</div>'
+        +(sliq>0?'<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">'+pctSueldo.toFixed(0)+'% de tu sueldo</div>':'')
+      +'</div>'
+      +'<div style="background:rgba(255,255,255,0.06);border-radius:14px;padding:12px;text-align:center">'
+        +'<div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Lo logras en</div>'
+        +'<div style="font-size:22px;font-weight:800;color:#fff">'+meses+'</div>'
+        +'<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px">meses · '+fechaStr+'</div>'
+      +'</div>'
+    +'</div>'
+    // Barra de progreso
+    +(acum>0?'<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:5px"><span>Progreso</span><span>$'+acum.toFixed(0)+' / $'+meta.toFixed(0)+'</span></div><div style="background:rgba(255,255,255,0.08);border-radius:99px;height:7px"><div style="background:'+colNivel+';border-radius:99px;height:7px;width:'+pctBar.toFixed(1)+'%"></div></div></div>':'')
+    // ✅ Haz esto
+    +'<div style="margin-bottom:12px">'
+      +'<div style="font-size:12px;font-weight:700;color:#34d399;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">✅ Haz esto</div>'
+      +haz.map(function(c){return '<div style="font-size:13px;color:rgba(255,255,255,0.8);padding:7px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);line-height:1.5">'+c+'</div>';}).join('')
+    +'</div>'
+    // ❌ No hagas esto
+    +'<div>'
+      +'<div style="font-size:12px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">❌ Evita esto</div>'
+      +noHagas.map(function(c){return '<div style="font-size:13px;color:rgba(255,255,255,0.8);padding:7px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);line-height:1.5">'+c+'</div>';}).join('')
+    +'</div>'
+  +'</div>';
+  ccShowModal({title:'Tu plan · '+obj.nombre, html:html, btnLabel:'Entendido ✓', onConfirm:function(){ closeKitsModal(); }});
 }
 
 // ── DISTRIBUCIÓN ──
@@ -4469,6 +4576,7 @@ function ccEditDistribucion(){
       if(total!==100){ showToast('⚠️ La suma es '+total+'%, debe ser 100%'); return; }
       state.distribucionTemplate=newTmpl;
       saveState();
+      closeKitsModal();
       renderDashboard();
       showToast('✅ Distribución guardada');
     }
@@ -4978,7 +5086,13 @@ function renderPerfil(){
       +'<div class="profile-field-row"><div class="profile-field-label">Nombre</div><div class="profile-field-val">'+(p.nombre||'—')+'</div></div>'
       +'<div class="profile-field-row"><div class="profile-field-label">Fecha de nacimiento</div><div class="profile-field-val">'+(p.fechaNacimiento||'—')+'</div></div>'
       +'<div class="profile-field-row"><div class="profile-field-label">Correo</div><div class="profile-field-val">'+(p.correo||'—')+'</div></div>'
-      +'<div class="profile-field-row" style="border:none"><div class="profile-field-label">Celular</div><div class="profile-field-val">'+(p.celular||'—')+'</div></div>'
+      +'<div class="profile-field-row"><div class="profile-field-label">Celular</div><div class="profile-field-val">'+(p.celular||'—')+'</div></div>'
+      +(function(){
+        var tz=p.timezoneOffset!=null?p.timezoneOffset:-5;
+        var tzNames={'-7':'UTC-7 · México NO','-6':'UTC-6 · México Centro','-5':'UTC-5 · Ecuador','-4':'UTC-4 · Venezuela','-3':'UTC-3 · Argentina','0':'UTC 0 · Reino Unido'};
+        var tzLabel=tzNames[String(tz)]||(tz>=0?'UTC+'+tz:'UTC'+tz);
+        return '<div class="profile-field-row" style="border:none"><div class="profile-field-label">🌍 Zona horaria</div><div class="profile-field-val">'+tzLabel+'</div></div>';
+      })()
     +'</div>'
     // TRABAJO / EMPLEADOR
     +(function(){
@@ -6383,7 +6497,7 @@ function confirmarPagoAvance(creditoId, avanceId){
     cuenta:cuentaOrigen,
     monto:montoPago,
     tipo:'EGRESO',
-    cat:c.catPago||'Obligación '+c.banco||'Obligación crédito',
+    cat:c.catPago||(c.banco?'Obligación '+c.banco:'Obligación crédito'),
     reimb:'NO',
     empresa:'',
     nota:esDif?'Cuota '+(av.cuotasPagadas+1)+'/'+cuotasTotal+' · avance $'+av.monto.toFixed(2):'Pago total avance'
@@ -8525,7 +8639,22 @@ function histSaveEdit(){
   var newCat=document.getElementById('edit-cat').value;
   var newNota=(document.getElementById('edit-nota').value||'').trim();
   if(!newDesc||isNaN(newMonto)||newMonto<=0||!newFecha){ showToast('⚠️ Revisa los campos'); return; }
-  t.desc=newDesc; t.monto=newMonto; t.fecha=newFecha; t.cuenta=newCuenta; t.cat=newCat; t.nota=newNota;
+  // Si es una transacción PRELOADED (id <= 9999), no se puede mutar directamente —
+  // saveState() solo persiste id > 9999. Solución: eliminar la original y crear copia con id nuevo.
+  if(t.id <= 9999){
+    var oldId=t.id;
+    var newTx=Object.assign({},t,{
+      id: Date.now()+10000,
+      desc:newDesc, monto:newMonto, fecha:newFecha, cuenta:newCuenta, cat:newCat, nota:newNota
+    });
+    // Marcar la original como eliminada y sustituir en el array
+    state.transactions=state.transactions.filter(function(x){return x.id!==oldId;});
+    state.transactions.push(newTx);
+    state.transactions.sort(function(a,b){ return a.fecha>b.fecha?-1:a.fecha<b.fecha?1:b.id-a.id; });
+    modalTxId=newTx.id; // apuntar al nuevo ID para que showDetail funcione
+  } else {
+    t.desc=newDesc; t.monto=newMonto; t.fecha=newFecha; t.cuenta=newCuenta; t.cat=newCat; t.nota=newNota;
+  }
   saveState(); updateHomeWidget();
   showDetail(modalTxId);
   renderHistorial();
