@@ -8565,6 +8565,30 @@ init();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
 (function(){
+  // salud-modal uses .salud-modal-sheet — handle separately
+  (function(){
+    var modal=document.getElementById('salud-modal');
+    var sheet=document.getElementById('salud-modal-sheet');
+    if(!modal||!sheet) return;
+    var startY=0,dragging=false;
+    sheet.addEventListener('touchstart',function(e){startY=e.touches[0].clientY;dragging=true;},{passive:true});
+    sheet.addEventListener('touchmove',function(e){
+      if(!dragging) return;
+      var dy=e.touches[0].clientY-startY;
+      if(dy>0&&sheet.scrollTop<=0){sheet.style.transform='translateY('+Math.min(dy*0.6,160)+'px)';sheet.style.transition='none';sheet.style.opacity=String(Math.max(0.4,1-dy/300));}
+    },{passive:true});
+    sheet.addEventListener('touchend',function(e){
+      if(!dragging) return;
+      dragging=false;
+      var dy=e.changedTouches[0].clientY-startY;
+      sheet.style.transition='transform .25s ease,opacity .25s ease';
+      if(dy>80&&sheet.scrollTop<=0){
+        sheet.style.transform='translateY(100%)';sheet.style.opacity='0';
+        setTimeout(function(){modal.classList.remove('open');sheet.style.transform='';sheet.style.opacity='';sheet.style.transition='';document.body.style.overflow='';},220);
+      } else {sheet.style.transform='';sheet.style.opacity='';}
+    },{passive:true});
+  })();
+
   var modalIds=['kits-modal','detail-modal','avance-modal'];
   modalIds.forEach(function(id){
     var modal=document.getElementById(id);
