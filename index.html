@@ -2068,6 +2068,22 @@ var DEUDAS_DEFAULT = [
 var userDeudas = [];
 var userCobros = []; // Dinero que otros me deben a mí
 
+// ── Helpers de fecha LOCAL (evitan bug UTC de toISOString en zonas UTC-) ──
+function hoyLocal(){
+  var d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function mesLocal(){
+  var d=new Date();
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+function dateToYmd(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+function dateToYm(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+}
+
 var state = {
   transactions: [],
   currentTipo: 'EGRESO',
@@ -2110,7 +2126,7 @@ function ejecutarDebitosAutomaticos(){
   // Opera a nivel del crédito: si hoy >= debitoDia y no se ha ejecutado este mes, crea EGRESO
   var today=new Date();
   var todayDay=today.getDate();
-  var mesActual=today.toISOString().slice(0,7);
+  var mesActual=dateToYm(today);
   var ejecutados=0;
   userCreditos.forEach(function(c){
     if(!c.debitoAuto||!c.debitoDia) return;
@@ -2195,7 +2211,7 @@ function init(){
     if(saved.notifDescartadas){
       // Limpiar descartados de hoy para consejos financieros (no obligaciones)
       // Permite que consejos vuelvan a aparecer si se descartaron por error
-      var hoyReset=new Date().toISOString().slice(0,10);
+      var hoyReset=hoyLocal();
       var ndClean={};
       Object.keys(saved.notifDescartadas).forEach(function(k){
         // Conservar solo: obligaciones, reembolsos, deudas, cobros descartados hoy
@@ -2267,7 +2283,7 @@ function init(){
 
   // Set today's date in form
   var today = new Date();
-  document.getElementById('f-fecha').value = today.toISOString().slice(0,10);
+  document.getElementById('f-fecha').value = dateToYmd(today);
   // Inject logos into DOM elements
   setTimeout(injectLogos, 0);
 }
@@ -2409,7 +2425,7 @@ function togglePendientes(){
   state.notifPanelOpen = open;
   if(open){
     // Marcar todas las notificaciones visibles como vistas hoy
-    var today=new Date().toISOString().slice(0,10);
+    var today=hoyLocal();
     if(!state.notifVistas) state.notifVistas={};
     document.querySelectorAll('.wa-notif-wrap[data-nid]').forEach(function(el){
       state.notifVistas[el.dataset.nid]=today;
@@ -2427,13 +2443,13 @@ function togglePendientes(){
 }
 function notifGoTo(nid,screen){
   if(!state.notifVistas) state.notifVistas={};
-  state.notifVistas[nid]=new Date().toISOString().slice(0,10);
+  state.notifVistas[nid]=hoyLocal();
   saveState();
   if(screen) goTo(screen);
 }
 function notifDescartar(nid){
   if(!state.notifDescartadas) state.notifDescartadas={};
-  state.notifDescartadas[nid]=new Date().toISOString().slice(0,10);
+  state.notifDescartadas[nid]=hoyLocal();
   saveState();
   var badge=document.getElementById('wa-badge-count');
   if(badge){
@@ -2578,7 +2594,7 @@ function calcBalances(){
 
 function calcAnalisisFinanciero(mes){
   var now=new Date();
-  var hoyStr=now.toISOString().slice(0,10);
+  var hoyStr=dateToYmd(now);
   var mesActual=hoyStr.slice(0,7);
   var isCurMes=(mes===mesActual);
   var diaHoy=isCurMes?now.getDate():new Date(parseInt(mes.split('-')[0]),parseInt(mes.split('-')[1]),0).getDate();
@@ -2716,7 +2732,7 @@ function evaluarReglas(a){
   var cs=[];
   if(!state.notifDescartadas) state.notifDescartadas={};
   var nd=state.notifDescartadas;
-  var hoyStr=new Date().toISOString().slice(0,10);
+  var hoyStr=hoyLocal();
   var mes=a.mes;
 
   // cat: 'error'|'riesgo'|'oportunidad'|'recomendacion'|'progreso'
@@ -3169,7 +3185,7 @@ function updateHomeWidget(){
   if(!state.notifVistas) state.notifVistas={};
   var notifs=[];
   var hoyD=new Date();
-  var hoyStr=hoyD.toISOString().slice(0,10);
+  var hoyStr=dateToYmd(hoyD);
   var mesActualN=hoyStr.slice(0,7);
 
   // ── Obligaciones: aparecen desde 3 días antes hasta que se paguen ──
@@ -3436,7 +3452,7 @@ function updateHomeWidget(){
 function notifSetTab(tab){
   notifActiveTab=tab;
   // Re-render tabs and items without full recalculation
-  var hoyStr=new Date().toISOString().slice(0,10);
+  var hoyStr=hoyLocal();
   var waTabs=document.getElementById('wa-tabs');
   var waItems=document.getElementById('wa-items');
   if(!waTabs||!waItems) return;
@@ -3481,7 +3497,7 @@ function notifSetTab(tab){
 
 function calcSaludFinanciera(){
   var now=new Date();
-  var mes=now.toISOString().slice(0,7);
+  var mes=dateToYm(now);
   var a={ing:0,eg:0,net:0,tasaAhorro:0,avgEg3:0,avgIng3:0,catAnomalia:[],
          saldoDisp:0,deudaTotal:0,sueldo:0,hist3:[],hist:[]};
   try{ a=calcAnalisisFinanciero(mes); }catch(e){}
@@ -3845,12 +3861,12 @@ function confirmarObligPago(obligId){
   try{ oblig=getObligacionesMes().find(function(o){return o.id===obligId;}); }catch(e){}
   if(!oblig) return;
   var cuenta=document.getElementById('qo-cuenta').value;
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   var tx={id:Date.now()+10000,fecha:hoy,desc:oblig.nombre,monto:oblig.montoActual,tipo:'EGRESO',cuenta:cuenta,
     cat:'Obligación',empresa:'Personal',reimb:'NO',notas:'Pago obligación'};
   state.transactions.push(tx);
   // Marcar como pagada
-  var curMes=new Date().toISOString().slice(0,7);
+  var curMes=mesLocal();
   var src=getObligacionesAll().find(function(o){return o.id===obligId;});
   if(src){
     if(!src.pagos) src.pagos=[];
@@ -3870,7 +3886,7 @@ function renderDashboard(){
   var bal = calcBalances();
   var kits = calcKits();
   var now = new Date();
-  var curMes = now.toISOString().slice(0,7);
+  var curMes = dateToYm(now);
   var today = now.getDate();
   var mesLabel = MESES[now.getMonth()].charAt(0).toUpperCase()+MESES[now.getMonth()].slice(1)+' '+now.getFullYear();
 
@@ -4250,7 +4266,7 @@ function ccSimular(){
   var msgC=puede?'#34d399':'#ff453a';
   var obligsAfect=obligsPend.filter(function(o){return despues<0;});
   var now=new Date();
-  var curMes=now.toISOString().slice(0,7);
+  var curMes=dateToYm(now);
   var ingMes=0;
   state.transactions.filter(function(t){return t.fecha.slice(0,7)===curMes&&t.tipo==='INGRESO'&&t.cat!=='Transferencia interna';}).forEach(function(t){ingMes+=t.monto;});
   var ahorro=ingMes>0?Math.max(0,despues):0;
@@ -4291,7 +4307,7 @@ function ccEditPresupuesto(){
   var pres=state.presupuesto||{};
   // Obtener categorías del mes actual y del presupuesto
   var now=new Date();
-  var curMes=now.toISOString().slice(0,7);
+  var curMes=dateToYm(now);
   var cats={};
   state.transactions.filter(function(t){return t.fecha.slice(0,7)===curMes&&t.tipo==='EGRESO'&&t.cat!=='Transferencia interna'&&t.cat!=='Custodia/Paso';}).forEach(function(t){cats[t.cat]=true;});
   Object.keys(pres).forEach(function(c){cats[c]=true;});
@@ -4336,7 +4352,7 @@ function ccSugerirPresupuesto(){
   var mesesAnt=[];
   for(var i=1;i<=3;i++){
     var d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    mesesAnt.push(d.toISOString().slice(0,7));
+    mesesAnt.push(dateToYm(d));
   }
   var catSums={};
   var catCounts={};
@@ -4874,7 +4890,7 @@ function isObligacionActiva(o){
   if(tipo==='anos'){ var fin=new Date(inicio); fin.setFullYear(fin.getFullYear()+val); return hoy<=fin; }
   return true;
 }
-function getObligacionesMes(){ return getObligacionesMesFor(new Date().toISOString().slice(0,7)); }
+function getObligacionesMes(){ return getObligacionesMesFor(mesLocal()); }
 function getObligacionesMesFor(curMes){
   return getObligacionesAll().filter(function(o){ return !o.isCredit; }).filter(isObligacionActiva).filter(function(o){
     // Puntual: solo aparece en su mes específico
@@ -4920,7 +4936,7 @@ function getObligacionesMesFor(curMes){
     } else {
       var ini=new Date(fechaI+'T12:00:00');
       var sig=new Date(ini.getFullYear(), ini.getMonth()+1, 1);
-      efectivoYm=sig.toISOString().slice(0,7);
+      efectivoYm=dateToYm(sig);
     }
     return efectivoYm<=curMes;
   });
@@ -5095,7 +5111,7 @@ function pfCalcSueldo(){
   var cr=document.getElementById('pf-calc-rest'); if(cr) cr.textContent=f(srest);
 }
 function showAddComisionModal(){
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   var html='<div style="display:flex;flex-direction:column;gap:12px">'
     +'<div class="form-row"><div class="form-label">Concepto</div><input id="com-concepto" type="text" class="form-input" placeholder="Comisión ventas, bonus..."></div>'
     +'<div class="form-row"><div class="form-label">Valor $</div><input id="com-valor" type="text" class="form-input" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*" placeholder="0.00"></div>'
@@ -5130,9 +5146,9 @@ function deleteComision(idx){
 
 function renderOblig(){
   if(!state.obligaciones) state.obligaciones=[];
-  var todayStr=new Date().toISOString().slice(0,10);
+  var todayStr=hoyLocal();
   // notificaciones se actualizan con updateHomeWidget al final de renderOblig
-  var curMes=new Date().toISOString().slice(0,7);
+  var curMes=mesLocal();
   var allObligMs={};
   // Siempre incluir mes actual + 3 meses futuros + 6 meses pasados
   (function(){
@@ -5140,12 +5156,12 @@ function renderOblig(){
     // 3 meses futuros
     for(var f=0;f<4;f++){
       var fd=new Date(d); fd.setMonth(d.getMonth()+f);
-      allObligMs[fd.toISOString().slice(0,7)]=true;
+      allObligMs[dateToYm(fd)]=true;
     }
     // 6 meses pasados
     for(var p=1;p<=6;p++){
       var pd=new Date(d); pd.setMonth(d.getMonth()-p);
-      allObligMs[pd.toISOString().slice(0,7)]=true;
+      allObligMs[dateToYm(pd)]=true;
     }
   })();
   // Incluir todos los meses con transacciones o pagos (históricas)
@@ -5224,7 +5240,7 @@ function showAddObligModal(editId){
   var curDurVal='';
   if(ob&&ob.duracion&&ob.duracion.startsWith('meses')){ curDurSub='meses'; curDurVal=ob.duracion.split(':')[1]||''; }
   var curDia=(ob&&ob.diaPago)||1;
-  var curFechaFija=(ob&&ob.duracion==='puntual'&&ob.fechaInicio)||new Date().toISOString().slice(0,10);
+  var curFechaFija=(ob&&ob.duracion==='puntual'&&ob.fechaInicio)||hoyLocal();
   var stIndef=curTipo==='indefinida';
   var stMeses=curDurSub==='meses';
   var pickerHtml='<div style="margin-bottom:14px"><div style="font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:rgba(255,255,255,0.4);margin-bottom:8px">Icono</div>'
@@ -5305,9 +5321,9 @@ function guardarObligacion(editId){
   var notas=(document.getElementById('ob-notas').value||'').trim();
   var indefSec=document.getElementById('ob-sec-indef');
   var isPuntual=indefSec&&indefSec.style.display==='none';
-  var dia=1, duracion='indefinido', fechaInicio=new Date().toISOString().slice(0,10);
+  var dia=1, duracion='indefinido', fechaInicio=hoyLocal();
   if(isPuntual){
-    var ff=(document.getElementById('ob-fecha-fija')||{}).value||new Date().toISOString().slice(0,10);
+    var ff=(document.getElementById('ob-fecha-fija')||{}).value||hoyLocal();
     dia=parseInt(ff.slice(8,10))||1;
     duracion='puntual';
     fechaInicio=ff;
@@ -5378,11 +5394,11 @@ function confirmarPagoOblig(id){
   var cuenta=document.getElementById('ob-pago-cuenta').value;
   var monto=parseFloat((document.getElementById('ob-pago-monto').value||'').replace(',','.'))||0;
   if(monto<=0){ showToast('Ingresa un monto válido'); return; }
-  var curMes=obligSelectedMes||new Date().toISOString().slice(0,7);
+  var curMes=obligSelectedMes||mesLocal();
   // Para la fecha de la tx: si es mes actual usa hoy, si es mes pasado usa el día de pago
   var ob2=getObligacionesAll().find(function(o){return o.id===id;});
-  var hoyReal=new Date().toISOString().slice(0,10);
-  var mesActual=new Date().toISOString().slice(0,7);
+  var hoyReal=hoyLocal();
+  var mesActual=mesLocal();
   var hoy=curMes===mesActual?hoyReal:(curMes+'-'+(ob2?String(ob2.diaPago||1).padStart(2,'0'):'01'));
   // Create EGRESO
   var obActual=getObligacionesAll().find(function(o){return o.id===id;});
@@ -5422,7 +5438,7 @@ function deshacerPagoOblig(id){
   document.body.appendChild(ov);
   document.getElementById('undopay-confirm').onclick=function(){
     ov.remove();
-    var mesBorrar=obligSelectedMes||new Date().toISOString().slice(0,7);
+    var mesBorrar=obligSelectedMes||mesLocal();
     if(ob&&ob.pagos){ ob.pagos=ob.pagos.filter(function(p){return p.mes!==mesBorrar;}); }
     saveState(); renderOblig(); updateHomeWidget(); showToast('Pago deshecho');
   };
@@ -5440,7 +5456,7 @@ function renderReimb(){
   }
 
   var paid=new Set(state.reimbPagados);
-  var mesActual=new Date().toISOString().slice(0,7);
+  var mesActual=mesLocal();
   var txs=state.transactions.filter(function(t){ return t.id>=1000&&t.reimb==='SÍ'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
 
   // Classify EQ open vs EQ in cycle
@@ -5670,7 +5686,7 @@ function cerrarViaje(){
   var paid=new Set(state.reimbPagados);
   var cicloTxIds=new Set();
   state.ciclosEQ.forEach(function(c){ (c.txIds||[]).forEach(function(id){ cicloTxIds.add(id); }); });
-  var curMes=new Date().toISOString().slice(0,7); // only current month
+  var curMes=mesLocal(); // only current month
   var eqOpen=state.transactions.filter(function(t){
     return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&!cicloTxIds.has(t.id)&&t.fecha.slice(0,7)===curMes;
   });
@@ -5745,10 +5761,10 @@ function cerrarViajeConfirmar(totalStr, nombre, txidsStr){
   extraMonto=parseFloat(extraMonto.toFixed(2));
   var totalConExtra=parseFloat((gastos+extraMonto).toFixed(2));
   var now=new Date();
-  var id='ciclo_'+now.toISOString().slice(0,7)+'_'+Date.now();
+  var id='ciclo_'+dateToYm(now)+'_'+Date.now();
   if(!state.ciclosEQ) state.ciclosEQ=[];
   // total = gastos + extra (lo que EQ pagará en total); extraMonto separado para el box acumulado
-  state.ciclosEQ.push({id:id,mes:now.toISOString().slice(0,7),nombre:nombre,total:totalConExtra,gastosBase:gastos,txIds:txIds,estado:'pendiente',fechaPago:null,cuentaPago:null,extraMonto:extraMonto});
+  state.ciclosEQ.push({id:id,mes:dateToYm(now),nombre:nombre,total:totalConExtra,gastosBase:gastos,txIds:txIds,estado:'pendiente',fechaPago:null,cuentaPago:null,extraMonto:extraMonto});
   saveState();
   var totalExtraAcum=state.ciclosEQ.reduce(function(a,c){return a+(c.extraMonto||0);},0);
   closeKitsModal();
@@ -5787,7 +5803,7 @@ function confirmarPagoCicloEQ(cicloId){
   if(!state.ciclosEQ) return;
   var ciclo=state.ciclosEQ.find(function(c){return c.id===cicloId;});
   if(!ciclo) return;
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   // TX1: Facturas reembolsadas (gastos base)
   var gastosBase=ciclo.gastosBase||ciclo.total-(ciclo.extraMonto||0);
   state.transactions.push({id:Date.now(),fecha:hoy,desc:'Pago viáticos ECUAQUIMICA — '+ciclo.nombre,cuenta:'Banco Guayaquil',monto:gastosBase,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'',nota:'Reembolso ECUAQUIMICA'});
@@ -5813,7 +5829,7 @@ function showPagarEQ(){
   var paid=new Set(state.reimbPagados);
   var cicloTxIds=new Set();
   state.ciclosEQ.forEach(function(c){ (c.txIds||[]).forEach(function(id){ cicloTxIds.add(id); }); });
-  var mesActualEQ=new Date().toISOString().slice(0,7);
+  var mesActualEQ=mesLocal();
   var eqOpen=state.transactions.filter(function(t){
     return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&!cicloTxIds.has(t.id)&&t.fecha.slice(0,7)===mesActualEQ;
   });
@@ -5848,7 +5864,7 @@ function confirmarPagoEQ(){
   var paid=new Set(state.reimbPagados);
   var cicloTxIds=new Set();
   state.ciclosEQ.forEach(function(c){ (c.txIds||[]).forEach(function(id){ cicloTxIds.add(id); }); });
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   var total=0;
   // Pay all pending cycles
   var totalExtra=0;
@@ -5858,7 +5874,7 @@ function confirmarPagoEQ(){
     (c.txIds||[]).forEach(function(id){ if(!state.reimbPagados.includes(id)) state.reimbPagados.push(id); });
   });
   // Pay open EQ txs (current month only)
-  var mesActualEQConf=new Date().toISOString().slice(0,7);
+  var mesActualEQConf=mesLocal();
   var eqOpen=state.transactions.filter(function(t){
     return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&!cicloTxIds.has(t.id)&&t.fecha.slice(0,7)===mesActualEQConf;
   });
@@ -5967,7 +5983,7 @@ function confirmarPagoAG(cuentaEnc, total){
   if(!state.reimbPagados) state.reimbPagados=[];
   // Mark only selected transactions as paid
   _agSelIds.forEach(function(id){ if(!state.reimbPagados.includes(id)) state.reimbPagados.push(id); });
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   state.transactions.push({id:Date.now(),fecha:hoy,desc:'Pago reembolsos AGROLEON',cuenta:cuenta,monto:total,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'',nota:'Reembolso AGROLEON'});
   saveState(); closeKitsModal(); renderReimb(); updateHomeWidget(); renderCuentas();
   showToast('✅ $'+total.toFixed(2)+' ingresado a '+cuenta);
@@ -6270,7 +6286,7 @@ function confirmarAvance(){
   var cuotasTotal=avFormaPago==='diferido'?avCuotas:1;
   c.avances.unshift({
     id:'av'+Date.now(),
-    fecha:new Date().toISOString().slice(0,10),
+    fecha:hoyLocal(),
     monto:monto,
     montoAPagar:montoAPagar>0?montoAPagar:monto,
     formaPago:avFormaPago,
@@ -6286,7 +6302,7 @@ function confirmarAvance(){
   var txId=Date.now()+10000;
   var tx={
     id:txId,
-    fecha:new Date().toISOString().slice(0,10),
+    fecha:hoyLocal(),
     desc:'Avance línea de crédito — '+c.nombre,
     cuenta:cuentaDestino,
     monto:monto,
@@ -6353,7 +6369,7 @@ function confirmarPagoAvance(creditoId, avanceId){
   if(!av.cuotasPagadas) av.cuotasPagadas=0;
   var cuotaMonto=parseFloat((av.montoAPagar/cuotasTotal).toFixed(2));
   var montoPago=esDif?cuotaMonto:av.montoAPagar;
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   var cuentaOrigen=c.banco||'Efectivo';
   // Crear EGRESO
   state.transactions.push({
@@ -6469,7 +6485,7 @@ function guardarDeudaModal(tipo){
     var cuenta=cuentaEl?cuentaEl.value:'Efectivo';
     userCobros.push({id:'cobro'+Date.now(),nombre:nombre,monto:monto,notas:notas,cuentaOrigen:cuenta});
     // Crear EGRESO por haber prestado desde esa cuenta
-    var hoy=new Date().toISOString().slice(0,10);
+    var hoy=hoyLocal();
     state.transactions.push({id:Date.now()+10000,fecha:hoy,desc:'Préstamo a '+nombre,cuenta:cuenta,monto:monto,tipo:'EGRESO',cat:'Préstamo personal',reimb:'NO',empresa:'',nota:notas||'Préstamo personal'});
     state.transactions.sort(function(a,b){return a.fecha>b.fecha?-1:a.fecha<b.fecha?1:b.id-a.id;});
   } else {
@@ -6503,7 +6519,7 @@ function confirmarCobro(id,cuenta){
   if(!userCobros) return;
   var c=userCobros.find(function(x){return x.id===id;});
   if(!c) return;
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   state.transactions.push({id:Date.now()+10000,fecha:hoy,desc:'Cobro — '+c.nombre,cuenta:cuenta,monto:c.monto,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:c.notas||''});
   state.transactions.sort(function(a,b){return a.fecha>b.fecha?-1:a.fecha<b.fecha?1:b.id-a.id;});
   userCobros=userCobros.filter(function(x){return x.id!==id;});
@@ -6537,7 +6553,7 @@ function pagarDeuda(id){
 function confirmarPagoDeuda(id, cuenta){
   var deuda=userDeudas.find(function(d){return d.id===id;});
   if(!deuda) return;
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   state.transactions.push({id:Date.now()+10000,fecha:hoy,desc:'Pago deuda — '+deuda.nombre,cuenta:cuenta,monto:deuda.monto,tipo:'EGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:'Deuda saldada ✅'});
   state.transactions.sort(function(a,b){return a.fecha>b.fecha?-1:a.fecha<b.fecha?1:b.id-a.id;});
   userDeudas=userDeudas.filter(function(d){return d.id!==id;});
@@ -6660,7 +6676,7 @@ function ajustarSaldo(){
   var bal=calcBalances();
   var diff=target-(bal[cuenta]||0);
   if(Math.abs(diff)<0.01){ showToast('Saldo ya está correcto'); return; }
-  var t={id:Date.now()+10000,fecha:new Date().toISOString().slice(0,10),desc:'Ajuste saldo '+cuenta,cuenta:cuenta,monto:Math.abs(diff),tipo:diff>0?'INGRESO':'EGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Ajuste manual'};
+  var t={id:Date.now()+10000,fecha:hoyLocal(),desc:'Ajuste saldo '+cuenta,cuenta:cuenta,monto:Math.abs(diff),tipo:diff>0?'INGRESO':'EGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Ajuste manual'};
   state.transactions.unshift(t);
   saveState(); closeKitsModal(); renderCuentas(); updateHomeWidget();
   showToast('Saldo actualizado ✓');
@@ -6690,7 +6706,7 @@ function confirmarTransferir(){
   var com=parseFloat((document.getElementById('tr-com').value||'').replace(',','.'))||0;
   if(!monto||monto<=0){ showToast('⚠️ Ingresa un monto válido'); return; }
   if(desde===hacia){ showToast('⚠️ Las cuentas deben ser distintas'); return; }
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   var ts=Date.now()+10000;
   state.transactions.push({id:ts,fecha:hoy,desc:'Transferencia '+desde+' → '+hacia,cuenta:desde,monto:monto+(com>0?com:0),tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:com>0?'Comisión $'+com.toFixed(2):''});
   state.transactions.push({id:ts+1,fecha:hoy,desc:'Transferencia '+desde+' → '+hacia,cuenta:hacia,monto:monto,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''});
@@ -6717,7 +6733,7 @@ function confirmarRetirar(){
   var cuenta=document.getElementById('ret-cuenta').value;
   var monto=parseFloat((document.getElementById('ret-monto').value||'').replace(',','.'))||0;
   if(!monto||monto<=0){ showToast('⚠️ Ingresa el monto'); return; }
-  var hoy=new Date().toISOString().split('T')[0];
+  var hoy=hoyLocal();
   var ts=Date.now()+10000;
   state.transactions.push({id:ts,fecha:hoy,desc:'Retiro cajero '+cuenta,cuenta:cuenta,monto:monto,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Retiro en cajero'});
   state.transactions.push({id:ts+1,fecha:hoy,desc:'Retiro cajero '+cuenta,cuenta:'Efectivo',monto:monto,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Dinero en mano'});
@@ -6739,7 +6755,7 @@ function showAjusteModal(){
 }
 
 // ANÁLISIS
-var anaSelectedMes = new Date().toISOString().slice(0,7); // inicia en mes actual
+var anaSelectedMes = mesLocal(); // inicia en mes actual
 // Helper: obligaciones para un mes específico (ym='2026-11')
 function getObligacionesForMes(ym){
   return getObligacionesAll().filter(isObligacionActiva).map(function(o){
@@ -6751,7 +6767,7 @@ function getObligacionesForMes(ym){
 
 function renderAnalisis(){
   var now=new Date();
-  var curMesYm=now.toISOString().slice(0,7);
+  var curMesYm=dateToYm(now);
 
   // ── Generar lista de meses disponibles ──
   var allMonths={};
@@ -7194,7 +7210,7 @@ function renderCurva(){
 
   if(curvaVista==='mensual'){
     // Vista mensual: día a día dentro del mes seleccionado (anaSelectedMes o mes actual)
-    var mesSel=anaSelectedMes&&anaSelectedMes!=='all'?anaSelectedMes:new Date().toISOString().slice(0,7);
+    var mesSel=anaSelectedMes&&anaSelectedMes!=='all'?anaSelectedMes:mesLocal();
     var txMes=state.transactions.filter(function(t){return t.fecha.slice(0,7)===mesSel;});
     if(txMes.length<1){ el.innerHTML=''; return; }
     // Acumular patrimonio hasta inicio del mes seleccionado
@@ -7330,7 +7346,7 @@ function renderMeta(){
   var metaMonto=parseFloat(meta.monto)||0;
   var metaCant=parseFloat(meta.cantidad)||6;
   var metaUnidad=meta.unidad||'meses';
-  var curMes=new Date().toISOString().slice(0,7);
+  var curMes=mesLocal();
   var now=new Date();
   var dayOfMonth=now.getDate();
   var txCur=state.transactions.filter(function(t){return t.fecha.slice(0,7)===curMes&&t.id>=1000;});
@@ -7623,7 +7639,7 @@ function checkSectorRow(){
 }
 /* ===== ACCESOS RÁPIDOS ===== */
 function quickAction(type){
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   var perfil=state.perfil||{};
   if(type==='alim_eq'||type==='transp_eq'){
     // Alimentación EQ — descripción picker, sin fecha, cuenta cards
@@ -8008,7 +8024,7 @@ function quickAction(type){
 // Called from EQ/AG chooser in quickAction
 function quickActionReemb(type, empresa){
   closeKitsModal();
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   var isAlim=(type==='alim_eq');
   var icon=isAlim?'🍽️':'🚌';
   var title=icon+' '+(isAlim?'Alimentación':'Transporte')+' '+(empresa==='ECUAQUIMICA'?'EQ':'AG');
@@ -8047,7 +8063,7 @@ function showComisionAgModal(coms, hoy){
   document.getElementById('kits-modal').classList.add('open');
 }
 function confirmarComisionAG(n){
-  var fecha=new Date().toISOString().slice(0,10);
+  var fecha=hoyLocal();
   var cuenta=document.getElementById('qa-com-cuenta').value;
   var total=0;
   var conceptos=[];
@@ -8128,7 +8144,7 @@ function qaEQTipoIngreso(tipo){
 
 function qaIngresoEQTipo(tipo){
   // Called from the two buttons in ingreso_eq modal
-  var hoy2=new Date().toISOString().slice(0,10);
+  var hoy2=hoyLocal();
   var perfil2=state.perfil||{};
   if(tipo==='quincena'){
     var montoQ=perfil2.quincena||0;
@@ -8179,7 +8195,7 @@ function qaIngresoEQTipo(tipo){
 function confirmarIngresoEQ(tipo, montoStr){
   var m=parseFloat(montoStr)||0;
   if(m<=0){showToast('⚠️ Monto inválido');return;}
-  var hoy3=new Date().toISOString().slice(0,10);
+  var hoy3=hoyLocal();
   var desc=tipo==='quincena'?'Quincena ECUAQUIMICA':'Sueldo ECUAQUIMICA';
   crearTxRapida({fecha:hoy3,desc:desc,cuenta:'Banco Guayaquil',monto:m,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',nota:'Acceso rápido'});
   closeKitsModal();
@@ -8292,7 +8308,7 @@ function confirmarQA(){
   if(!_qaCallback){closeKitsModal();return;}
   var vals={};
   document.querySelectorAll('#kits-modal [id^="qa-"]').forEach(function(el){vals[el.id]=el.value;});
-  if(!vals['qa-fecha']) vals['qa-fecha']=new Date().toISOString().slice(0,10);
+  if(!vals['qa-fecha']) vals['qa-fecha']=hoyLocal();
   var montoEl=document.getElementById('qa-monto');
   if(montoEl){
     var montoVal=parseFloat((montoEl.value||'').replace(',','.'));
@@ -8314,7 +8330,7 @@ function qasueldoFull(){
   var perfil=state.perfil||{};
   var monto=perfil.sueldoRestante||perfil.saldoSueldo||perfil.sueldoCompleto||'';
   closeKitsModal();
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   showQAModal({
     title:'💼 Sueldo EQ (completo)',
     subtitle:'Sueldo restante → Banco Guayaquil',
@@ -8331,7 +8347,7 @@ function qasueldoParcial(){
   var perfil=state.perfil||{};
   var monto=perfil.sueldoRestante||perfil.saldoSueldo||'';
   closeKitsModal();
-  var hoy=new Date().toISOString().slice(0,10);
+  var hoy=hoyLocal();
   showQAModal({
     title:'💼 Sueldo EQ (saldo)',
     subtitle:'Ingreso · Banco Guayaquil',
@@ -8465,7 +8481,7 @@ function deleteTxModal(){
 function histDuplicate(){
   var t=state.transactions.find(function(x){return x.id===modalTxId;});
   if(!t) return;
-  var newT=Object.assign({},t,{id:Date.now(),fecha:new Date().toISOString().slice(0,10),nota:(t.nota?t.nota+' ':'')+'(copia)'});
+  var newT=Object.assign({},t,{id:Date.now(),fecha:hoyLocal(),nota:(t.nota?t.nota+' ':'')+'(copia)'});
   state.transactions.push(newT);
   saveState(); updateHomeWidget();
   document.getElementById('detail-modal').classList.remove('open');
@@ -8771,7 +8787,7 @@ function entregarKitsGrupo(cuentaEnc, nombreEnc, monto){
   document.getElementById('entrega-cancel').onclick=function(){ ov.remove(); };
   document.getElementById('entrega-confirm').onclick=function(){
     ov.remove();
-    var hoy = new Date().toISOString().split('T')[0];
+    var hoy = hoyLocal();
     var tx = {id:Date.now(),fecha:hoy,desc:'Entrega — '+nombre,cuenta:cuenta,monto:monto,tipo:'EGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:nombre,nota:'Dinero entregado al dueño'};
     state.transactions.push(tx);
     saveState();
@@ -8800,7 +8816,7 @@ function entregarKitsTodo(cuenta, total){
   document.getElementById('entregat-cancel').onclick=function(){ ov.remove(); };
   document.getElementById('entregat-confirm').onclick=function(){
     ov.remove();
-    var hoy = new Date().toISOString().split('T')[0];
+    var hoy = hoyLocal();
     var tx = {id:Date.now(),fecha:hoy,desc:'Entrega total KITS',cuenta:cuenta,monto:total,tipo:'EGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'Entrega total — dinero devuelto al dueño'};
     state.transactions.push(tx);
     saveState();
