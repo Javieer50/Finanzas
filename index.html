@@ -2102,10 +2102,8 @@ var state = {
   }
 };
 
-// Obligaciones default: crédito JA auto
-var OBLIGACIONES_DEFAULT = [
-  {id:'oblig_ja',nombre:'Crédito JA',icono:'💳',diaPago:5,duracion:'indefinido',isCredit:'cred1',fechaInicio:'2026-01-01',notas:'J. Azuayo · día 5',pagos:[]}
-];
+// Obligaciones default: vacío — créditos se manejan en su propia pantalla
+var OBLIGACIONES_DEFAULT = [];
 
 // Ejecutar débitos automáticos pendientes cuya fecha ya llegó
 function ejecutarDebitosAutomaticos(){
@@ -2208,6 +2206,7 @@ function init(){
       state.notifDescartadas=ndClean;
     }
     if(saved.notifVistas) state.notifVistas = saved.notifVistas;
+    if(typeof saved.notifPanelOpen !== 'undefined') state.notifPanelOpen = saved.notifPanelOpen;
     if(saved.saludHistorico) state.saludHistorico = saved.saludHistorico;
     if(saved.presupuesto) state.presupuesto = saved.presupuesto;
     if(saved.objetivos) state.objetivos = saved.objetivos;
@@ -2381,6 +2380,7 @@ function saveState(){
     obligNuevoVisto: state.obligNuevoVisto||'',
     notifDescartadas: state.notifDescartadas||{},
     notifVistas: state.notifVistas||{},
+    notifPanelOpen: state.notifPanelOpen||false,
     saludHistorico: state.saludHistorico||{},
     presupuesto: state.presupuesto||{},
     objetivos: state.objetivos||[],
@@ -2405,6 +2405,8 @@ function togglePendientes(){
   if(!body) return;
   var open = body.classList.toggle('open');
   toggle.classList.toggle('open', open);
+  // Guardar estado del panel para restaurarlo al volver a inicio
+  state.notifPanelOpen = open;
   if(open){
     // Marcar todas las notificaciones visibles como vistas hoy
     var today=new Date().toISOString().slice(0,10);
@@ -2419,6 +2421,8 @@ function togglePendientes(){
     if(nt) nt.className='wa-nuevo-tag';
     var bellDot=document.getElementById('wa-bell-dot');
     if(bellDot) bellDot.style.display='none';
+  } else {
+    saveState();
   }
 }
 function notifGoTo(nid,screen){
@@ -3407,13 +3411,22 @@ function updateHomeWidget(){
   if(bellDot) bellDot.style.display=(hayNuevas&&notifAll.length>0)?'block':'none';
   var nuevoTag=document.getElementById('wa-nuevo-tag');
   if(nuevoTag) nuevoTag.className='wa-nuevo-tag'+(hayNuevas&&notifAll.length>0?' show':'');
-  // Auto-abrir si hay obligaciones urgentes (vencidas o hoy)
+  // Restaurar estado del panel (abierto/cerrado) según lo dejó el usuario
+  // Solo auto-abrir si hay urgentes Y el usuario nunca lo ha cerrado manualmente
   var hayUrgente=notifAll.some(function(n){return n.type==='oblig'&&n.diffDays<=0;});
   var body2=document.getElementById('wa-body');
   var toggle2=document.getElementById('wa-toggle');
-  if(hayUrgente&&body2&&!body2.classList.contains('open')){
-    body2.classList.add('open');
-    if(toggle2) toggle2.classList.add('open');
+  if(body2){
+    // Si el usuario tiene un estado guardado, respetarlo siempre
+    if(typeof state.notifPanelOpen !== 'undefined'){
+      body2.classList.toggle('open', state.notifPanelOpen);
+      if(toggle2) toggle2.classList.toggle('open', state.notifPanelOpen);
+    } else if(hayUrgente){
+      // Primera vez (sin estado guardado) y hay urgentes: abrir
+      body2.classList.add('open');
+      if(toggle2) toggle2.classList.add('open');
+      state.notifPanelOpen = true;
+    }
   }
 
   // Salud Financiera
@@ -4863,7 +4876,7 @@ function isObligacionActiva(o){
 }
 function getObligacionesMes(){ return getObligacionesMesFor(new Date().toISOString().slice(0,7)); }
 function getObligacionesMesFor(curMes){
-  return getObligacionesAll().filter(isObligacionActiva).filter(function(o){
+  return getObligacionesAll().filter(function(o){ return !o.isCredit; }).filter(isObligacionActiva).filter(function(o){
     // Puntual: solo aparece en su mes específico
     if(o.duracion==='puntual') return (o.fechaInicio||'').slice(0,7)===curMes;
     return true;
@@ -5167,7 +5180,6 @@ function renderOblig(){
   actives.forEach(function(o){
     var dl=getDaysUntilDiaPago(o.diaPago);
     var urgC=dl<=3?'var(--red)':dl<=7?'var(--yellow)':'rgba(255,255,255,0.4)';
-    var isJa=o.id==='oblig_ja';
     html+='<div class="oblig-item'+(o.pagadaEsteMes?' pagada':'')+'">'
       +'<div style="display:flex;justify-content:space-between;align-items:center">'
         +'<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0">'
@@ -5190,10 +5202,8 @@ function renderOblig(){
           ?'<button data-oid="'+o.id+'" onclick="deshacerPagoOblig(this.dataset.oid)" style="padding:7px 14px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);font-size:12px;cursor:pointer">↩ Deshacer</button>'
           :'<button data-oid="'+o.id+'" data-monto="'+o.montoActual+'" onclick="pagarObligacion(this.dataset.oid,this.dataset.monto)" style="padding:7px 18px;border-radius:10px;background:rgba(199,125,255,0.15);border:0.5px solid rgba(199,125,255,0.4);color:var(--accent);font-size:13px;font-weight:600;cursor:pointer">💳 Pagar</button>'
         )
-        +(isJa?''
-          :'<button data-oid="'+o.id+'" onclick="editObligacion(this.dataset.oid)" style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer">✏️</button>'
-          +'<button data-oid="'+o.id+'" onclick="deleteObligacion(this.dataset.oid)" style="width:32px;height:32px;border-radius:10px;background:rgba(255,59,48,0.12);border:0.5px solid rgba(255,59,48,0.3);color:#ff3b30;font-size:14px;cursor:pointer">🗑</button>'
-        )
+        +'<button data-oid="'+o.id+'" onclick="editObligacion(this.dataset.oid)" style="width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer">✏️</button>'
+        +'<button data-oid="'+o.id+'" onclick="deleteObligacion(this.dataset.oid)" style="width:32px;height:32px;border-radius:10px;background:rgba(255,59,48,0.12);border:0.5px solid rgba(255,59,48,0.3);color:#ff3b30;font-size:14px;cursor:pointer">🗑</button>'
       +'</div>'
     +'</div>';
   });
@@ -5394,11 +5404,6 @@ function confirmarPagoOblig(id){
     }
   }
   saveState(); closeKitsModal(); renderOblig(); updateHomeWidget();
-  // Update JA credit if applicable
-  if(obActual&&obActual.isCredit==='cred1'){
-    var jaCr=userCreditos.find(function(c){return c.id==='cred1';});
-    if(jaCr&&jaCr.deuda>0){ jaCr.deuda=Math.max(0,jaCr.deuda-monto); saveState(); }
-  }
   showToast('✅ $'+monto.toFixed(2)+' pagado desde '+cuenta);
 }
 function deshacerPagoOblig(id){
