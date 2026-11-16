@@ -6851,8 +6851,8 @@ function renderAnalisis(){
   var anaIngEsperado=0,anaIngSalario=0;
   if(isSingleMes&&anaSelectedMes===curMesYm){
     var pf=state.perfil||{};
-    // quincena + sueldo completo
-    anaIngEsperado=(pf.quincena||0)+(pf.sueldoCompleto||pf.saldoSueldo||0);
+    // quincena + sueldo restante (sueldoLiquido = quincena + sueldoRestante)
+    anaIngEsperado=(pf.quincena||0)+(pf.sueldoRestante||0);
     // lo que ya llegó como INGRESO en el mes
     state.transactions.filter(function(t){return t.fecha.startsWith(anaSelectedMes)&&t.tipo==='INGRESO';})
       .forEach(function(t){ if(t.cat!=='Custodia/Paso') anaIngSalario+=t.monto; });
@@ -6928,7 +6928,7 @@ function renderAnalisis(){
       var difTxt=dif>=0?'✅ Recibido completo':'⏳ Pendiente: $'+Math.abs(dif).toFixed(2);
       h+='<div style="margin-top:9px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center">'
         +'<div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.6)">💼 Sueldo EQ esperado este mes</div>'
-        +'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:1px">Perfil: quincena + sueldo completo</div></div>'
+        +'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:1px">Perfil: quincena + sueldo restante</div></div>'
         +'<div style="text-align:right"><div style="font-size:13px;font-weight:800;color:#fff">$'+anaIngEsperado.toFixed(2)+'</div>'
         +'<div style="font-size:10px;color:'+difC+'">'+difTxt+'</div></div>'
       +'</div>';
