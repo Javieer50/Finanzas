@@ -884,6 +884,9 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 16px 10px;flex-shrink:0;
   border-bottom:0.5px solid rgba(255,255,255,0.08);
+  position:sticky;top:0;z-index:10;
+  background:linear-gradient(160deg,rgba(30,0,60,0.97) 0%,rgba(6,0,15,0.99) 50%,rgba(10,0,25,0.98) 100%);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
 }
 .ai-header-left{display:flex;align-items:center;gap:10px;}
 .ai-avatar{
@@ -9403,6 +9406,68 @@ document.addEventListener('touchend',function(e){
 
 init();
 
+/* ── SWIPE DOWN TO CLOSE INNER SCREENS ── */
+(function(){
+  var swipeStartY=0, swipeStartX=0, swipeDragging=false, swipeScreen=null, swipeEl=null;
+  var THRESHOLD=90, CANCEL_HORIZ=40;
+
+  document.addEventListener('touchstart',function(e){
+    if(state.currentScreen==='home') return;
+    var el=document.getElementById('screen-'+state.currentScreen);
+    if(!el||!el.classList.contains('open')) return;
+    // Find the scroll container within this screen
+    var sc=el.querySelector('.scroll-content, .ai-chat-area, .home-scroll');
+    // Only start swipe when scrolled to top
+    if(sc&&sc.scrollTop>4) return;
+    swipeStartY=e.touches[0].clientY;
+    swipeStartX=e.touches[0].clientX;
+    swipeDragging=false;
+    swipeScreen=state.currentScreen;
+    swipeEl=el;
+  },{passive:true});
+
+  document.addEventListener('touchmove',function(e){
+    if(!swipeEl||!swipeEl.classList.contains('open')) return;
+    var dy=e.touches[0].clientY-swipeStartY;
+    var dx=Math.abs(e.touches[0].clientX-swipeStartX);
+    if(!swipeDragging){
+      if(dy<10) return;
+      if(dx>CANCEL_HORIZ){ swipeEl=null; return; } // horizontal swipe, ignore
+      swipeDragging=true;
+    }
+    if(dy>0){
+      swipeEl.style.transition='none';
+      swipeEl.style.transform='translateY('+Math.min(dy*0.55,200)+'px)';
+      swipeEl.style.opacity=String(Math.max(0.3,1-dy/280));
+    }
+  },{passive:true});
+
+  document.addEventListener('touchend',function(e){
+    if(!swipeEl||!swipeDragging){ swipeEl=null; swipeDragging=false; return; }
+    var dy=e.changedTouches[0].clientY-swipeStartY;
+    if(dy>=THRESHOLD){
+      swipeEl.style.transition='transform .28s cubic-bezier(.4,0,1,1),opacity .28s ease';
+      swipeEl.style.transform='translateY(100%)';
+      swipeEl.style.opacity='0';
+      var captured=swipeEl;
+      setTimeout(function(){
+        captured.style.cssText='';
+        captured.classList.remove('open');
+        captured.style.display='none';
+      },270);
+      var prev=state.screenStack.pop()||'home';
+      state.currentScreen=prev;
+      if(prev==='home'){ updateHomeWidget(); updateDock('home'); var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block'; }
+      else { var prevEl=document.getElementById('screen-'+prev); if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); } updateDock(prev); }
+    } else {
+      swipeEl.style.transition='transform .22s ease,opacity .22s ease';
+      swipeEl.style.transform='';
+      swipeEl.style.opacity='';
+    }
+    swipeEl=null; swipeDragging=false;
+  },{passive:true});
+})();
+
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
 (function(){
   // salud-modal — drag anywhere on handle to close
@@ -9842,28 +9907,33 @@ function buildFinancialContext(){
   try{
     var txs = state.transactions||[];
     var d90 = new Date(); d90.setDate(d90.getDate()-90);
-    var recent = txs.filter(function(t){
-      return new Date(t.date)>=d90;
-    });
+    // App uses: t.fecha, t.tipo, t.monto, t.cat
+    var d90str = dateToYmd(d90);
+    var recent = txs.filter(function(t){ return t.fecha >= d90str; });
     ctx.recentTxCount = recent.length;
-    var egs = recent.filter(function(t){ return t.type==='EGRESO'; });
-    var ings = recent.filter(function(t){ return t.type==='INGRESO'; });
-    ctx.last90Egreso = egs.reduce(function(s,t){ return s+(parseFloat(t.amount)||0); },0);
-    ctx.last90Ingreso = ings.reduce(function(s,t){ return s+(parseFloat(t.amount)||0); },0);
+    var egs = recent.filter(function(t){ return t.tipo==='EGRESO' && t.cat!=='Transferencia interna' && t.cat!=='Custodia/Paso'; });
+    var ings = recent.filter(function(t){ return t.tipo==='INGRESO'; });
+    ctx.last90Egreso = egs.reduce(function(s,t){ return s+(t.monto||0); },0);
+    ctx.last90Ingreso = ings.reduce(function(s,t){ return s+(t.monto||0); },0);
 
     // Category breakdown current month
-    var monthTxs = txs.filter(function(t){ return t.date && t.date.startsWith(ctx.currentMonth); });
+    var monthTxs = txs.filter(function(t){ return t.fecha && t.fecha.startsWith(ctx.currentMonth) && t.id>=1000; });
     var catMap = {};
-    monthTxs.filter(function(t){ return t.type==='EGRESO'; }).forEach(function(t){
-      var c = t.category||'Sin categoría';
-      catMap[c] = (catMap[c]||0)+(parseFloat(t.amount)||0);
+    monthTxs.filter(function(t){ return t.tipo==='EGRESO' && t.cat!=='Transferencia interna' && t.cat!=='Custodia/Paso'; }).forEach(function(t){
+      var c = t.cat||'Sin categoría';
+      catMap[c] = (catMap[c]||0)+(t.monto||0);
     });
     ctx.monthCategories = catMap;
 
     // This month income/expense
-    ctx.monthEgreso = monthTxs.filter(function(t){ return t.type==='EGRESO'; }).reduce(function(s,t){ return s+(parseFloat(t.amount)||0); },0);
-    ctx.monthIngreso = monthTxs.filter(function(t){ return t.type==='INGRESO'; }).reduce(function(s,t){ return s+(parseFloat(t.amount)||0); },0);
-  }catch(e){}
+    ctx.monthEgreso = monthTxs.filter(function(t){ return t.tipo==='EGRESO' && t.cat!=='Transferencia interna' && t.cat!=='Custodia/Paso'; }).reduce(function(s,t){ return s+(t.monto||0); },0);
+    ctx.monthIngreso = monthTxs.filter(function(t){ return t.tipo==='INGRESO'; }).reduce(function(s,t){ return s+(t.monto||0); },0);
+
+    // TODAY expenses
+    ctx.todayEgreso = txs.filter(function(t){ return t.fecha===ctx.today && t.tipo==='EGRESO' && t.cat!=='Transferencia interna' && t.cat!=='Custodia/Paso'; }).reduce(function(s,t){ return s+(t.monto||0); },0);
+    ctx.todayTxs = txs.filter(function(t){ return t.fecha===ctx.today; }).length;
+    ctx.recentList = txs.filter(function(t){ return t.id>=1000; }).slice(-5).map(function(t){ return t.tipo+' $'+t.monto.toFixed(2)+' ('+t.cat+') '+t.fecha; });
+  }catch(e){ console.error('ctx tx error',e); }
 
   // Obligaciones
   try{
@@ -9964,11 +10034,16 @@ function callRuleBased(msg, ctx){
     return '💰 **Balance actual de tus cuentas:**\n'+lines+'\n\n**Total disponible: $'+ctx.totalBalance.toFixed(2)+'**';
   }
 
+  // Gastos hoy
+  if(/hoy|de hoy|gaste hoy|gasto.*hoy|hoy.*gast/.test(lower)){
+    return '📅 **Gastos de hoy ('+ctx.today+'):**\n\n**Total: $'+(ctx.todayEgreso||0).toFixed(2)+'**\n'+(ctx.todayTxs?'('+ctx.todayTxs+' movimientos registrados hoy)':'Sin movimientos registrados hoy.');
+  }
+
   // Gastos mes
   if(/gast|egreso|salida|gast.*mes|cuánto.*gast/.test(lower)){
     var cats = Object.entries(ctx.monthCategories||{}).sort(function(a,b){ return b[1]-a[1]; });
     var catStr = cats.slice(0,5).map(function(e){ return '• '+e[0]+': **$'+e[1].toFixed(2)+'**'; }).join('\n');
-    return '📊 **Gastos en '+ctx.currentMonth+':**\n\n**Total: $'+ctx.monthEgreso.toFixed(2)+'**\n\nTop categorías:\n'+catStr;
+    return '📊 **Gastos en '+ctx.currentMonth+':**\n\n**Total: $'+ctx.monthEgreso.toFixed(2)+'**\n\nTop categorías:\n'+(catStr||'(sin gastos aún)')+'\n\n📅 Hoy: **$'+(ctx.todayEgreso||0).toFixed(2)+'**';
   }
 
   // Ingresos mes
