@@ -1,4 +1,4 @@
-const CACHE = 'finanzas-jr-v44';
+const CACHE = 'finanzas-jr-v48';
 const FILES = [
   './manifest.json',
   './apple-touch-icon.png',

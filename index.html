@@ -296,7 +296,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .inner-screen.open{display:flex;transform:translateY(0)}
 
 /* NAV HEADER */
-.nav-header{display:flex;align-items:center;padding:16px 20px 8px;padding-top:calc(var(--safe-top) + 16px);gap:12px;min-height:calc(var(--safe-top) + 60px);touch-action:none;user-select:none;-webkit-user-select:none;}
+.nav-header{display:flex;align-items:center;padding:16px 20px 8px;padding-top:calc(var(--safe-top) + 16px);gap:12px;min-height:calc(var(--safe-top) + 60px)}
 .back-btn{width:34px;height:34px;background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.15);border-radius:50%;touch-action:manipulation;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:#fff;flex-shrink:0;backdrop-filter:blur(10px)}
 .back-btn:active{background:rgba(255,255,255,0.2)}
 .nav-title{font-size:20px;font-weight:700;color:#fff;flex:1;letter-spacing:-0.3px}
@@ -1186,7 +1186,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.8 · Nov 2026</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.2.3 · Nov 2026</div>
   </div>
 </div>
 
@@ -9405,82 +9405,77 @@ document.addEventListener('touchend',function(e){
 
 init();
 
-/* ── SWIPE DOWN TO CLOSE INNER SCREENS — Touch Events, document-level ── */
+/* ── SWIPE DOWN TO CLOSE INNER SCREENS ── */
 (function(){
-  var dragScreen=null, startY=0, startX=0, dragging=false;
+  function closeScreen(screen){
+    screen.style.transition='transform .32s cubic-bezier(.4,0,1,1),opacity .28s ease';
+    screen.style.transform='translateY(100%)';
+    screen.style.opacity='0';
+    setTimeout(function(){
+      screen.style.cssText='';
+      screen.classList.remove('open');
+      screen.style.display='none';
+      var prev=state.screenStack.pop()||'home';
+      state.currentScreen=prev;
+      if(prev==='home'){
+        updateHomeWidget(); updateDock('home');
+        var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block';
+      } else {
+        var prevEl=document.getElementById('screen-'+prev);
+        if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); }
+        updateDock(prev);
+        var fab2=document.getElementById('ai-fab-wrap'); if(fab2) fab2.style.display=(prev==='reporte'?'none':'block');
+      }
+    },300);
+  }
 
-  // touchstart: detect if finger started inside a nav/ai header
-  document.addEventListener('touchstart', function(e){
-    if(e.target.closest('button,a')) return;
-    var nav = e.target.closest('.nav-header,.ai-header');
+  document.querySelectorAll('.inner-screen').forEach(function(screen){
+    var nav=screen.querySelector('.nav-header,.ai-header');
     if(!nav) return;
-    var screen = nav.closest('.inner-screen');
-    if(!screen) return;
-    dragScreen = screen;
-    startY = e.touches[0].clientY;
-    startX = e.touches[0].clientX;
-    dragging = false;
-    screen.style.transition = 'none';
-  }, {passive:true});
+    var startY=0,startX=0,dragging=false,active=false;
 
-  // touchmove: NON-passive so we can call preventDefault() and stop iOS scroll
-  document.addEventListener('touchmove', function(e){
-    if(!dragScreen) return;
-    var t  = e.touches[0];
-    var dy = t.clientY - startY;
-    var dx = Math.abs(t.clientX - startX);
-    if(!dragging){
-      if(dy < 8) return;
-      // mostly horizontal → not a close gesture, cancel
-      if(dx > dy){ dragScreen.style.transition=''; dragScreen=null; return; }
-      dragging = true;
-    }
-    if(dy > 0){
-      e.preventDefault();   // stop iOS from scrolling anything
-      dragScreen.style.transform = 'translateY('+Math.min(dy*0.65,220)+'px)';
-      dragScreen.style.opacity   = String(Math.max(0.2, 1-dy/280));
-    }
-  }, {passive:false});   // ← MUST be false to allow preventDefault
+    nav.addEventListener('touchstart',function(e){
+      if(e.target.closest('button,a')) return;
+      active=true; dragging=false;
+      startY=e.touches[0].clientY;
+      startX=e.touches[0].clientX;
+      screen.style.transition='none';
+    },{passive:true});
 
-  // touchend: commit or snap back
-  document.addEventListener('touchend', function(e){
-    if(!dragScreen) return;
-    var screen = dragScreen;
-    var dy  = e.changedTouches[0].clientY - startY;
-    var was = dragging;
-    dragScreen=null; dragging=false;
-    if(was && dy > 70){
-      screen.style.transition='transform .32s cubic-bezier(.4,0,1,1),opacity .28s ease';
-      screen.style.transform='translateY(100%)';
-      screen.style.opacity='0';
-      setTimeout(function(){
-        screen.style.cssText='';
-        screen.classList.remove('open');
-        screen.style.display='none';
-        var prev=state.screenStack.pop()||'home';
-        state.currentScreen=prev;
-        if(prev==='home'){
-          updateHomeWidget(); updateDock('home');
-          var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block';
-        } else {
-          var prevEl=document.getElementById('screen-'+prev);
-          if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); }
-          updateDock(prev);
-          var fab2=document.getElementById('ai-fab-wrap'); if(fab2) fab2.style.display=(prev==='reporte'?'none':'block');
-        }
-      }, 300);
-    } else {
-      screen.style.transition='transform .22s ease,opacity .22s ease';
+    nav.addEventListener('touchmove',function(e){
+      if(!active) return;
+      var dy=e.touches[0].clientY-startY;
+      var dx=Math.abs(e.touches[0].clientX-startX);
+      if(!dragging){
+        if(dy<8) return;
+        if(dx>dy){ active=false; screen.style.transition=''; return; }
+        dragging=true;
+      }
+      if(dy>0){
+        e.preventDefault();
+        screen.style.transform='translateY('+Math.min(dy*0.65,220)+'px)';
+        screen.style.opacity=String(Math.max(0.2,1-dy/280));
+      }
+    },{passive:false});
+
+    nav.addEventListener('touchend',function(e){
+      if(!active) return;
+      active=false;
+      var dy=e.changedTouches[0].clientY-startY;
+      var was=dragging; dragging=false;
+      if(was && dy>70){ closeScreen(screen); }
+      else{
+        screen.style.transition='transform .22s ease,opacity .22s ease';
+        screen.style.transform=''; screen.style.opacity='';
+      }
+    },{passive:true});
+
+    nav.addEventListener('touchcancel',function(){
+      active=false; dragging=false;
+      screen.style.transition='transform .2s ease';
       screen.style.transform=''; screen.style.opacity='';
-    }
-  }, {passive:true});
-
-  document.addEventListener('touchcancel', function(){
-    if(!dragScreen) return;
-    dragScreen.style.transition='transform .2s ease';
-    dragScreen.style.transform=''; dragScreen.style.opacity='';
-    dragScreen=null; dragging=false;
-  }, {passive:true});
+    },{passive:true});
+  });
 })();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
@@ -9502,31 +9497,30 @@ init();
         sheet.style.cssText='';
       },300);
     }
-    handle.addEventListener('pointerdown',function(e){
-      active=true; startY=e.clientY;
-      handle.setPointerCapture(e.pointerId);
+    handle.addEventListener('touchstart',function(e){
+      active=true; startY=e.touches[0].clientY;
       sheet.style.transition='none';
-    });
-    handle.addEventListener('pointermove',function(e){
+    },{passive:true});
+    handle.addEventListener('touchmove',function(e){
       if(!active) return;
-      var dy=e.clientY-startY;
+      var dy=e.touches[0].clientY-startY;
       if(dy>0){
         sheet.style.transform='translateY('+dy+'px)';
         sheet.style.opacity=String(Math.max(0.2,1-dy/300));
       }
-    });
-    handle.addEventListener('pointerup',function(e){
+    },{passive:true});
+    handle.addEventListener('touchend',function(e){
       if(!active) return;
       active=false;
-      var dy=e.clientY-startY;
+      var dy=e.changedTouches[0].clientY-startY;
       if(dy>60){ closeSalud(); }
       else{ sheet.style.transition='transform .2s ease,opacity .2s ease'; sheet.style.transform=''; sheet.style.opacity=''; }
-    });
-    handle.addEventListener('pointercancel',function(){
+    },{passive:true});
+    handle.addEventListener('touchcancel',function(){
       if(!active) return;
       active=false;
       sheet.style.transition='transform .2s ease'; sheet.style.transform=''; sheet.style.opacity='';
-    });
+    },{passive:true});
   })();
 
   var modalIds=['kits-modal','detail-modal','avance-modal'];
