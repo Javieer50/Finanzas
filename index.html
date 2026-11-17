@@ -157,7 +157,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .salud-modal{position:fixed;inset:0;z-index:900;display:none;align-items:flex-end}
 .salud-modal.open{display:flex}
 .salud-modal-bg{position:absolute;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.salud-modal-sheet{position:relative;background:rgba(18,18,30,0.92);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:0.5px solid rgba(255,255,255,0.12);border-radius:28px 28px 0 0;width:100%;max-height:88vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.14)}
+.salud-modal-sheet{position:relative;background:rgba(18,18,30,0.92);backdrop-filter:blur(44px) saturate(180%);-webkit-backdrop-filter:blur(44px) saturate(180%);border:0.5px solid rgba(255,255,255,0.12);border-radius:28px 28px 0 0;width:100%;max-height:calc(88vh - var(--safe-top) - 24px);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.14)}
 .salud-modal-scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;padding:0 0 32px}
 .salud-modal-handle{width:100%;height:28px;display:flex;align-items:center;justify-content:center;cursor:grab;touch-action:none;flex-shrink:0}.salud-modal-handle::after{content:'';display:block;width:38px;height:4px;background:rgba(255,255,255,0.22);border-radius:2px}
 .sm-title{font-size:18px;font-weight:800;color:#fff;letter-spacing:-0.5px;padding:16px 20px 4px;text-align:center}
@@ -879,14 +879,13 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 @keyframes aiPulse{0%{transform:scale(1);opacity:.7}70%{transform:scale(1.6);opacity:0}100%{transform:scale(1.6);opacity:0}}
 
 /* Main asistente screen */
-#screen-reporte{display:flex;flex-direction:column;height:100%;padding:0;}
+#screen-reporte{display:flex;flex-direction:column;height:100%;padding:0;overflow:hidden;}
 .ai-header{
   display:flex;align-items:center;justify-content:space-between;
   padding:12px 16px 10px;flex-shrink:0;
   border-bottom:0.5px solid rgba(255,255,255,0.08);
-  position:sticky;top:0;z-index:10;
-  background:linear-gradient(160deg,rgba(30,0,60,0.97) 0%,rgba(6,0,15,0.99) 50%,rgba(10,0,25,0.98) 100%);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(10,0,20,0.6);
+  touch-action:pan-x;
 }
 .ai-header-left{display:flex;align-items:center;gap:10px;}
 .ai-avatar{
@@ -1187,7 +1186,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.1 · Nov 2026</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.2 · Nov 2026</div>
   </div>
 </div>
 
@@ -9406,66 +9405,85 @@ document.addEventListener('touchend',function(e){
 
 init();
 
-/* ── SWIPE DOWN TO CLOSE INNER SCREENS ── */
-(function(){
-  var swipeStartY=0, swipeStartX=0, swipeDragging=false, swipeScreen=null, swipeEl=null;
-  var THRESHOLD=90, CANCEL_HORIZ=40;
+/* ── SWIPE DOWN TO CLOSE INNER SCREENS (iOS-native via nav-header) ── */
+function attachScreenSwipe(navHeader, screen){
+  var active=false, startY=0, startX=0, dragging=false;
+  // touch-action:none lets us capture vertical pointer events on iOS
+  navHeader.style.touchAction='none';
+  // Allow tap targets (buttons/links) inside nav-header to work normally
+  navHeader.querySelectorAll('button,a,[onclick]').forEach(function(el){
+    el.style.touchAction='auto';
+  });
 
-  document.addEventListener('touchstart',function(e){
-    if(state.currentScreen==='home') return;
-    var el=document.getElementById('screen-'+state.currentScreen);
-    if(!el||!el.classList.contains('open')) return;
-    // Find the scroll container within this screen
-    var sc=el.querySelector('.scroll-content, .ai-chat-area, .home-scroll');
-    // Only start swipe when scrolled to top
-    if(sc&&sc.scrollTop>4) return;
-    swipeStartY=e.touches[0].clientY;
-    swipeStartX=e.touches[0].clientX;
-    swipeDragging=false;
-    swipeScreen=state.currentScreen;
-    swipeEl=el;
-  },{passive:true});
+  navHeader.addEventListener('pointerdown',function(e){
+    // If touching a button or link, skip gesture — let click fire normally
+    if(e.target.closest('button,a,[onclick]')){ return; }
+    active=true; dragging=false;
+    startY=e.clientY; startX=e.clientX;
+    navHeader.setPointerCapture(e.pointerId);
+    screen.style.transition='none';
+  });
 
-  document.addEventListener('touchmove',function(e){
-    if(!swipeEl||!swipeEl.classList.contains('open')) return;
-    var dy=e.touches[0].clientY-swipeStartY;
-    var dx=Math.abs(e.touches[0].clientX-swipeStartX);
-    if(!swipeDragging){
-      if(dy<10) return;
-      if(dx>CANCEL_HORIZ){ swipeEl=null; return; } // horizontal swipe, ignore
-      swipeDragging=true;
+  navHeader.addEventListener('pointermove',function(e){
+    if(!active) return;
+    var dy=e.clientY-startY;
+    var dx=Math.abs(e.clientX-startX);
+    if(!dragging){
+      if(dy<14) return; // must move 14px down before engaging drag
+      if(dx>dy*0.8){ active=false; screen.style.transition=''; return; } // mostly horizontal — abort
+      dragging=true;
     }
     if(dy>0){
-      swipeEl.style.transition='none';
-      swipeEl.style.transform='translateY('+Math.min(dy*0.55,200)+'px)';
-      swipeEl.style.opacity=String(Math.max(0.3,1-dy/280));
+      var t=Math.min(dy*0.6,220);
+      screen.style.transform='translateY('+t+'px)';
+      screen.style.opacity=String(Math.max(0.25,1-dy/260));
     }
-  },{passive:true});
+  });
 
-  document.addEventListener('touchend',function(e){
-    if(!swipeEl||!swipeDragging){ swipeEl=null; swipeDragging=false; return; }
-    var dy=e.changedTouches[0].clientY-swipeStartY;
-    if(dy>=THRESHOLD){
-      swipeEl.style.transition='transform .28s cubic-bezier(.4,0,1,1),opacity .28s ease';
-      swipeEl.style.transform='translateY(100%)';
-      swipeEl.style.opacity='0';
-      var captured=swipeEl;
+  navHeader.addEventListener('pointerup',function(e){
+    if(!active) return;
+    active=false;
+    var dy=e.clientY-startY;
+    var wasDragging=dragging;
+    dragging=false;
+    if(wasDragging && dy>80){
+      screen.style.transition='transform .3s cubic-bezier(.4,0,1,1),opacity .3s ease';
+      screen.style.transform='translateY(100%)';
+      screen.style.opacity='0';
       setTimeout(function(){
-        captured.style.cssText='';
-        captured.classList.remove('open');
-        captured.style.display='none';
-      },270);
+        screen.style.cssText='';
+        screen.classList.remove('open');
+        screen.style.display='none';
+      },290);
       var prev=state.screenStack.pop()||'home';
       state.currentScreen=prev;
-      if(prev==='home'){ updateHomeWidget(); updateDock('home'); var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block'; }
-      else { var prevEl=document.getElementById('screen-'+prev); if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); } updateDock(prev); }
+      if(prev==='home'){
+        updateHomeWidget(); updateDock('home');
+        var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block';
+      } else {
+        var prevEl=document.getElementById('screen-'+prev);
+        if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); }
+        updateDock(prev);
+        var fab2=document.getElementById('ai-fab-wrap'); if(fab2) fab2.style.display=(prev==='reporte'?'none':'block');
+      }
     } else {
-      swipeEl.style.transition='transform .22s ease,opacity .22s ease';
-      swipeEl.style.transform='';
-      swipeEl.style.opacity='';
+      screen.style.transition='transform .22s ease,opacity .22s ease';
+      screen.style.transform=''; screen.style.opacity='';
     }
-    swipeEl=null; swipeDragging=false;
-  },{passive:true});
+  });
+
+  navHeader.addEventListener('pointercancel',function(){
+    active=false; dragging=false;
+    screen.style.transition='transform .22s ease'; screen.style.transform=''; screen.style.opacity='';
+  });
+}
+
+// Attach to ALL inner screens
+(function(){
+  document.querySelectorAll('.inner-screen').forEach(function(screen){
+    var nav = screen.querySelector('.nav-header, .ai-header');
+    if(nav) attachScreenSwipe(nav, screen);
+  });
 })();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
@@ -9821,6 +9839,32 @@ function aiSend(){
   if(!text) return;
   inp.textContent = '';
 
+  // Interceptar comandos de eliminación antes de enviar a IA
+  var lower = text.toLowerCase();
+  if(/eliminar|borrar|limpiar|clear/.test(lower) && /historial|chat|conversaci|mensajes/.test(lower)){
+    var area = document.getElementById('ai-chat-area');
+    if(area && area.querySelector('.ai-welcome')) area.innerHTML='';
+    // Mostrar el mensaje del usuario primero
+    var userMsg = {role:'user', content:text, ts:Date.now()};
+    aiState.history.push(userMsg);
+    aiSaveHistory();
+    if(area){
+      if(area.querySelector('.ai-welcome')) area.innerHTML='';
+      area.appendChild(aiCreateBubble('user', text, userMsg.ts));
+      area.scrollTop = area.scrollHeight;
+    }
+    // Luego mostrar confirmación inline
+    aiShowConfirmInChat(
+      '🗑️ ¿Deseas eliminar todo el historial del chat?\n\nEsta acción no se puede deshacer.',
+      function(){
+        aiState.history = [];
+        aiSaveHistory();
+        aiRenderMessages();
+      }
+    );
+    return;
+  }
+
   var userMsg = {role:'user', content:text, ts:Date.now()};
   aiState.history.push(userMsg);
   aiSaveHistory();
@@ -10123,10 +10167,70 @@ function aiSaveHistory(){
 }
 
 function aiClearHistory(){
-  if(!confirm('¿Limpiar el historial del chat?')) return;
-  aiState.history = [];
-  aiSaveHistory();
-  aiRenderMessages();
+  aiShowConfirmInChat(
+    '🗑️ ¿Deseas eliminar todo el historial del chat?\n\nEsta acción no se puede deshacer.',
+    function(){ // onYes
+      aiState.history = [];
+      aiSaveHistory();
+      aiRenderMessages();
+    }
+  );
+}
+
+/* ── Confirmación inline en chat (sin confirm() del navegador) ── */
+function aiShowConfirmInChat(question, onYes){
+  var area = document.getElementById('ai-chat-area');
+  if(!area) return;
+  if(area.querySelector('.ai-welcome')) area.innerHTML='';
+
+  var wrap = document.createElement('div');
+  wrap.className = 'ai-msg bot';
+  wrap.id = 'ai-confirm-wrap';
+
+  var bubble = document.createElement('div');
+  bubble.className = 'ai-bubble';
+  bubble.innerHTML = aiFormatText(question);
+
+  var btns = document.createElement('div');
+  btns.style.cssText = 'display:flex;gap:10px;margin-top:12px;';
+
+  var yesBtn = document.createElement('button');
+  yesBtn.textContent = '✅ Sí, eliminar';
+  yesBtn.style.cssText = 'flex:1;padding:11px;border-radius:14px;background:rgba(255,59,48,0.18);border:0.5px solid rgba(255,59,48,0.45);color:#ff453a;font-size:14px;font-weight:700;cursor:pointer;';
+  yesBtn.onclick = function(){
+    wrap.remove();
+    onYes();
+    var doneWrap = document.createElement('div');
+    doneWrap.className = 'ai-msg bot';
+    var doneBubble = document.createElement('div');
+    doneBubble.className = 'ai-bubble';
+    doneBubble.textContent = '✅ Historial eliminado.';
+    doneWrap.appendChild(doneBubble);
+    var doneArea = document.getElementById('ai-chat-area');
+    if(doneArea){ doneArea.appendChild(doneWrap); doneArea.scrollTop=doneArea.scrollHeight; }
+  };
+
+  var noBtn = document.createElement('button');
+  noBtn.textContent = 'No, cancelar';
+  noBtn.style.cssText = 'flex:1;padding:11px;border-radius:14px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.14);color:rgba(255,255,255,0.6);font-size:14px;cursor:pointer;';
+  noBtn.onclick = function(){
+    wrap.remove();
+    var cancelWrap = document.createElement('div');
+    cancelWrap.className = 'ai-msg bot';
+    var cancelBubble = document.createElement('div');
+    cancelBubble.className = 'ai-bubble';
+    cancelBubble.textContent = 'De acuerdo, el historial se mantiene.';
+    cancelWrap.appendChild(cancelBubble);
+    var area2 = document.getElementById('ai-chat-area');
+    if(area2){ area2.appendChild(cancelWrap); area2.scrollTop=area2.scrollHeight; }
+  };
+
+  btns.appendChild(yesBtn);
+  btns.appendChild(noBtn);
+  bubble.appendChild(btns);
+  wrap.appendChild(bubble);
+  area.appendChild(wrap);
+  area.scrollTop = area.scrollHeight;
 }
 
 /* ── Setup modal ───────────────────────────────────── */
