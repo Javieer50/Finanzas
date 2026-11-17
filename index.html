@@ -296,8 +296,8 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .inner-screen.open{display:flex;transform:translateY(0)}
 
 /* NAV HEADER */
-.nav-header{display:flex;align-items:center;padding:16px 20px 8px;padding-top:calc(var(--safe-top) + 16px);gap:12px;min-height:calc(var(--safe-top) + 60px)}
-.back-btn{width:34px;height:34px;background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:#fff;flex-shrink:0;backdrop-filter:blur(10px)}
+.nav-header{display:flex;align-items:center;padding:16px 20px 8px;padding-top:calc(var(--safe-top) + 16px);gap:12px;min-height:calc(var(--safe-top) + 60px);touch-action:none;user-select:none;-webkit-user-select:none;}
+.back-btn{width:34px;height:34px;background:rgba(255,255,255,0.1);border:0.5px solid rgba(255,255,255,0.15);border-radius:50%;touch-action:manipulation;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:17px;color:#fff;flex-shrink:0;backdrop-filter:blur(10px)}
 .back-btn:active{background:rgba(255,255,255,0.2)}
 .nav-title{font-size:20px;font-weight:700;color:#fff;flex:1;letter-spacing:-0.3px}
 .nav-action{background:rgba(199,125,255,0.15);border:0.5px solid rgba(199,125,255,0.3);color:var(--accent);font-size:14px;font-weight:600;padding:7px 16px;border-radius:20px;cursor:pointer;font-family:-apple-system,sans-serif;backdrop-filter:blur(10px)}
@@ -885,7 +885,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
   padding:12px 16px 10px;flex-shrink:0;
   border-bottom:0.5px solid rgba(255,255,255,0.08);
   background:rgba(10,0,20,0.6);
-  touch-action:pan-x;
+  touch-action:none;user-select:none;-webkit-user-select:none;
 }
 .ai-header-left{display:flex;align-items:center;gap:10px;}
 .ai-avatar{
@@ -906,7 +906,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 
 /* Chat area */
 .ai-chat-area{
-  flex:1;overflow-y:auto;padding:12px 14px;
+  flex:1;min-height:0;overflow-y:auto;padding:12px 14px;
   display:flex;flex-direction:column;gap:10px;
   -webkit-overflow-scrolling:touch;
 }
@@ -975,7 +975,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 /* Input area */
 .ai-input-bar{
   display:flex;align-items:flex-end;gap:10px;
-  padding:10px 14px 14px;flex-shrink:0;
+  padding:10px 14px 14px;flex-shrink:0;min-height:0;
   border-top:0.5px solid rgba(255,255,255,0.07);
   background:rgba(0,0,0,0.3);backdrop-filter:blur(20px);
 }
@@ -1186,7 +1186,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.2 · Nov 2026</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.4 · Nov 2026</div>
   </div>
 </div>
 
@@ -9407,54 +9407,49 @@ init();
 
 /* ── SWIPE DOWN TO CLOSE INNER SCREENS (iOS-native via nav-header) ── */
 function attachScreenSwipe(navHeader, screen){
-  var active=false, startY=0, startX=0, dragging=false;
-  // touch-action:none lets us capture vertical pointer events on iOS
-  navHeader.style.touchAction='none';
-  // Allow tap targets (buttons/links) inside nav-header to work normally
-  navHeader.querySelectorAll('button,a,[onclick]').forEach(function(el){
-    el.style.touchAction='auto';
-  });
+  // Uses Touch Events (more reliable than Pointer Events on iOS Safari)
+  var startY=0, startX=0, dragging=false, active=false;
 
-  navHeader.addEventListener('pointerdown',function(e){
-    // If touching a button or link, skip gesture — let click fire normally
-    if(e.target.closest('button,a,[onclick]')){ return; }
+  navHeader.addEventListener('touchstart', function(e){
+    if(e.target.closest('button,a')) return; // let buttons fire normally
+    var t=e.touches[0];
+    startY=t.clientY; startX=t.clientX;
     active=true; dragging=false;
-    startY=e.clientY; startX=e.clientX;
-    navHeader.setPointerCapture(e.pointerId);
     screen.style.transition='none';
-  });
+  }, {passive:true});
 
-  navHeader.addEventListener('pointermove',function(e){
+  navHeader.addEventListener('touchmove', function(e){
     if(!active) return;
-    var dy=e.clientY-startY;
-    var dx=Math.abs(e.clientX-startX);
+    var t=e.touches[0];
+    var dy=t.clientY-startY;
+    var dx=Math.abs(t.clientX-startX);
     if(!dragging){
-      if(dy<14) return; // must move 14px down before engaging drag
-      if(dx>dy*0.8){ active=false; screen.style.transition=''; return; } // mostly horizontal — abort
+      if(dy<12) return;
+      if(dx>dy){ active=false; screen.style.transition=''; return; }
       dragging=true;
     }
-    if(dy>0){
-      var t=Math.min(dy*0.6,220);
-      screen.style.transform='translateY('+t+'px)';
-      screen.style.opacity=String(Math.max(0.25,1-dy/260));
+    if(dragging && dy>0){
+      e.preventDefault();
+      screen.style.transform='translateY('+Math.min(dy*0.6,220)+'px)';
+      screen.style.opacity=String(Math.max(0.2,1-dy/260));
     }
-  });
+  }, {passive:false});
 
-  navHeader.addEventListener('pointerup',function(e){
-    if(!active) return;
+  navHeader.addEventListener('touchend', function(e){
+    if(!active){ return; }
     active=false;
-    var dy=e.clientY-startY;
+    var dy=e.changedTouches[0].clientY-startY;
     var wasDragging=dragging;
     dragging=false;
     if(wasDragging && dy>80){
-      screen.style.transition='transform .3s cubic-bezier(.4,0,1,1),opacity .3s ease';
+      screen.style.transition='transform .32s cubic-bezier(.4,0,1,1),opacity .28s ease';
       screen.style.transform='translateY(100%)';
       screen.style.opacity='0';
       setTimeout(function(){
         screen.style.cssText='';
         screen.classList.remove('open');
         screen.style.display='none';
-      },290);
+      },300);
       var prev=state.screenStack.pop()||'home';
       state.currentScreen=prev;
       if(prev==='home'){
@@ -9470,15 +9465,16 @@ function attachScreenSwipe(navHeader, screen){
       screen.style.transition='transform .22s ease,opacity .22s ease';
       screen.style.transform=''; screen.style.opacity='';
     }
-  });
+  }, {passive:true});
 
-  navHeader.addEventListener('pointercancel',function(){
+  navHeader.addEventListener('touchcancel', function(){
     active=false; dragging=false;
-    screen.style.transition='transform .22s ease'; screen.style.transform=''; screen.style.opacity='';
-  });
+    screen.style.transition='transform .2s ease';
+    screen.style.transform=''; screen.style.opacity='';
+  }, {passive:true});
 }
 
-// Attach to ALL inner screens
+// Attach to ALL inner screens — touch on nav-header OR top 90px of screen
 (function(){
   document.querySelectorAll('.inner-screen').forEach(function(screen){
     var nav = screen.querySelector('.nav-header, .ai-header');
