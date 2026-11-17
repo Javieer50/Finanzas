@@ -882,7 +882,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 #screen-reporte{display:flex;flex-direction:column;height:100%;padding:0;overflow:hidden;}
 .ai-header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:12px 16px 10px;flex-shrink:0;
+  padding:12px 16px 10px;padding-top:calc(var(--safe-top) + 12px);flex-shrink:0;
   border-bottom:0.5px solid rgba(255,255,255,0.08);
   background:rgba(10,0,20,0.6);
   touch-action:none;user-select:none;-webkit-user-select:none;
@@ -1186,7 +1186,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.4 · Nov 2026</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.1.8 · Nov 2026</div>
   </div>
 </div>
 
@@ -9405,43 +9405,51 @@ document.addEventListener('touchend',function(e){
 
 init();
 
-/* ── SWIPE DOWN TO CLOSE INNER SCREENS (iOS-native via nav-header) ── */
-function attachScreenSwipe(navHeader, screen){
-  // Uses Touch Events (more reliable than Pointer Events on iOS Safari)
-  var startY=0, startX=0, dragging=false, active=false;
+/* ── SWIPE DOWN TO CLOSE INNER SCREENS — Touch Events, document-level ── */
+(function(){
+  var dragScreen=null, startY=0, startX=0, dragging=false;
 
-  navHeader.addEventListener('touchstart', function(e){
-    if(e.target.closest('button,a')) return; // let buttons fire normally
-    var t=e.touches[0];
-    startY=t.clientY; startX=t.clientX;
-    active=true; dragging=false;
-    screen.style.transition='none';
+  // touchstart: detect if finger started inside a nav/ai header
+  document.addEventListener('touchstart', function(e){
+    if(e.target.closest('button,a')) return;
+    var nav = e.target.closest('.nav-header,.ai-header');
+    if(!nav) return;
+    var screen = nav.closest('.inner-screen');
+    if(!screen) return;
+    dragScreen = screen;
+    startY = e.touches[0].clientY;
+    startX = e.touches[0].clientX;
+    dragging = false;
+    screen.style.transition = 'none';
   }, {passive:true});
 
-  navHeader.addEventListener('touchmove', function(e){
-    if(!active) return;
-    var t=e.touches[0];
-    var dy=t.clientY-startY;
-    var dx=Math.abs(t.clientX-startX);
+  // touchmove: NON-passive so we can call preventDefault() and stop iOS scroll
+  document.addEventListener('touchmove', function(e){
+    if(!dragScreen) return;
+    var t  = e.touches[0];
+    var dy = t.clientY - startY;
+    var dx = Math.abs(t.clientX - startX);
     if(!dragging){
-      if(dy<12) return;
-      if(dx>dy){ active=false; screen.style.transition=''; return; }
-      dragging=true;
+      if(dy < 8) return;
+      // mostly horizontal → not a close gesture, cancel
+      if(dx > dy){ dragScreen.style.transition=''; dragScreen=null; return; }
+      dragging = true;
     }
-    if(dragging && dy>0){
-      e.preventDefault();
-      screen.style.transform='translateY('+Math.min(dy*0.6,220)+'px)';
-      screen.style.opacity=String(Math.max(0.2,1-dy/260));
+    if(dy > 0){
+      e.preventDefault();   // stop iOS from scrolling anything
+      dragScreen.style.transform = 'translateY('+Math.min(dy*0.65,220)+'px)';
+      dragScreen.style.opacity   = String(Math.max(0.2, 1-dy/280));
     }
-  }, {passive:false});
+  }, {passive:false});   // ← MUST be false to allow preventDefault
 
-  navHeader.addEventListener('touchend', function(e){
-    if(!active){ return; }
-    active=false;
-    var dy=e.changedTouches[0].clientY-startY;
-    var wasDragging=dragging;
-    dragging=false;
-    if(wasDragging && dy>80){
+  // touchend: commit or snap back
+  document.addEventListener('touchend', function(e){
+    if(!dragScreen) return;
+    var screen = dragScreen;
+    var dy  = e.changedTouches[0].clientY - startY;
+    var was = dragging;
+    dragScreen=null; dragging=false;
+    if(was && dy > 70){
       screen.style.transition='transform .32s cubic-bezier(.4,0,1,1),opacity .28s ease';
       screen.style.transform='translateY(100%)';
       screen.style.opacity='0';
@@ -9449,37 +9457,30 @@ function attachScreenSwipe(navHeader, screen){
         screen.style.cssText='';
         screen.classList.remove('open');
         screen.style.display='none';
-      },300);
-      var prev=state.screenStack.pop()||'home';
-      state.currentScreen=prev;
-      if(prev==='home'){
-        updateHomeWidget(); updateDock('home');
-        var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block';
-      } else {
-        var prevEl=document.getElementById('screen-'+prev);
-        if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); }
-        updateDock(prev);
-        var fab2=document.getElementById('ai-fab-wrap'); if(fab2) fab2.style.display=(prev==='reporte'?'none':'block');
-      }
+        var prev=state.screenStack.pop()||'home';
+        state.currentScreen=prev;
+        if(prev==='home'){
+          updateHomeWidget(); updateDock('home');
+          var fab=document.getElementById('ai-fab-wrap'); if(fab) fab.style.display='block';
+        } else {
+          var prevEl=document.getElementById('screen-'+prev);
+          if(prevEl){ prevEl.style.display='flex'; prevEl.classList.add('open'); renderScreen(prev); }
+          updateDock(prev);
+          var fab2=document.getElementById('ai-fab-wrap'); if(fab2) fab2.style.display=(prev==='reporte'?'none':'block');
+        }
+      }, 300);
     } else {
       screen.style.transition='transform .22s ease,opacity .22s ease';
       screen.style.transform=''; screen.style.opacity='';
     }
   }, {passive:true});
 
-  navHeader.addEventListener('touchcancel', function(){
-    active=false; dragging=false;
-    screen.style.transition='transform .2s ease';
-    screen.style.transform=''; screen.style.opacity='';
+  document.addEventListener('touchcancel', function(){
+    if(!dragScreen) return;
+    dragScreen.style.transition='transform .2s ease';
+    dragScreen.style.transform=''; dragScreen.style.opacity='';
+    dragScreen=null; dragging=false;
   }, {passive:true});
-}
-
-// Attach to ALL inner screens — touch on nav-header OR top 90px of screen
-(function(){
-  document.querySelectorAll('.inner-screen').forEach(function(screen){
-    var nav = screen.querySelector('.nav-header, .ai-header');
-    if(nav) attachScreenSwipe(nav, screen);
-  });
 })();
 
 /* ── SWIPE DOWN TO CLOSE MODALS ── */
