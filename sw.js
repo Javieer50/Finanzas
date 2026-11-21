@@ -1,5 +1,6 @@
-const CACHE = 'finanzas-jr-v48';
+const CACHE = 'finanzas-jr-v56-3.3.0';
 const FILES = [
+  './index.html',
   './manifest.json',
   './apple-touch-icon.png',
   './icon-192.png',
