@@ -1,4 +1,4 @@
-const CACHE = 'finanzas-jr-v57-3.4.0';
+const CACHE = 'finanzas-jr-v58-3.5.0';
 const FILES = [
   './index.html',
   './manifest.json',
