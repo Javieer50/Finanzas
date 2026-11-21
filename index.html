@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Finanzas JR">
-<meta name="theme-color" content="#0a0a1a">
+<meta name="theme-color" content="#071a1d">
 <meta name="color-scheme" content="dark">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Finanzas JR</title>
@@ -642,6 +642,273 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .nc-undo{position:absolute;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#2a1748;border:0.5px solid rgba(199,125,255,0.4);color:#fff;font-size:13px;box-shadow:0 10px 30px rgba(0,0,0,0.5);transform:translateY(140%);opacity:0;transition:all .25s;pointer-events:none}
 .nc-undo.show{transform:none;opacity:1;pointer-events:auto}
 .nc-undo button{border:none;background:none;color:#c77dff;font-weight:800;font-size:13px;font-family:inherit}
+/* ══════════════════════════════════════════════════════════════
+   LIQUID GLASS v3.6 — "Amazonía al anochecer"
+   Fondo: río (teal) · cielo orquídea · resplandor de atardecer
+   Material: vidrio claro con borde especular y desenfoque saturado
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --wall:
+    radial-gradient(110% 60% at 88% -8%, rgba(139,92,246,.55) 0%, rgba(139,92,246,0) 58%),
+    radial-gradient(95% 55% at -12% 22%, rgba(13,148,136,.55) 0%, rgba(13,148,136,0) 62%),
+    radial-gradient(85% 50% at 112% 72%, rgba(37,99,235,.40) 0%, rgba(37,99,235,0) 62%),
+    radial-gradient(75% 42% at 18% 108%, rgba(245,158,11,.30) 0%, rgba(245,158,11,0) 62%),
+    linear-gradient(172deg,#071a1d 0%,#0b1230 46%,#160a2c 100%);
+  --g-fill: linear-gradient(150deg,rgba(255,255,255,.15) 0%,rgba(255,255,255,.05) 42%,rgba(255,255,255,.08) 100%);
+  --g-blur: blur(24px) saturate(175%);
+  --g-shadow: inset 0 1px 0 rgba(255,255,255,.30), 0 12px 34px -12px rgba(0,0,0,.55);
+  --g-rim: linear-gradient(140deg,rgba(255,255,255,.75) 0%,rgba(255,255,255,.10) 28%,rgba(255,255,255,0) 55%,rgba(255,255,255,.12) 78%,rgba(255,255,255,.45) 100%);
+  --num: ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  --ink: #fff; --ink2: rgba(255,255,255,.68); --ink3: rgba(255,255,255,.42);
+  --accent:#c9a3ff;
+}
+html,body{background:#071a1d}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased}
+
+/* Fondo */
+.wallpaper::before{background:var(--wall)!important}
+.wallpaper::after{background:radial-gradient(140% 90% at 50% 40%,transparent 55%,rgba(0,0,0,.35) 100%)!important}
+.inner-screen{background:var(--wall)!important}
+
+/* Sin mayúsculas forzadas: estilo iOS, todo en oración */
+body *{text-transform:none!important}
+[style*="text-transform:uppercase"],[style*="letter-spacing:1"],[style*="letter-spacing:0.5"],[style*="letter-spacing:0.6"],[style*="letter-spacing:0.4"],[style*="letter-spacing:0.8"]{letter-spacing:normal!important}
+.wb-label,.wb-pill-label,.ws-title,.app-grid-label,.ac-label,.nc-sec,.hist-sh-stl,.kits-label,.reimb-total-label,.stat-lbl,.cc-hero-label,.cc-breakdown-item-label,.dash-patrimonio-label,.sm-evol-title,.cc-label{letter-spacing:normal!important}
+
+/* ── Material de vidrio compartido ── */
+.widget-balance,.widget-salud,.nw,.card,.cc-card,.glass-card,.form-section,.reimb-header-card,.reimb-company-card,.reimb-company,.kits-header,.stat-box,.oblig-item,.htx-card,.tx-item,.ac-dropdown,.month-dropdown{
+  background:var(--g-fill)!important;border:0.5px solid rgba(255,255,255,.16)!important;
+  -webkit-backdrop-filter:var(--g-blur)!important;backdrop-filter:var(--g-blur)!important;box-shadow:var(--g-shadow)!important;position:relative}
+.widget-balance::after,.widget-salud::after,.nw::after,.card::after,.cc-card::after,.glass-card::after,.form-section::after,.reimb-header-card::after,.kits-header::after{
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:var(--g-rim);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:.85}
+.card,.cc-card,.glass-card{border-radius:24px!important}
+.form-section{border-radius:22px!important}
+.htx-card,.tx-item,.oblig-item{border-radius:18px!important}
+
+/* ── Inicio ── */
+.app-header{padding:calc(var(--safe-top) + 10px) 20px 6px!important;align-items:center}
+.hd-left{display:flex;align-items:center;gap:12px;min-width:0;cursor:pointer}
+.app-logo-icon{width:44px!important;height:44px!important;border-radius:50%!important;background:linear-gradient(145deg,rgba(201,163,255,.55),rgba(13,148,136,.45))!important;border:0.5px solid rgba(255,255,255,.4);box-shadow:inset 0 1px 1px rgba(255,255,255,.5),0 6px 18px rgba(0,0,0,.35)!important;font-size:15px!important}
+.app-logo-icon img{border-radius:50%!important}
+.hd-hola{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.5px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hd-fecha{font-size:13px;color:var(--ink2);margin-top:2px}
+.hd-bell{position:relative;width:44px;height:44px;border-radius:50%;border:0.5px solid rgba(255,255,255,.28);background:var(--g-fill);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -6px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hd-bell:active{transform:scale(.92)}
+#hd-badge.hot{background:#ff5c7a!important}
+#hd-badge{position:absolute;top:-3px;right:-3px;min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:rgba(120,130,170,.85);color:#fff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center;border:2px solid #0b1230}
+.widget-area{padding:8px 16px 0!important}
+
+/* Tarjeta principal: la "lente" de vidrio */
+.widget-balance{border-radius:30px!important;padding:22px 22px 18px!important;overflow:hidden;
+  background:linear-gradient(155deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.06) 38%,rgba(201,163,255,.10) 100%)!important;
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.45),inset 0 -20px 40px -20px rgba(13,148,136,.35),0 24px 50px -20px rgba(0,0,0,.6)!important}
+.widget-balance::before{content:''!important;position:absolute!important;top:-40%!important;left:-20%!important;right:auto!important;width:90%!important;height:90%!important;border-radius:50%!important;
+  background:radial-gradient(closest-side,rgba(255,255,255,.22),rgba(255,255,255,0))!important;pointer-events:none}
+.widget-balance::after{opacity:1}
+.wb-label{font-size:14px!important;font-weight:600!important;color:var(--ink2)!important;margin:0 0 6px!important;display:flex;justify-content:space-between;align-items:center}
+.wb-label::after{content:'';width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.14) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M3.5 1.5l3.5 3.5-3.5 3.5' stroke='white' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center no-repeat}
+.wb-total{font-family:var(--num)!important;font-size:50px!important;font-weight:700!important;letter-spacing:-2px!important;font-variant-numeric:tabular-nums;line-height:1.02!important;
+  background:linear-gradient(180deg,#fff 30%,rgba(255,255,255,.72));-webkit-background-clip:text;background-clip:text;color:transparent!important}
+#home-neto{font-size:13px!important;color:var(--ink2)!important;margin:8px 0 0!important;line-height:1.5}
+#home-neto b{font-family:var(--num);font-variant-numeric:tabular-nums}
+.wb-sub{display:none}
+.wb-row{gap:10px!important;margin-top:16px!important}
+.wb-pill{border-radius:18px!important;padding:11px 14px!important;background:rgba(0,0,0,.18)!important;border:0.5px solid rgba(255,255,255,.12)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.wb-pill-label{font-size:12px!important;color:var(--ink3)!important;display:flex;align-items:center;gap:6px}
+.wb-pill-label::before{content:'';width:7px;height:7px;border-radius:50%;background:#fbbf24}
+.wb-pill+.wb-pill .wb-pill-label::before{background:#5eead4}
+.wb-pill-val{font-family:var(--num);font-size:19px!important;font-weight:650!important;font-variant-numeric:tabular-nums;margin-top:3px!important}
+
+/* Salud financiera */
+.widget-salud{border-radius:26px!important;margin-top:12px!important}
+.ws-inner{padding:16px 18px!important}
+.ws-title{font-size:15px!important;font-weight:650!important;color:#fff!important}
+.ws-label{border-radius:8px!important;font-size:12px!important;margin-top:4px;align-self:flex-start}
+.ws-score{font-family:var(--num);font-size:40px!important;letter-spacing:-1.5px!important;font-variant-numeric:tabular-nums}
+.ws-bar-track{height:6px!important;border-radius:4px!important;background:rgba(0,0,0,.25)!important;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.ws-components{gap:6px!important;margin-top:4px}
+.ws-comp{background:rgba(0,0,0,.16)!important;border-radius:12px!important;padding:7px 10px!important}
+.ws-comp-name{font-size:11px!important;color:var(--ink2)!important}
+.ws-comp-score{font-family:var(--num);font-size:12.5px!important}
+.ws-hint{display:none}
+
+/* Notificaciones (armonizado) */
+.nw{border-radius:26px!important;margin-top:12px!important}
+.nw-bell{display:none}
+.nw-title{font-size:15px!important;font-weight:650!important}
+.nw-item{background:rgba(0,0,0,.18)!important;border-radius:16px!important}
+
+/* Cuadrícula de apps: íconos de vidrio tintado */
+.app-grid-label{font-size:20px!important;font-weight:700!important;color:#fff!important;padding:22px 20px 10px!important;letter-spacing:-.4px!important}
+.app-grid{gap:18px 8px!important;padding:4px 14px 20px!important}
+.app-icon-bg{width:66px!important;height:66px!important;border-radius:18px!important;
+  background:radial-gradient(130% 110% at 28% 8%,rgba(255,255,255,.42) 0%,rgba(255,255,255,0) 46%),linear-gradient(150deg,color-mix(in srgb,var(--t1) 78%,transparent),color-mix(in srgb,var(--t2) 62%,transparent))!important;
+  border:0.5px solid rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.6),inset 0 -3px 8px rgba(0,0,0,.18),0 12px 22px -10px color-mix(in srgb,var(--t2) 85%,black)!important}
+.app-icon-bg::after{display:none!important}
+.app-icon-bg svg{filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.app-icon-label{font-size:12px!important;color:#fff!important;font-weight:500!important;text-shadow:0 1px 3px rgba(0,0,0,.5)!important}
+.icon-nueva{--t1:#38bdf8;--t2:#2563eb}.icon-dashboard{--t1:#c084fc;--t2:#7c3aed}.icon-historial{--t1:#a5b4fc;--t2:#4f46e5}
+.icon-cuentas{--t1:#fcd34d;--t2:#d97706}.icon-reimb{--t1:#5eead4;--t2:#0d9488}.icon-oblig{--t1:#fdba74;--t2:#ea580c}
+.icon-credito{--t1:#86efac;--t2:#16a34a}.icon-deudas{--t1:#fda4af;--t2:#e11d48}.icon-kits{--t1:#c4b5fd;--t2:#6d28d9}
+.icon-perfil{--t1:#a5f3fc;--t2:#0891b2}.icon-analisis{--t1:#fde68a;--t2:#ca8a04}.icon-plan{--t1:#ddd6fe;--t2:#8b5cf6}
+.scroll-hint{display:none}
+
+/* Encabezado de inicio flotante: el contenido pasa por debajo con desenfoque */
+#screen-home .app-header{position:absolute;top:0;left:0;right:0;z-index:6;padding-bottom:18px!important;
+  background:linear-gradient(180deg,rgba(7,14,32,.78) 0%,rgba(7,14,32,.45) 60%,rgba(7,14,32,0) 100%);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);-webkit-mask-image:linear-gradient(180deg,#000 70%,transparent);mask-image:linear-gradient(180deg,#000 70%,transparent)}
+#screen-home .home-scroll{padding-top:calc(var(--safe-top) + 72px)}
+.widget-balance::before{display:none!important}
+.widget-balance{background:radial-gradient(70% 60% at 12% 0%,rgba(255,255,255,.22),rgba(255,255,255,0) 70%),linear-gradient(155deg,rgba(255,255,255,.18) 0%,rgba(255,255,255,.05) 40%,rgba(201,163,255,.10) 100%)!important}
+.hist-top{background:linear-gradient(180deg,rgba(9,16,36,.55),rgba(9,16,36,.25))!important;-webkit-backdrop-filter:blur(20px) saturate(160%);backdrop-filter:blur(20px) saturate(160%);border-bottom:0.5px solid rgba(255,255,255,.1)!important}
+
+/* ── Pantallas internas ── */
+.nav-header{padding:calc(var(--safe-top) + 8px) 16px 10px!important;min-height:0!important;gap:10px!important}
+.back-btn,.nc-close{width:42px!important;height:42px!important;border-radius:50%!important;font-size:0!important;color:transparent!important;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='20' viewBox='0 0 12 20'%3E%3Cpath d='M10 2L2 10l8 8' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14px center/11px 18px no-repeat,var(--g-fill)!important;
+  border:0.5px solid rgba(255,255,255,.28)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -8px rgba(0,0,0,.5)!important;flex-shrink:0}
+.nc-close{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M1.5 1.5l9 9M10.5 1.5l-9 9' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E") center/12px 12px no-repeat,var(--g-fill)!important}
+.back-btn:active,.nc-close:active{transform:scale(.92)}
+.nav-title{font-size:22px!important;font-weight:750!important;letter-spacing:-.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.nav-action{border-radius:22px!important;padding:9px 16px!important;font-size:14px!important;font-weight:650!important;color:#fff!important;
+  background:var(--g-fill)!important;border:0.5px solid rgba(255,255,255,.28)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:inset 0 1px 0 rgba(255,255,255,.4)!important}
+.scroll-content{padding:8px 16px!important;padding-bottom:calc(var(--safe-bottom) + 28px)!important}
+.card-title{font-size:16px!important;font-weight:650!important;color:#fff!important}
+
+/* Formularios y botones */
+.form-row{border-bottom:0.5px solid rgba(255,255,255,.09)!important}
+.form-select option{background:#151a33!important}
+.btn-main{border-radius:20px!important;padding:16px!important;font-weight:650!important;
+  background:linear-gradient(180deg,rgba(201,163,255,.95),rgba(139,92,246,.9))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 12px 28px -10px rgba(139,92,246,.8)!important;border:0.5px solid rgba(255,255,255,.35)!important}
+.btn-main.green{background:linear-gradient(180deg,rgba(94,234,212,.95),rgba(13,148,136,.9))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 12px 28px -10px rgba(13,148,136,.8)!important}
+.seg-ctrl,.plan-tabs{background:rgba(0,0,0,.22)!important;border:0.5px solid rgba(255,255,255,.12)!important;border-radius:14px!important;padding:3px!important}
+.seg-btn{border-radius:11px!important;padding:8px!important}
+.seg-btn.active,.seg-btn.active-green,.seg-btn.active-red,.seg-btn.active-blue,.plan-tab.sel{background:var(--g-fill)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 12px -4px rgba(0,0,0,.5)!important;color:#fff!important}
+.month-chip,.hist-qwrap,.hist-fbtn,.nc-chip{border-radius:20px!important;background:var(--g-fill)!important;border:0.5px solid rgba(255,255,255,.18)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur)}
+.month-chip.active,.nc-chip.sel{background:linear-gradient(180deg,rgba(201,163,255,.45),rgba(139,92,246,.35))!important;color:#fff!important;border-color:rgba(255,255,255,.35)!important}
+
+/* Hojas y ventanas */
+.modal-overlay,.hist-sbackdrop,.salud-modal-bg{background:rgba(3,6,18,.45)!important;-webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important}
+.modal-sheet,.hist-sheet,.salud-modal-sheet,.nc-sheet,.lg-dialog{
+  background:linear-gradient(170deg,rgba(40,34,72,.72) 0%,rgba(14,18,40,.80) 100%)!important;
+  -webkit-backdrop-filter:blur(40px) saturate(180%)!important;backdrop-filter:blur(40px) saturate(180%)!important;
+  border:0.5px solid rgba(255,255,255,.22)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 -20px 60px rgba(0,0,0,.5)!important}
+.modal-sheet,.hist-sheet,.salud-modal-sheet,.nc-sheet{border-radius:32px 32px 0 0!important}
+.lg-dialog{border-radius:30px!important}
+.modal-handle,.nc-handle,.salud-modal-handle,.hist-sh-hdl{width:38px!important;height:5px!important;background:rgba(255,255,255,.35)!important;border-radius:3px!important}
+.modal-title{font-size:20px!important;font-weight:750!important;letter-spacing:-.4px}
+.toast{background:var(--g-fill)!important;-webkit-backdrop-filter:blur(30px) saturate(180%)!important;backdrop-filter:blur(30px) saturate(180%)!important;border:0.5px solid rgba(255,255,255,.3)!important;border-radius:22px!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 12px 30px rgba(0,0,0,.45)!important;font-weight:600}
+.nc-card{background:var(--g-fill)!important;border-color:rgba(255,255,255,.14)!important;box-shadow:inset 3px 0 0 var(--c),inset 0 1px 0 rgba(255,255,255,.2)!important}
+#lock-screen{background:var(--wall)!important}
+
+@media (prefers-reduced-transparency: reduce){
+  .widget-balance,.widget-salud,.nw,.card,.cc-card,.glass-card,.form-section,.modal-sheet,.nc-sheet,.lg-dialog{background:#1b2040!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+}
+.hist-search-row{gap:8px!important}
+.hist-qwrap{min-width:0!important;flex:1!important}
+.hist-fbtn{flex-shrink:0!important}
+
+/* ── v3.7: nuevo movimiento ── */
+.tx-top{display:flex;align-items:center;gap:12px;padding:6px 16px 10px}
+.tx-seg{position:relative;flex:1;display:grid;grid-template-columns:1fr 1fr;padding:4px;border-radius:16px;background:rgba(0,0,0,.25);border:0.5px solid rgba(255,255,255,.14)}
+.tx-seg button{position:relative;z-index:1;border:none;background:none;color:rgba(255,255,255,.6);font:650 15px -apple-system,sans-serif;padding:9px 0;transition:color .25s}
+.tx-seg .tx-knob{position:absolute;top:4px;bottom:4px;left:4px;width:calc(50% - 4px);border-radius:12px;background:linear-gradient(180deg,rgba(255,120,140,.55),rgba(225,29,72,.45));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px -6px rgba(225,29,72,.8);transition:transform .32s cubic-bezier(.3,1.3,.5,1),background .3s}
+.tx-seg.in .tx-knob{transform:translateX(100%);background:linear-gradient(180deg,rgba(94,234,212,.55),rgba(13,148,136,.5));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px -6px rgba(13,148,136,.8)}
+.tx-seg:not(.in) button:first-child,.tx-seg.in button:last-child{color:#fff}
+.tx-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px 10px}
+.tx-amount{display:flex;align-items:baseline;justify-content:center;gap:4px;padding:14px 0 6px;color:#ff8fa3;cursor:text}
+.tx-amount.in{color:#5eead4}
+.tx-cur{font:600 30px var(--num);opacity:.7}
+.tx-amount input{width:4.4ch;max-width:80%;background:none;border:none;outline:none;text-align:center;color:inherit;font:700 52px var(--num);letter-spacing:-2px;font-variant-numeric:tabular-nums;caret-color:#fff}
+.tx-amount input::placeholder{color:rgba(255,255,255,.22)}
+.tx-dates{display:flex;justify-content:center;gap:8px;margin:4px 0 16px}
+.tx-dates button,.tx-datepick{position:relative;padding:8px 14px;border-radius:18px;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.16);color:rgba(255,255,255,.75);font:600 13px -apple-system,sans-serif;overflow:hidden}
+.tx-dates .sel{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.tx-datepick input{position:absolute;inset:0;opacity:0;width:100%;height:100%}
+.tx-desc{position:relative}
+.tx-desc input{width:100%;box-sizing:border-box;padding:14px 16px;border-radius:18px;background:var(--g-fill);border:0.5px solid rgba(255,255,255,.18);color:#fff;font:500 16px -apple-system,sans-serif;outline:none;box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+.tx-desc input:focus{border-color:rgba(201,163,255,.7)}
+.tx-desc .ac-dropdown{left:0!important;right:0!important}
+.tx-lbl{font-size:13px;font-weight:650;color:rgba(255,255,255,.6);margin:18px 4px 8px}
+.tx-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tx-cat{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:16px;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);min-width:0}
+.tx-cat span{font-size:21px;line-height:1}
+.tx-cat b{font:600 11px -apple-system,sans-serif;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-cat.sel{background:linear-gradient(160deg,rgba(255,255,255,.26),rgba(255,255,255,.1));border-color:rgba(255,255,255,.5);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 16px -8px rgba(0,0,0,.6)}
+.tx-cat:active{transform:scale(.95)}
+.tx-cuentas{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tx-cta{display:flex;align-items:center;gap:10px;padding:10px;border-radius:18px;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.12);color:#fff;text-align:left;min-width:0}
+.tx-cta-logo{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.tx-cta-logo img{width:32px!important;height:32px!important}
+.tx-cta-logo svg{width:28px;height:28px}
+.tx-cta-logo svg rect,.tx-cta-logo svg circle,.tx-cta-logo svg line{stroke:#5b4a00}
+.tx-cta-txt{min-width:0;display:flex;flex-direction:column}
+.tx-cta-txt b{font-size:13px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-cta-txt small{font-size:11.5px;color:rgba(255,255,255,.55);font-variant-numeric:tabular-nums}
+.tx-cta.sel{background:linear-gradient(160deg,color-mix(in srgb,var(--cc) 30%,transparent),rgba(255,255,255,.08));border-color:color-mix(in srgb,var(--cc) 75%,white);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -10px var(--cc)}
+.tx-emp{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:16px;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.15);color:#fff;font:700 11px -apple-system,sans-serif}
+.tx-emp.sel{background:linear-gradient(160deg,rgba(255,255,255,.22),rgba(255,255,255,.08));border-color:rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.45)}
+.tx-foot{padding:10px 16px calc(env(safe-area-inset-bottom,0px) + 12px);border-top:0.5px solid rgba(255,255,255,.08);background:linear-gradient(0deg,rgba(10,12,30,.6),rgba(10,12,30,0))}
+.tx-foot .btn-main{margin:0}
+#reimb-section{margin-top:14px}
+/* ── v3.7: próximos 30 días ── */
+.pc-sum{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 12px}
+.pc-sum div{padding:9px 10px;border-radius:14px;background:rgba(0,0,0,.2);display:flex;flex-direction:column}
+.pc-sum small{font-size:11px;color:rgba(255,255,255,.5)} .pc-sum b{font:700 15px var(--num);font-variant-numeric:tabular-nums;margin-top:2px}
+.pc-it{display:flex;align-items:center;gap:12px;padding:9px 0;border-top:0.5px solid rgba(255,255,255,.07)}
+.pc-day{width:44px;height:46px;border-radius:14px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,143,163,.14);box-shadow:inset 0 0 0 0.5px rgba(255,143,163,.4)}
+.pc-day.in{background:rgba(94,234,212,.14);box-shadow:inset 0 0 0 0.5px rgba(94,234,212,.4)}
+.pc-day small{font-size:10px;color:rgba(255,255,255,.6)} .pc-day b{font:700 18px var(--num);line-height:1}
+.pc-txt{flex:1;min-width:0;display:flex;flex-direction:column}
+.pc-txt b{font-size:13.5px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-txt small{font-size:11.5px;color:rgba(255,255,255,.5);margin-top:1px}
+.pc-amt{font:700 14px var(--num);white-space:nowrap;font-variant-numeric:tabular-nums}
+.pc-foot{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.pc-foot button{display:flex;justify-content:space-between;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.05);border:0.5px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);font:600 12.5px -apple-system,sans-serif;text-align:left}
+/* ── v3.7: reembolsos por mes ── */
+.rb-mes{display:flex;justify-content:space-between;align-items:center;padding:10px 2px 6px;margin-top:4px;font-size:12px;font-weight:700;color:rgba(255,255,255,.55);border-bottom:0.5px solid rgba(255,255,255,.08)}
+.rb-mes b{color:#5eead4;font-family:var(--num)}
+/* ── v3.8: botón único de nuevo movimiento ── */
+.nm-btn{width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;margin:6px 0 8px;border-radius:24px;text-align:left;color:#fff;
+  background:linear-gradient(150deg,rgba(201,163,255,.32),rgba(94,234,212,.14));border:0.5px solid rgba(255,255,255,.3);
+  -webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 14px 30px -14px rgba(139,92,246,.8)}
+.nm-btn:active{transform:scale(.98)}
+.nm-ic{width:50px;height:50px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:linear-gradient(160deg,rgba(201,163,255,.9),rgba(124,58,237,.85));box-shadow:inset 0 1px 1px rgba(255,255,255,.6),0 8px 18px -6px rgba(124,58,237,.9)}
+.nm-txt{flex:1;display:flex;flex-direction:column}.nm-txt b{font-size:17px;font-weight:700}.nm-txt small{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}
+/* ── v3.8: logos en la ventana de movimiento ── */
+.tx-cta-logo img{width:26px!important;height:26px!important;object-fit:contain}
+.tx-cta[onclick*="Jardín"] .tx-cta-logo img{width:30px!important;height:30px!important;transform:scale(.82)}
+.tx-cta[onclick*="Guayaquil"] .tx-cta-logo{background:linear-gradient(140deg,#d4147f,#7d0d5e)!important}
+.tx-cta[onclick*="Efectivo"] .tx-cta-logo{background:#fff6d6!important}
+/* ── v3.8: Mis cuentas ── */
+.cu-hero{position:relative;padding:20px 20px 16px;border-radius:28px;background:radial-gradient(70% 70% at 10% 0%,rgba(255,255,255,.2),rgba(255,255,255,0) 70%),var(--g-fill);border:0.5px solid rgba(255,255,255,.18);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:var(--g-shadow)}
+.cu-lbl{font-size:14px;font-weight:600;color:rgba(255,255,255,.68)}
+.cu-tot{font:700 40px var(--num);letter-spacing:-1.5px;font-variant-numeric:tabular-nums;margin:2px 0 12px}
+.cu-bar{height:10px;border-radius:6px;background:rgba(201,163,255,.55);overflow:hidden;box-shadow:inset 0 1px 2px rgba(0,0,0,.3)}
+.cu-bar i{display:block;height:100%;background:linear-gradient(90deg,#2dd4bf,#5eead4);border-radius:6px}
+.cu-leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px;color:rgba(255,255,255,.75)}
+.cu-leg span{display:flex;align-items:center;gap:6px}.cu-leg b{width:9px;height:9px;border-radius:50%}
+.cu-acts{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 4px}
+.cu-acts button{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px 12px;border-radius:22px;color:#fff;background:var(--g-fill);border:0.5px solid rgba(255,255,255,.18);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:var(--g-shadow)}
+.cu-acts button:active{transform:scale(.96)}
+.cu-acts i{width:46px;height:46px;border-radius:15px;display:flex;align-items:center;justify-content:center;color:var(--t);background:color-mix(in srgb,var(--t) 18%,transparent);box-shadow:inset 0 0 0 0.5px color-mix(in srgb,var(--t) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.25)}
+.cu-acts span{font-size:14px;font-weight:650}.cu-acts small{font-size:11px;color:rgba(255,255,255,.5);margin-top:-3px}
+.cu-sec{font-size:17px;font-weight:700;color:#fff;margin:20px 4px 10px;letter-spacing:-.3px}
+.cu-card{position:relative;width:100%;display:flex;align-items:center;gap:12px;padding:16px;margin-bottom:10px;border-radius:24px;border:0.5px solid rgba(255,255,255,.35);text-align:left;overflow:hidden;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 16px 30px -16px rgba(0,0,0,.7)}
+.cu-card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,0) 40%);pointer-events:none}
+.cu-card:active{transform:scale(.985)}
+.cu-logo{width:48px;height:48px;border-radius:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;box-shadow:0 4px 12px -4px rgba(0,0,0,.35)}
+.cu-logo img{width:36px!important;height:36px!important;object-fit:contain;filter:none!important}
+.cu-logo svg rect,.cu-logo svg circle,.cu-logo svg line{stroke:#5b4a00}
+.cu-info{flex:1;min-width:0;display:flex;flex-direction:column}.cu-info b{font-size:16px;font-weight:700}.cu-num{font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:.3px}.cu-info small{font-size:11.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cu-amt{display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0}.cu-amt b{font:700 22px var(--num);letter-spacing:-.5px;font-variant-numeric:tabular-nums}.cu-amt small{font-size:10.5px;margin-top:2px;white-space:nowrap}
+.cu-mv{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:0.5px solid rgba(255,255,255,.07)}.cu-mv:last-child{border-bottom:none}
+.cu-mv-ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#67e8f9;background:rgba(103,232,249,.12)}.cu-mv-ic svg{width:18px;height:18px}
+.cu-mv-t{flex:1;min-width:0;display:flex;flex-direction:column}.cu-mv-t b{font-size:13.5px;font-weight:600}.cu-mv-t small{font-size:11.5px;color:rgba(255,255,255,.5);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cu-mv-a{font:700 14px var(--num);color:#fff}
 </style>
 </head>
 <body>
@@ -651,17 +918,18 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 <!-- HOME SCREEN -->
 <div class="screen active" id="screen-home">
   <div class="app-header">
-    <div class="app-logo">
+    <div class="hd-left" onclick="goTo('perfil')">
       <div class="app-logo-icon" id="header-logo-icon">JR</div>
-      <div>
-        <div class="app-logo-text">Finanzas</div>
-        <div class="app-logo-sub" id="header-date">Noviembre 2026</div>
+      <div style="min-width:0">
+        <div class="hd-hola" id="hd-hola">Hola</div>
+        <div class="hd-fecha" id="header-date"></div>
       </div>
     </div>
-    <div style="text-align:right">
-      <div class="app-header-day" id="header-day"></div>
-      <div class="app-header-date" id="header-time"></div>
-    </div>
+    <button class="hd-bell" onclick="abrirCentroNotif()" aria-label="Notificaciones">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span id="hd-badge"></span>
+    </button>
+    <span id="header-day" hidden></span><span id="header-time" hidden></span>
   </div>
 
   <div class="home-scroll">
@@ -670,15 +938,15 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       <div class="widget-balance" onclick="goTo('dashboard')">
         <div class="wb-label">Dinero disponible</div>
         <div class="wb-total" id="home-total">$0.00</div>
-        <div id="home-neto" style="font-size:12px;color:rgba(255,255,255,0.6);margin:2px 0 2px"></div>
+        <div id="home-neto"></div>
         <div class="wb-sub">Toca para ver el detalle completo →</div>
         <div class="wb-row">
           <div class="wb-pill">
-            <div class="wb-pill-label">💰 Efectivo</div>
+            <div class="wb-pill-label">Efectivo</div>
             <div class="wb-pill-val" id="home-efectivo">$0</div>
           </div>
           <div class="wb-pill">
-            <div class="wb-pill-label">🏦 Cuentas</div>
+            <div class="wb-pill-label">Cuentas</div>
             <div class="wb-pill-val" id="home-cuentas">$0</div>
           </div>
         </div>
@@ -702,20 +970,12 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
         </div>
       </div>
 
-      <!-- Notificaciones (v3.5) -->
-      <div class="nw" id="widget-notif" onclick="abrirCentroNotif()">
-        <div class="nw-head">
-          <div class="nw-bell"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><i id="nw-dot"></i></div>
-          <div style="flex:1;min-width:0"><div class="nw-title">Notificaciones</div><div class="nw-sub" id="nw-sub"></div></div>
-          <span class="nw-badge" id="nw-badge">0</span>
-        </div>
-        <div id="nw-body"></div>
-      </div>
+
 
     </div>
 
     <!-- App Grid -->
-    <div class="app-grid-label">Mis Finanzas</div>
+    <div class="app-grid-label">Mis finanzas</div>
     <div class="app-grid">
       <div class="app-icon" onclick="goTo('nueva')">
         <div class="app-icon-bg icon-nueva"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 7v18M7 16h18" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></div>
@@ -754,11 +1014,11 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
         <div class="app-icon-label">No disp.</div>
       </div>
       <div class="app-icon" onclick="goTo('plan')">
-        <div class="app-icon-bg" style="background:linear-gradient(145deg,#a78bfa 0%,#5b21b6 100%)"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 24c4-1 6-9 10-9s5 5 9 5 4-8 5-11" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="20" r="2.2" fill="#fff"/><path d="M4 28h24" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="app-icon-bg icon-plan"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 24c4-1 6-9 10-9s5 5 9 5 4-8 5-11" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="20" r="2.2" fill="#fff"/><path d="M4 28h24" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
         <div class="app-icon-label">Plan</div>
       </div>
       <div class="app-icon" onclick="goTo('analisis')">
-        <div class="app-icon-bg" style="background:linear-gradient(145deg,#fbbf24 0%,#b45309 100%)"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><polyline points="4,24 11,16 16,21 27,8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="21,8 27,8 27,14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+        <div class="app-icon-bg icon-analisis"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><polyline points="4,24 11,16 16,21 27,8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="21,8 27,8 27,14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
         <div class="app-icon-label">Análisis</div>
       </div>
       <div class="app-icon" onclick="goTo('perfil')">
@@ -767,7 +1027,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.5.1</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.8.1</div>
   </div>
 </div>
 
@@ -923,23 +1183,12 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
     <!-- OBLIGACIONES DINÁMICAS -->
     <div id="qa-oblig-extra"></div>
 
-    <!-- MANUAL: dos iconos grandes -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 6px">
-      <button onclick="openManualForm('EGRESO')" style="padding:22px 12px 20px;border-radius:22px;background:linear-gradient(145deg,rgba(255,59,48,0.22) 0%,rgba(255,59,48,0.07) 100%);border:1px solid rgba(255,59,48,0.45);cursor:pointer;text-align:center;transition:transform .15s,opacity .15s;box-shadow:0 2px 18px rgba(255,59,48,0.14),inset 0 1px 0 rgba(255,255,255,0.06)" id="btn-manual-egreso">
-        <div style="width:56px;height:56px;border-radius:18px;background:rgba(255,59,48,0.22);border:1px solid rgba(255,59,48,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 0 18px rgba(255,59,48,0.22)">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 22V6M14 6L7 13M14 6L21 13" stroke="#ff3b30" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div style="font-size:16px;font-weight:800;color:#ff3b30;letter-spacing:-0.3px">Egreso</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px">Gasto o pago</div>
-      </button>
-      <button onclick="openManualForm('INGRESO')" style="padding:22px 12px 20px;border-radius:22px;background:linear-gradient(145deg,rgba(48,209,88,0.18) 0%,rgba(48,209,88,0.05) 100%);border:1px solid rgba(48,209,88,0.42);cursor:pointer;text-align:center;transition:transform .15s,opacity .15s;box-shadow:0 2px 18px rgba(48,209,88,0.12),inset 0 1px 0 rgba(255,255,255,0.06)" id="btn-manual-ingreso">
-        <div style="width:56px;height:56px;border-radius:18px;background:rgba(48,209,88,0.2);border:1px solid rgba(48,209,88,0.38);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 0 18px rgba(48,209,88,0.18)">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 6V22M14 22L7 15M14 22L21 15" stroke="#30d158" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div style="font-size:16px;font-weight:800;color:#30d158;letter-spacing:-0.3px">Ingreso</div>
-        <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px">Entrada de dinero</div>
-      </button>
-    </div>
+    <!-- Un solo botón: ingreso o egreso se elige dentro de la ventana -->
+    <button class="nm-btn" onclick="openManualForm('EGRESO')">
+      <span class="nm-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      <span class="nm-txt"><b>Nuevo movimiento</b><small>Ingreso o egreso · eliges dentro</small></span>
+      <span class="nm-arr"><svg width="9" height="15" viewBox="0 0 9 15" fill="none"><path d="M1.5 1.5l6 6-6 6" stroke="rgba(255,255,255,.6)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    </button>
   </div>
 </div>
 
@@ -1112,7 +1361,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
   <div class="nav-header">
     <button class="back-btn" onclick="goBack()">‹</button>
     <div class="nav-title">No disponible</div>
-    <button class="nav-action" onclick="goTo('nueva');setTimeout(function(){var s=document.getElementById('f-cat');for(var i=0;i<s.options.length;i++){if(s.options[i].value==='Custodia/Paso'){s.selectedIndex=i;catChanged();break;}}},400)">+ Agregar</button>
+    <button class="nav-action" onclick="goTo('nueva');setTimeout(function(){var s=document.getElementById('f-cat');for(var i=0;i<s.options.length;i++){if(s.options[i].value==='Custodia/Paso'){s.selectedIndex=i;catChanged();break;}}try{openManualForm('INGRESO');txElegirCat('Custodia/Paso');}catch(e){}},400)">+ Agregar</button>
   </div>
   <div class="scroll-content">
     <div class="kits-header">
@@ -1143,29 +1392,11 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 <div class="inner-screen" id="screen-cuentas">
   <div class="nav-header">
     <button class="back-btn" onclick="goBack()">‹</button>
-    <div class="nav-title">Mis Cuentas</div>
+    <div class="nav-title">Mis cuentas</div>
   </div>
   <div class="scroll-content">
-    <div class="scroll-hint" style="text-align:left;padding:0 0 8px;font-size:12px;color:rgba(255,255,255,0.4)">Desliza para ver todas →</div>
-    <div class="accounts-scroll" id="accounts-cards"></div>
-
-    <div class="card" style="margin-top:4px">
-      <div class="card-title">Detalle por cuenta</div>
-      <div id="accounts-detail"></div>
-    </div>
-
-    <!-- 3 Action Buttons -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:4px">
-      <button onclick="showTransferirModal()" style="padding:14px 8px;border-radius:16px;background:rgba(103,232,249,0.12);border:0.5px solid rgba(103,232,249,0.3);color:#67e8f9;font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px">
-        <span style="font-size:22px">↔️</span>Transferir
-      </button>
-      <button onclick="showRetirarModal()" style="padding:14px 8px;border-radius:16px;background:rgba(255,214,10,0.12);border:0.5px solid rgba(255,214,10,0.3);color:#ffd60a;font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px">
-        <span style="font-size:22px">🏧</span>Cajero
-      </button>
-      <button onclick="showAjusteModal()" style="padding:14px 8px;border-radius:16px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px">
-        <span style="font-size:22px">⚖️</span>Ajuste
-      </button>
-    </div>
+    <div id="cuentas-content"></div>
+    <div id="accounts-cards" hidden></div><div id="accounts-detail" hidden></div>
   </div>
 </div>
 
@@ -1355,7 +1586,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='3.5.1';
+var APP_VERSION='3.8.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -1628,7 +1859,7 @@ function estadoParaGuardar(){
     notifVistas:state.notifVistas||{}, notifPanelOpen:state.notifPanelOpen||false,
     saludHistorico:state.saludHistorico||{}, presupuesto:state.presupuesto||{}, objetivos:state.objetivos||[],
     distribucionTemplate:state.distribucionTemplate||[], reservaAhorro:state.reservaAhorro||0,
-    seguridad:state.seguridad||null, deudasSaldadas:state.deudasSaldadas||[], ultimoRespaldo:state.ultimoRespaldo||null,
+    seguridad:state.seguridad||null, deudasSaldadas:state.deudasSaldadas||[], cuentasInfo:state.cuentasInfo||{}, ultimoRespaldo:state.ultimoRespaldo||null,
     migradoDesde:state.migradoDesde||null
   };
 }
@@ -1704,7 +1935,7 @@ function _modalBase(id,titulo,cuerpo){
   var prev=document.getElementById(id); if(prev) prev.remove();
   var ov=document.createElement('div'); ov.id=id;
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto';
-  ov.innerHTML='<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:22px;max-width:420px;width:100%;margin:auto">'
+  ov.innerHTML='<div class="lg-dialog" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:22px;max-width:420px;width:100%;margin:auto">'
     +'<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:8px">'+titulo+'</div>'+cuerpo+'</div>';
   ov.addEventListener('click',function(e){ if(e.target===ov) ov.remove(); });
   document.body.appendChild(ov); return ov;
@@ -1925,6 +2156,230 @@ function mostrarErrorFatal(e){
 }
 
 Object.keys(CAT_EXTRA_ICONS).forEach(function(k){ if(!CAT_ICONS[k]) CAT_ICONS[k]=CAT_EXTRA_ICONS[k]; });
+CAT_ICONS['Reembolso']=CAT_ICONS['Reembolso']||'💳';
+/* ══ MIS CUENTAS v3.8 — billetera con logos, lo tuyo vs. KITS y acciones claras ══ */
+var CTA_ESTILO={
+  'Efectivo':{bg:'linear-gradient(140deg,#4a3d0c 0%,#2a2206 100%)',ink:'#fff',sub:'rgba(255,236,170,.7)',tile:'#fff6d6'},
+  'Banco Pichincha':{bg:'linear-gradient(140deg,#ffd84a 0%,#f2b705 100%)',ink:'#16245c',sub:'rgba(22,36,92,.62)',tile:'#ffffff'},
+  'Jardín Azuayo':{bg:'linear-gradient(140deg,#ffffff 0%,#e7f4ea 100%)',ink:'#0d3b1c',sub:'rgba(13,59,28,.6)',tile:'#ffffff'},
+  'Banco Guayaquil':{bg:'linear-gradient(140deg,#d4147f 0%,#7d0d5e 100%)',ink:'#fff',sub:'rgba(255,220,240,.75)',tile:'rgba(255,255,255,.16)'}
+};
+var ICO_CTA={
+  transferir:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h14l-4-4"/><path d="M20 16H6l4 4"/></svg>',
+  cajero:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="8" rx="2"/><path d="M7 11v9h10v-9"/><circle cx="12" cy="15.5" r="2"/><path d="M7 7h10"/></svg>',
+  ajuste:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2"/></svg>'
+};
+function verMovimientosCuenta(c){
+  try{ histFilters.cuentas=[c]; }catch(e){}
+  goTo('historial');
+}
+function renderCuentas(){
+  var bal=calcBalances(), kits=calcKits();
+  var tot=r2(CUENTAS_TODAS.reduce(function(a,c){return a+(bal[c]||0);},0));
+  var kt=r2(CUENTAS_TODAS.reduce(function(a,c){return a+(kits[c]||0);},0));
+  var tuyo=r2(tot-kt), pct=tot>0?Math.max(0,Math.min(100,tuyo/tot*100)):100;
+  var h='<div class="cu-hero">'
+    +'<div class="cu-lbl">Total en tus cuentas</div><div class="cu-tot">'+fmt$(tot)+'</div>'
+    +'<div class="cu-bar"><i style="width:'+pct.toFixed(1)+'%"></i></div>'
+    +'<div class="cu-leg"><span><b style="background:#5eead4"></b>Tuyo '+fmt$(tuyo)+'</span>'+(kt>0?'<span><b style="background:#c9a3ff"></b>KITS (no es tuyo) '+fmt$(kt)+'</span>':'')+'</div>'
+  +'</div>';
+  h+='<div class="cu-acts">'
+    +'<button onclick="showTransferirModal()"><i style="--t:#67e8f9">'+ICO_CTA.transferir+'</i><span>Transferir</span><small>entre cuentas</small></button>'
+    +'<button onclick="showRetirarModal()"><i style="--t:#fcd34d">'+ICO_CTA.cajero+'</i><span>Cajero</span><small>retiro a efectivo</small></button>'
+    +'<button onclick="showAjusteModal()"><i style="--t:#c9a3ff">'+ICO_CTA.ajuste+'</i><span>Ajustar</span><small>cuadrar saldo</small></button>'
+  +'</div>';
+  h+='<div class="cu-sec">Cuentas</div>';
+  CUENTAS_TODAS.forEach(function(c){
+    var e=CTA_ESTILO[c]||{bg:'#333',ink:'#fff',sub:'rgba(255,255,255,.6)',tile:'#fff'};
+    var t=r2(bal[c]||0), k=r2(kits[c]||0), p=r2(t-k);
+    var ult=state.transactions.filter(function(x){return x.cuenta===c&&!x.arch;})[0];
+    var inf=infoCuenta(c);
+    h+='<button class="cu-card" style="background:'+e.bg+';color:'+e.ink+'" onclick="abrirCuenta(\''+c+'\')">'
+      +'<span class="cu-logo" style="background:'+e.tile+'">'+(BANK_LOGOS[c]||'🏦')+'</span>'
+      +'<span class="cu-info"><b>'+esc(c)+'</b>'
+        +(c!=='Efectivo'?'<small class="cu-num" style="color:'+e.sub+'">'+(inf.numero?(inf.tipo||'Ahorros')+' · '+_enmascarar(inf.numero):'＋ Agregar número de cuenta')+'</small>':'')
+        +'<small style="color:'+e.sub+'">'+(ult?'Último: '+esc(ult.desc).slice(0,24)+' · '+fechaCorta(ult.fecha):'Sin movimientos')+'</small></span>'
+      +'<span class="cu-amt"><b>'+fmt$(t)+'</b>'+(k>0?'<small style="color:'+e.sub+'">tuyo '+fmt$(p)+' · KITS '+fmt$(k)+'</small>':'')+'</span>'
+    +'</button>';
+  });
+  var mv=state.transactions.filter(function(x){return !x.arch&&x.tipo==='EGRESO'&&natOf(x)==='transferencia';}).slice(0,5);
+  if(mv.length){
+    h+='<div class="cu-sec">Movimientos entre cuentas</div><div class="card" style="padding:6px 14px">';
+    mv.forEach(function(x){
+      var dest=(x.desc.match(/→\s*(.+)$/)||[])[1]||(/cajero|retiro/i.test(x.desc)?'Efectivo':'');
+      h+='<div class="cu-mv"><span class="cu-mv-ic">'+(/cajero|retiro/i.test(x.desc)?ICO_CTA.cajero:ICO_CTA.transferir)+'</span>'
+        +'<span class="cu-mv-t"><b>'+esc(x.cuenta.replace('Banco ',''))+(dest?' → '+esc(dest.replace('Banco ','')):'')+'</b><small>'+fechaCorta(x.fecha)+(x.nota?' · '+esc(x.nota):'')+'</small></span>'
+        +'<span class="cu-mv-a">'+fmt$(x.monto)+'</span></div>';
+    });
+    h+='</div>';
+  }
+  document.getElementById('cuentas-content').innerHTML=h;
+}
+/* ── Datos de cada cuenta bancaria (número, tipo, titular) ── */
+function infoCuenta(c){ state.cuentasInfo=state.cuentasInfo||{}; return state.cuentasInfo[c]||{}; }
+function _enmascarar(n){ n=String(n||'').replace(/\s/g,''); return n.length>4?'•••• '+n.slice(-4):n; }
+function textoDatosCuenta(c){
+  var i=infoCuenta(c), nom=i.titular||((state.perfil||{}).nombre||'');
+  return c+'\nCuenta de '+(i.tipo||'ahorros').toLowerCase()+' Nº '+(i.numero||'')+(nom?'\nTitular: '+nom:'');
+}
+function abrirCuenta(c){
+  if(c==='Efectivo'){ verMovimientosCuenta(c); return; }
+  var i=infoCuenta(c), e=CTA_ESTILO[c]||{};
+  var ov=_modalBase('cta-modal',esc(c),
+    '<div style="display:flex;align-items:center;gap:12px;margin:6px 0 14px"><span class="cu-logo" style="background:'+(e.tile||'#fff')+'">'+(BANK_LOGOS[c]||'🏦')+'</span>'
+      +'<div><div style="font-size:12px;color:rgba(255,255,255,0.55)">Cuenta de '+esc((i.tipo||'ahorros').toLowerCase())+'</div>'
+      +'<div style="font:700 22px var(--num);letter-spacing:.5px;font-variant-numeric:tabular-nums">'+(i.numero?esc(i.numero):'<span style="color:rgba(255,255,255,0.4);font-size:15px">Sin número guardado</span>')+'</div>'
+      +(i.titular?'<div style="font-size:12px;color:rgba(255,255,255,0.55)">'+esc(i.titular)+'</div>':'')+'</div></div>'
+    +(i.numero?'<button id="cta-copy" style="'+_btnP+'background:linear-gradient(135deg,#0d9488,#5eead4);color:#fff;margin-top:0">Copiar datos para transferencia</button>':'')
+    +'<button id="cta-edit" style="'+_btnP+'background:rgba(255,255,255,0.1);color:#fff;border:0.5px solid rgba(255,255,255,0.2)">'+(i.numero?'Editar datos':'Agregar número de cuenta')+'</button>'
+    +'<button id="cta-mov" style="'+_btnP+'background:rgba(255,255,255,0.06);color:#fff">Ver movimientos</button>'
+    +'<button onclick="document.getElementById(\'cta-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cerrar</button>');
+  var cp=document.getElementById('cta-copy');
+  if(cp) cp.onclick=function(){ var t=textoDatosCuenta(c), ok=function(){ showToast('📋 Datos de '+c.replace('Banco ','')+' copiados'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok).catch(function(){ copiarRespaldoManual(t,ok); }); else copiarRespaldoManual(t,ok); };
+  document.getElementById('cta-mov').onclick=function(){ ov.remove(); verMovimientosCuenta(c); };
+  document.getElementById('cta-edit').onclick=function(){ ov.remove(); editarCuenta(c); };
+}
+function editarCuenta(c){
+  var i=infoCuenta(c);
+  var ov=_modalBase('cta-edit-modal','Datos de '+esc(c),
+    '<label style="font-size:12px;color:rgba(255,255,255,0.55)">Número de cuenta</label>'
+    +'<input id="ce-num" inputmode="numeric" placeholder="Ej: 2201234567" value="'+esc(i.numero||'')+'" style="'+_inpP+';font-size:18px;font-weight:700;letter-spacing:.5px">'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55);display:block;margin-top:10px">Tipo de cuenta</label>'
+    +'<select id="ce-tipo" style="'+_inpP+'"><option'+((i.tipo||'Ahorros')==='Ahorros'?' selected':'')+'>Ahorros</option><option'+(i.tipo==='Corriente'?' selected':'')+'>Corriente</option></select>'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55);display:block;margin-top:10px">Titular (opcional)</label>'
+    +'<input id="ce-tit" placeholder="'+esc((state.perfil||{}).nombre||'Tu nombre')+'" value="'+esc(i.titular||'')+'" style="'+_inpP+'">'
+    +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:8px;line-height:1.4">Se guarda solo en tu teléfono y en tus respaldos. En la tarjeta se muestran solo los últimos 4 dígitos.</div>'
+    +'<button id="ce-ok" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff">Guardar</button>'
+    +'<button onclick="document.getElementById(\'cta-edit-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('ce-ok').onclick=function(){
+    var num=document.getElementById('ce-num').value.replace(/[^0-9-]/g,'');
+    state.cuentasInfo=state.cuentasInfo||{};
+    state.cuentasInfo[c]={numero:num,tipo:document.getElementById('ce-tipo').value,titular:document.getElementById('ce-tit').value.trim()};
+    saveState(); ov.remove(); renderCuentas(); showToast('✅ Datos de '+c.replace('Banco ','')+' guardados');
+  };
+}
+
+
+/* ══ ECUAQUIMICA v3.7.1 — liquidación MENSUAL automática ══
+   Al terminar el mes, sus facturas forman un ciclo "pendiente" que se paga
+   entre el 11 y el 16 del mes siguiente. Facturas tardías del mes se suman al ciclo. */
+function nombreMesEQ(m){ var n=MESES[+m.slice(5,7)-1]; return n.charAt(0).toUpperCase()+n.slice(1)+' '+m.slice(0,4); }
+function _eqAbiertas(hastaMes){
+  var paid=new Set(state.reimbPagados||[]), enC=new Set();
+  (state.ciclosEQ=state.ciclosEQ||[]).forEach(function(c){ (c.txIds||[]).forEach(function(id){ enC.add(id); }); });
+  return state.transactions.filter(function(t){
+    return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&!enC.has(t.id)&&(!hastaMes||t.fecha.slice(0,7)<=hastaMes);
+  });
+}
+function _agregarAlCicloEQ(m,ts){
+  if(!ts.length) return;
+  var ids=ts.map(function(t){return t.id;}), sum=r2(ts.reduce(function(a,t){return a+t.monto;},0));
+  var c=state.ciclosEQ.find(function(x){return x.mes===m&&x.estado!=='pagado';});
+  if(c){ c.txIds=(c.txIds||[]).concat(ids); c.gastosBase=r2((c.gastosBase!=null?c.gastosBase:c.total-(c.extraMonto||0))+sum); c.total=r2(c.gastosBase+(c.extraMonto||0)); }
+  else {
+    var yaPagado=state.ciclosEQ.some(function(x){return x.mes===m;});
+    state.ciclosEQ.push({id:'ciclo_'+m+(yaPagado?'_'+Date.now():''),mes:m,nombre:nombreMesEQ(m)+(yaPagado?' (adicional)':''),total:sum,gastosBase:sum,txIds:ids,estado:'pendiente',fechaPago:null,cuentaPago:null,extraMonto:0,auto:true});
+  }
+}
+// Cierra automáticamente los meses ya terminados
+function cerrarMesesEQ(){
+  var cur=mesLocal(), porMes={};
+  _eqAbiertas().forEach(function(t){ var m=t.fecha.slice(0,7); if(m<cur) (porMes[m]=porMes[m]||[]).push(t); });
+  var ms=Object.keys(porMes).sort();
+  ms.forEach(function(m){ _agregarAlCicloEQ(m,porMes[m]); });
+  state.ciclosEQ.sort(function(a,b){ return (a.mes||'')<(b.mes||'')?-1:1; });
+  if(ms.length) saveState();
+  return ms.length;
+}
+// Cerrar el mes en curso antes de tiempo (por ejemplo, si ya entregaste las facturas)
+function cerrarViaje(){
+  var cur=mesLocal(), ts=_eqAbiertas().filter(function(t){return t.fecha.slice(0,7)===cur;});
+  if(!ts.length){ showToast('No hay facturas de este mes por cerrar'); return; }
+  var sum=r2(ts.reduce(function(a,t){return a+t.monto;},0));
+  var ov=_modalBase('eqcm-modal','Cerrar '+nombreMesEQ(cur),
+    '<div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5">El mes se cierra solo cuando termina. Ciérralo ahora solo si ya entregaste las facturas a ECUAQUIMICA.</div>'
+    +'<div style="text-align:center;margin:14px 0 4px"><div style="font-size:12px;color:rgba(255,255,255,0.5)">'+ts.length+' factura'+(ts.length>1?'s':'')+'</div><div style="font-size:32px;font-weight:800;color:#5eead4;font-family:var(--num)">'+fmt$(sum)+'</div></div>'
+    +'<button id="eqcm-ok" style="'+_btnP+'background:linear-gradient(135deg,#0d9488,#5eead4);color:#fff">Cerrar mes y esperar pago</button>'
+    +'<button onclick="document.getElementById(\'eqcm-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('eqcm-ok').onclick=function(){ _agregarAlCicloEQ(cur,ts); saveState(); ov.remove(); renderReimb(); updateHomeWidget(); showToast('✅ '+nombreMesEQ(cur)+' cerrado · '+fmt$(sum)); };
+}
+
+ CAT_ICONS['Deudas personales']='🤝';
+/* ══════════════════════════════════════════════════════════════
+   NUEVO MOVIMIENTO v3.7 — monto grande, fecha rápida, categorías
+   y cuentas visuales (con logos), reembolso con logos EQ / AGROLEON
+   ══════════════════════════════════════════════════════════════ */
+var TX_CATS_EG=['Alimentación','Transporte','Gasolina','Vehículo','Hogar','Salud/Personal','Higiene personal','Barbería','Imagen personal','Lavado/Ropa','Entretenimiento/Salidas','Personal/Ocio','Alcohol y Tabaco','Suscripciones/Digital','Equipos y Tecnología','Imprenta','Comisión bancaria','Obligación JA','Deudas personales','Préstamo personal','Custodia/Paso','Transferencia interna','Varios'];
+var TX_CATS_IN=['Sueldo','Comisión','Reembolso','Décimo tercer sueldo','Cobro deuda','Préstamo personal','Custodia/Paso','Transferencia interna','Varios'];
+var TX_CAT_CORTO={'Entretenimiento/Salidas':'Salidas','Suscripciones/Digital':'Suscripciones','Equipos y Tecnología':'Tecnología','Salud/Personal':'Salud',
+  'Obligación JA':'Cuota JA','Transferencia interna':'Traspaso','Custodia/Paso':'KITS','Alcohol y Tabaco':'Alcohol','Décimo tercer sueldo':'Décimo',
+  'Lavado/Ropa':'Lavado','Personal/Ocio':'Ocio','Higiene personal':'Higiene','Imagen personal':'Imagen','Comisión bancaria':'Banco','Deudas personales':'Pago de deuda'};
+var _txMasCats=false;
+function txCatNombre(c){ if(c==='Préstamo personal') return state.currentTipo==='EGRESO'?'Presté':'Me prestaron'; return TX_CAT_CORTO[c]||c; }
+function txCatsOrdenadas(){
+  var base=state.currentTipo==='INGRESO'?TX_CATS_IN:TX_CATS_EG, desde=addDias(hoyLocal(),-120), f={};
+  state.transactions.forEach(function(t){ if(t.tipo===state.currentTipo&&t.fecha>=desde) f[t.cat]=(f[t.cat]||0)+1; });
+  return base.slice().sort(function(a,b){ return (f[b]||0)-(f[a]||0)||base.indexOf(a)-base.indexOf(b); });
+}
+function txAsegurarOpcion(sel,v){
+  if(!sel||!v) return; for(var i=0;i<sel.options.length;i++) if(sel.options[i].value===v) return;
+  var o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o);
+}
+function txElegirCat(c){
+  var sel=document.getElementById('f-cat'); txAsegurarOpcion(sel,c); sel.value=c;
+  catChanged(); txRenderCats(); txRefrescarBoton();
+}
+function txRenderCats(){
+  var box=document.getElementById('tx-cats'); if(!box) return;
+  var sel=document.getElementById('f-cat'), cur=sel.value, lista=txCatsOrdenadas();
+  if(lista.indexOf(cur)<0){ cur=lista[0]; txAsegurarOpcion(sel,cur); sel.value=cur; catChanged(); }
+  var vis=_txMasCats?lista:lista.slice(0,8);
+  if(vis.indexOf(cur)<0) vis=vis.slice(0,7).concat([cur]);
+  box.innerHTML=vis.map(function(c){
+    return '<button type="button" class="tx-cat'+(c===cur?' sel':'')+'" onclick="txElegirCat(\''+c.replace(/'/g,"\\'")+'\')"><span>'+(CAT_ICONS[c]||'📌')+'</span><b>'+esc(txCatNombre(c))+'</b></button>';
+  }).join('')+(lista.length>8?'<button type="button" class="tx-cat tx-mas" onclick="_txMasCats=!_txMasCats;txRenderCats()"><span>'+(_txMasCats?'▴':'⋯')+'</span><b>'+(_txMasCats?'Menos':'Más')+'</b></button>':'');
+}
+function txElegirCuenta(c){ var sel=document.getElementById('f-cuenta'); sel.value=c; txRenderCuentas(); }
+function txRenderCuentas(){
+  var box=document.getElementById('tx-cuentas'); if(!box) return;
+  var cur=document.getElementById('f-cuenta').value, b=calcBalances(), k=calcKits();
+  box.innerHTML=CUENTAS_TODAS.map(function(c){
+    var propio=r2((b[c]||0)-(k[c]||0));
+    return '<button type="button" class="tx-cta'+(c===cur?' sel':'')+'" style="--cc:'+(CUENTA_COLORS[c]||'#fff')+'" onclick="txElegirCuenta(\''+c+'\')">'
+      +'<span class="tx-cta-logo">'+(BANK_LOGOS[c]||'🏦')+'</span>'
+      +'<span class="tx-cta-txt"><b>'+esc(c.replace('Banco ',''))+'</b><small>'+fmt$(propio)+(k[c]>0?' propio':'')+'</small></span></button>';
+  }).join('');
+}
+function txSetFecha(off){
+  document.getElementById('f-fecha').value=addDias(hoyLocal(),off); txRenderFecha();
+}
+function txRenderFecha(){
+  var v=document.getElementById('f-fecha').value, hoy=hoyLocal(), off=v?difDias(hoy,v):0;
+  document.querySelectorAll('#tx-dates button[data-off]').forEach(function(b){ b.classList.toggle('sel',+b.dataset.off===off); });
+  var lbl=document.getElementById('tx-date-lbl'); if(lbl) lbl.textContent=(off===0||off===-1)?'Otra fecha':fechaCorta(v);
+  var dp=document.getElementById('tx-datepick'); if(dp) dp.classList.toggle('sel',off!==0&&off!==-1);
+}
+function txRefrescarBoton(){
+  var b=document.getElementById('tx-save'); if(!b) return;
+  var m=parseMonto(document.getElementById('f-monto').value), eg=state.currentTipo==='EGRESO';
+  b.textContent='Guardar '+(eg?'egreso':'ingreso')+(m>0?' · '+fmt$(m):'');
+  b.classList.toggle('green',!eg);
+  var a=document.getElementById('tx-amount'); if(a) a.classList.toggle('in',!eg);
+  var mi=document.getElementById('f-monto'); if(mi){ var L=(mi.value||mi.placeholder||'').length; mi.style.width=Math.max(3.2,L+0.4)+'ch'; }
+}
+function txSyncUI(){
+  var eg=state.currentTipo==='EGRESO';
+  document.getElementById('tx-seg').classList.toggle('in',!eg);
+  txRenderCats(); txRenderCuentas(); txRenderFecha(); txRefrescarBoton();
+}
+function txInitForm(){
+  var m=document.getElementById('f-monto');
+  if(m&&!m._tx){ m._tx=1; m.addEventListener('input',txRefrescarBoton); }
+  var f=document.getElementById('f-fecha');
+  if(f&&!f._tx){ f._tx=1; f.addEventListener('change',txRenderFecha); }
+}
+
 /* ══════════════════════════════════════════════════════════════
    DEUDAS v3.5.1 — pagos parciales, vincular egresos ya registrados
    y detección automática de pagos sin vincular
@@ -2176,7 +2631,7 @@ function construirNotificaciones(){
     var eq=0, ag=0, nEq=0, nAg=0, viejo=hoy;
     (state.ciclosEQ||[]).filter(function(c){return c.estado!=='pagado';}).forEach(function(c){ eq+=c.total||0; nEq++; });
     state.transactions.forEach(function(t){
-      if(t.arch||t.reimb!=='SÍ'||t.cat==='Custodia/Paso'||paid.has(t.id)) return;
+      if(t.reimb!=='SÍ'||t.cat==='Custodia/Paso'||paid.has(t.id)) return;
       if(t.empresa==='ECUAQUIMICA'&&!enCiclo.has(t.id)){ eq+=t.monto; nEq++; if(t.fecha<viejo) viejo=t.fecha; }
       else if(t.empresa==='AGROLEON'){ ag+=t.monto; nAg++; if(t.fecha<viejo) viejo=t.fecha; }
     });
@@ -2245,11 +2700,13 @@ function construirNotificaciones(){
 function _ncNoVista(n){ return !(state.notifVistas||{})[n.id]; }
 function renderNotifWidget(){
   _ncLista=construirNotificaciones();
-  var w=document.getElementById('nw-body'); if(!w) return;
+  var w=document.getElementById('nw-body');
   var nuevas=_ncLista.filter(_ncNoVista).length, acc=_ncLista.filter(function(n){return n.grupo==='accion';}).length;
   var badge=document.getElementById('nw-badge');
   if(badge){ badge.textContent=_ncLista.length; badge.style.display=_ncLista.length?'inline-flex':'none'; badge.classList.toggle('hot',nuevas>0); }
   var dot=document.getElementById('nw-dot'); if(dot) dot.style.display=nuevas?'block':'none';
+  var hb=document.getElementById('hd-badge'); if(hb){ hb.textContent=_ncLista.length||''; hb.style.display=_ncLista.length?'inline-flex':'none'; hb.classList.toggle('hot',nuevas>0||acc>0); }
+  if(!w) return;
   var sub=document.getElementById('nw-sub');
   if(sub) sub.textContent=!_ncLista.length?'Todo al día':(acc?acc+' requiere'+(acc>1?'n':'')+' tu atención':'')+(acc&&nuevas?' · ':'')+(nuevas?nuevas+' nueva'+(nuevas>1?'s':''):(!acc?_ncLista.length+' aviso'+(_ncLista.length>1?'s':''):''));
   if(!_ncLista.length){ w.innerHTML='<div class="nw-empty">✅ No tienes pendientes. ¡Bien!</div>'; return; }
@@ -2491,7 +2948,7 @@ function eventosProgramados(desde,hasta){
     (state.ciclosEQ||[]).forEach(function(c){ (c.txIds||[]).forEach(function(id){enCiclo.add(id);});
       if(c.estado!=='pagado'){ var mm=c.mes||mesLocal(); porMes[mm]=(porMes[mm]||0)+(c.total||0); } });
     state.transactions.forEach(function(t){
-      if(t.arch||t.reimb!=='SÍ'||t.empresa!=='ECUAQUIMICA'||t.cat==='Custodia/Paso'||paid.has(t.id)||enCiclo.has(t.id)) return;
+      if(t.reimb!=='SÍ'||t.empresa!=='ECUAQUIMICA'||t.cat==='Custodia/Paso'||paid.has(t.id)||enCiclo.has(t.id)) return;
       var mm=t.fecha.slice(0,7); porMes[mm]=(porMes[mm]||0)+t.monto;
     });
     Object.keys(porMes).forEach(function(mm){
@@ -2511,7 +2968,7 @@ function ingresosInciertos(){
   var out=[];
   try{
     var paid=new Set(state.reimbPagados||[]);
-    var ag=state.transactions.filter(function(t){ return !t.arch&&t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
+    var ag=state.transactions.filter(function(t){ return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
     var tot=r2(ag.reduce(function(s,t){return s+t.monto;},0));
     if(tot>0) out.push({monto:tot,desc:'Reembolsos AGROLEON pendientes ('+ag.length+')',icon:'🌿',certeza:'incierto'});
   }catch(e){}
@@ -3046,6 +3503,7 @@ function init(){
   if(saved.reservaAhorro!=null) state.reservaAhorro=saved.reservaAhorro;
   if(saved.seguridad) state.seguridad=saved.seguridad;
   if(saved.deudasSaldadas) state.deudasSaldadas=saved.deudasSaldadas;
+  if(saved.cuentasInfo) state.cuentasInfo=saved.cuentasInfo;
   if(saved.ultimoRespaldo) state.ultimoRespaldo=saved.ultimoRespaldo;
   state.migradoDesde=saved.migradoDesde||null;
   state._origenCarga=origen;
@@ -3106,6 +3564,22 @@ function init(){
     }
     state._seedNuevo=true;
   }
+  if(!state.perfil._reimbV37){
+    state.perfil._reimbV37=true;
+    var _pg=new Set(state.reimbPagados=state.reimbPagados||[]);
+    // Corte AGROLEON: último pago "total"/"completo"; corte ECUAQUIMICA: último viaje/mes pagado
+    var _cAG=state.transactions.filter(function(t){return t.tipo==='INGRESO'&&/agroleon/i.test(t.desc||'')&&/total|completo/i.test(t.desc||'');}).map(function(t){return t.fecha;}).sort().pop()||'';
+    var _mEQ=(state.ciclosEQ||[]).filter(function(c){return c.estado==='pagado'&&c.mes;}).map(function(c){return c.mes;}).sort().pop();
+    var _cEQ=_mEQ?_mEQ+'-31':'';
+    var _n=0;
+    state.transactions.forEach(function(t){
+      if(!t.arch||t.reimb!=='SÍ'||_pg.has(t.id)) return;
+      var corte=t.empresa==='AGROLEON'?_cAG:t.empresa==='ECUAQUIMICA'?_cEQ:'9999';
+      if(!corte||t.fecha<=corte){ state.reimbPagados.push(t.id); _n++; }
+    });
+    state._seedNuevo=true;
+  }
+  try{ cerrarMesesEQ(); }catch(e){ console.error(e); }
   ejecutarDebitosAutomaticos();
   if(state._origenCarga==='v3-incompleto'){
     mostrarErrorFatal(new Error('Tus datos están en el formato anterior. Restaura tu último respaldo (Mi Perfil → Restaurar). No se modificó nada.'));
@@ -3178,6 +3652,11 @@ function updateClock(){
   var timeEl = document.getElementById('header-time');
   if(dayEl) dayEl.textContent = DIAS[now.getDay()].charAt(0).toUpperCase()+DIAS[now.getDay()].slice(1)+' '+now.getDate();
   if(timeEl) timeEl.textContent = h+':'+m;
+  var hl=document.getElementById('hd-hola'), fd=document.getElementById('header-date');
+  var nom=((state.perfil&&state.perfil.nombre)||'').split(' ')[0];
+  var hr=now.getHours(), sal=hr<12?'Buenos días':hr<19?'Buenas tardes':'Buenas noches';
+  if(hl) hl.textContent=sal+(nom?', '+nom:'');
+  if(fd) fd.textContent=DIAS[now.getDay()].charAt(0).toUpperCase()+DIAS[now.getDay()].slice(1)+' '+now.getDate()+' de '+MESES[now.getMonth()];
 }
 
 function togglePendientes(){
@@ -3331,7 +3810,7 @@ function generarConsejos(mes,hoy){
   try{
     var paid2=new Set(state.reimbPagados||[]);
     var cids2=new Set(); (state.ciclosEQ||[]).forEach(function(c){(c.txIds||[]).forEach(function(id){cids2.add(id);});});
-    var pendR=state.transactions.filter(function(t){return !t.arch&&t.reimb==='SÍ'&&!paid2.has(t.id)&&!cids2.has(t.id)&&t.cat!=='Custodia/Paso';});
+    var pendR=state.transactions.filter(function(t){return t.reimb==='SÍ'&&!paid2.has(t.id)&&!cids2.has(t.id)&&t.cat!=='Custodia/Paso';});
     if(pendR.length>0){
       var totR=pendR.reduce(function(s,t){return s+t.monto;},0);
       var oldestR=pendR.reduce(function(oldest,t){return !oldest||(t.fecha<oldest.fecha)?t:oldest;},null);
@@ -4419,7 +4898,7 @@ function renderDashboard(){
   (state.ciclosEQ||[]).filter(function(c){return c.estado!=='pagado';}).forEach(function(c){reimbPendMonto+=c.total;});
   // Tx individuales EQ/AG no pagadas y no en ciclo
   state.transactions.forEach(function(t){
-    if(t.arch||t.reimb!=='SÍ'||t.cat==='Custodia/Paso') return;
+    if(t.reimb!=='SÍ'||t.cat==='Custodia/Paso') return;
     if(paid.has(t.id)||cicloIds.has(t.id)) return;
     reimbPendMonto+=t.monto;
   });
@@ -4556,79 +5035,34 @@ function renderDashboard(){
     document.getElementById('cc-limites').innerHTML=h;
   })();
 
-  // ── §2 PRÓXIMOS COMPROMISOS (solo pagos, sin ingresos mezclados) ──
+  // ── §2 PRÓXIMOS 30 DÍAS: pagos e ingresos programados, con saldo proyectado ──
   (function(){
-    var eventos=[];
-    var daysInMonth=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-    // Obligaciones pendientes del mes
-    obligs.forEach(function(o){
-      if(!o.pagadaEsteMes&&o.montoActual>0){
-        var dia=o.diaPago||1;
-        var diasHasta=dia>=today?dia-today:daysInMonth-today+dia;
-        eventos.push({nombre:(o.icono||'📌')+' '+o.nombre,monto:o.montoActual,dia:dia,diasHasta:diasHasta,tipo:'obligacion'});
-      }
-    });
-    // Cuotas de crédito pendientes este mes
-    creditoCompromisosItems.forEach(function(item){
-      var dia=item.dia||5;
-      var diasHasta=dia>=today?dia-today:daysInMonth-today+dia;
-      eventos.push({nombre:item.nombre,monto:item.monto,dia:dia,diasHasta:diasHasta,tipo:'credito',notas:'cuota mensual crédito'});
-    });
-    // Deudas personales (sin fecha fija)
-    (userDeudas||[]).forEach(function(d){
-      if(d.monto>0){
-        eventos.push({nombre:'👤 '+d.nombre,monto:d.monto,dia:null,diasHasta:null,tipo:'deuda',notas:d.notas||''});
-      }
-    });
-    // Ordenar por días hasta (nulls al final)
-    eventos.sort(function(a,b){
-      if(a.diasHasta===null&&b.diasHasta===null) return 0;
-      if(a.diasHasta===null) return 1;
-      if(b.diasHasta===null) return -1;
-      return a.diasHasta-b.diasHasta;
-    });
+    var hoyS=hoyLocal(), fin=addDias(hoyS,30), ev=[];
+    try{ ev=eventosProgramados(hoyS,fin); }catch(e){}
+    var sale=r2(ev.filter(function(e){return e.tipo==='EGR';}).reduce(function(a,e){return a+e.monto;},0));
+    var entra=r2(ev.filter(function(e){return e.tipo==='ING';}).reduce(function(a,e){return a+e.monto;},0));
+    var saldo=r2(disponibleReal()-apartadoMetas());
     var h='<div class="cc-card">'
-      +'<div class="cc-card-header"><div class="cc-card-title">📅 Próximos compromisos</div>'
-      +'<button class="cc-card-action" onclick="goTo(\'oblig\')">Ver todas</button></div>';
-    // Reembolsos pendientes de cobro — como banner positivo
-    if(reimbPendMonto>0){
-      h+='<div style="background:rgba(96,165,250,0.08);border:0.5px solid rgba(96,165,250,0.2);border-radius:12px;padding:9px 12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">'
-        +'<div><div style="font-size:12px;font-weight:600;color:#60a5fa">📋 Reembolsos por cobrar (EQ/AG)</div>'
-        +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">Gastos reembolsables pendientes de pago</div></div>'
-        +'<div style="font-size:14px;font-weight:700;color:#60a5fa">+$'+reimbPendMonto.toFixed(2)+'</div>'
+      +'<div class="cc-card-header"><div class="cc-card-title">📅 Próximos 30 días</div>'
+      +'<button class="cc-card-action" onclick="goTo(\'plan\')">Flujo de caja</button></div>'
+      +'<div class="pc-sum"><div><small>Salen</small><b style="color:#ff8fa3">−'+fmt$(sale)+'</b></div><div><small>Entran</small><b style="color:#5eead4">+'+fmt$(entra)+'</b></div><div><small>Saldo hoy</small><b>'+fmt$(saldo)+'</b></div></div>';
+    if(!ev.length){ h+='<div style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:14px 0">Sin pagos ni ingresos programados</div>'; }
+    var corr=saldo;
+    ev.slice(0,10).forEach(function(e){
+      corr=r2(corr+(e.tipo==='ING'?e.monto:-e.monto));
+      var d=ymdToDate(e.fecha), dh=difDias(hoyS,e.fecha);
+      var cuando=dh===0?'Hoy':dh===1?'Mañana':'En '+dh+' días';
+      h+='<div class="pc-it">'
+        +'<div class="pc-day'+(e.tipo==='ING'?' in':'')+'"><small>'+DIAS[d.getDay()].slice(0,3)+'</small><b>'+d.getDate()+'</b></div>'
+        +'<div class="pc-txt"><b>'+e.icon+' '+esc(e.desc)+'</b><small>'+cuando+(e.certeza!=='seguro'?' · '+e.certeza:'')+' · queda ≈ '+fmt$(corr)+'</small></div>'
+        +'<div class="pc-amt" style="color:'+(e.tipo==='ING'?'#5eead4':'#ff8fa3')+'">'+(e.tipo==='ING'?'+':'−')+fmt$(e.monto)+'</div></div>';
+    });
+    var dd=deudasTotales().personales;
+    if(dd>0||reimbPendMonto>0){
+      h+='<div class="pc-foot">'
+        +(reimbPendMonto>0?'<button onclick="goTo(\'reimb\')">🧾 Por cobrar en reembolsos <b style="color:#5eead4">'+fmt$(reimbPendMonto)+'</b> ›</button>':'')
+        +(dd>0?'<button onclick="goTo(\'deudas\')">🤝 Deudas sin fecha <b style="color:#ff8fa3">'+fmt$(dd)+'</b> ›</button>':'')
       +'</div>';
-    }
-    // Próximo ingreso recurrente — como banner informativo separado, NO como compromiso de pago
-    if(proximoIngreso){
-      var ingTxt=proximoIngreso.nextMonth?'próximo mes día '+proximoIngreso.dia
-        :proximoIngreso.diasHasta===0?'hoy día '+proximoIngreso.dia
-        :proximoIngreso.diasHasta===1?'mañana día '+proximoIngreso.dia
-        :'día '+proximoIngreso.dia+' · en '+proximoIngreso.diasHasta+' días';
-      h+='<div style="background:rgba(52,211,153,0.1);border:0.5px solid rgba(52,211,153,0.25);border-radius:12px;padding:9px 12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">'
-        +'<div><div style="font-size:12px;font-weight:600;color:#34d399">💼 Próximo ingreso estimado</div>'
-        +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">'+ingTxt+' · recurrente</div></div>'
-        +'<div style="font-size:13px;color:rgba(255,255,255,0.3)">↑ entrada</div>'
-      +'</div>';
-    }
-    if(eventos.length===0){
-      h+='<div style="font-size:13px;color:var(--green);text-align:center;padding:12px 0">✅ Sin compromisos de pago pendientes</div>';
-    } else {
-      eventos.slice(0,8).forEach(function(ev){
-        var dotBg=ev.tipo==='obligacion'?'rgba(255,159,10,0.2)':ev.tipo==='credito'?'rgba(255,107,107,0.2)':'rgba(255,92,122,0.2)';
-        var amtColor=ev.tipo==='obligacion'?'#ff9f0a':ev.tipo==='credito'?'#ff6b6b':'#ff453a';
-        var urgLabel='';
-        if(ev.diasHasta!==null){
-          urgLabel=ev.diasHasta===0?'<span class="cc-tag" style="background:rgba(255,59,48,0.2);color:#ff453a">¡Hoy! día '+ev.dia+'</span>'
-            :ev.diasHasta===1?'<span class="cc-tag" style="background:rgba(255,159,10,0.2);color:#ff9f0a">Mañana día '+ev.dia+'</span>'
-            :ev.diasHasta<=7?'<span class="cc-tag" style="background:rgba(255,159,10,0.15);color:#ff9f0a">'+ev.diasHasta+'d · día '+ev.dia+'</span>':'día '+ev.dia;
-        } else { urgLabel='Sin fecha fija'; }
-        h+='<div class="cc-cal-item">'
-          +'<div class="cc-cal-dot" style="background:'+dotBg+'">'+(ev.nombre.match(/^\S+/)||['📌'])[0]+'</div>'
-          +'<div class="cc-cal-info"><div class="cc-cal-name">'+ev.nombre.replace(/^\S+\s*/,'')+'</div>'
-          +'<div class="cc-cal-date">'+urgLabel+(ev.notas?' · '+ev.notas:'')+'</div></div>'
-          +'<div class="cc-cal-amt" style="color:'+amtColor+'">-$'+ev.monto.toFixed(2)+'</div>'
-        +'</div>';
-      });
     }
     h+='</div>';
     document.getElementById('cc-calendario').innerHTML=h;
@@ -5239,7 +5673,7 @@ function renderHistorial(){
       +(grpIn>0&&grpEg>0?' ':'')
       +(grpEg>0?'<span style="color:var(--red)">−$'+grpEg.toFixed(2)+'</span>':'');
     html+='<div class="htx-grp">'
-      +'<span>'+DIAS[d.getDay()].toUpperCase()+' '+d.getDate()+' · '+MESES[d.getMonth()].toUpperCase()+'</span>'
+      +'<span>'+DIAS[d.getDay()].charAt(0).toUpperCase()+DIAS[d.getDay()].slice(1)+' '+d.getDate()+' de '+MESES[d.getMonth()]+'</span>'
       +'<span class="htx-grp-tot">'+grpTotTxt+'</span>'
     +'</div>';
     grpTxs.forEach(function(t){
@@ -6082,7 +6516,7 @@ function deshacerPagoOblig(id){
   var nombre=ob?ob.nombre:'esta obligación';
   var ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px';
-  ov.innerHTML='<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
+  ov.innerHTML='<div class="lg-dialog" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
     +'<div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:8px">↩ Deshacer pago</div>'
     +'<div style="font-size:14px;color:rgba(255,255,255,0.6);margin-bottom:20px">¿Estás seguro de deshacer el pago de <strong style="color:#fff">'+nombre+'</strong>?</div>'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
@@ -6110,17 +6544,18 @@ function renderReimb(){
     saveState();
   }
 
+  try{ cerrarMesesEQ(); }catch(e){}
   var paid=new Set(state.reimbPagados);
   var mesActual=mesLocal();
-  var txs=state.transactions.filter(function(t){ return !t.arch&&t.reimb==='SÍ'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
+  var txs=state.transactions.filter(function(t){ return t.reimb==='SÍ'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
 
   // Classify EQ open vs EQ in cycle
   var cicloTxIds=new Set();
   state.ciclosEQ.forEach(function(c){ (c.txIds||[]).forEach(function(id){ cicloTxIds.add(id); }); });
 
   // eqOpen = solo mes actual (no en ningún ciclo)
-  var eqOpen=txs.filter(function(t){ return t.empresa==='ECUAQUIMICA'&&!cicloTxIds.has(t.id)&&t.fecha.slice(0,7)===mesActual; });
-  var agOpen=txs.filter(function(t){ return t.empresa==='AGROLEON'&&t.fecha>='2026-10-27'; });
+  var eqOpen=txs.filter(function(t){ return t.empresa==='ECUAQUIMICA'&&!cicloTxIds.has(t.id); }).sort(function(a,b){return a.fecha<b.fecha?-1:1;});
+  var agOpen=txs.filter(function(t){ return t.empresa==='AGROLEON'; }).sort(function(a,b){return a.fecha<b.fecha?-1:1;});
 
   var ciclosPend=state.ciclosEQ.filter(function(c){return c.estado!=='pagado';});
   var totEQMesActual=eqOpen.reduce(function(a,t){return a+t.monto;},0);
@@ -6159,7 +6594,7 @@ function renderReimb(){
     eqChip+='</div>';
   }
   if(totEQ>0){
-    eqChip+='<button onclick="showPagarEQ()" style="margin-top:6px;width:100%;padding:7px 0;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">PAGADO</button>';
+    eqChip+='<button onclick="showPagarEQ()" style="margin-top:6px;width:100%;padding:7px 0;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">Me pagaron</button>';
   }
   eqChip+='</div>';
   chipsHtml+=eqChip;
@@ -6168,7 +6603,7 @@ function renderReimb(){
   chipsHtml+='<div style="background:rgba(20,80,10,0.28);border:0.5px solid rgba(80,160,0,0.35);border-radius:16px;padding:14px 12px;text-align:center">'
     +'<img src="'+LOGO_AG+'" style="height:38px;width:auto;margin-bottom:2px" alt="AG">'
     +'<div style="font-size:22px;font-weight:700;color:#fff;margin:2px 0">$'+agTot.toFixed(2)+'</div>'
-    +(agTot>0?'<button onclick="showPagarAG()" style="margin-top:4px;width:100%;padding:7px 0;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">PAGADO</button>':'')
+    +(agTot>0?'<button onclick="showPagarAG()" style="margin-top:4px;width:100%;padding:7px 0;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">Me pagaron</button>':'')
     +'</div>';
   document.getElementById('reimb-chips').innerHTML=chipsHtml;
 
@@ -6181,11 +6616,11 @@ function renderReimb(){
       +'<div style="display:flex;justify-content:space-between;align-items:center">'
         +'<div>'
           +'<div style="font-size:11px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.4px">⏳ ECUAQUIMICA pendiente '+c.nombre+'</div>'
-          +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px">📅 Pago esperado: 12–15 del mes siguiente</div>'
+          +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px">📅 Pago esperado: entre el 11 y el 16 del mes siguiente</div>'
         +'</div>'
         +'<div style="display:flex;align-items:center;gap:8px">'
           +'<span style="font-size:18px;font-weight:700;color:var(--orange)">$'+c.total.toFixed(2)+'</span>'
-          +'<button data-cid="'+c.id+'" onclick="pagarCicloEQ(this.dataset.cid)" style="padding:6px 12px;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">PAGADO</button>'
+          +'<button data-cid="'+c.id+'" onclick="pagarCicloEQ(this.dataset.cid)" style="padding:6px 12px;border-radius:10px;background:rgba(255,59,48,0.2);border:0.5px solid rgba(255,59,48,0.5);color:#ff3b30;font-size:12px;font-weight:700;cursor:pointer">Me pagaron</button>'
         +'</div>'
       +'</div>'
       +'</div>';
@@ -6196,12 +6631,14 @@ function renderReimb(){
     eqHtml+='<div class="card" style="margin-bottom:10px">'
       +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
         +'<div>'
-          +'<div style="font-size:14px;font-weight:700;color:#fff">ECUAQUIMICA — '+eqMesNom+'</div>'
-          +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px">Gastos abiertos del mes</div>'
+          +'<div style="font-size:14px;font-weight:700;color:#fff">ECUAQUIMICA · '+eqMesNom+' en curso</div>'
+          +'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;line-height:1.4">Se cierra solo al terminar el mes · pagan entre el 11 y el 16 del mes siguiente</div>'
         +'</div>'
-        +'<button onclick="cerrarViaje()" style="padding:7px 13px;border-radius:10px;background:rgba(199,125,255,0.15);border:0.5px solid rgba(199,125,255,0.4);color:var(--purple);font-size:12px;font-weight:700;cursor:pointer">Cerrar viaje</button>'
+        +'<button onclick="cerrarViaje()" style="padding:7px 13px;border-radius:10px;background:rgba(199,125,255,0.15);border:0.5px solid rgba(199,125,255,0.4);color:var(--purple);font-size:12px;font-weight:700;cursor:pointer">Cerrar mes</button>'
       +'</div>';
+    var _mAntEQ='';
     eqOpen.forEach(function(t){
+      if(t.fecha.slice(0,7)!==_mAntEQ){ _mAntEQ=t.fecha.slice(0,7); var _sub=r2(eqOpen.filter(function(x){return x.fecha.slice(0,7)===_mAntEQ;}).reduce(function(a,x){return a+x.monto;},0)); eqHtml+='<div class="rb-mes"><span>'+MESES[+_mAntEQ.slice(5,7)-1].charAt(0).toUpperCase()+MESES[+_mAntEQ.slice(5,7)-1].slice(1)+' '+_mAntEQ.slice(0,4)+'</span><b>'+fmt$(_sub)+'</b></div>'; }
       var d=new Date(t.fecha+'T12:00:00');
       var icon=CAT_ICONS[t.cat]||'📌';
       eqHtml+='<div class="reimb-co-item" style="cursor:pointer">'
@@ -6216,7 +6653,7 @@ function renderReimb(){
       +'<span style="font-size:14px;font-weight:700;color:var(--green)">$'+eqOpen.reduce(function(a,t){return a+t.monto;},0).toFixed(2)+'</span></div>'
       +'</div>';
   } else if(ciclosPend.length===0){
-    eqHtml+='<div class="card" style="margin-bottom:10px"><div class="empty-state">Sin gastos ECUAQUIMICA este mes</div></div>';
+    eqHtml+='<div class="card" style="margin-bottom:10px"><div class="empty-state">Sin facturas ECUAQUIMICA pendientes</div></div>';
   }
   // ── DESGLOSE POR CATEGORÍA EQ ──
   var allEQTxs=txs.filter(function(t){return t.empresa==='ECUAQUIMICA';});
@@ -6249,10 +6686,13 @@ function renderReimb(){
   if(agOpen.length>0){
     agHtml='<div class="card">'
       +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">'
-        +'<div style="font-size:14px;font-weight:700;color:#fff">AGROLEON</div>'
-        +'<div style="font-size:14px;font-weight:700;color:var(--green)">$'+totAG.toFixed(2)+'</div>'
+        +'<div><div style="font-size:14px;font-weight:700;color:#fff">AGROLEON · por cobrar</div><div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px">'+agOpen.length+' factura'+(agOpen.length>1?'s':'')+' de cualquier mes · paga por grupos</div></div>'
+        +'<div style="text-align:right"><div style="font-size:18px;font-weight:800;color:var(--green)">'+fmt$(totAG)+'</div>'
+        +'<button onclick="showPagarAG()" style="margin-top:6px;padding:7px 12px;border-radius:12px;background:rgba(52,211,153,0.15);border:0.5px solid rgba(52,211,153,0.4);color:#5eead4;font-size:12px;font-weight:700">Registrar pago</button></div>'
       +'</div>';
+    var _mAntAG='';
     agOpen.forEach(function(t){
+      if(t.fecha.slice(0,7)!==_mAntAG){ _mAntAG=t.fecha.slice(0,7); var _subA=r2(agOpen.filter(function(x){return x.fecha.slice(0,7)===_mAntAG;}).reduce(function(a,x){return a+x.monto;},0)); agHtml+='<div class="rb-mes"><span>'+MESES[+_mAntAG.slice(5,7)-1].charAt(0).toUpperCase()+MESES[+_mAntAG.slice(5,7)-1].slice(1)+' '+_mAntAG.slice(0,4)+'</span><b>'+fmt$(_subA)+'</b></div>'; }
       var d=new Date(t.fecha+'T12:00:00');
       var icon=CAT_ICONS[t.cat]||'📌';
       agHtml+='<div class="reimb-co-item" style="cursor:pointer">'
@@ -6335,7 +6775,7 @@ function confirmarEliminarFactura(tid){
   showToast('✅ Factura marcada como no reembolsable');
 }
 
-function cerrarViaje(){
+function cerrarViaje_v36(){
   if(!state.ciclosEQ) state.ciclosEQ=[];
   if(!state.reimbPagados) state.reimbPagados=[];
   var paid=new Set(state.reimbPagados);
@@ -6444,7 +6884,9 @@ function pagarCicloEQ(cicloId){
       +'<div style="font-size:36px;font-weight:700;color:var(--green);letter-spacing:-1px">$'+ciclo.total.toFixed(2)+'</div>'
       +'<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px">→ Banco Guayaquil</div>'
     +'</div>'
-    +'<div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.75)">¿ECUAQUIMICA ya te depositó?</div>'
+    +'<div style="font-size:13px;color:rgba(255,255,255,0.65);margin-bottom:6px;text-align:left">¿Cuánto depositó ECUAQUIMICA?</div>'
+    +'<input id="ceq-dep" inputmode="decimal" value="'+ciclo.total.toFixed(2)+'" style="width:100%;box-sizing:border-box;padding:12px;border-radius:14px;background:rgba(0,0,0,0.25);border:0.5px solid rgba(255,255,255,0.2);color:#fff;font-size:22px;font-weight:700;text-align:center">'
+    +'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px;line-height:1.4">Facturas: '+fmt$(ciclo.gastosBase!=null?ciclo.gastosBase:ciclo.total)+'. Si depositaron más, la diferencia se guarda como extra a tu favor.</div>'
   +'</div>'
   +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px">'
     +'<button onclick="closeKitsModal()" style="padding:13px;border-radius:14px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:15px;font-weight:600;cursor:pointer">Cancelar</button>'
@@ -6460,7 +6902,9 @@ function confirmarPagoCicloEQ(cicloId){
   if(!ciclo) return;
   var hoy=hoyLocal();
   // TX1: Facturas reembolsadas (gastos base)
-  var gastosBase=ciclo.gastosBase||ciclo.total-(ciclo.extraMonto||0);
+  var gastosBase=ciclo.gastosBase!=null?ciclo.gastosBase:ciclo.total-(ciclo.extraMonto||0);
+  var _dep=parseMonto((document.getElementById('ceq-dep')||{}).value);
+  if(_dep>0){ if(_dep>=gastosBase){ ciclo.extraMonto=r2(_dep-gastosBase); } else { ciclo.extraMonto=0; gastosBase=_dep; } ciclo.total=r2(gastosBase+ciclo.extraMonto); }
   state.transactions.push({id:nuevoId(),fecha:hoy,desc:'Pago viáticos ECUAQUIMICA — '+ciclo.nombre,cuenta:'Banco Guayaquil',monto:gastosBase,tipo:'INGRESO',cat:'Reembolso',nat:'reembolso',reimb:'NO',empresa:'',nota:'Reembolso ECUAQUIMICA'});
   // TX2: Dinero extra (si aplica)
   if((ciclo.extraMonto||0)>0){
@@ -6555,7 +6999,7 @@ function showPagarAG(){
   if(!state.reimbPagados) state.reimbPagados=[];
   var paid=new Set(state.reimbPagados);
   var agOpen=state.transactions.filter(function(t){
-    return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&t.fecha>='2026-10-27';
+    return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id);
   }).sort(function(a,b){return a.fecha.localeCompare(b.fecha);});
   if(agOpen.length===0){ showToast('No hay reembolsos AGROLEON pendientes'); return; }
   _agSelIds=agOpen.map(function(t){return t.id;}); // all pre-selected
@@ -6566,43 +7010,47 @@ function showPagarAG(){
 
 function renderAgSeleccion(agOpen){
   var selSet=new Set(_agSelIds);
-  var totSel=agOpen.filter(function(t){return selSet.has(t.id);}).reduce(function(a,t){return a+t.monto;},0);
-  var html='<div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:10px">Selecciona las facturas que te pagaron:</div>';
-  agOpen.forEach(function(t){
-    var d=new Date(t.fecha+'T12:00:00');
-    var checked=selSet.has(t.id)?'checked':'';
-    var icon=CAT_ICONS[t.cat]||'📌';
-    html+='<label style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:0.5px solid rgba(255,255,255,0.07);cursor:pointer">'
-      +'<input type="checkbox" data-txid="'+t.id+'" '+checked+' onchange="toggleAgSel(this)" '
-        +'style="width:18px;height:18px;accent-color:var(--green);cursor:pointer;flex-shrink:0">'
-      +'<div style="flex:1;min-width:0">'
-        +'<div style="font-size:14px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+icon+' '+t.desc+'</div>'
-        +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">'+DIAS[d.getDay()]+' '+d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)+' · '+t.cuenta+'</div>'
-      +'</div>'
-      +'<span style="font-size:14px;font-weight:600;color:var(--green);flex-shrink:0">$'+t.monto.toFixed(2)+'</span>'
-      +'</label>';
+  var totSel=r2(agOpen.filter(function(t){return selSet.has(t.id);}).reduce(function(a,t){return a+t.monto;},0));
+  var todas=agOpen.length&&agOpen.every(function(t){return selSet.has(t.id);});
+  var html='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:13px;color:rgba(255,255,255,0.6)">Marca las facturas que te pagaron</div>'
+    +'<button onclick="agSelGrupo(\'*\','+(todas?'false':'true')+')" style="padding:6px 11px;border-radius:10px;background:rgba(255,255,255,0.08);border:0.5px solid rgba(255,255,255,0.2);color:#fff;font-size:12px;font-weight:700">'+(todas?'Ninguna':'Todas')+'</button></div>';
+  var meses={}; agOpen.forEach(function(t){ (meses[t.fecha.slice(0,7)]=meses[t.fecha.slice(0,7)]||[]).push(t); });
+  Object.keys(meses).sort().forEach(function(m){
+    var ts=meses[m], sub=r2(ts.reduce(function(a,t){return a+t.monto;},0)), all=ts.every(function(t){return selSet.has(t.id);});
+    html+='<div class="rb-mes" style="margin-top:12px"><span>'+MESES[+m.slice(5,7)-1].charAt(0).toUpperCase()+MESES[+m.slice(5,7)-1].slice(1)+' '+m.slice(0,4)+' · '+fmt$(sub)+'</span>'
+      +'<button onclick="agSelGrupo(\''+m+'\','+(all?'false':'true')+')" style="background:none;border:none;color:#c9a3ff;font-size:12px;font-weight:700">'+(all?'Quitar mes':'Todo el mes')+'</button></div>';
+    ts.forEach(function(t){
+      var d=new Date(t.fecha+'T12:00:00'), checked=selSet.has(t.id)?'checked':'';
+      html+='<label style="display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:0.5px solid rgba(255,255,255,0.07);cursor:pointer">'
+        +'<input type="checkbox" data-txid="'+t.id+'" '+checked+' onchange="toggleAgSel(this)" style="width:20px;height:20px;accent-color:#34d399;flex-shrink:0">'
+        +'<div style="flex:1;min-width:0"><div style="font-size:14px;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(CAT_ICONS[t.cat]||'📌')+' '+esc(t.desc)+'</div>'
+        +'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px">'+DIAS[d.getDay()]+' '+d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)+' · '+esc(t.cuenta)+(t.sector?' · '+esc(t.sector):'')+'</div></div>'
+        +'<span style="font-size:14px;font-weight:700;color:#5eead4;flex-shrink:0">'+fmt$(t.monto)+'</span></label>';
+    });
   });
-  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin:12px 0;padding:12px;background:rgba(0,0,0,0.3);border-radius:12px">'
-    +'<span style="font-size:13px;color:rgba(255,255,255,0.5)">Seleccionado</span>'
-    +'<span id="ag-sel-total" style="font-size:20px;font-weight:700;color:var(--green)">$'+totSel.toFixed(2)+'</span>'
-  +'</div>';
-  html+='<button onclick="showAgCuentas()" id="ag-continuar-btn" '
-    +'style="width:100%;padding:13px;border-radius:14px;background:rgba(48,209,88,0.2);border:0.5px solid rgba(48,209,88,0.4);color:var(--green);font-size:15px;font-weight:700;cursor:pointer'+(totSel<=0?';opacity:0.4;pointer-events:none':'')+'">'
-    +'Continuar →</button>';
+  html+='<div style="display:flex;justify-content:space-between;align-items:center;margin:14px 0 10px;padding:12px 14px;background:rgba(0,0,0,0.25);border-radius:14px">'
+    +'<span style="font-size:13px;color:rgba(255,255,255,0.6)">'+selSet.size+' seleccionada'+(selSet.size!==1?'s':'')+'</span>'
+    +'<span id="ag-sel-total" style="font-size:22px;font-weight:800;color:#5eead4">'+fmt$(totSel)+'</span></div>'
+    +'<button onclick="showAgCuentas()" id="ag-continuar-btn" class="btn-main green"'+(totSel<=0?' style="opacity:0.4;pointer-events:none"':'')+'>Continuar</button>';
   document.getElementById('kits-modal-body').innerHTML=html;
 }
-
+function _agPendientes(){
+  var paid=new Set(state.reimbPagados||[]);
+  return state.transactions.filter(function(t){ return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); }).sort(function(a,b){return a.fecha<b.fecha?-1:1;});
+}
+function agSelGrupo(m,on){
+  var ids=_agPendientes().filter(function(t){return m==='*'||t.fecha.slice(0,7)===m;}).map(function(t){return t.id;});
+  if(on) ids.forEach(function(id){ if(_agSelIds.indexOf(id)<0) _agSelIds.push(id); });
+  else _agSelIds=_agSelIds.filter(function(id){return ids.indexOf(id)<0;});
+  renderAgSeleccion(_agPendientes());
+}
 function toggleAgSel(cb){
   var id=parseInt(cb.dataset.txid);
   if(cb.checked){ if(!_agSelIds.includes(id)) _agSelIds.push(id); }
   else { _agSelIds=_agSelIds.filter(function(x){return x!==id;}); }
   // Update total display
   var paid=new Set(state.reimbPagados||[]);
-  var agOpen=state.transactions.filter(function(t){
-    return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&t.fecha>='2026-10-27';
-  });
-  var selSet=new Set(_agSelIds);
-  var totSel=agOpen.filter(function(t){return selSet.has(t.id);}).reduce(function(a,t){return a+t.monto;},0);
+  renderAgSeleccion(_agPendientes()); return;
   var el=document.getElementById('ag-sel-total');
   if(el) el.textContent='$'+totSel.toFixed(2);
   var btn=document.getElementById('ag-continuar-btn');
@@ -6613,7 +7061,7 @@ function showAgCuentas(){
   if(_agSelIds.length===0){ showToast('Selecciona al menos una factura'); return; }
   var paid=new Set(state.reimbPagados||[]);
   var agOpen=state.transactions.filter(function(t){
-    return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id)&&t.fecha>='2026-10-27';
+    return t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id);
   });
   var selSet=new Set(_agSelIds);
   var totSel=agOpen.filter(function(t){return selSet.has(t.id);}).reduce(function(a,t){return a+t.monto;},0);
@@ -6622,7 +7070,10 @@ function showAgCuentas(){
     +'<div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase">'+_agSelIds.length+' factura'+(selSet.size!==1?'s':'')+' seleccionada'+(selSet.size!==1?'s':'')+'</div>'
     +'<div style="font-size:28px;font-weight:700;color:var(--green)">$'+totSel.toFixed(2)+'</div>'
   +'</div>';
-  html+='<div style="font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px">¿A qué cuenta depositaron?</div>';
+  html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:6px">¿Cuánto depositaron en total?</div>'
+    +'<input id="ag-monto-dep" inputmode="decimal" value="'+totSel.toFixed(2)+'" style="width:100%;box-sizing:border-box;padding:12px;border-radius:14px;background:rgba(0,0,0,0.25);border:0.5px solid rgba(255,255,255,0.2);color:#fff;font-size:20px;font-weight:700;margin-bottom:6px">'
+    +'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-bottom:14px;line-height:1.4">Si depositaron más que las facturas, la diferencia se registra como ingreso tuyo (extra AGROLEON).</div>';
+  html+='<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:10px">¿A qué cuenta depositaron?</div>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">';
   cuentas.forEach(function(c){
     html+='<button data-cuenta="'+encodeURIComponent(c)+'" data-tot="'+totSel.toFixed(2)+'" onclick="confirmarPagoAG(this.dataset.cuenta,parseFloat(this.dataset.tot))" '
@@ -6635,11 +7086,16 @@ function showAgCuentas(){
 
 function confirmarPagoAG(cuentaEnc, total){
   var cuenta=decodeURIComponent(cuentaEnc);
+  var _dep=parseMonto((document.getElementById('ag-monto-dep')||{}).value);
+  if(_dep>0&&_dep<total-0.005){ showToast('Depositaron menos que lo seleccionado: desmarca las facturas que no te pagaron'); return; }
+  var _extra=_dep>0?r2(_dep-total):0;
   if(!state.reimbPagados) state.reimbPagados=[];
   // Mark only selected transactions as paid
   _agSelIds.forEach(function(id){ if(!state.reimbPagados.includes(id)) state.reimbPagados.push(id); });
   var hoy=hoyLocal();
-  state.transactions.push({id:nuevoId(),fecha:hoy,desc:'Pago reembolsos AGROLEON',cuenta:cuenta,monto:total,tipo:'INGRESO',cat:'Reembolso',nat:'reembolso',reimb:'NO',empresa:'',nota:'Reembolso AGROLEON'});
+  state.transactions.push({id:nuevoId(),fecha:hoy,desc:'Pago reembolsos AGROLEON',cuenta:cuenta,monto:r2(total),tipo:'INGRESO',cat:'Reembolso',nat:'reembolso',reimb:'NO',empresa:'',nota:'Reembolso AGROLEON · '+_agSelIds.length+' factura(s)'});
+  if(_extra>0.005) state.transactions.push({id:nuevoId(),fecha:hoy,desc:'Extra AGROLEON',cuenta:cuenta,monto:_extra,tipo:'INGRESO',cat:'Comisión',nat:'operativo',reimb:'NO',empresa:'',nota:'Diferencia a favor en reembolso'});
+  ordenarTx();
   saveState(); closeKitsModal(); renderReimb(); updateHomeWidget(); renderCuentas();
   showToast('✅ $'+total.toFixed(2)+' ingresado a '+cuenta);
 }
@@ -7277,7 +7733,7 @@ function agregarAlConcepto(enc){
 }
 
 // CUENTAS
-function renderCuentas(){
+function renderCuentas_v37(){
   var bal=calcBalances();
   var kits=calcKits();
 
@@ -7515,7 +7971,7 @@ function renderAnalisis(){
   (state.ciclosEQ||[]).filter(function(c){return c.estado!=='pagado';}).forEach(function(c){reimbCiclosPend+=c.total;});
   // txs individuales reembolsables no en ciclo y no pagadas
   state.transactions.forEach(function(t){
-    if(t.arch||t.reimb!=='SÍ'||t.cat==='Custodia/Paso') return;
+    if(t.reimb!=='SÍ'||t.cat==='Custodia/Paso') return;
     if(anaPaidSet.has(t.id)||anaCicloIds.has(t.id)) return;
     reimbIndPend+=t.monto;
   });
@@ -8186,10 +8642,11 @@ function acSelect(i){
   if(s.cat){ var catSel=document.getElementById('f-cat'); for(var o=0;o<catSel.options.length;o++){ if(catSel.options[o].value===s.cat){ catSel.selectedIndex=o; break; } } }
   if(s.tipo) setTipo(s.tipo);
   if(s.reimb) setReimb(s.reimb==='SÍ'?'SÍ':'NO');
-  if(s.empresa&&s.reimb==='SÍ'){ var empSel=document.getElementById('f-empresa'); for(var o=0;o<empSel.options.length;o++){ if(empSel.options[o].value===s.empresa){ empSel.selectedIndex=o; break; } } }
+  if(s.empresa&&s.reimb==='SÍ'){ selectEmpresa(s.empresa); }
   if(s.monto>0){ document.getElementById('f-monto').value=s.monto.toFixed(2); }
   if(s.cuenta){ var cSel=document.getElementById('f-cuenta'); for(var o=0;o<cSel.options.length;o++){ if(cSel.options[o].value===s.cuenta){ cSel.selectedIndex=o; break; } } }
   dropdown.classList.remove('open');
+  try{ txSyncUI(); }catch(e){}
   document.getElementById('f-monto').focus();
 }
 function acSelectTouch(i,e){ e.preventDefault(); acSelect(i); }
@@ -8201,6 +8658,7 @@ function openManualForm(tipo){
   if(!modal) return;
   var fd=document.getElementById('f-fecha');
   if(fd&&!fd.value){ fd.value=hoyLocal(); }
+  try{ txInitForm(); }catch(e){}
   modal.classList.add('open');
   setTipo(tipo||'EGRESO');
   setTimeout(function(){
@@ -8245,6 +8703,7 @@ function setTipo(t){
   if(reimbSec) reimbSec.style.display=t==='EGRESO'?'block':'none';
   if(t==='INGRESO') setReimb('NO');
   try{ var _fd=document.getElementById('f-deuda'); if(_fd) delete _fd.dataset.tocado; actualizarFilaDeuda(); sugerirDeudaEnFormulario(); }catch(e){}
+  try{ txSyncUI(); }catch(e){ console.error(e); }
 }
 function catChanged(){
   var cat=document.getElementById('f-cat').value;
@@ -8260,7 +8719,7 @@ function setReimb(r){
   document.getElementById('seg-no').className='seg-btn'+(r==='NO'?' active-red':'');
   document.getElementById('seg-si').className='seg-btn'+(r==='SÍ'?' active-green':'');
   var empRow=document.getElementById('f-row-empresa');
-  if(empRow) empRow.style.display=r==='SÍ'?'flex':'none';
+  if(empRow) empRow.style.display=r==='SÍ'?'grid':'none';
   if(r==='SÍ'){ selectEmpresa('ECUAQUIMICA'); injectEmpresaLogos(); }
   checkSectorRow();
 }
@@ -8277,8 +8736,8 @@ function selectEmpresa(emp){
   // Resaltar card seleccionada
   var btnEq=document.getElementById('emp-btn-eq');
   var btnAg=document.getElementById('emp-btn-ag');
-  if(btnEq) btnEq.style.border=emp==='ECUAQUIMICA'?'2px solid rgba(0,160,220,0.8)':'0.5px solid rgba(0,160,220,0.3)';
-  if(btnAg) btnAg.style.border=emp==='AGROLEON'?'2px solid rgba(80,160,0,0.8)':'0.5px solid rgba(80,160,0,0.3)';
+  if(btnEq) btnEq.classList.toggle('sel',emp==='ECUAQUIMICA');
+  if(btnAg) btnAg.classList.toggle('sel',emp==='AGROLEON');
   checkSectorRow();
 }
 function empresaChanged(){ checkSectorRow(); }
@@ -9448,7 +9907,7 @@ function entregarKitsGrupo(cuentaEnc, nombreEnc, monto){
   var nombre = decodeURIComponent(nombreEnc);
   var ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px';
-  ov.innerHTML='<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
+  ov.innerHTML='<div class="lg-dialog" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
     +'<div style="font-size:28px;text-align:center;margin-bottom:12px">📤</div>'
     +'<div style="font-size:17px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px">¿Entregar dinero?</div>'
     +'<div style="font-size:14px;color:rgba(255,255,255,0.6);text-align:center;margin-bottom:6px">Vas a registrar la entrega de</div>'
@@ -9478,7 +9937,7 @@ function entregarKitsGrupo(cuentaEnc, nombreEnc, monto){
 function entregarKitsTodo(cuenta, total){
   var ov=document.createElement('div');
   ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:24px';
-  ov.innerHTML='<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
+  ov.innerHTML='<div class="lg-dialog" style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:24px;max-width:340px;width:100%">'
     +'<div style="font-size:28px;text-align:center;margin-bottom:12px">📤</div>'
     +'<div style="font-size:17px;font-weight:700;color:#fff;text-align:center;margin-bottom:8px">¿Entregar todo el KITS?</div>'
     +'<div style="font-size:22px;font-weight:800;color:var(--green);text-align:center;margin-bottom:4px">$'+total.toFixed(2)+'</div>'
@@ -9510,134 +9969,53 @@ if('serviceWorker' in navigator && location.protocol==='https:'){
 }
 </script>
 
-<!-- TX MODAL — EGRESO / INGRESO -->
+<!-- NUEVO MOVIMIENTO (v3.7) -->
 <div class="modal" id="tx-modal">
   <div class="modal-overlay" onclick="closeManualForm()"></div>
-  <div class="modal-sheet" style="max-height:92vh;padding:0;overflow:hidden;display:flex;flex-direction:column">
-    <div class="modal-handle"></div>
-    <div id="manual-tipo-banner" style="display:flex;align-items:center;gap:10px;padding:10px 16px 12px;background:rgba(255,59,48,0.08);border-bottom:0.5px solid rgba(255,59,48,0.2)">
-      <div id="manual-tipo-dot" style="width:10px;height:10px;border-radius:50%;background:#ff3b30;flex-shrink:0"></div>
-      <div id="manual-tipo-label" style="font-size:15px;font-weight:700;color:#ff3b30;flex:1;letter-spacing:0.5px">EGRESO</div>
-      <button onclick="closeManualForm()" style="background:none;border:none;color:rgba(255,255,255,0.4);font-size:20px;cursor:pointer;padding:0 4px;line-height:1">&#x2715;</button>
+  <div class="modal-sheet tx-sheet" style="max-height:94vh;padding:0;overflow:hidden;display:flex;flex-direction:column">
+    <div class="modal-handle" style="margin:10px auto 4px"></div>
+    <div class="tx-top">
+      <div class="tx-seg" id="tx-seg"><i class="tx-knob"></i><button type="button" onclick="setTipo('EGRESO')">Egreso</button><button type="button" onclick="setTipo('INGRESO')">Ingreso</button></div>
+      <button type="button" class="nc-close" onclick="closeManualForm()" aria-label="Cerrar"></button>
     </div>
-    <div style="overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1;padding:14px 16px 0">
-      <div class="form-section">
-        <div class="form-row">
-          <div class="form-label">Fecha</div>
-          <input type="date" class="form-input" id="f-fecha">
-        </div>
-        <div class="form-row">
-          <div class="form-label">Monto $</div>
-          <input type="text" class="form-input" id="f-monto" placeholder="0.00" inputmode="decimal" pattern="[0-9]*[.,]?[0-9]*">
-        </div>
-        <div class="form-row" style="align-items:flex-start;padding-top:14px;padding-bottom:14px">
-          <div class="form-label" style="padding-top:2px">Descripci&#xF3;n</div>
-          <div class="ac-container">
-            <input type="text" class="form-input" id="f-desc" placeholder="Almuerzo, pasaje..." autocomplete="off" oninput="acInput(this.value)" onblur="acBlur()">
-            <div class="ac-dropdown" id="ac-dropdown"></div>
-          </div>
-        </div>
+    <div id="manual-tipo-banner" hidden><div id="manual-tipo-dot"></div><div id="manual-tipo-label"></div></div>
+    <div class="tx-scroll">
+      <label class="tx-amount" id="tx-amount"><span class="tx-cur">$</span><input id="f-monto" inputmode="decimal" placeholder="0.00" autocomplete="off" aria-label="Monto"></label>
+      <div class="tx-dates" id="tx-dates">
+        <button type="button" data-off="0" onclick="txSetFecha(0)">Hoy</button>
+        <button type="button" data-off="-1" onclick="txSetFecha(-1)">Ayer</button>
+        <label class="tx-datepick" id="tx-datepick"><span id="tx-date-lbl">Otra fecha</span><input type="date" id="f-fecha" style="color-scheme:dark"></label>
       </div>
-      <div class="form-section">
-        <div class="form-row">
-          <div class="form-label">Cuenta</div>
-          <select class="form-select" id="f-cuenta">
-            <option value="Efectivo">&#x1F4B5; Efectivo</option>
-            <option value="Banco Pichincha">&#x1F535; Banco Pichincha</option>
-            <option value="Jard&#xED;n Azuayo">&#x1F7E2; Jard&#xED;n Azuayo</option>
-            <option value="Banco Guayaquil">&#x1F534; Banco Guayaquil</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <div class="form-label">Categor&#xED;a</div>
-          <select class="form-select" id="f-cat" onchange="catChanged()">
-            <option value="Alimentaci&#xF3;n">&#x1F37D; Alimentaci&#xF3;n</option>
-            <option value="Transporte">&#x1F68C; Transporte</option>
-            <option value="Gasolina">&#x26FD; Gasolina</option>
-            <option value="Veh&#xED;culo">&#x1F697; Veh&#xED;culo</option>
-            <option value="Sueldo">&#x1F4BC; Sueldo</option>
-            <option value="Comisi&#xF3;n">&#x1F4B0; Comisi&#xF3;n</option>
-            <option value="Salud/Personal">&#x1F3E5; Salud/Personal</option>
-            <option value="Entretenimiento/Salidas">&#x1F389; Entretenimiento</option>
-            <option value="Personal/Ocio">&#x1F3AE; Personal/Ocio</option>
-            <option value="Suscripciones/Digital">&#x1F4F1; Suscripci&#xF3;n</option>
-            <option value="Comisi&#xF3;n bancaria">&#x1F3E6; Comisi&#xF3;n bancaria</option>
-            <option value="Transferencia interna">&#x2194;&#xFE0F; Transferencia</option>
-            <option value="Custodia/Paso">&#x1F512; Custodia/Paso</option>
-            <option value="Pr&#xE9;stamo personal">&#x1F91D; Pr&#xE9;stamo</option>
-            <option value="Cobro deuda">&#x2705; Cobro deuda</option>
-            <option value="Obligaci&#xF3;n JA">&#x1F4C5; Obligaci&#xF3;n JA</option>
-            <option value="D&#xE9;cimo tercer sueldo">&#x1F381; D&#xE9;cimo tercer</option>
-            <option value="Hogar">&#x1F3E0; Hogar</option>
-            <option value="Lavado/Ropa">&#x1F455; Lavado/Ropa</option>
-            <option value="Alcohol y Tabaco">&#x1F37A; Alcohol y Tabaco</option>
-            <option value="Barber&#xED;a">&#x2702;&#xFE0F; Barber&#xED;a</option>
-            <option value="Imagen personal">&#x1FA9E; Imagen personal</option>
-            <option value="Higiene personal">&#x1F9F4; Higiene personal</option>
-            <option value="Equipos y Tecnolog&#xED;a">&#x1F4BB; Equipos y Tecnolog&#xED;a</option>
-            <option value="Imprenta">&#x1F5A8;&#xFE0F; Imprenta</option>
-            <option value="Varios">&#x1F4E6; Varios</option>
-          </select>
-        </div>
+      <div class="tx-desc ac-container"><input id="f-desc" placeholder="¿En qué fue? Almuerzo, pasaje…" autocomplete="off" oninput="acInput(this.value)" onblur="acBlur()"><div class="ac-dropdown" id="ac-dropdown"></div></div>
+      <div class="tx-lbl">Categoría</div>
+      <div class="tx-cats" id="tx-cats"></div>
+      <select id="f-cat" hidden onchange="catChanged()"><option value="Alimentación">Alimentación</option><option value="Transporte">Transporte</option><option value="Gasolina">Gasolina</option><option value="Vehículo">Vehículo</option><option value="Sueldo">Sueldo</option><option value="Comisión">Comisión</option><option value="Reembolso">Reembolso</option><option value="Salud/Personal">Salud/Personal</option><option value="Entretenimiento/Salidas">Entretenimiento/Salidas</option><option value="Personal/Ocio">Personal/Ocio</option><option value="Suscripciones/Digital">Suscripciones/Digital</option><option value="Comisión bancaria">Comisión bancaria</option><option value="Transferencia interna">Transferencia interna</option><option value="Custodia/Paso">Custodia/Paso</option><option value="Préstamo personal">Préstamo personal</option><option value="Cobro deuda">Cobro deuda</option><option value="Deudas personales">Deudas personales</option><option value="Obligación JA">Obligación JA</option><option value="Décimo tercer sueldo">Décimo tercer sueldo</option><option value="Hogar">Hogar</option><option value="Lavado/Ropa">Lavado/Ropa</option><option value="Alcohol y Tabaco">Alcohol y Tabaco</option><option value="Barbería">Barbería</option><option value="Imagen personal">Imagen personal</option><option value="Higiene personal">Higiene personal</option><option value="Equipos y Tecnología">Equipos y Tecnología</option><option value="Imprenta">Imprenta</option><option value="Varios">Varios</option></select>
+      <div class="tx-lbl">Cuenta</div>
+      <div class="tx-cuentas" id="tx-cuentas"></div>
+      <select id="f-cuenta" hidden><option value="Efectivo">Efectivo</option><option value="Banco Pichincha">Banco Pichincha</option><option value="Jardín Azuayo">Jardín Azuayo</option><option value="Banco Guayaquil">Banco Guayaquil</option></select>
+      <div class="form-section" id="f-row-concepto" style="display:none;flex-direction:column;margin-top:14px">
+        <div class="form-row"><div class="form-label" style="color:#c9a3ff">De quién es 🔒</div><input type="text" class="form-input" id="f-concepto" placeholder="KITS Agrícola, préstamo Pedro…"></div>
       </div>
-      <div class="form-section" id="f-row-deuda-sec">
+      <div class="form-section" id="f-row-deuda-sec" style="margin-top:14px">
         <div class="form-row" id="f-row-deuda" style="display:none">
-          <div class="form-label" id="f-deuda-lbl" style="color:#fbbf24">&#xBF;Abona a deuda?</div>
+          <div class="form-label" id="f-deuda-lbl" style="color:#fbbf24">¿Abona a deuda?</div>
           <select class="form-select" id="f-deuda" onchange="this.dataset.tocado=1" style="color:#fbbf24"><option value="">No</option></select>
         </div>
       </div>
-      <div id="reimb-section" class="form-section" style="display:none">
-        <div class="form-row">
-          <div class="form-label">Reembolsable</div>
-          <div class="seg-ctrl">
-            <button class="seg-btn active-red" id="seg-no" onclick="setReimb('NO')">No</button>
-            <button class="seg-btn" id="seg-si" onclick="setReimb('S&#xCD;')">S&#xED;</button>
-          </div>
-        </div>
-        <div id="f-row-empresa" style="display:none;flex-direction:column;gap:8px;padding:4px 0">
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.6px">Empresa</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-            <button id="emp-btn-eq" onclick="selectEmpresa('ECUAQUIMICA')" style="padding:14px 8px;border-radius:16px;background:rgba(0,100,160,0.15);border:0.5px solid rgba(0,160,220,0.3);cursor:pointer;text-align:center">
-              <img id="emp-logo-eq" style="height:26px;width:auto;filter:brightness(0) invert(1);display:block;margin:0 auto 7px" alt="EQ">
-              <div style="font-size:12px;font-weight:700;color:#fff">ECUAQUIMICA</div>
-            </button>
-            <button id="emp-btn-ag" onclick="selectEmpresa('AGROLEON')" style="padding:14px 8px;border-radius:16px;background:rgba(20,80,10,0.2);border:0.5px solid rgba(80,160,0,0.3);cursor:pointer;text-align:center">
-              <img id="emp-logo-ag" style="height:28px;width:auto;display:block;margin:0 auto 7px" alt="AG">
-              <div style="font-size:12px;font-weight:700;color:#fff">AGROLEON</div>
-            </button>
-          </div>
+      <div class="form-section" id="reimb-section" style="display:none">
+        <div class="form-row"><div class="form-label">¿Te lo reembolsan?</div>
+          <div class="seg-ctrl" style="flex:0 0 132px;margin-left:auto"><button type="button" class="seg-btn active-red" id="seg-no" onclick="setReimb('NO')">No</button><button type="button" class="seg-btn" id="seg-si" onclick="setReimb('SÍ')">Sí</button></div></div>
+        <div id="f-row-empresa" style="display:none;grid-template-columns:1fr 1fr;gap:10px;padding:4px 14px 14px">
+          <button type="button" id="emp-btn-eq" class="tx-emp" onclick="selectEmpresa('ECUAQUIMICA')"><img id="emp-logo-eq" alt="ECUAQUIMICA" style="height:24px;width:auto;filter:brightness(0) invert(1)"><span>ECUAQUIMICA</span></button>
+          <button type="button" id="emp-btn-ag" class="tx-emp" onclick="selectEmpresa('AGROLEON')"><img id="emp-logo-ag" alt="AGROLEON" style="height:30px;width:auto"><span>AGROLEON</span></button>
           <input type="hidden" id="f-empresa" value="ECUAQUIMICA">
         </div>
-        <div class="form-row" id="f-row-sector" style="display:none;background:rgba(255,159,10,0.07);border-radius:10px;margin:0 -4px;padding-left:4px">
-          <div class="form-label" style="color:var(--orange)">Sucursal</div>
-          <select class="form-select" id="f-sector" style="color:var(--orange)">
-            <option value="">Sin especificar</option>
-            <option value="TENA">Tena</option>
-            <option value="PUYO">Puyo</option>
-            <option value="SANTA ANA">Santa Ana</option>
-            <option value="MACAS">Macas</option>
-            <option value="SUCUA">Suc&#xFA;a</option>
-            <option value="LOGRO&#xD1;O">Logro&#xF1;o</option>
-            <option value="MENDEZ">M&#xE9;ndez</option>
-            <option value="LIMON INDANZA">Lim&#xF3;n Indanza</option>
-            <option value="GUALAQUIZA">Gualaquiza</option>
-            <option value="YANTZAZA">Yantzaza</option>
-          </select>
-        </div>
-        <div class="form-row" id="f-row-concepto" style="display:none;background:rgba(191,90,242,0.08);border-radius:10px;margin:0 -4px;padding-left:4px">
-          <div class="form-label" style="color:var(--purple);font-weight:600">De qui&#xE9;n &#x1F512;</div>
-          <input type="text" class="form-input" id="f-concepto" placeholder="Ej: KITS Agr&#xED;cola, pr&#xE9;stamo Pedro..." style="color:var(--purple)">
-        </div>
-        <div class="form-row">
-          <div class="form-label">Nota</div>
-          <input type="text" class="form-input" id="f-nota" placeholder="Opcional...">
-        </div>
+        <div class="form-row" id="f-row-sector" style="display:none"><div class="form-label">Sucursal</div><select class="form-select" id="f-sector"><option value="">Sin especificar</option><option value="TENA">Tena</option><option value="PUYO">Puyo</option><option value="SANTA ANA">Santa Ana</option><option value="MACAS">Macas</option><option value="SUCUA">Sucúa</option><option value="LOGROÑO">Logroño</option><option value="MENDEZ">Méndez</option><option value="LIMON INDANZA">Limón Indanza</option><option value="GUALAQUIZA">Gualaquiza</option><option value="YANTZAZA">Yantzaza</option></select></div>
       </div>
-      <div style="height:16px"></div>
+      <div class="form-section" style="margin-top:14px"><div class="form-row"><div class="form-label">Nota</div><input type="text" class="form-input" id="f-nota" placeholder="Opcional"></div></div>
+      <div style="height:8px"></div>
     </div>
-    <div style="padding:12px 16px;padding-bottom:calc(env(safe-area-inset-bottom) + 12px);flex-shrink:0;background:linear-gradient(0deg,rgba(10,0,25,1) 60%,rgba(10,0,25,0) 100%)">
-      <button class="btn-main" onclick="guardarTx()">Guardar movimiento</button>
-    </div>
+    <div class="tx-foot"><button type="button" class="btn-main" id="tx-save" onclick="guardarTx()">Guardar egreso</button></div>
   </div>
 </div>
 
