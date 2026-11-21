@@ -914,7 +914,7 @@ body *{text-transform:none!important}
 #av-monto,#av-pagar{width:100%}
 /* ══ v3.9 ══ */
 /* Nuevo movimiento: nunca bajo el notch / Dynamic Island, aun con el teclado abierto */
-#tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
+html.kb #tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
 #tx-modal .tx-sheet{max-height:calc(var(--vvh,100dvh) - env(safe-area-inset-top,0px) - 10px)!important}
 @supports not (height:100dvh){#tx-modal .tx-sheet{max-height:calc(100vh - env(safe-area-inset-top,0px) - 10px)!important}}
 
@@ -1189,6 +1189,13 @@ body *{text-transform:none!important}
 .cal-it.prog{background:rgba(251,191,36,.06);border-style:dashed;border-color:rgba(251,191,36,.35)}
 .icon-cal{--t1:#fde68a;--t2:#ea580c}
 
+/* Pantalla completa en la app instalada: cubre hasta el borde inferior (iOS a veces mide la pantalla más corta) */
+@media (display-mode: standalone){
+  html,body{min-height:100lvh}
+  .wallpaper,.screen,.inner-screen,.modal,.salud-modal,.nc{top:0!important;bottom:auto!important;height:100lvh!important}
+  html.kb .modal.open{height:var(--vvh,100lvh)!important;top:var(--vvt,0px)!important}
+}
+
 </style>
 </head>
 <body>
@@ -1309,7 +1316,7 @@ body *{text-transform:none!important}
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.2.0</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.2.1</div>
   </div>
 </div>
 
@@ -1870,7 +1877,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.2.0';
+var APP_VERSION='4.2.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -10505,7 +10512,14 @@ function irAMetas(){ planTab='metas'; goTo('plan'); }
 /* ── Nuevo movimiento: que la ventana no quede bajo el notch / Dynamic Island ── */
 (function(){
   var vv=window.visualViewport; if(!vv) return;
-  function ajustar(){ var r=document.documentElement.style; r.setProperty('--vvh',vv.height+'px'); r.setProperty('--vvt',vv.offsetTop+'px'); }
+  // Solo cuando el teclado está abierto: si no, la ventana ocupa toda la pantalla
+  function ajustar(){
+    var d=document.documentElement, r=d.style, a=document.activeElement;
+    var foco=a&&/INPUT|TEXTAREA|SELECT/.test(a.tagName), alto=Math.max(window.screen&&screen.height||0,window.innerHeight);
+    if(foco&&alto-vv.height>200){ r.setProperty('--vvh',vv.height+'px'); r.setProperty('--vvt',vv.offsetTop+'px'); d.classList.add('kb'); }
+    else { r.removeProperty('--vvh'); r.removeProperty('--vvt'); d.classList.remove('kb'); }
+  }
+  document.addEventListener('focusin',function(){ setTimeout(ajustar,350); }); document.addEventListener('focusout',function(){ setTimeout(ajustar,150); });
   vv.addEventListener('resize',ajustar); vv.addEventListener('scroll',ajustar); ajustar();
 })();
 
