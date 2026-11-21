@@ -767,7 +767,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.5.0</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.5.1</div>
   </div>
 </div>
 
@@ -1355,7 +1355,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='3.5.0';
+var APP_VERSION='3.5.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -1628,7 +1628,7 @@ function estadoParaGuardar(){
     notifVistas:state.notifVistas||{}, notifPanelOpen:state.notifPanelOpen||false,
     saludHistorico:state.saludHistorico||{}, presupuesto:state.presupuesto||{}, objetivos:state.objetivos||[],
     distribucionTemplate:state.distribucionTemplate||[], reservaAhorro:state.reservaAhorro||0,
-    seguridad:state.seguridad||null, ultimoRespaldo:state.ultimoRespaldo||null,
+    seguridad:state.seguridad||null, deudasSaldadas:state.deudasSaldadas||[], ultimoRespaldo:state.ultimoRespaldo||null,
     migradoDesde:state.migradoDesde||null
   };
 }
@@ -1926,6 +1926,166 @@ function mostrarErrorFatal(e){
 
 Object.keys(CAT_EXTRA_ICONS).forEach(function(k){ if(!CAT_ICONS[k]) CAT_ICONS[k]=CAT_EXTRA_ICONS[k]; });
 /* ══════════════════════════════════════════════════════════════
+   DEUDAS v3.5.1 — pagos parciales, vincular egresos ya registrados
+   y detección automática de pagos sin vincular
+   ══════════════════════════════════════════════════════════════ */
+function _palabrasClave(nombre){
+  return (nombre||'').toLowerCase().replace(/deuda (a|con|de)\s*/,'').split(/[^a-záéíóúñü0-9]+/).filter(function(w){return w.length>=4&&['deuda','prestamo','préstamo','pago','para'].indexOf(w)<0;});
+}
+// Aplica un pago (parcial o total) a una deuda que YO debo
+function aplicarPagoDeuda(deudaId,monto,txId){
+  var d=userDeudas.find(function(x){return x.id===deudaId;}); if(!d) return null;
+  monto=r2(Math.min(monto,d.monto));
+  (d.pagos=d.pagos||[]).push({fecha:hoyLocal(),monto:monto,txId:txId||null});
+  d.monto=r2(d.monto-monto);
+  if(txId){ var t=state.transactions.find(function(x){return x.id===txId;}); if(t){ t.deudaId=deudaId; t.cat='Deudas personales'; delete t.nat; } }
+  var saldada=d.monto<=0.005;
+  if(saldada){
+    userDeudas=userDeudas.filter(function(x){return x.id!==deudaId;});
+    (state.deudasSaldadas=state.deudasSaldadas||[]).unshift({id:d.id,nombre:d.nombre,total:r2(d.pagos.reduce(function(s,p){return s+p.monto;},0)),fecha:hoyLocal(),pagos:d.pagos});
+  }
+  return {deuda:d,monto:monto,saldada:saldada};
+}
+// Aplica un cobro (parcial o total) a dinero que ME deben
+function aplicarCobro(cobroId,monto,txId){
+  var c=(userCobros||[]).find(function(x){return x.id===cobroId;}); if(!c) return null;
+  monto=r2(Math.min(monto,c.monto));
+  (c.pagos=c.pagos||[]).push({fecha:hoyLocal(),monto:monto,txId:txId||null});
+  c.monto=r2(c.monto-monto);
+  if(txId){ var t=state.transactions.find(function(x){return x.id===txId;}); if(t){ t.cobroId=cobroId; t.cat='Cobro deuda'; delete t.nat; } }
+  var saldado=c.monto<=0.005;
+  if(saldado) userCobros=userCobros.filter(function(x){return x.id!==cobroId;});
+  return {cobro:c,monto:monto,saldado:saldado};
+}
+function _toastDeuda(r,quien){
+  if(!r) return;
+  showToast(r.saldada||r.saldado?'🎉 '+quien+' saldada por completo':'✅ Abono de '+fmt$(r.monto)+' · quedan '+fmt$((r.deuda||r.cobro).monto));
+}
+/* ── Pagar desde la pantalla Deudas (permite abonos parciales) ── */
+function pagarDeuda(id){
+  var d=userDeudas.find(function(x){return x.id===id;}); if(!d) return;
+  var ops=CUENTAS_TODAS.map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join('');
+  var ov=_modalBase('pd-modal','Pagar a '+esc(d.nombre),
+    '<div style="text-align:center;margin:4px 0 10px"><div style="font-size:12px;color:rgba(255,255,255,0.5)">Debes</div><div style="font-size:30px;font-weight:800;color:#ff5c7a">'+fmt$(d.monto)+'</div></div>'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55)">¿Cuánto pagas? (puede ser un abono)</label>'
+    +'<input id="pd-monto" inputmode="decimal" value="'+d.monto.toFixed(2)+'" style="'+_inpP+';font-size:20px;font-weight:700">'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55);display:block;margin-top:10px">¿Desde qué cuenta?</label>'
+    +'<select id="pd-cuenta" style="'+_inpP+'">'+ops+'</select>'
+    +'<button id="pd-ok" style="'+_btnP+'background:linear-gradient(135deg,#059669,#34d399);color:#fff">Registrar pago</button>'
+    +'<button onclick="document.getElementById(\'pd-modal\').remove();vincularPagoDeuda(\''+id+'\')" style="'+_btnP+'background:rgba(255,255,255,0.08);color:#fff">Ya lo registré como egreso → vincular</button>'
+    +'<button onclick="document.getElementById(\'pd-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('pd-ok').onclick=function(){
+    var m=parseMonto(document.getElementById('pd-monto').value), cta=document.getElementById('pd-cuenta').value;
+    if(!(m>0)){ showToast('Monto inválido'); return; }
+    if(m>d.monto+0.005){ showToast('El pago supera la deuda ('+fmt$(d.monto)+')'); return; }
+    var tx={id:nuevoId(),fecha:hoyLocal(),desc:'Pago deuda — '+d.nombre,cuenta:cta,monto:m,tipo:'EGRESO',cat:'Deudas personales',reimb:'NO',empresa:'',nota:''};
+    state.transactions.push(tx); ordenarTx();
+    var r=aplicarPagoDeuda(id,m,tx.id); saveState(); ov.remove(); renderDeudas(); updateHomeWidget(); _toastDeuda(r,d.nombre);
+  };
+}
+/* ── Vincular un egreso que ya registraste (no crea un movimiento nuevo) ── */
+function candidatosPagoDeuda(d,dias){
+  var desde=addDias(hoyLocal(),-(dias||45)), claves=_palabrasClave(d.nombre);
+  var usados={}; userDeudas.concat(state.deudasSaldadas||[]).forEach(function(x){ (x.pagos||[]).forEach(function(p){ if(p.txId) usados[p.txId]=1; }); });
+  return state.transactions.filter(function(t){
+    if(t.tipo!=='EGRESO'||t.fecha<desde||t.deudaId||usados[t.id]) return false;
+    var n=natOf(t); return n!=='transferencia'&&n!=='custodia'&&n!=='ajuste'&&t.reimb!=='SÍ';
+  }).map(function(t){
+    var txt=((t.desc||'')+' '+(t.nota||'')).toLowerCase(), sc=0;
+    if(Math.abs(t.monto-d.monto)<0.01) sc+=3;
+    if(claves.some(function(w){return txt.indexOf(w)>=0;})) sc+=3;
+    if(/deuda|pr[ée]stamo|devoluci|abono|pago a/.test(txt)) sc+=1;
+    return {t:t,sc:sc};
+  }).sort(function(a,b){ return b.sc-a.sc||(a.t.fecha<b.t.fecha?1:-1); });
+}
+function vincularPagoDeuda(id){
+  var d=userDeudas.find(function(x){return x.id===id;}); if(!d) return;
+  var cand=candidatosPagoDeuda(d,45).slice(0,25);
+  var ov=_modalBase('vd-modal','¿Cuál fue el pago a '+esc(d.nombre)+'?',
+    '<div style="font-size:12.5px;color:rgba(255,255,255,0.55);line-height:1.5;margin-bottom:8px">Elige el egreso que ya registraste. Se descuenta de la deuda sin crear otro movimiento.</div>'
+    +(cand.length?'<div style="max-height:52vh;overflow-y:auto;margin:0 -4px">'+cand.map(function(c){
+      var t=c.t; return '<button class="vd-it" data-tx="'+t.id+'" style="display:flex;width:100%;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:11px 12px;margin:0 0 6px;border-radius:12px;border:0.5px solid '+(c.sc>=3?'rgba(52,211,153,0.5)':'rgba(255,255,255,0.12)')+';background:'+(c.sc>=3?'rgba(52,211,153,0.1)':'rgba(255,255,255,0.05)')+';color:#fff;font-family:inherit">'
+        +'<span style="min-width:0"><span style="display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(t.desc)+(c.sc>=3?' <span style="font-size:10px;color:#34d399">· probable</span>':'')+'</span>'
+        +'<span style="font-size:11.5px;color:rgba(255,255,255,0.5)">'+fechaCorta(t.fecha)+' · '+esc(t.cuenta)+' · '+esc(t.cat)+'</span></span>'
+        +'<b style="color:#ff8fa3;white-space:nowrap">−'+fmt$(t.monto)+'</b></button>'; }).join('')+'</div>'
+      :'<div style="text-align:center;color:rgba(255,255,255,0.5);padding:20px 0">No encontré egresos recientes sin vincular.</div>')
+    +'<button onclick="document.getElementById(\'vd-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  ov.querySelectorAll('.vd-it').forEach(function(b){ b.onclick=function(){
+    var t=state.transactions.find(function(x){return String(x.id)===b.dataset.tx;}); if(!t) return;
+    var r=aplicarPagoDeuda(id,t.monto,t.id); saveState(); ov.remove(); renderDeudas(); updateHomeWidget(); _toastDeuda(r,d.nombre);
+    if(t.monto>r.monto+0.005) showToast('Se aplicaron '+fmt$(r.monto)+' (el egreso era mayor que la deuda)');
+  }; });
+}
+/* ── Cobrar (también parcial) ── */
+function cobrarDeuda(id){
+  var c=(userCobros||[]).find(function(x){return x.id===id;}); if(!c) return;
+  var ops=CUENTAS_TODAS.map(function(x){return '<option value="'+x+'">'+x+'</option>';}).join('');
+  var ov=_modalBase('cb-modal','Cobrar a '+esc(c.nombre),
+    '<div style="text-align:center;margin:4px 0 10px"><div style="font-size:12px;color:rgba(255,255,255,0.5)">Te debe</div><div style="font-size:30px;font-weight:800;color:#34d399">'+fmt$(c.monto)+'</div></div>'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55)">¿Cuánto te pagó?</label>'
+    +'<input id="cb-monto" inputmode="decimal" value="'+c.monto.toFixed(2)+'" style="'+_inpP+';font-size:20px;font-weight:700">'
+    +'<label style="font-size:12px;color:rgba(255,255,255,0.55);display:block;margin-top:10px">¿A qué cuenta entró?</label>'
+    +'<select id="cb-cuenta" style="'+_inpP+'">'+ops+'</select>'
+    +'<button id="cb-ok" style="'+_btnP+'background:linear-gradient(135deg,#059669,#34d399);color:#fff">Registrar cobro</button>'
+    +'<button onclick="document.getElementById(\'cb-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('cb-ok').onclick=function(){
+    var m=parseMonto(document.getElementById('cb-monto').value), cta=document.getElementById('cb-cuenta').value;
+    if(!(m>0)||m>c.monto+0.005){ showToast('Monto inválido'); return; }
+    var tx={id:nuevoId(),fecha:hoyLocal(),desc:'Cobro — '+c.nombre,cuenta:cta,monto:m,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:c.notas||''};
+    state.transactions.push(tx); ordenarTx();
+    var r=aplicarCobro(id,m,tx.id); saveState(); ov.remove(); renderDeudas(); updateHomeWidget(); _toastDeuda(r,c.nombre);
+  };
+}
+/* ── Pantalla Deudas ── */
+function renderDeudas(){
+  var total=r2(userDeudas.reduce(function(a,d){return a+d.monto;},0)), tc=r2((userCobros||[]).reduce(function(a,d){return a+d.monto;},0));
+  document.getElementById('deudas-total').textContent=fmt$(total);
+  var ce=document.getElementById('cobros-total'); if(ce) ce.textContent=fmt$(tc);
+  function pagosTxt(x){ var p=x.pagos||[]; if(!p.length) return ''; var s=r2(p.reduce(function(a,y){return a+y.monto;},0)); return '<div class="deuda-sub" style="color:#34d399">Abonado '+fmt$(s)+' en '+p.length+' pago'+(p.length>1?'s':'')+'</div>'; }
+  var h='';
+  userDeudas.forEach(function(d){
+    h+='<div class="deuda-item" style="flex-direction:column;align-items:stretch;gap:10px">'
+      +'<div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div style="min-width:0"><div class="deuda-name">👤 '+esc(d.nombre)+'</div>'+(d.notas?'<div class="deuda-sub">'+esc(d.notas)+'</div>':'')+pagosTxt(d)+'</div>'
+      +'<div class="deuda-monto" style="color:var(--red)">-'+fmt$(d.monto)+'</div></div>'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
+        +'<button onclick="pagarDeuda(\''+d.id+'\')" style="padding:9px;background:rgba(48,209,88,0.15);border:0.5px solid rgba(48,209,88,0.35);border-radius:10px;color:var(--green);font-size:13px;font-weight:700">Pagar / abonar</button>'
+        +'<button onclick="vincularPagoDeuda(\''+d.id+'\')" style="padding:9px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;color:rgba(255,255,255,0.8);font-size:13px;font-weight:700">Ya lo pagué</button>'
+      +'</div></div>';
+  });
+  document.getElementById('list-deudas').innerHTML=h||'<div class="empty-state">🎉 Sin deudas</div>';
+  var ch='';
+  (userCobros||[]).forEach(function(c){
+    ch+='<div class="deuda-item" style="border-color:rgba(52,211,153,0.2);background:rgba(52,211,153,0.05)">'
+      +'<div style="flex:1;min-width:0"><div class="deuda-name" style="color:var(--green)">👤 '+esc(c.nombre)+'</div>'+(c.notas?'<div class="deuda-sub">'+esc(c.notas)+'</div>':'')+pagosTxt(c)+'</div>'
+      +'<div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><div class="deuda-monto" style="color:var(--green)">+'+fmt$(c.monto)+'</div>'
+      +'<button onclick="cobrarDeuda(\''+c.id+'\')" style="padding:7px 12px;background:rgba(52,211,153,0.15);border:0.5px solid rgba(52,211,153,0.3);border-radius:10px;color:var(--green);font-size:12px;font-weight:700">Cobrar</button></div></div>';
+  });
+  var lc=document.getElementById('list-cobros'); if(lc) lc.innerHTML=ch||'<div class="empty-state" style="color:var(--green)">Sin cobros pendientes</div>';
+  var hs=document.getElementById('list-deudas-saldadas');
+  if(!hs){ hs=document.createElement('div'); hs.id='list-deudas-saldadas'; lc&&lc.parentNode.appendChild(hs); }
+  var sal=(state.deudasSaldadas||[]).slice(0,10);
+  hs.innerHTML=sal.length?'<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin:18px 0 10px">✅ Deudas saldadas</div>'
+    +sal.map(function(x){return '<div style="display:flex;justify-content:space-between;padding:8px 4px;font-size:13px;color:rgba(255,255,255,0.65);border-bottom:0.5px solid rgba(255,255,255,0.06)"><span>'+esc(x.nombre)+'</span><span>'+fmt$(x.total)+' · '+fechaCorta(x.fecha)+'</span></div>';}).join(''):'';
+}
+/* ── Formulario de movimiento: "¿Abona a una deuda?" / "¿Es un cobro?" ── */
+function actualizarFilaDeuda(){
+  var row=document.getElementById('f-row-deuda'), sel=document.getElementById('f-deuda'), lbl=document.getElementById('f-deuda-lbl');
+  if(!row||!sel) return;
+  var eg=state.currentTipo==='EGRESO', lista=eg?userDeudas:(userCobros||[]);
+  if(!lista.length){ row.style.display='none'; sel.innerHTML='<option value="">—</option>'; return; }
+  row.style.display='flex';
+  lbl.textContent=eg?'¿Abona a deuda?':'¿Es un cobro?';
+  sel.innerHTML='<option value="">No</option>'+lista.map(function(x){return '<option value="'+x.id+'">'+esc(x.nombre)+' ('+fmt$(x.monto)+')</option>';}).join('');
+}
+function sugerirDeudaEnFormulario(){
+  var sel=document.getElementById('f-deuda'); if(!sel||sel.dataset.tocado) return;
+  var m=parseMonto(document.getElementById('f-monto').value), d=(document.getElementById('f-desc').value||'').toLowerCase();
+  var lista=state.currentTipo==='EGRESO'?userDeudas:(userCobros||[]);
+  var hit=lista.find(function(x){ return (m>0&&Math.abs(m-x.monto)<0.01)||_palabrasClave(x.nombre).some(function(w){return d.indexOf(w)>=0;}); });
+  sel.value=hit?hit.id:'';
+}
+
+/* ══════════════════════════════════════════════════════════════
    NOTIFICACIONES v3.5 — motor sin duplicados + centro deslizable
    grupos: accion (requiere que hagas algo) · cobro (dinero por recibir)
            consejo (análisis) · logro (progreso)
@@ -1960,6 +2120,17 @@ function construirNotificaciones(){
       if(!e.oblig||e.fecha.slice(0,7)===mes) return;
       add({id:'ob_'+e.oblig+'_'+e.fecha.slice(0,7),grupo:'accion',nivel:'medio',icon:e.icon,titulo:e.desc+' vence '+(_diasEntre(hoy,e.fecha)===1?'mañana':'el '+fechaCorta(e.fecha)),
         texto:'Ten listo el pago.',monto:e.monto,signo:'-',nav:'oblig',descarte:'manana'});
+    });
+  }catch(e){ console.warn(e); }
+
+  // ── 1b. Pagos de deudas registrados como egreso pero sin descontar ──
+  try{
+    userDeudas.forEach(function(d){
+      var c=candidatosPagoDeuda(d,21).filter(function(x){return x.sc>=3;})[0]; if(!c) return;
+      add({id:'vinc_'+d.id+'_'+c.t.id,grupo:'accion',nivel:'alto',icon:'🤝',titulo:'¿Pagaste “'+d.nombre+'”?',
+        texto:'Registraste “'+c.t.desc+'” por '+fmt$(c.t.monto)+' el '+fechaCorta(c.t.fecha)+', pero la deuda sigue en '+fmt$(d.monto)+'.',
+        accion:{lbl:'Sí, descontar de la deuda',fn:function(){ var r=aplicarPagoDeuda(d.id,c.t.monto,c.t.id); saveState(); updateHomeWidget(); if(state.currentScreen==='deudas') renderDeudas(); _toastDeuda(r,d.nombre); }},
+        nav:'deudas',descarte:'siempre'});
     });
   }catch(e){ console.warn(e); }
 
@@ -2874,6 +3045,7 @@ function init(){
   if(saved.distribucionTemplate) state.distribucionTemplate=saved.distribucionTemplate;
   if(saved.reservaAhorro!=null) state.reservaAhorro=saved.reservaAhorro;
   if(saved.seguridad) state.seguridad=saved.seguridad;
+  if(saved.deudasSaldadas) state.deudasSaldadas=saved.deudasSaldadas;
   if(saved.ultimoRespaldo) state.ultimoRespaldo=saved.ultimoRespaldo;
   state.migradoDesde=saved.migradoDesde||null;
   state._origenCarga=origen;
@@ -6901,7 +7073,7 @@ function eliminarCredito(id){
 }
 
 // DEUDAS
-function renderDeudas(){
+function renderDeudas_v34(){
   var total=userDeudas.reduce(function(a,d){return a+d.monto;},0);
   var totalCobros=(userCobros||[]).reduce(function(a,d){return a+d.monto;},0);
   document.getElementById('deudas-total').textContent='$'+total.toFixed(2);
@@ -6970,7 +7142,7 @@ function guardarDeudaModal(tipo){
   saveState(); closeKitsModal(); renderDeudas(); updateHomeWidget();
   showToast('✅ '+(tipo==='cobrar'?'Préstamo de $'+monto.toFixed(2)+' registrado':'Deuda guardada'));
 }
-function cobrarDeuda(id){
+function cobrarDeuda_v34(id){
   if(!userCobros) return;
   var c=userCobros.find(function(x){return x.id===id;});
   if(!c) return;
@@ -7004,7 +7176,7 @@ function confirmarCobro(id,cuenta){
 }
 // Keep old showAddDeuda for backward compat
 function showAddDeuda(){ showAddDeudaModal('debo'); }
-function pagarDeuda(id){
+function pagarDeuda_v34(id){
   var deuda=userDeudas.find(function(d){return d.id===id;});
   if(!deuda) return;
   var cuentas=['Efectivo','Banco Pichincha','Jardín Azuayo','Banco Guayaquil'];
@@ -8028,7 +8200,7 @@ function openManualForm(tipo){
   var modal=document.getElementById('tx-modal');
   if(!modal) return;
   var fd=document.getElementById('f-fecha');
-  if(fd&&!fd.value){var d=new Date();fd.value=d.toISOString().split('T')[0];}
+  if(fd&&!fd.value){ fd.value=hoyLocal(); }
   modal.classList.add('open');
   setTipo(tipo||'EGRESO');
   setTimeout(function(){
@@ -8072,6 +8244,7 @@ function setTipo(t){
   var reimbSec=document.getElementById('reimb-section');
   if(reimbSec) reimbSec.style.display=t==='EGRESO'?'block':'none';
   if(t==='INGRESO') setReimb('NO');
+  try{ var _fd=document.getElementById('f-deuda'); if(_fd) delete _fd.dataset.tocado; actualizarFilaDeuda(); sugerirDeudaEnFormulario(); }catch(e){}
 }
 function catChanged(){
   var cat=document.getElementById('f-cat').value;
@@ -8869,7 +9042,11 @@ function guardarTx(){
   var t={id:nuevoId(),fecha:fecha,desc:desc,cuenta:cuenta,monto:monto,tipo:state.currentTipo,cat:cat,reimb:state.currentReimb,empresa:empVal,sector:sectorVal,nota:notaFinal};
   state.transactions.unshift(t);
   state.transactions.sort(function(a,b){ return a.fecha>b.fecha?-1:a.fecha<b.fecha?1:b.id-a.id; });
+  var _fdSel=document.getElementById('f-deuda'), _vinc=_fdSel?_fdSel.value:'', _rd=null;
+  if(_vinc){ _rd=t.tipo==='EGRESO'?aplicarPagoDeuda(_vinc,t.monto,t.id):aplicarCobro(_vinc,t.monto,t.id); }
   saveState(); updateHomeWidget();
+  if(_fdSel){ _fdSel.value=''; delete _fdSel.dataset.tocado; }
+  if(_rd){ setTimeout(function(){ _toastDeuda(_rd,(_rd.deuda||_rd.cobro).nombre); },2300); }
   document.getElementById('f-desc').value='';
   document.getElementById('f-monto').value='';
   document.getElementById('f-nota').value='';
@@ -9207,6 +9384,7 @@ function boot(){
   try{ init(); }catch(e){ console.error(e); mostrarErrorFatal(e); }
   try{ initSwipeModals(); }catch(e){ console.error(e); }
   try{ ncInitGestos(); }catch(e){ console.error(e); }
+  try{ ['f-monto','f-desc'].forEach(function(id){ var el=document.getElementById(id); if(el) el.addEventListener('input',sugerirDeudaEnFormulario); }); }catch(e){}
   try{ if(pinActivo()) mostrarBloqueo(); }catch(e){ console.error(e); }
 }
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
@@ -9400,6 +9578,12 @@ if('serviceWorker' in navigator && location.protocol==='https:'){
             <option value="Imprenta">&#x1F5A8;&#xFE0F; Imprenta</option>
             <option value="Varios">&#x1F4E6; Varios</option>
           </select>
+        </div>
+      </div>
+      <div class="form-section" id="f-row-deuda-sec">
+        <div class="form-row" id="f-row-deuda" style="display:none">
+          <div class="form-label" id="f-deuda-lbl" style="color:#fbbf24">&#xBF;Abona a deuda?</div>
+          <select class="form-select" id="f-deuda" onchange="this.dataset.tocado=1" style="color:#fbbf24"><option value="">No</option></select>
         </div>
       </div>
       <div id="reimb-section" class="form-section" style="display:none">
