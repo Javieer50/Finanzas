@@ -581,6 +581,9 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
 .cc-sim-input::placeholder{color:rgba(255,255,255,0.3);font-weight:400}
 .cc-sim-result{background:rgba(255,255,255,0.05);border-radius:14px;padding:12px 14px}
 .cc-tag{display:inline-block;padding:3px 9px;border-radius:8px;font-size:11px;font-weight:700;margin-left:6px}
+.plan-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1)}
+.plan-tab{padding:10px 6px;border:none;border-radius:11px;background:transparent;color:rgba(255,255,255,0.55);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.plan-tab.sel{background:rgba(199,125,255,0.22);color:#fff;box-shadow:inset 0 0 0 0.5px rgba(199,125,255,0.5)}
 </style>
 </head>
 <body>
@@ -700,9 +703,9 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
         <div class="app-icon-bg icon-kits"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="8" y="15" width="16" height="13" rx="3.5" stroke="#fff" stroke-width="2.2"/><path d="M11 15v-4a5 5 0 0 1 10 0v4" stroke="#fff" stroke-width="2.2"/><circle cx="16" cy="21" r="2.2" fill="#fff"/><line x1="16" y1="23" x2="16" y2="25.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
         <div class="app-icon-label">No disp.</div>
       </div>
-      <div class="app-icon" onclick="goTo('reporte')">
-        <div class="app-icon-bg icon-reporte"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M9 4h11l8 8v16a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" stroke="#fff" stroke-width="2.1"/><path d="M20 4v8h8" stroke="#fff" stroke-width="2.1"/><path d="M11 17h10M11 22h7" stroke="#fff" stroke-width="1.9" stroke-linecap="round"/></svg></div>
-        <div class="app-icon-label">Reporte</div>
+      <div class="app-icon" onclick="goTo('plan')">
+        <div class="app-icon-bg" style="background:linear-gradient(145deg,#a78bfa 0%,#5b21b6 100%)"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 24c4-1 6-9 10-9s5 5 9 5 4-8 5-11" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="20" r="2.2" fill="#fff"/><path d="M4 28h24" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+        <div class="app-icon-label">Plan</div>
       </div>
       <div class="app-icon" onclick="goTo('analisis')">
         <div class="app-icon-bg" style="background:linear-gradient(145deg,#fbbf24 0%,#b45309 100%)"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><polyline points="4,24 11,16 16,21 27,8" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/><polyline points="21,8 27,8 27,14" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
@@ -713,8 +716,8 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
         <div class="app-icon-label">Mi Perfil</div>
       </div>
     </div>
-    <div class="scroll-hint">Noviembre 2026 · Javier Rivas</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.3.0 · Nov 2026</div>
+    <div class="scroll-hint">Finanzas JR</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.4.0</div>
   </div>
 </div>
 
@@ -1125,6 +1128,19 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
   </div>
 </div>
 
+<!-- PLAN: FLUJO DE CAJA + METAS -->
+<div class="inner-screen" id="screen-plan">
+  <div class="nav-header">
+    <button class="back-btn" onclick="goBack()">‹</button>
+    <div class="nav-title">Plan</div>
+  </div>
+  <div style="padding:0 16px 8px"><div class="plan-tabs">
+    <button id="plan-tab-flujo" class="plan-tab sel" onclick="setPlanTab('flujo')">📈 Flujo de caja</button>
+    <button id="plan-tab-metas" class="plan-tab" onclick="setPlanTab('metas')">🎯 Metas</button>
+  </div></div>
+  <div class="scroll-content" id="plan-content" style="padding-top:4px"></div>
+</div>
+
 <!-- ANÁLISIS -->
 <div class="inner-screen" id="screen-analisis">
   <div class="nav-header">
@@ -1144,6 +1160,7 @@ html,body{height:100%;overflow:hidden;background:#06000f;font-family:-apple-syst
     <div id="ana-categorias-card"></div>
     <div id="ana-curva-card"></div>
     <div id="ana-meta-card"></div>
+    <button onclick="copiarResumenClaude()" style="width:100%;margin:4px 0 24px;padding:13px;border-radius:14px;background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.35);font-size:14px;font-weight:700;cursor:pointer">📋 Copiar resumen para Claude</button>
   </div>
 </div>
 
@@ -1263,12 +1280,12 @@ var CUENTA_COLORS={'Efectivo':'#ffd60a','Banco Pichincha':'#3a8eff','Jardín Azu
 
 // BASE BALANCES (calculated so current balances = base + transactions = known values)
 // Bases ajustadas para reflejar: consolidación KITS completa en JA + transferencia $117.87 + $50 KITS faltante
-var BASE_BALANCES={'Efectivo':14.60,'Banco Pichincha':133.98,'Jardín Azuayo':-64.84,'Banco Guayaquil':410.85};
+var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Guayaquil':0}; // los saldos base reales vienen de tus datos guardados
 /* ══════════════════════════════════════════════════════════════
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='3.3.0';
+var APP_VERSION='3.4.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -1546,6 +1563,7 @@ function estadoParaGuardar(){
   };
 }
 function saveState(){
+  if(state._origenCarga==='v3-incompleto') return false; // protección: nunca sobrescribir con datos incompletos
   try{
     localStorage.setItem(STORE_KEY, JSON.stringify(estadoParaGuardar()));
     if(_saveFallido){ _saveFallido=false; mostrarAvisoGuardado(false); }
@@ -1735,6 +1753,7 @@ function decodificarRespaldo(txt,pass){
   });
 }
 function validarRespaldo(d){
+  if(d&&d._v3&&!PRELOADED.length) return {ok:false,error:'Los códigos FJRV3 antiguos no incluyen tu historial. Usa un respaldo exportado desde la v3.3 o posterior.'};
   if(d&&d._v3) d=migrarV3(d._v3);
   else if(d&&d.transactions&&d.schema!==4&&d.deletedIds) d=migrarV3(d);
   if(!d||!Array.isArray(d.transactions)) return {ok:false,error:'No contiene movimientos'};
@@ -1836,688 +1855,531 @@ function mostrarErrorFatal(e){
 }
 
 Object.keys(CAT_EXTRA_ICONS).forEach(function(k){ if(!CAT_ICONS[k]) CAT_ICONS[k]=CAT_EXTRA_ICONS[k]; });
+/* ══════════════════════════════════════════════════════════════
+   PLAN v3.4 — calendario de ingresos/egresos, flujo de caja y metas
+   ══════════════════════════════════════════════════════════════ */
+var SBU_POR_ANIO={2026:482};
+function cfgIngresos(){
+  var p=state.perfil||{};
+  return {
+    fechaIngreso:p.fechaIngreso||'2026-02-01',
+    sueldoFijo:+p.sueldoFijo||0,
+    quincena:+p.quincena||0,
+    saldoSueldo:+(p.saldoSueldo||p.sueldoRestante)||0,
+    decimos:p.decimos||'acumulados',          // acumulados | mensualizados
+    fondosReserva:p.fondosReserva||'mensual', // mensual | iess
+    viaticoDiario:p.viaticoDiario!=null?+p.viaticoDiario:7,
+    diasRuta:p.diasRuta!=null?+p.diasRuta:15,
+    sbu:+(p.sbu||SBU_POR_ANIO[new Date().getFullYear()]||482),
+    incluirInciertos:!!p.planIncluirInciertos
+  };
+}
+/* ── Fechas ── */
+function ymdToDate(s){ return new Date(+s.slice(0,4),+s.slice(5,7)-1,+s.slice(8,10),12); }
+function addDias(s,n){ var d=ymdToDate(s); d.setDate(d.getDate()+n); return dateToYmd(d); }
+function difDias(a,b){ return Math.round((ymdToDate(b)-ymdToDate(a))/86400000); }
+function habilAntes(s){ var d=ymdToDate(s); while(d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()-1); return dateToYmd(d); }
+function habilDespues(s){ var d=ymdToDate(s); while(d.getDay()===0||d.getDay()===6) d.setDate(d.getDate()+1); return dateToYmd(d); }
+function fechaCorta(s){ var d=ymdToDate(s); return DIAS[d.getDay()].slice(0,3)+' '+d.getDate()+' '+MESES[d.getMonth()].slice(0,3); }
+function mesesEntre(desdeYmd,hastaYmd){ // meses trabajados (fraccionados por días) entre dos fechas
+  var a=ymdToDate(desdeYmd), b=ymdToDate(hastaYmd); if(b<a) return 0;
+  return Math.min(12,(b-a)/86400000/30.4375);
+}
+function _yaRegistrado(regex,desde,hasta){
+  return state.transactions.some(function(t){ return t.tipo==='INGRESO'&&t.fecha>=desde&&t.fecha<=hasta&&regex.test((t.desc||'')+' '+(t.cat||'')); });
+}
+function _ingresoSimilar(fecha,monto){
+  var a=addDias(fecha,-5), b=addDias(fecha,3);
+  return state.transactions.some(function(t){ return t.tipo==='INGRESO'&&natOf(t)==='operativo'&&t.fecha>=a&&t.fecha<=b&&Math.abs(t.monto-monto)<=1; });
+}
+
+/* ── Eventos programados entre dos fechas (inclusive) ── */
+function eventosProgramados(desde,hasta){
+  var cfg=cfgIngresos(), ev=[];
+  var ymIni=desde.slice(0,7), ymFin=hasta.slice(0,7);
+  for(var ym=ymIni; ym<=ymFin; ym=ymAdd(ym,1)){
+    var ult=ym+'-'+String(diasDelMes(ym)).padStart(2,'0');
+    // Sueldo ECUAQUIMICA: anticipo día 15 y saldo último día (si cae fin de semana, se adelanta al viernes)
+    if(cfg.quincena>0) ev.push({fecha:habilAntes(ym+'-15'),monto:cfg.quincena,tipo:'ING',desc:'Anticipo quincena ECUAQUIMICA',certeza:'seguro',icon:'💼',clave:'q'});
+    var resto=cfg.saldoSueldo;
+    var fr=r2(cfg.sueldoFijo*0.0833);
+    var aniv=addDias(cfg.fechaIngreso,365);
+    if(cfg.fondosReserva==='mensual'&&cfg.sueldoFijo>0&&ult>=aniv) resto=r2(resto+fr);
+    if(resto>0) ev.push({fecha:habilAntes(ult),monto:resto,tipo:'ING',desc:'Sueldo ECUAQUIMICA (saldo)'+(resto>cfg.saldoSueldo?' + fondos de reserva':''),certeza:'seguro',icon:'💼',clave:'s'});
+    var y=+ym.slice(0,4), m=+ym.slice(5,7);
+    // Décimo tercero (acumulado): hasta el 24 de diciembre, período 1-dic a 30-nov
+    if(cfg.decimos==='acumulados'&&m===12){
+      var pIni=(y-1)+'-12-01'; if(cfg.fechaIngreso>pIni) pIni=cfg.fechaIngreso;
+      if(!_yaRegistrado(/d[ée]cimo terc|decimotercer/i,y+'-09-01',y+'-12-31')){
+        var d13=r2(cfg.sueldoFijo*mesesEntre(pIni,y+'-11-30')/12);
+        if(d13>0) ev.push({fecha:habilAntes(y+'-12-24'),monto:d13,tipo:'ING',desc:'Décimo tercer sueldo',certeza:'seguro',icon:'🎁',extra:true});
+      }
+    }
+    // Décimo cuarto (régimen Amazonía): hasta el 15 de agosto, período 1-ago a 31-jul
+    if(cfg.decimos==='acumulados'&&m===8){
+      var qIni=(y-1)+'-08-01'; if(cfg.fechaIngreso>qIni) qIni=cfg.fechaIngreso;
+      if(!_yaRegistrado(/d[ée]cimo cuarto|decimocuarto/i,y+'-07-01',y+'-09-30')){
+        var d14=r2((SBU_POR_ANIO[y]||cfg.sbu)*mesesEntre(qIni,y+'-07-31')/12);
+        if(d14>0) ev.push({fecha:habilAntes(y+'-08-15'),monto:d14,tipo:'ING',desc:'Décimo cuarto sueldo',certeza:'seguro',icon:'🎁',extra:true});
+      }
+    }
+    // Obligaciones (arriendo, familia, suscripciones…)
+    try{
+      getObligacionesMesFor(ym).forEach(function(o){
+        if(o.pagadaEsteMes) return;
+        var dia=Math.min(o.diaPago||1,diasDelMes(ym));
+        var f=o.duracion==='puntual'?(o.fechaInicio||ym+'-01'):ym+'-'+String(dia).padStart(2,'0');
+        ev.push({fecha:f,monto:o.montoActual,tipo:'EGR',desc:o.nombre,certeza:'seguro',icon:o.icono||'📅',oblig:o.id});
+      });
+    }catch(e){}
+  }
+  // Cuotas de crédito (simula las cuotas que siguen mes a mes)
+  (userCreditos||[]).forEach(function(c){
+    if(!c.debitoDia) return;
+    var sim=(c.avances||[]).filter(function(a){return !a.pagado;}).map(function(a){return Object.assign({},a);});
+    for(var ym2=ymIni; ym2<=ymFin; ym2=ymAdd(ym2,1)){
+      if(c.ultimoDebito===ym2) continue;
+      if(c.ultimoDebito&&ym2<c.ultimoDebito) continue;
+      var tot=0;
+      sim.forEach(function(av){
+        if(av.pagado) return;
+        var k=(av.cuotasPagadas||0)+1; tot+=cuotaAvance(av,k);
+        av.cuotasPagadas=k; if(av.formaPago!=='diferido'||k>=(av.cuotas||1)) av.pagado=true;
+      });
+      if(tot>0) ev.push({fecha:ym2+'-'+String(Math.min(c.debitoDia,diasDelMes(ym2))).padStart(2,'0'),monto:r2(tot),tipo:'EGR',desc:'Cuota '+c.nombre,certeza:'seguro',icon:'💳'});
+    }
+  });
+  // Viáticos ECUAQUIMICA pendientes: se liquidan entre el 11 y el 16 del mes siguiente
+  try{
+    var paid=new Set(state.reimbPagados||[]), enCiclo=new Set(), porMes={};
+    (state.ciclosEQ||[]).forEach(function(c){ (c.txIds||[]).forEach(function(id){enCiclo.add(id);});
+      if(c.estado!=='pagado'){ var mm=c.mes||mesLocal(); porMes[mm]=(porMes[mm]||0)+(c.total||0); } });
+    state.transactions.forEach(function(t){
+      if(t.arch||t.reimb!=='SÍ'||t.empresa!=='ECUAQUIMICA'||t.cat==='Custodia/Paso'||paid.has(t.id)||enCiclo.has(t.id)) return;
+      var mm=t.fecha.slice(0,7); porMes[mm]=(porMes[mm]||0)+t.monto;
+    });
+    Object.keys(porMes).forEach(function(mm){
+      var f=habilDespues(ymAdd(mm,1)+'-16'); if(f<desde) f=habilDespues(addDias(desde,2));
+      if(f<=hasta&&porMes[mm]>0) ev.push({fecha:f,monto:r2(porMes[mm]),tipo:'ING',desc:'Viáticos ECUAQUIMICA ('+MESES[+mm.slice(5,7)-1]+')',certeza:'probable',icon:'🧾'});
+    });
+  }catch(e){}
+  // Solo eventos dentro del rango y que no se hayan registrado ya
+  return ev.filter(function(e){
+    if(e.fecha<desde||e.fecha>hasta) return false;
+    if((e.clave==='q'||e.clave==='s')&&_ingresoSimilar(e.fecha,e.clave==='s'?cfgIngresos().saldoSueldo:e.monto)) return false;
+    return true;
+  }).sort(function(a,b){ return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:(a.tipo==='ING'?-1:1); });
+}
+/* ── Ingresos inciertos (AGROLEON): se muestran, pero no se cuentan salvo que lo pidas ── */
+function ingresosInciertos(){
+  var out=[];
+  try{
+    var paid=new Set(state.reimbPagados||[]);
+    var ag=state.transactions.filter(function(t){ return !t.arch&&t.reimb==='SÍ'&&t.empresa==='AGROLEON'&&t.cat!=='Custodia/Paso'&&!paid.has(t.id); });
+    var tot=r2(ag.reduce(function(s,t){return s+t.monto;},0));
+    if(tot>0) out.push({monto:tot,desc:'Reembolsos AGROLEON pendientes ('+ag.length+')',icon:'🌿',certeza:'incierto'});
+  }catch(e){}
+  var com=state.transactions.filter(function(t){ return t.tipo==='INGRESO'&&/comisi[oó]n/i.test(t.desc||'')&&/agroleon/i.test(t.desc||''); }).sort(function(a,b){return a.fecha<b.fecha?1:-1;})[0];
+  var ult=com?com.monto:(((state.perfil||{}).comisiones||[]).slice(-1)[0]||{}).valor;
+  if(ult>0){
+    var yaEsteMes=com&&com.fecha.slice(0,7)===mesLocal();
+    out.push({monto:r2(+ult),desc:'Comisión AGROLEON si cumples la meta de '+MESES[+(yaEsteMes?mesLocal():ymAdd(mesLocal(),-1)).slice(5,7)-1],icon:'🎯',certeza:'incierto',
+      fecha:habilDespues((yaEsteMes?ymAdd(mesLocal(),1):mesLocal())+'-14')});
+  }
+  return out;
+}
+/* ── Gasto variable diario (últimos 60 días, sin obligaciones ni cuotas) ── */
+function gastoVariableDiario(){
+  var hoy=hoyLocal(), desde=addDias(hoy,-60);
+  var nombres=(state.obligaciones||[]).map(function(o){return (o.nombre||'').toLowerCase();}).filter(Boolean);
+  var tot=0, primera=hoy;
+  state.transactions.forEach(function(t){
+    if(t.tipo!=='EGRESO'||t.fecha<desde||t.fecha>hoy) return;
+    var f=flujoTx(t); if(!f.gasto) return;
+    var d=(t.desc||'').toLowerCase();
+    if(/^pago obligaci|suscripci[oó]n/.test(d)) return;
+    if(nombres.some(function(n){return n&&d.indexOf(n)>=0;})) return;
+    if(/^(Arriendo|Arriendo\/Vivienda|Vivienda|Familia|Apoyo mamá)$/.test(t.cat)&&t.monto>=50) return;
+    tot+=t.monto; if(t.fecha<primera) primera=t.fecha;
+  });
+  var dias=Math.max(14,difDias(primera,hoy)+1);
+  return r2(tot/dias);
+}
+// Gastos de trabajo que adelantas y te reembolsan después (salen de tu bolsillo hoy)
+function gastoTrabajoDiario(){
+  var hoy=hoyLocal(), desde=addDias(hoy,-60), tot=0, primera=hoy;
+  state.transactions.forEach(function(t){
+    if(t.tipo!=='EGRESO'||t.reimb!=='SÍ'||t.cat==='Custodia/Paso'||t.fecha<desde||t.fecha>hoy) return;
+    tot+=t.monto; if(t.fecha<primera) primera=t.fecha;
+  });
+  return r2(tot/Math.max(14,difDias(primera,hoy)+1));
+}
+function apartadoMetas(){
+  return r2((state.objetivos||[]).filter(function(o){return !o.completado;}).reduce(function(s,o){return s+(o.acumulado||0);},0));
+}
+function disponibleReal(){
+  var b=calcBalances(), k=calcKits();
+  return r2(Object.keys(b).reduce(function(s,c){return s+b[c]-(k[c]||0);},0));
+}
+/* ── Proyección día a día ── */
+function proyectarFlujo(diasMin){
+  var cfg=cfgIngresos(), hoy=hoyLocal();
+  var tmp=eventosProgramados(addDias(hoy,1),addDias(hoy,75));
+  // Horizonte: hasta el segundo pago de sueldo (mín. diasMin, máx. 45 días)
+  var pagos=tmp.filter(function(e){return e.clave==='s';});
+  var fin=pagos.length>1?pagos[1].fecha:(pagos.length?addDias(pagos[0].fecha,15):addDias(hoy,30));
+  if(difDias(hoy,fin)<(diasMin||21)) fin=addDias(hoy,diasMin||21);
+  if(difDias(hoy,fin)>45) fin=addDias(hoy,45);
+  var ev=eventosProgramados(addDias(hoy,1),fin);
+  var inc=ingresosInciertos();
+  if(cfg.incluirInciertos) inc.forEach(function(i){ if(i.fecha&&i.fecha>hoy&&i.fecha<=fin) ev.push({fecha:i.fecha,monto:i.monto,tipo:'ING',desc:i.desc,certeza:'incierto',icon:i.icon}); });
+  ev.sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:0;});
+  var gvPropio=gastoVariableDiario(), gvTrabajo=gastoTrabajoDiario(), gv=r2(gvPropio+gvTrabajo);
+  var inicio=r2(disponibleReal()-apartadoMetas());
+  var n=difDias(hoy,fin), dias=[], bal=inicio, cum=0, min={bal:inicio,fecha:hoy}, seguro=Infinity, sinGasto=inicio;
+  for(var i=1;i<=n;i++){
+    var f=addDias(hoy,i), del=ev.filter(function(e){return e.fecha===f;});
+    var neto=del.reduce(function(s,e){return s+(e.tipo==='ING'?e.monto:-e.monto);},0);
+    cum+=neto; bal=r2(bal+neto-gv);
+    dias.push({fecha:f,bal:bal,ev:del});
+    if(bal<min.bal) min={bal:bal,fecha:f};
+    seguro=Math.min(seguro,(inicio+cum)/i);
+  }
+  return {hoy:hoy,fin:fin,inicio:inicio,gv:gv,dias:dias,ev:ev,min:min,seguro:r2(Math.max(0,seguro===Infinity?0:seguro)),
+    inciertos:inc,apartado:apartadoMetas(),gvPropio:gvPropio,gvTrabajo:gvTrabajo,proxSueldo:ev.filter(function(e){return e.clave==='s'||e.clave==='q';})[0]||null};
+}
+/* ── Racha sin avances ni préstamos ── */
+function rachaSinAvances(){
+  var mes=mesLocal(), racha=0;
+  for(var k=1;k<=24;k++){
+    var ym=ymAdd(mes,-k), f=flujoMes(ym);
+    if(f.n===0) break;
+    if(f.finIn>0) break; racha++;
+  }
+  var actual=flujoMes(mes).finIn;
+  return {racha:racha,esteMes:actual};
+}
+
+/* ══ PANTALLA PLAN ══ */
+var planTab='flujo';
+function setPlanTab(t){ planTab=t; renderPlan(); }
+function renderPlan(){
+  var cont=document.getElementById('plan-content'); if(!cont) return;
+  ['flujo','metas'].forEach(function(t){ var b=document.getElementById('plan-tab-'+t); if(b) b.className='plan-tab'+(planTab===t?' sel':''); });
+  try{ cont.innerHTML=planTab==='flujo'?htmlFlujo():htmlMetas(); }
+  catch(e){ console.error(e); cont.innerHTML='<div class="cc-card">⚠️ '+esc(e.message)+'</div>'; }
+}
+function _certBadge(c){
+  var m={seguro:['#34d399','Seguro'],probable:['#60a5fa','Probable'],incierto:['#fbbf24','Incierto']}[c]||['#999',c];
+  return '<span style="font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:'+m[0]+';border:0.5px solid '+m[0]+'66;border-radius:6px;padding:1px 5px;margin-left:6px">'+m[1]+'</span>';
+}
+function htmlFlujo(){
+  var p=proyectarFlujo(), cfg=cfgIngresos();
+  var rojo=p.min.bal<0, h='';
+  // ── Tarjeta principal ──
+  h+='<div class="cc-card" style="padding:16px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
+      +'<div><div style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.6px">Disponible hoy</div>'
+      +'<div style="font-size:28px;font-weight:800;color:#fff;letter-spacing:-1px">'+fmt$(p.inicio)+'</div>'
+      +(p.apartado>0?'<div style="font-size:11px;color:rgba(255,255,255,0.4)">ya descontado '+fmt$(p.apartado)+' apartado para metas</div>':'')+'</div>'
+      +'<div style="text-align:right"><div style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.6px">Punto más bajo</div>'
+      +'<div style="font-size:20px;font-weight:800;color:'+(rojo?'#ff5c7a':'#34d399')+'">'+(p.min.bal<0?'−':'')+fmt$(Math.abs(p.min.bal))+'</div>'
+      +'<div style="font-size:11px;color:rgba(255,255,255,0.4)">'+(p.min.fecha===p.hoy?'hoy':fechaCorta(p.min.fecha))+'</div></div>'
+    +'</div>'
+    +svgFlujo(p)
+    +'<div style="font-size:10px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px">Proyección hasta '+fechaCorta(p.fin)+' gastando tu ritmo actual de '+fmt$(p.gv)+'/día (incluye gastos de ruta que te reembolsan después)</div>'
+  +'</div>';
+  // ── Alerta / gasto seguro ──
+  var col=p.seguro>=p.gv?'#34d399':p.seguro>=p.gv*0.6?'#fbbf24':'#ff5c7a';
+  h+='<div class="cc-card" style="padding:14px 16px">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
+      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Gasto diario seguro</div><div style="font-size:22px;font-weight:800;color:'+col+'">'+fmt$(p.seguro)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">para no bajar de $0</div></div>'
+      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Tu ritmo actual</div><div style="font-size:22px;font-weight:800;color:#fff">'+fmt$(p.gv)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(p.gvTrabajo>0?'propio '+fmt$(p.gvPropio)+' + trabajo '+fmt$(p.gvTrabajo):'promedio 60 días')+'</div></div>'
+    +'</div>'
+    +(rojo?'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,92,122,0.1);border:0.5px solid rgba(255,92,122,0.35);font-size:13px;line-height:1.45;color:#ffc2cd">⚠️ A tu ritmo actual, el <b>'+fechaCorta(p.min.fecha)+'</b> quedarías en <b>−'+fmt$(Math.abs(p.min.bal))+'</b>. Bajando a <b>'+fmt$(p.seguro)+'/día</b> llegas sin pedir avance.</div>'
+      :'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(52,211,153,0.08);border:0.5px solid rgba(52,211,153,0.3);font-size:13px;line-height:1.45;color:#b7f5dc">✅ A tu ritmo actual llegas sin avances hasta el '+fechaCorta(p.fin)+'. Lo que no gastes de la diferencia ('+fmt$(Math.max(0,p.seguro-p.gv))+'/día) puedes apartarlo para tu meta.</div>')
+  +'</div>';
+  // ── Racha sin avances ──
+  var r=rachaSinAvances();
+  h+='<div class="cc-card" style="padding:14px 16px;display:flex;align-items:center;gap:14px">'
+    +'<div style="font-size:30px">'+(r.esteMes>0?'🔁':'🔥')+'</div>'
+    +'<div style="flex:1"><div style="font-size:14px;font-weight:700;color:#fff">'+(r.esteMes>0?'Este mes recibiste '+fmt$(r.esteMes)+' en avances/préstamos':(r.racha>0?r.racha+' mes'+(r.racha>1?'es':'')+' + este sin avances':'Este mes vas sin avances'))+'</div>'
+    +'<div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px">'+(r.esteMes>0?'El contador vuelve a empezar el próximo mes. Meta: un mes completo sin pedir.':'Cada mes sin avances es interés que no pagas y un paso fuera del ciclo de deuda.')+'</div></div>'
+  +'</div>';
+  // ── Calendario ──
+  h+='<div class="cc-card" style="padding:14px 16px"><div class="cc-card-title" style="margin-bottom:10px">📅 Próximos movimientos</div>';
+  if(!p.ev.length) h+='<div style="font-size:13px;color:rgba(255,255,255,0.4);text-align:center;padding:10px">Sin movimientos programados en este período</div>';
+  p.ev.forEach(function(e){
+    var d=p.dias.find(function(x){return x.fecha===e.fecha;});
+    h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid rgba(255,255,255,0.06)">'
+      +'<div style="width:46px;text-align:center;flex-shrink:0"><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase">'+DIAS[ymdToDate(e.fecha).getDay()].slice(0,3)+'</div><div style="font-size:18px;font-weight:800;color:#fff;line-height:1">'+ymdToDate(e.fecha).getDate()+'</div></div>'
+      +'<div style="flex:1;min-width:0"><div style="font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+e.icon+' '+esc(e.desc)+'</div>'
+      +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">'+_certBadge(e.certeza).replace('margin-left:6px','margin-left:0')+(d?' &nbsp;saldo después ≈ '+fmt$(d.bal):'')+'</div></div>'
+      +'<div style="font-size:14px;font-weight:700;color:'+(e.tipo==='ING'?'#34d399':'#ff5c7a')+';white-space:nowrap">'+(e.tipo==='ING'?'+':'−')+fmt$(e.monto)+'</div>'
+    +'</div>';
+  });
+  h+='</div>';
+  // ── Inciertos ──
+  if(p.inciertos.length){
+    h+='<div class="cc-card" style="padding:14px 16px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div class="cc-card-title">🌿 AGROLEON (sin fecha segura)</div>'
+      +'<label style="font-size:11px;color:rgba(255,255,255,0.55);display:flex;align-items:center;gap:6px"><input type="checkbox" '+(cfg.incluirInciertos?'checked':'')+' onchange="state.perfil.planIncluirInciertos=this.checked;saveState();renderPlan()">Contar</label></div>';
+    p.inciertos.forEach(function(i){
+      h+='<div style="display:flex;justify-content:space-between;padding:7px 0;font-size:13px;color:rgba(255,255,255,0.8)"><span>'+i.icon+' '+esc(i.desc)+_certBadge('incierto')+'</span><span style="color:#fbbf24;font-weight:700">+'+fmt$(i.monto)+'</span></div>';
+    });
+    h+='<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;line-height:1.4">No se cuentan en la proyección hasta que los cobres (pagan sin fecha fija). Actívalo solo si ya te confirmaron el pago.</div></div>';
+  }
+  h+='<button onclick="copiarResumenClaude()" style="width:100%;margin:4px 0 20px;padding:13px;border-radius:14px;background:rgba(48,209,88,0.12);color:var(--green);border:0.5px solid rgba(48,209,88,0.35);font-size:14px;font-weight:700;cursor:pointer">📋 Copiar resumen para Claude</button>';
+  return h;
+}
+function svgFlujo(p){
+  var W=340,H=150,PL=4,PR=4,PT=12,PB=18, pts=[{fecha:p.hoy,bal:p.inicio}].concat(p.dias);
+  var vals=pts.map(function(x){return x.bal;}); var mx=Math.max.apply(null,vals.concat([0])), mn=Math.min.apply(null,vals.concat([0]));
+  if(mx===mn) mx=mn+1; var pad=(mx-mn)*0.08; mx+=pad; mn-=pad;
+  var X=function(i){return PL+(W-PL-PR)*i/Math.max(1,pts.length-1);}, Y=function(v){return PT+(H-PT-PB)*(mx-v)/(mx-mn);};
+  var line=pts.map(function(x,i){return (i?'L':'M')+X(i).toFixed(1)+' '+Y(x.bal).toFixed(1);}).join(' ');
+  var area=line+' L'+X(pts.length-1).toFixed(1)+' '+Y(0).toFixed(1)+' L'+X(0).toFixed(1)+' '+Y(0).toFixed(1)+' Z';
+  var marks='';
+  pts.forEach(function(x,i){ if(!x.ev||!x.ev.length) return;
+    var ing=x.ev.some(function(e){return e.tipo==='ING';}), egr=x.ev.some(function(e){return e.tipo==='EGR';});
+    marks+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(x.bal).toFixed(1)+'" r="3.5" fill="'+(ing&&!egr?'#34d399':egr&&!ing?'#ff5c7a':'#fbbf24')+'" stroke="#120626" stroke-width="1.5"/>'; });
+  var lbls='', paso=Math.max(1,Math.round(pts.length/5));
+  for(var i=0;i<pts.length;i+=paso){ var d=ymdToDate(pts[i].fecha); lbls+='<text x="'+X(i).toFixed(1)+'" y="'+(H-4)+'" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="'+(i===0?'start':'middle')+'">'+d.getDate()+'/'+(d.getMonth()+1)+'</text>'; }
+  var yMin=p.dias.length?Y(p.min.bal):0;
+  return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block;margin-top:6px">'
+    +'<defs><linearGradient id="fgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c77dff" stop-opacity="0.35"/><stop offset="1" stop-color="#c77dff" stop-opacity="0"/></linearGradient>'
+    +'<clipPath id="fgNeg"><rect x="0" y="'+Y(0).toFixed(1)+'" width="'+W+'" height="'+H+'"/></clipPath></defs>'
+    +'<line x1="0" x2="'+W+'" y1="'+Y(0).toFixed(1)+'" y2="'+Y(0).toFixed(1)+'" stroke="rgba(255,255,255,0.25)" stroke-dasharray="3 3"/>'
+    +'<text x="'+(W-2)+'" y="'+(Y(0)-3).toFixed(1)+'" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="end">$0</text>'
+    +'<path d="'+area+'" fill="url(#fgA)"/>'
+    +'<path d="'+line+'" fill="none" stroke="#c77dff" stroke-width="2.2" stroke-linejoin="round"/>'
+    +'<path d="'+line+'" fill="none" stroke="#ff5c7a" stroke-width="2.6" clip-path="url(#fgNeg)"/>'
+    +marks+lbls+'</svg>';
+}
+
+/* ══ METAS ══ */
+function metasOrdenadas(){
+  var a=(state.objetivos||[]).slice();
+  a.forEach(function(o,i){ if(o.orden==null) o.orden=i; });
+  return a.sort(function(x,y){ return (x.completado?1:0)-(y.completado?1:0)||x.orden-y.orden; });
+}
+function capacidadAhorroMensual(){
+  try{ var s=calcSaludFinanciera(); var a=s.analisis||{}; var h=a.hist3||[];
+    if(h.length) return r2(h.reduce(function(t,x){return t+x.netOrd;},0)/h.length);
+  }catch(e){}
+  return 0;
+}
+function htmlMetas(){
+  var ms=metasOrdenadas(), act=ms.filter(function(o){return !o.completado;}), hechas=ms.filter(function(o){return o.completado;});
+  var cap=capacidadAhorroMensual(), h='';
+  h+='<div class="cc-card" style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center">'
+    +'<div><div style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.6px">Apartado para metas</div><div style="font-size:24px;font-weight:800;color:#c77dff">'+fmt$(apartadoMetas())+'</div>'
+    +'<div style="font-size:11px;color:rgba(255,255,255,0.4)">se descuenta de tu dinero disponible</div></div>'
+    +'<button onclick="editarMeta(null)" style="padding:10px 14px;border-radius:12px;background:rgba(199,125,255,0.18);border:0.5px solid rgba(199,125,255,0.45);color:#c77dff;font-weight:700;font-size:13px">+ Meta</button></div>';
+  if(!act.length){
+    h+='<div class="cc-card" style="padding:18px 16px;text-align:center"><div style="font-size:34px">🎯</div><div style="font-size:15px;font-weight:700;color:#fff;margin:6px 0">Elige tu primera meta</div>'
+      +'<div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;margin-bottom:12px">Cuando cumplas una, la siguiente de tu lista pasa a ser la activa.</div>'
+      +'<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">'
+      +plantillasMeta().map(function(t,i){return '<button onclick="editarMeta(null,'+i+')" style="padding:8px 12px;border-radius:20px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:#fff;font-size:13px">'+t.icono+' '+t.nombre+'</button>';}).join('')
+      +'</div></div>';
+  }
+  act.forEach(function(o,idx){
+    var falta=r2(Math.max(0,(o.meta||0)-(o.acumulado||0))), pct=o.meta>0?Math.min(100,(o.acumulado||0)/o.meta*100):0;
+    var aporte=o.meses>0?r2(falta/Math.max(1,o.meses-mesesTranscurridos(o))):0;
+    var mesesCap=cap>0?Math.ceil(falta/cap):null;
+    var esActiva=idx===0;
+    h+='<div class="cc-card" style="padding:14px 16px;'+(esActiva?'border:1px solid rgba(199,125,255,0.5);box-shadow:0 0 24px rgba(199,125,255,0.15)':'opacity:0.8')+'">'
+      +'<div style="display:flex;align-items:center;gap:10px">'
+        +'<div style="font-size:28px">'+(o.icono||'🏆')+'</div>'
+        +'<div style="flex:1;min-width:0"><div style="font-size:15px;font-weight:700;color:#fff">'+esc(o.nombre)+(esActiva?' <span style="font-size:10px;color:#c77dff;border:0.5px solid #c77dff;border-radius:6px;padding:1px 5px;vertical-align:middle">ACTIVA</span>':'')+'</div>'
+        +'<div style="font-size:12px;color:rgba(255,255,255,0.5)">'+fmt$(o.acumulado||0)+' de '+fmt$(o.meta)+' · faltan '+fmt$(falta)+'</div></div>'
+        +'<div style="display:flex;flex-direction:column;gap:2px">'
+          +(idx>0?'<button onclick="moverMeta(\''+o.id+'\',-1)" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:14px">▲</button>':'')
+          +(idx<act.length-1?'<button onclick="moverMeta(\''+o.id+'\',1)" style="background:none;border:none;color:rgba(255,255,255,0.5);font-size:14px">▼</button>':'')
+        +'</div>'
+      +'</div>'
+      +'<div style="height:8px;border-radius:4px;background:rgba(255,255,255,0.08);margin:10px 0 8px;overflow:hidden"><div style="height:100%;width:'+pct.toFixed(1)+'%;background:linear-gradient(90deg,#9d4edd,#c77dff);border-radius:4px"></div></div>'
+      +(esActiva?'<div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.45;margin-bottom:10px">'
+        +(o.meses?'Para lograrlo en '+o.meses+' mes'+(o.meses>1?'es':'')+' aparta <b style="color:#fff">'+fmt$(aporte)+'/mes</b>. ':'')
+        +(mesesCap?'Con tu capacidad actual de ahorro ('+fmt$(cap)+'/mes) tardarías ~'+mesesCap+' mes'+(mesesCap>1?'es':'')+'.':'Hoy tu ahorro mensual promedio es '+fmt$(cap)+': para avanzar necesitas recortar gastos o sumar comisiones.')
+        +'</div>':'')
+      +'<div style="display:flex;gap:8px">'
+        +'<button onclick="moverDineroMeta(\''+o.id+'\',1)" style="flex:1;padding:10px;border-radius:12px;background:rgba(52,211,153,0.15);border:0.5px solid rgba(52,211,153,0.4);color:#34d399;font-weight:700;font-size:13px">+ Apartar</button>'
+        +((o.acumulado||0)>0?'<button onclick="moverDineroMeta(\''+o.id+'\',-1)" style="flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-weight:700;font-size:13px">− Liberar</button>':'')
+        +'<button onclick="editarMeta(\''+o.id+'\')" style="padding:10px 12px;border-radius:12px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);font-size:13px">✏️</button>'
+      +'</div>'
+      +(falta<=0?'<button onclick="cumplirMeta(\''+o.id+'\')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#c77dff);border:none;color:#fff;font-weight:800;font-size:14px">🎉 ¡Meta lista! Registrar compra</button>':'')
+    +'</div>';
+  });
+  if(hechas.length){
+    h+='<div class="cc-card" style="padding:14px 16px"><div class="cc-card-title" style="margin-bottom:8px">🏆 Metas cumplidas</div>';
+    hechas.forEach(function(o){ h+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:rgba(255,255,255,0.7)"><span>'+(o.icono||'🏆')+' '+esc(o.nombre)+'</span><span style="color:#34d399">'+fmt$(o.meta)+' · '+(o.fechaCompletado||'')+'</span></div>'; });
+    h+='</div>';
+  }
+  return h;
+}
+function mesesTranscurridos(o){ if(!o.creada) return 0; return Math.max(0,difDias(o.creada,hoyLocal())/30.4375|0); }
+function plantillasMeta(){
+  var gp=0; try{ var s=calcSaludFinanciera(); var h=(s.analisis||{}).hist3||[]; gp=h.length?h.reduce(function(t,x){return t+x.eg;},0)/h.length:0; }catch(e){}
+  return [
+    {nombre:'Fondo de emergencia',icono:'🛡',meta:gp>0?Math.round(gp*3/50)*50:1500,meses:12},
+    {nombre:'Lavadora',icono:'🧺',meta:350,meses:6},
+    {nombre:'Televisor',icono:'📺',meta:450,meses:6},
+    {nombre:'PlayStation',icono:'🎮',meta:550,meses:8},
+    {nombre:'Carro',icono:'🚗',meta:8000,meses:36}
+  ];
+}
+function editarMeta(id,plantilla){
+  var o=id?(state.objetivos||[]).find(function(x){return String(x.id)===String(id);}):null;
+  var t=plantilla!=null?plantillasMeta()[plantilla]:null;
+  var v=o||t||{nombre:'',icono:'🎯',meta:'',meses:6};
+  var ICON=['🛡','🧺','📺','🎮','🚗','🏍','📱','💻','🏠','✈️','🎓','🎁','💰','🎯'];
+  var ov=_modalBase('meta-modal',(o?'Editar meta':'Nueva meta'),
+    '<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px">'+ICON.map(function(ic){return '<button type="button" class="mt-ic" data-ic="'+ic+'" style="font-size:20px;padding:6px 8px;border-radius:10px;border:none;background:'+(ic===v.icono?'rgba(199,125,255,0.35)':'rgba(255,255,255,0.06)')+'">'+ic+'</button>';}).join('')+'</div>'
+    +'<input id="mt-nombre" placeholder="¿Qué quieres lograr?" value="'+esc(v.nombre)+'" style="'+_inpP+'">'
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">'
+      +'<input id="mt-monto" inputmode="decimal" placeholder="Precio $" value="'+(v.meta||'')+'" style="'+_inpP+'">'
+      +'<input id="mt-meses" inputmode="numeric" placeholder="¿En cuántos meses?" value="'+(v.meses||'')+'" style="'+_inpP+'"></div>'
+    +'<button id="mt-ok" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff">Guardar</button>'
+    +(o?'<button id="mt-del" style="'+_btnP+'background:rgba(255,92,122,0.12);color:#ff5c7a;border:0.5px solid rgba(255,92,122,0.35)">Eliminar meta</button>':'')
+    +'<button onclick="document.getElementById(\'meta-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  var icono=v.icono||'🎯';
+  ov.querySelectorAll('.mt-ic').forEach(function(b){ b.onclick=function(){ icono=b.dataset.ic; ov.querySelectorAll('.mt-ic').forEach(function(x){x.style.background='rgba(255,255,255,0.06)';}); b.style.background='rgba(199,125,255,0.35)'; }; });
+  document.getElementById('mt-ok').onclick=function(){
+    var nombre=document.getElementById('mt-nombre').value.trim(), meta=parseMonto(document.getElementById('mt-monto').value), meses=parseInt(document.getElementById('mt-meses').value)||0;
+    if(!nombre||!(meta>0)){ showToast('Escribe el nombre y el precio'); return; }
+    if(!state.objetivos) state.objetivos=[];
+    if(o){ o.nombre=nombre; o.meta=meta; o.meses=meses; o.icono=icono; }
+    else state.objetivos.push({id:'meta_'+Date.now(),nombre:nombre,meta:meta,meses:meses,icono:icono,acumulado:0,creada:hoyLocal(),orden:(state.objetivos.length?Math.max.apply(null,state.objetivos.map(function(x){return x.orden||0;}))+1:0)});
+    saveState(); ov.remove(); renderPlan(); updateHomeWidget(); showToast('🎯 Meta guardada');
+  };
+  var del=document.getElementById('mt-del');
+  if(del) del.onclick=function(){
+    if((o.acumulado||0)>0&&!del.dataset.ok){ del.dataset.ok='1'; del.textContent='Toca otra vez: se liberan '+fmt$(o.acumulado)+' apartados'; return; }
+    state.objetivos=state.objetivos.filter(function(x){return x!==o;}); saveState(); ov.remove(); renderPlan(); updateHomeWidget(); showToast('Meta eliminada');
+  };
+}
+function moverMeta(id,dir){
+  var act=metasOrdenadas().filter(function(o){return !o.completado;});
+  var i=act.findIndex(function(o){return String(o.id)===String(id);}), j=i+dir;
+  if(i<0||j<0||j>=act.length) return;
+  act.forEach(function(o,k){ o.orden=k; }); var t=act[i].orden; act[i].orden=act[j].orden; act[j].orden=t;
+  saveState(); renderPlan();
+}
+function moverDineroMeta(id,signo){
+  var o=(state.objetivos||[]).find(function(x){return String(x.id)===String(id);}); if(!o) return;
+  var libre=r2(disponibleReal()-apartadoMetas()), falta=r2(Math.max(0,o.meta-(o.acumulado||0)));
+  var sug=signo>0?Math.min(falta,Math.max(0,libre)):(o.acumulado||0);
+  var ov=_modalBase('apartar-modal',signo>0?'Apartar para '+esc(o.nombre):'Liberar de '+esc(o.nombre),
+    '<div style="font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5">'+(signo>0?'El dinero sigue en tu cuenta, pero deja de contar como disponible para gastar. Libre ahora: <b>'+fmt$(libre)+'</b>.':'Vuelve a tu dinero disponible. Apartado: <b>'+fmt$(o.acumulado||0)+'</b>.')+'</div>'
+    +'<input id="ap-monto" inputmode="decimal" placeholder="Monto $" value="'+(sug>0?sug.toFixed(2):'')+'" style="'+_inpP+';font-size:22px;font-weight:700">'
+    +'<button id="ap-ok" style="'+_btnP+'background:'+(signo>0?'#059669':'#6b7280')+';color:#fff">'+(signo>0?'Apartar':'Liberar')+'</button>'
+    +'<button onclick="document.getElementById(\'apartar-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('ap-ok').onclick=function(){
+    var m=parseMonto(document.getElementById('ap-monto').value);
+    if(!(m>0)){ showToast('Monto inválido'); return; }
+    if(signo>0&&m>libre+0.001){ showToast('Solo tienes '+fmt$(libre)+' libres'); return; }
+    if(signo<0&&m>(o.acumulado||0)+0.001){ showToast('Solo hay '+fmt$(o.acumulado)+' apartados'); return; }
+    o.acumulado=r2((o.acumulado||0)+signo*m);
+    (o.aportes=o.aportes||[]).push({fecha:hoyLocal(),monto:r2(signo*m)});
+    saveState(); ov.remove(); renderPlan(); updateHomeWidget();
+    showToast(signo>0?(o.acumulado>=o.meta?'🎉 ¡Completaste '+o.nombre+'!':'✅ '+fmt$(m)+' apartados'):'Liberado '+fmt$(m));
+  };
+}
+function cumplirMeta(id){
+  var o=(state.objetivos||[]).find(function(x){return String(x.id)===String(id);}); if(!o) return;
+  var opts=CUENTAS_TODAS.map(function(c){return '<option value="'+c+'">'+c+'</option>';}).join('');
+  var ov=_modalBase('cumplir-modal','🎉 '+esc(o.nombre),
+    '<div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.5">¡Lo lograste! Registra la compra para cerrar la meta. La siguiente de tu lista pasa a ser la activa.</div>'
+    +'<input id="cm-monto" inputmode="decimal" value="'+(o.acumulado||o.meta).toFixed(2)+'" style="'+_inpP+';font-size:20px;font-weight:700">'
+    +'<select id="cm-cuenta" style="'+_inpP+'">'+opts+'</select>'
+    +'<button id="cm-ok" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff">Registrar compra y cerrar meta</button>'
+    +'<button id="cm-solo" style="'+_btnP+'background:rgba(255,255,255,0.08);color:#fff">Cerrar meta sin registrar gasto</button>'
+    +'<button onclick="document.getElementById(\'cumplir-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Todavía no</button>');
+  function cerrar(conGasto){
+    if(conGasto){
+      var m=parseMonto(document.getElementById('cm-monto').value); if(!(m>0)){ showToast('Monto inválido'); return; }
+      state.transactions.push({id:nuevoId(),fecha:hoyLocal(),desc:'Meta cumplida: '+o.nombre,cuenta:document.getElementById('cm-cuenta').value,monto:m,tipo:'EGRESO',cat:'Equipos y Tecnología',reimb:'NO',empresa:'',nota:'Comprado con ahorro de meta'});
+      ordenarTx();
+    }
+    o.completado=true; o.fechaCompletado=hoyLocal(); o.acumulado=0;
+    saveState(); ov.remove(); renderPlan(); updateHomeWidget(); showToast('🏆 Meta cumplida: '+o.nombre);
+  }
+  document.getElementById('cm-ok').onclick=function(){ cerrar(true); };
+  document.getElementById('cm-solo').onclick=function(){ cerrar(false); };
+}
+
+/* ── Configuración de ingresos (Mi Perfil) ── */
+function configurarIngresos(){
+  var c=cfgIngresos();
+  function sel(id,val,ops){ return '<select id="'+id+'" style="'+_inpP+'">'+ops.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===val?' selected':'')+'>'+o[1]+'</option>';}).join('')+'</select>'; }
+  function row(lbl,inp){ return '<div style="margin-top:10px"><label style="font-size:12px;color:rgba(255,255,255,0.55)">'+lbl+'</label>'+inp+'</div>'; }
+  var ov=_modalBase('cfg-ing','📅 Cómo te pagan',
+    '<div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5">La app usa esto para proyectar tu flujo de caja. Si un pago cae sábado o domingo, se adelanta al viernes.</div>'
+    +row('Fecha de ingreso a ECUAQUIMICA','<input id="ci-fi" type="date" value="'+c.fechaIngreso+'" style="'+_inpP+';color-scheme:dark">')
+    +row('Décimos','' +sel('ci-dec',c.decimos,[['acumulados','Acumulados (agosto y diciembre)'],['mensualizados','Mensualizados (en el rol)']]))
+    +row('Fondos de reserva (desde tu primer año)',sel('ci-fr',c.fondosReserva,[['mensual','Con el sueldo cada mes (8,33%)'],['iess','Acumulados en el IESS']]))
+    +row('Viático diario de alimentación ($)','<input id="ci-vd" inputmode="decimal" value="'+c.viaticoDiario+'" style="'+_inpP+'">')
+    +row('Días de ruta al mes (aprox.)','<input id="ci-dr" inputmode="numeric" value="'+c.diasRuta+'" style="'+_inpP+'">')
+    +'<button id="ci-ok" style="'+_btnP+'background:linear-gradient(135deg,#2d6a4f,#52b788);color:#fff">Guardar</button>'
+    +'<button onclick="document.getElementById(\'cfg-ing\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cancelar</button>');
+  document.getElementById('ci-ok').onclick=function(){
+    var p=state.perfil=state.perfil||{};
+    p.fechaIngreso=document.getElementById('ci-fi').value||c.fechaIngreso;
+    p.decimos=document.getElementById('ci-dec').value; p.fondosReserva=document.getElementById('ci-fr').value;
+    p.viaticoDiario=parseMonto(document.getElementById('ci-vd').value)||0; p.diasRuta=parseInt(document.getElementById('ci-dr').value)||0;
+    saveState(); ov.remove(); renderPerfil(); showToast('✅ Calendario de pagos actualizado');
+  };
+}
+function htmlCalendarioPerfil(){
+  var hoy=hoyLocal(), ev=eventosProgramados(hoy,addDias(hoy,75)).filter(function(e){return e.tipo==='ING'&&e.certeza==='seguro';}).slice(0,4);
+  var c=cfgIngresos(), aniv=addDias(c.fechaIngreso,365);
+  return '<div class="glass-card" style="margin-bottom:16px;padding:16px 18px">'
+    +'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px">📅 Próximos pagos</div>'
+    +'<button onclick="configurarIngresos()" style="padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);font-size:12px">Ajustar</button></div>'
+    +ev.map(function(e){return '<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px;color:rgba(255,255,255,0.8)"><span>'+fechaCorta(e.fecha)+' · '+esc(e.desc)+'</span><b style="color:#34d399">'+fmt$(e.monto)+'</b></div>';}).join('')
+    +(c.fondosReserva==='mensual'&&hoy<aniv?'<div style="font-size:11px;color:rgba(255,255,255,0.45);margin-top:6px">Desde '+fechaCorta(aniv)+' se suman ~'+fmt$(c.sueldoFijo*0.0833)+'/mes de fondos de reserva.</div>':'')
+  +'</div>';
+}
+
+/* ── Resumen para Claude (reemplaza la pantalla Reporte) ── */
+function copiarResumenClaude(){
+  var p=state.perfil||{}, b=calcBalances(), k=calcKits(), dt=deudasTotales(), L=[];
+  L.push('=== RESUMEN FINANZAS JR · '+hoyLocal()+' ===');
+  L.push('Sueldo ECUAQUIMICA: fijo '+fmt$(p.sueldoFijo||0)+' · líquido '+fmt$(p.sueldoCompleto||0)+' (anticipo día 15 '+fmt$(p.quincena||0)+' + saldo fin de mes '+fmt$(p.saldoSueldo||0)+')');
+  L.push(''); L.push('SALDOS:'); Object.keys(b).forEach(function(c){ L.push('  '+c+': '+fmt$(b[c])+(k[c]?' (KITS '+fmt$(k[c])+')':'')); });
+  L.push('  Disponible sin KITS: '+fmt$(disponibleReal())+' · apartado metas: '+fmt$(apartadoMetas()));
+  L.push('DEUDAS: crédito '+fmt$(dt.credito)+' · personales '+fmt$(dt.personales));
+  L.push(''); L.push('FLUJO POR MES [ingreso ordinario | extraordinario | gasto | cuotas deuda | avances/préstamos recibidos | ahorro %]:');
+  for(var i=3;i>=0;i--){ var ym=ymAdd(mesLocal(),-i), f=flujoMes(ym); L.push('  '+ym+': '+[fmt$(f.ingOrd),fmt$(f.ingExtra),fmt$(f.gasto),fmt$(f.deuda),fmt$(f.finIn),f.tasa+'%'].join(' | ')+(i===0?' (en curso)':'')); }
+  var fm=flujoMes(mesLocal()); L.push(''); L.push('GASTO DEL MES POR CATEGORÍA:');
+  Object.keys(fm.catMap).sort(function(a,c){return fm.catMap[c]-fm.catMap[a];}).forEach(function(c){ L.push('  '+c+': '+fmt$(fm.catMap[c])); });
+  try{ var s=calcSaludFinanciera(); L.push(''); L.push('SALUD FINANCIERA: '+s.score+'/100'); s.componentes.forEach(function(c){ L.push('  '+c.nombre+' '+c.pts+'/'+c.max+': '+c.detalle); }); }catch(e){}
+  try{ var pr=proyectarFlujo(); L.push(''); L.push('FLUJO DE CAJA hasta '+pr.fin+': mínimo '+fmt$(pr.min.bal)+' el '+pr.min.fecha+' · gasto seguro '+fmt$(pr.seguro)+'/día · ritmo '+fmt$(pr.gv)+'/día');
+    pr.ev.forEach(function(e){ L.push('  '+e.fecha+' '+(e.tipo==='ING'?'+':'-')+fmt$(e.monto)+' '+e.desc+' ['+e.certeza+']'); }); }catch(e){}
+  var ms=metasOrdenadas().filter(function(o){return !o.completado;});
+  if(ms.length){ L.push(''); L.push('METAS:'); ms.forEach(function(o,i){ L.push('  '+(i+1)+'. '+o.nombre+': '+fmt$(o.acumulado||0)+' / '+fmt$(o.meta)+(o.meses?' en '+o.meses+' meses':'')); }); }
+  L.push(''); L.push('ÚLTIMOS 30 DÍAS (movimientos):');
+  var desde=addDias(hoyLocal(),-30);
+  state.transactions.filter(function(t){return t.fecha>=desde;}).forEach(function(t){ L.push('  '+t.fecha+' '+(t.tipo==='INGRESO'?'+':'-')+t.monto.toFixed(2)+' '+t.desc+' ['+t.cat+' · '+NAT_INFO[natOf(t)].lbl+' · '+t.cuenta+']'); });
+  var txt=L.join('\n');
+  var ok=function(){ showToast('📋 Resumen copiado — pégalo en tu chat con Claude'); };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok).catch(function(){ copiarRespaldoManual(txt,ok); });
+  else copiarRespaldoManual(txt,ok);
+  return txt;
+}
+
 
 
 // PRE-LOADED TRANSACTIONS — HISTORIAL Mar-Jul 2026 + Noviembre 2026
-var PRELOADED=[
-// ── MARZO 2026 ──────────────────────────────────────────
-{id:100,fecha:'2026-03-01',desc:'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:452.75,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:101,fecha:'2026-03-01',desc:'Ahorro programado JA',cuenta:'Jardín Azuayo',monto:50.00,tipo:'EGRESO',cat:'Ahorro',reimb:'NO',empresa:'',nota:''},
-{id:102,fecha:'2026-03-01',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:100.00,tipo:'EGRESO',cat:'Arriendo/Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:103,fecha:'2026-03-01',desc:'Suscripciones (Internet/Apps)',cuenta:'Banco Guayaquil',monto:10.00,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:104,fecha:'2026-03-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:105,fecha:'2026-03-10',desc:'Apoyo mamá',cuenta:'Efectivo',monto:100.00,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:''},
-{id:106,fecha:'2026-03-15',desc:'Comisión AGROLEON',cuenta:'Banco Guayaquil',monto:150.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'AGROLEON',nota:''},
-{id:107,fecha:'2026-03-15',desc:'Gastos personales/salidas',cuenta:'Efectivo',monto:35.80,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:108,fecha:'2026-03-20',desc:'Viáticos cobrados',cuenta:'Banco Guayaquil',monto:228.87,tipo:'INGRESO',cat:'Viáticos/Ruta',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:109,fecha:'2026-03-25',desc:'Cobros varios (Paola)',cuenta:'Efectivo',monto:574.67,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:''},
-{id:110,fecha:'2026-03-28',desc:'Pago deuda a terceros',cuenta:'Efectivo',monto:200.00,tipo:'EGRESO',cat:'Deudas/Préstamos',reimb:'NO',empresa:'',nota:''},
-// ── ABRIL 2026 ──────────────────────────────────────────
-{id:111,fecha:'2026-04-01',desc:'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:452.75,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:112,fecha:'2026-04-01',desc:'Ahorro programado JA',cuenta:'Jardín Azuayo',monto:50.00,tipo:'EGRESO',cat:'Ahorro',reimb:'NO',empresa:'',nota:''},
-{id:113,fecha:'2026-04-01',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:110.00,tipo:'EGRESO',cat:'Arriendo/Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:114,fecha:'2026-04-01',desc:'Suscripciones (Internet/Apps)',cuenta:'Banco Guayaquil',monto:20.00,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:115,fecha:'2026-04-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:116,fecha:'2026-04-10',desc:'Apoyo mamá',cuenta:'Efectivo',monto:80.75,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:''},
-{id:117,fecha:'2026-04-15',desc:'Comisión AGROLEON',cuenta:'Banco Guayaquil',monto:150.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'AGROLEON',nota:''},
-{id:118,fecha:'2026-04-15',desc:'Gastos personales/salidas',cuenta:'Efectivo',monto:110.00,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:119,fecha:'2026-04-20',desc:'Viáticos cobrados',cuenta:'Banco Guayaquil',monto:112.12,tipo:'INGRESO',cat:'Viáticos/Ruta',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:120,fecha:'2026-04-20',desc:'Avances crédito JA',cuenta:'Jardín Azuayo',monto:121.61,tipo:'EGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:''},
-{id:121,fecha:'2026-04-25',desc:'Cobros varios',cuenta:'Efectivo',monto:247.32,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:''},
-// ── MAYO 2026 ──────────────────────────────────────────
-{id:122,fecha:'2026-05-01',desc:'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:452.75,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:123,fecha:'2026-05-01',desc:'Ahorro programado JA',cuenta:'Jardín Azuayo',monto:50.00,tipo:'EGRESO',cat:'Ahorro',reimb:'NO',empresa:'',nota:''},
-{id:124,fecha:'2026-05-01',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:110.00,tipo:'EGRESO',cat:'Arriendo/Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:125,fecha:'2026-05-01',desc:'Suscripciones (Internet/Apps)',cuenta:'Banco Guayaquil',monto:35.00,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:126,fecha:'2026-05-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:127,fecha:'2026-05-10',desc:'Apoyo mamá',cuenta:'Efectivo',monto:120.60,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:''},
-{id:128,fecha:'2026-05-15',desc:'Comisión AGROLEON',cuenta:'Banco Guayaquil',monto:200.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'AGROLEON',nota:''},
-{id:129,fecha:'2026-05-15',desc:'Gastos personales/salidas',cuenta:'Efectivo',monto:139.50,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:130,fecha:'2026-05-20',desc:'Viáticos cobrados',cuenta:'Banco Guayaquil',monto:315.75,tipo:'INGRESO',cat:'Viáticos/Ruta',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:131,fecha:'2026-05-20',desc:'Avances crédito JA',cuenta:'Jardín Azuayo',monto:254.00,tipo:'EGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:''},
-{id:132,fecha:'2026-05-25',desc:'Préstamo recibido',cuenta:'Efectivo',monto:100.00,tipo:'INGRESO',cat:'Préstamo recibido',reimb:'NO',empresa:'',nota:''},
-// ── JUNIO 2026 ──────────────────────────────────────────
-{id:133,fecha:'2026-06-01',desc:'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:452.75,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:134,fecha:'2026-06-01',desc:'Ahorro programado JA',cuenta:'Jardín Azuayo',monto:50.00,tipo:'EGRESO',cat:'Ahorro',reimb:'NO',empresa:'',nota:''},
-{id:135,fecha:'2026-06-01',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:110.00,tipo:'EGRESO',cat:'Arriendo/Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:136,fecha:'2026-06-01',desc:'Suscripciones (Internet/Apps)',cuenta:'Banco Guayaquil',monto:40.00,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:137,fecha:'2026-06-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:138,fecha:'2026-06-10',desc:'Apoyo mamá',cuenta:'Efectivo',monto:120.60,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:''},
-{id:139,fecha:'2026-06-15',desc:'Comisión AGROLEON',cuenta:'Banco Guayaquil',monto:200.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'AGROLEON',nota:''},
-{id:140,fecha:'2026-06-15',desc:'Gastos personales/salidas',cuenta:'Efectivo',monto:180.00,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:141,fecha:'2026-06-20',desc:'Viáticos cobrados',cuenta:'Banco Guayaquil',monto:191.25,tipo:'INGRESO',cat:'Viáticos/Ruta',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:142,fecha:'2026-06-20',desc:'Avances crédito JA',cuenta:'Jardín Azuayo',monto:303.18,tipo:'EGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:''},
-{id:143,fecha:'2026-06-25',desc:'Préstamo recibido (Paola)',cuenta:'Efectivo',monto:150.00,tipo:'INGRESO',cat:'Préstamo recibido',reimb:'NO',empresa:'',nota:''},
-// ── JULIO 2026 ──────────────────────────────────────────
-{id:144,fecha:'2026-07-01',desc:'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:452.75,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:145,fecha:'2026-07-01',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:110.00,tipo:'EGRESO',cat:'Arriendo/Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:146,fecha:'2026-07-01',desc:'Suscripciones (Internet/Apps)',cuenta:'Banco Guayaquil',monto:32.33,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:147,fecha:'2026-07-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:148,fecha:'2026-07-10',desc:'Apoyo mamá',cuenta:'Efectivo',monto:120.60,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:''},
-{id:149,fecha:'2026-07-15',desc:'Comisión AGROLEON',cuenta:'Banco Guayaquil',monto:200.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'AGROLEON',nota:''},
-{id:150,fecha:'2026-07-15',desc:'Gastos personales/salidas',cuenta:'Efectivo',monto:200.50,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:151,fecha:'2026-07-20',desc:'Viáticos cobrados (gasolina)',cuenta:'Banco Guayaquil',monto:54.00,tipo:'INGRESO',cat:'Viáticos/Ruta',reimb:'NO',empresa:'ECUAQUIMICA',nota:''},
-{id:152,fecha:'2026-07-20',desc:'Avances crédito JA',cuenta:'Jardín Azuayo',monto:432.00,tipo:'EGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:''},
-{id:153,fecha:'2026-07-25',desc:'Cobros varios (Joss+Geovanny+préstamos)',cuenta:'Efectivo',monto:316.10,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:''},
-{id:154,fecha:'2026-07-28',desc:'Pago deuda a terceros',cuenta:'Efectivo',monto:350.00,tipo:'EGRESO',cat:'Deudas/Préstamos',reimb:'NO',empresa:'',nota:''},
-// ── AGOSTO 2026 ──────────────────────────────────────────
-{id:200,fecha:'2026-08-01',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Sábado — no reembolsable'},
-{id:201,fecha:'2026-08-01',desc:'Lavado de ropa',cuenta:'Efectivo',monto:4.4,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:202,fecha:'2026-08-02',desc:'Retiro efectivo — Guayaquil',cuenta:'Banco Guayaquil',monto:20.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a efectivo'},
-{id:203,fecha:'2026-08-02',desc:'Retiro efectivo — ingreso',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde Guayaquil'},
-{id:204,fecha:'2026-08-02',desc:'Alimentación sin factura',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'⚠ Sin factura — no reembolsable'},
-{id:205,fecha:'2026-08-03',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Efectivo',monto:6.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:206,fecha:'2026-08-03',desc:'Compra panes',cuenta:'Jardín Azuayo',monto:2.6,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:207,fecha:'2026-08-03',desc:'Gasolina moto — gasto propio',cuenta:'Efectivo',monto:5.6,tipo:'EGRESO',cat:'Transporte/Combustible',reimb:'NO',empresa:'',nota:''},
-{id:208,fecha:'2026-08-04',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Efectivo',monto:5.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:209,fecha:'2026-08-04',desc:'Préstamo Paola (hermana)',cuenta:'Jardín Azuayo',monto:300.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'🔴 DEUDA con Paola $300 — pagar con viáticos agosto'},
-{id:210,fecha:'2026-08-04',desc:'Transferencia a JA — salida',cuenta:'Banco Guayaquil',monto:221.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a Jardín Azuayo'},
-{id:211,fecha:'2026-08-04',desc:'Transferencia desde Guayaquil',cuenta:'Jardín Azuayo',monto:221.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde Banco Guayaquil'},
-{id:212,fecha:'2026-08-05',desc:'Cuota préstamo JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:213,fecha:'2026-08-05',desc:'Ahorro programado JA — último',cuenta:'Jardín Azuayo',monto:50.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Último pago ahorro programado'},
-{id:214,fecha:'2026-08-05',desc:'JA Crédito 3',cuenta:'Jardín Azuayo',monto:50.29,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Liquidado'},
-{id:215,fecha:'2026-08-05',desc:'JA Avance julio — liquidado',cuenta:'Jardín Azuayo',monto:302.0,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Liquidado'},
-{id:216,fecha:'2026-08-05',desc:'Devolución ahorro programado + intereses',cuenta:'Jardín Azuayo',monto:304.18,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Fin ahorro programado 5 meses'},
-{id:217,fecha:'2026-08-05',desc:'Pago préstamo Paola (hermana)',cuenta:'Jardín Azuayo',monto:300.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Deuda saldada ✓'},
-{id:218,fecha:'2026-08-05',desc:'Comisiones por transferencias',cuenta:'Jardín Azuayo',monto:1.68,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Costos bancarios transferencias'},
-{id:219,fecha:'2026-08-05',desc:'Avance crédito JA #8',cuenta:'Jardín Azuayo',monto:58.31,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'🔴 Avance #8 — ciclo de deuda continúa'},
-{id:220,fecha:'2026-08-05',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:221,fecha:'2026-08-05',desc:'Panadería',cuenta:'Jardín Azuayo',monto:1.4,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:222,fecha:'2026-08-05',desc:'Panadería',cuenta:'Jardín Azuayo',monto:1.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:223,fecha:'2026-08-06',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:224,fecha:'2026-08-06',desc:'Corte de cabello',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:225,fecha:'2026-08-06',desc:'Compra panes',cuenta:'Jardín Azuayo',monto:1.4,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:226,fecha:'2026-08-06',desc:'Tabaco',cuenta:'Jardín Azuayo',monto:1.75,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'⚠ Gasto destructivo'},
-{id:227,fecha:'2026-08-06',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:228,fecha:'2026-08-06',desc:'Merienda — facturada ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:229,fecha:'2026-08-06',desc:'Tabaco',cuenta:'Jardín Azuayo',monto:1.65,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'⚠ Gasto destructivo'},
-{id:230,fecha:'2026-08-07',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:231,fecha:'2026-08-07',desc:'Merienda — facturada ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:5.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:232,fecha:'2026-08-07',desc:'Helados vendedores AGROLEON — invitación comercial',cuenta:'Jardín Azuayo',monto:6.25,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'⏳ PENDIENTE FACTURAR a ECUAQUIMICA — aprobación jefe fin de mes'},
-{id:233,fecha:'2026-08-07',desc:'Fundas basura + 2 cervezas + 2 cigarrillos',cuenta:'Jardín Azuayo',monto:6.45,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'🔴 Incluye alcohol — PROTOCOLO VIOLADO'},
-{id:234,fecha:'2026-08-08',desc:'Compra zapatos',cuenta:'Jardín Azuayo',monto:25.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:235,fecha:'2026-08-08',desc:'Avance crédito JA #9',cuenta:'Jardín Azuayo',monto:150.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'🔴 Avance #9 — a pagar $153 (incluye intereses)'},
-{id:236,fecha:'2026-08-08',desc:'Arriendo agosto',cuenta:'Jardín Azuayo',monto:110.0,tipo:'EGRESO',cat:'Arriendo',reimb:'NO',empresa:'',nota:'Pago mensual arriendo'},
-{id:237,fecha:'2026-08-08',desc:'Retiro efectivo — salida a Macas',cuenta:'Jardín Azuayo',monto:30.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a efectivo — ruta Macas'},
-{id:238,fecha:'2026-08-08',desc:'Retiro efectivo — ingreso',cuenta:'Efectivo',monto:30.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde Jardín Azuayo'},
-{id:239,fecha:'2026-08-09',desc:'Agua',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:240,fecha:'2026-08-09',desc:'Desayuno',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:241,fecha:'2026-08-09',desc:'Magnesio — receta médica',cuenta:'Efectivo',monto:25.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Recetado por médico'},
-{id:242,fecha:'2026-08-09',desc:'Merienda',cuenta:'Jardín Azuayo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Domingo — sin viáticos'},
-{id:243,fecha:'2026-08-09',desc:'Tabaco',cuenta:'Jardín Azuayo',monto:0.55,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'⚠ Gasto destructivo'},
-{id:244,fecha:'2026-08-09',desc:'Ajuste de conciliación JA',cuenta:'Jardín Azuayo',monto:1.85,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Diferencia conciliación — verificar con JA'},
-{id:245,fecha:'2026-08-09',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:246,fecha:'2026-08-10',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:247,fecha:'2026-08-10',desc:'Merienda — facturada ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:248,fecha:'2026-08-10',desc:'Viáticos AGROLEON — domingo Macas',cuenta:'Efectivo',monto:7.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Pago viáticos domingo 09/08 — trabajo en Macas'},
-{id:249,fecha:'2026-08-11',desc:'Desparasitante',cuenta:'Efectivo',monto:2.65,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:250,fecha:'2026-08-11',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:251,fecha:'2026-08-11',desc:'Merienda — facturada ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:252,fecha:'2026-08-12',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:6.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:253,fecha:'2026-08-12',desc:'Avance crédito JA #10',cuenta:'Jardín Azuayo',monto:50.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'🔴 Avance #10 — se descuenta octubre'},
-{id:254,fecha:'2026-08-12',desc:'Lavandería ropa',cuenta:'Jardín Azuayo',monto:4.5,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:255,fecha:'2026-08-12',desc:'Gasolina moto',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Transporte/Combustible',reimb:'NO',empresa:'',nota:'Gasto propio'},
-{id:256,fecha:'2026-08-12',desc:'Salida con Cristian — gastos personales',cuenta:'Jardín Azuayo',monto:7.0,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:'⚠ Gasto social'},
-{id:257,fecha:'2026-08-12',desc:'Cerveza',cuenta:'Jardín Azuayo',monto:9.0,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'🔴 ALCOHOL — PROTOCOLO VIOLADO x2 en agosto'},
-{id:258,fecha:'2026-08-13',desc:'Retiro efectivo total JA',cuenta:'Jardín Azuayo',monto:18.69,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a efectivo'},
-{id:259,fecha:'2026-08-13',desc:'Retiro efectivo — ingreso',cuenta:'Efectivo',monto:18.69,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde JA'},
-{id:260,fecha:'2026-08-13',desc:'Aguas',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:261,fecha:'2026-08-13',desc:'Obsequio mamá',cuenta:'Banco Pichincha',monto:20.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Regalo de mamá'},
-{id:262,fecha:'2026-08-13',desc:'Almuerzo — facturado AGROLEON',cuenta:'Jardín Azuayo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reembolsable AGROLEON'},
-{id:263,fecha:'2026-08-13',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:4.94,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Diferencia $4.94 — revisar movimientos no registrados'},
-{id:264,fecha:'2026-08-13',desc:'Depósito a Pichincha — salida efectivo',cuenta:'Efectivo',monto:10.14,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a Pichincha'},
-{id:265,fecha:'2026-08-13',desc:'Depósito desde efectivo',cuenta:'Banco Pichincha',monto:10.14,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde efectivo'},
-{id:266,fecha:'2026-08-13',desc:'Merienda — facturada ECUAQUIMICA',cuenta:'Efectivo',monto:3.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:267,fecha:'2026-08-13',desc:'Pan y energizantes',cuenta:'Efectivo',monto:2.4,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:268,fecha:'2026-08-13',desc:'Viáticos ECUAQUIMICA julio — cobrado',cuenta:'Banco Guayaquil',monto:169.67,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Reembolso julio cobrado ✓'},
-{id:269,fecha:'2026-08-13',desc:'Decimocuarto sueldo — proporcional',cuenta:'Banco Guayaquil',monto:230.29,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Bonificación legal proporcional al tiempo en empresa'},
-{id:270,fecha:'2026-08-13',desc:'Comisiones transferencias Guayaquil',cuenta:'Banco Guayaquil',monto:0.52,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Costos bancarios'},
-{id:271,fecha:'2026-08-14',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Banco Pichincha',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:272,fecha:'2026-08-14',desc:'Merienda',cuenta:'Jardín Azuayo',monto:2.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:273,fecha:'2026-08-14',desc:'Anticipo quincenal agosto',cuenta:'Banco Guayaquil',monto:200.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Pago quincenal ECUAQUIMICA'},
-{id:274,fecha:'2026-08-15',desc:'Transferencia Pichincha → JA — salida',cuenta:'Banco Pichincha',monto:23.7,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna'},
-{id:275,fecha:'2026-08-15',desc:'Comisión transferencia Pichincha',cuenta:'Banco Pichincha',monto:0.31,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Costo bancario'},
-{id:276,fecha:'2026-08-15',desc:'Transferencia desde Pichincha — ingreso',cuenta:'Jardín Azuayo',monto:23.7,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde Pichincha'},
-{id:277,fecha:'2026-08-15',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:278,fecha:'2026-08-15',desc:'Apoyo mamá — agosto',cuenta:'Banco Guayaquil',monto:120.6,tipo:'EGRESO',cat:'Apoyo mamá',reimb:'NO',empresa:'',nota:'Pago mensual ✓'},
-{id:279,fecha:'2026-08-15',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna a efectivo'},
-{id:280,fecha:'2026-08-15',desc:'Retiro efectivo — ingreso',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde JA'},
-{id:281,fecha:'2026-08-15',desc:'Lavada de ropa',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:''},
-{id:282,fecha:'2026-08-15',desc:'Almuerzo — facturado ECUAQUIMICA',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA'},
-{id:283,fecha:'2026-08-15',desc:'Tabaco',cuenta:'Efectivo',monto:1.6,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:'⚠ Gasto destructivo'},
-{id:284,fecha:'2026-08-15',desc:'Aguas',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:285,fecha:'2026-08-16',desc:'Desayuno sin factura',cuenta:'Efectivo',monto:3.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Domingo — sin viáticos'},
-{id:286,fecha:'2026-08-16',desc:'Aguas',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:287,fecha:'2026-08-16',desc:'Transferencia Guayaquil → JA — salida',cuenta:'Banco Guayaquil',monto:78.5,tipo:'EGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Transferencia interna'},
-{id:288,fecha:'2026-08-16',desc:'Transferencia desde Guayaquil — ingreso',cuenta:'Jardín Azuayo',monto:78.5,tipo:'INGRESO',cat:'Otros',reimb:'NO',empresa:'',nota:'Desde Guayaquil'},
-{id:289,fecha:'2026-08-16',desc:'Almuerzo y merienda sin factura',cuenta:'Jardín Azuayo',monto:6.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'⚠ Domingo sin factura — no reembolsable'},
-{id:290,fecha:'2026-08-16',desc:'Comisión transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:0.25,tipo:'EGRESO',cat:'Comisiones bancarias',reimb:'NO',empresa:'',nota:'Ajuste conciliación — real $69.64'},
-{id:291,fecha:'2026-08-17',desc:'Desayuno',cuenta:'Efectivo',monto:1.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:292,fecha:'2026-08-17',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:293,fecha:'2026-08-17',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:294,fecha:'2026-08-18',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Retiro a efectivo'},
-{id:295,fecha:'2026-08-18',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:296,fecha:'2026-08-18',desc:'Desayuno',cuenta:'Efectivo',monto:1.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:297,fecha:'2026-08-18',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:298,fecha:'2026-08-18',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:1.0,tipo:'INGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Diferencia $1 vs app JA — verificar'},
-{id:299,fecha:'2026-08-18',desc:'Depósito efectivo a Pichincha',cuenta:'Efectivo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:300,fecha:'2026-08-18',desc:'Depósito efectivo a Pichincha',cuenta:'Banco Pichincha',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:301,fecha:'2026-08-18',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Banco Pichincha',monto:5.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:302,fecha:'2026-08-18',desc:'Prestobarba',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:303,fecha:'2026-08-18',desc:'Aguas',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:304,fecha:'2026-08-18',desc:'Papas',cuenta:'Efectivo',monto:0.4,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:305,fecha:'2026-08-19',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:306,fecha:'2026-08-19',desc:'Aguas y tabaco',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:307,fecha:'2026-08-19',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:30.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:308,fecha:'2026-08-19',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:30.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:309,fecha:'2026-08-19',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:310,fecha:'2026-08-19',desc:'Aguas y panes',cuenta:'Jardín Azuayo',monto:2.36,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:311,fecha:'2026-08-20',desc:'Almuerzo — factura AGROLEON (Pablo Sexto)',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Comisión AGROLEON — Pablo Sexto'},
-{id:312,fecha:'2026-08-20',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:313,fecha:'2026-08-20',desc:'Aguas y chocolates — viaje Pablo Sexto',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:314,fecha:'2026-08-20',desc:'Panes y jugo',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:315,fecha:'2026-08-21',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:316,fecha:'2026-08-21',desc:'Tabacos y aguas',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:317,fecha:'2026-08-21',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:318,fecha:'2026-08-21',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Guayaquil',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:319,fecha:'2026-08-21',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Pichincha',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:320,fecha:'2026-08-21',desc:'Cerveza',cuenta:'Banco Pichincha',monto:7.5,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:321,fecha:'2026-08-22',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:322,fecha:'2026-08-22',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:323,fecha:'2026-08-22',desc:'Botas de trabajo',cuenta:'Jardín Azuayo',monto:9.5,tipo:'EGRESO',cat:'Trabajo/Equipamiento',reimb:'NO',empresa:'',nota:''},
-{id:324,fecha:'2026-08-22',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:325,fecha:'2026-08-22',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:326,fecha:'2026-08-22',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:327,fecha:'2026-08-22',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:328,fecha:'2026-08-22',desc:'Desayuno — sin factura',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:329,fecha:'2026-08-22',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'⚠️ Sábado — verificar si aplica reembolso'},
-{id:330,fecha:'2026-08-22',desc:'Costurera uniformes de trabajo',cuenta:'Efectivo',monto:14.0,tipo:'EGRESO',cat:'Trabajo/Equipamiento',reimb:'NO',empresa:'',nota:''},
-{id:331,fecha:'2026-08-22',desc:'Tabacos',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:332,fecha:'2026-08-22',desc:'Comisión bancaria Pichincha',cuenta:'Banco Pichincha',monto:0.25,tipo:'EGRESO',cat:'Comisiones bancarias',reimb:'NO',empresa:'',nota:'Ajuste conciliación — real $6.63'},
-{id:333,fecha:'2026-08-22',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:0.11,tipo:'INGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Diferencia $0.11 vs app JA — real $8.39'},
-{id:334,fecha:'2026-08-23',desc:'Retiro efectivo desde Guayaquil',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:335,fecha:'2026-08-23',desc:'Retiro efectivo desde Guayaquil',cuenta:'Efectivo',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:336,fecha:'2026-08-23',desc:'Almuerzo — domingo sin factura',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Domingo — no aplica reembolso'},
-{id:337,fecha:'2026-08-23',desc:'Lavado de ropa',cuenta:'Efectivo',monto:3.8,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:338,fecha:'2026-08-23',desc:'Merienda — sin factura',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Domingo — no aplica reembolso'},
-{id:339,fecha:'2026-08-23',desc:'Pago deuda Paola (hermana)',cuenta:'Banco Guayaquil',monto:30.0,tipo:'EGRESO',cat:'Deudas personales',reimb:'NO',empresa:'',nota:'Abono deuda con hermana'},
-{id:340,fecha:'2026-08-23',desc:'Tabacos',cuenta:'Efectivo',monto:1.1,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:341,fecha:'2026-08-24',desc:'Desayuno — pan',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:342,fecha:'2026-08-24',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:343,fecha:'2026-08-24',desc:'Bálsamo labial',cuenta:'Efectivo',monto:5.2,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:344,fecha:'2026-08-24',desc:'Agua',cuenta:'Efectivo',monto:0.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:345,fecha:'2026-08-24',desc:'Hospedaje Tena — factura AGROLEON',cuenta:'Efectivo',monto:22.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON — Tena'},
-{id:346,fecha:'2026-08-25',desc:'Almuerzo y merienda — factura AGROLEON',cuenta:'Efectivo',monto:8.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON — Tena'},
-{id:347,fecha:'2026-08-25',desc:'Tabacos',cuenta:'Efectivo',monto:0.65,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:348,fecha:'2026-08-25',desc:'Hospedaje Tena — factura AGROLEON',cuenta:'Banco Guayaquil',monto:17.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON — Tena'},
-{id:349,fecha:'2026-08-26',desc:'Retiro efectivo desde Guayaquil',cuenta:'Banco Guayaquil',monto:100.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:350,fecha:'2026-08-26',desc:'Retiro efectivo desde Guayaquil',cuenta:'Efectivo',monto:100.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:351,fecha:'2026-08-26',desc:'Almuerzo — factura AGROLEON',cuenta:'Banco Pichincha',monto:5.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON — Tena'},
-{id:352,fecha:'2026-08-26',desc:'Combustible camioneta — factura AGROLEON',cuenta:'Efectivo',monto:48.5,tipo:'EGRESO',cat:'Transporte/Combustible',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:353,fecha:'2026-08-26',desc:'Agua',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:354,fecha:'2026-08-26',desc:'Tabacos',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:355,fecha:'2026-08-26',desc:'Reembolso combustible AGROLEON',cuenta:'Banco Pichincha',monto:48.5,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'AGROLEON pagó combustible 26 ago'},
-{id:356,fecha:'2026-08-26',desc:'Hospedaje Puyo — 2 noches (mié-jue) factura AGROLEON',cuenta:'Efectivo',monto:20.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON — Puyo'},
-{id:357,fecha:'2026-08-26',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:358,fecha:'2026-08-26',desc:'Tabacos',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:359,fecha:'2026-08-27',desc:'Bloqueador solar',cuenta:'Efectivo',monto:17.5,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:360,fecha:'2026-08-27',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:361,fecha:'2026-08-27',desc:'Retiro efectivo desde Pichincha',cuenta:'Banco Pichincha',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:362,fecha:'2026-08-27',desc:'Retiro efectivo desde Pichincha',cuenta:'Efectivo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:363,fecha:'2026-08-27',desc:'Merienda — factura AGROLEON',cuenta:'Efectivo',monto:5.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:364,fecha:'2026-08-27',desc:'Tabacos',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Tabaco/Vicios',reimb:'NO',empresa:'',nota:''},
-{id:365,fecha:'2026-08-27',desc:'Desayuno — galleta',cuenta:'Efectivo',monto:1.35,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:366,fecha:'2026-08-28',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:367,fecha:'2026-08-28',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:368,fecha:'2026-08-28',desc:'Entrada Hendrix',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:'🔴 Fiesta'},
-{id:369,fecha:'2026-08-28',desc:'Cerveza artesanal — Hendrix',cuenta:'Efectivo',monto:15.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:370,fecha:'2026-08-28',desc:'Transferencia Guayaquil→Pichincha — Musapp',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:371,fecha:'2026-08-28',desc:'Transferencia Guayaquil→Pichincha — Musapp',cuenta:'Banco Pichincha',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:372,fecha:'2026-08-28',desc:'Cerveza six — Musapp',cuenta:'Banco Pichincha',monto:9.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:373,fecha:'2026-08-28',desc:'2 six cerveza — Musapp',cuenta:'Banco Pichincha',monto:17.5,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:374,fecha:'2026-08-28',desc:'Cerveza six — Musapp',cuenta:'Banco Pichincha',monto:9.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:375,fecha:'2026-08-29',desc:'Retiro efectivo desde Guayaquil',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:376,fecha:'2026-08-29',desc:'Retiro efectivo desde Guayaquil',cuenta:'Efectivo',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:377,fecha:'2026-08-29',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:378,fecha:'2026-08-29',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Pichincha',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:379,fecha:'2026-08-29',desc:'Invitación comer — Macas',cuenta:'Banco Pichincha',monto:55.5,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:'Invitación a chica'},
-{id:380,fecha:'2026-08-29',desc:'Alcohol — El Deck',cuenta:'Efectivo',monto:20.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:381,fecha:'2026-08-29',desc:'Transferencia JA→Pichincha',cuenta:'Jardín Azuayo',monto:11.89,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:382,fecha:'2026-08-29',desc:'Transferencia JA→Pichincha',cuenta:'Banco Pichincha',monto:11.89,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:383,fecha:'2026-08-29',desc:'Suscripción Claude — septiembre',cuenta:'Banco Pichincha',monto:23.0,tipo:'EGRESO',cat:'Suscripciones',reimb:'NO',empresa:'',nota:'Pago Claude próximo mes'},
-{id:384,fecha:'2026-08-30',desc:'Aguas',cuenta:'Banco Pichincha',monto:3.3,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:385,fecha:'2026-08-30',desc:'Almuerzo — domingo sin factura',cuenta:'Efectivo',monto:7.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Domingo — no aplica reembolso'},
-{id:386,fecha:'2026-08-30',desc:'Merienda — domingo sin factura',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:387,fecha:'2026-08-31',desc:'Sueldo agosto — ECUAQUIMICA/AGROLEON',cuenta:'Banco Guayaquil',monto:433.85,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Sueldo neto agosto 2026'},
-{id:388,fecha:'2026-08-31',desc:'Transferencia Guayaquil→JA — reserva Sept 5',cuenta:'Banco Guayaquil',monto:433.85,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Reserva pago JA 5 sept'},
-{id:389,fecha:'2026-08-31',desc:'Transferencia Guayaquil→JA — reserva Sept 5',cuenta:'Jardín Azuayo',monto:433.85,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Reserva pago JA 5 sept'},
-{id:390,fecha:'2026-08-31',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:5.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:391,fecha:'2026-08-31',desc:'Corte de cabello',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-// ── SEPTIEMBRE 2026 ──────────────────────────────────────────
-{id:392,fecha:'2026-09-01',desc:'Desayuno',cuenta:'Efectivo',monto:1.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:393,fecha:'2026-09-01',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:394,fecha:'2026-09-01',desc:'Envío documentos a ECUAQUIMICA',cuenta:'Efectivo',monto:4.2,tipo:'EGRESO',cat:'Trabajo/Gestión',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Gasto operativo ECUAQUIMICA'},
-{id:395,fecha:'2026-09-01',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:3.86,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:396,fecha:'2026-09-01',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:3.86,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:397,fecha:'2026-09-01',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:0.39,tipo:'INGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Diferencia $0.39 vs app JA'},
-{id:398,fecha:'2026-09-01',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:399,fecha:'2026-09-01',desc:'Lavado de ropa',cuenta:'Efectivo',monto:4.8,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:400,fecha:'2026-09-01',desc:'Ajuste conciliación efectivo',cuenta:'Efectivo',monto:4.050000000000002,tipo:'INGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Ajuste conciliación — real $1.45'},
-{id:401,fecha:'2026-09-01',desc:'Desayuno',cuenta:'Efectivo',monto:1.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:402,fecha:'2026-09-01',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:403,fecha:'2026-09-02',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:404,fecha:'2026-09-02',desc:'Almuerzo',cuenta:'Jardín Azuayo',monto:6.4,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:405,fecha:'2026-09-02',desc:'Pago AGROLEON — ruta julio (parcial)',cuenta:'Jardín Azuayo',monto:150.0,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'AGROLEON pagó $150 de julio'},
-{id:406,fecha:'2026-09-02',desc:'Pago AGROLEON — ruta agosto (completo)',cuenta:'Jardín Azuayo',monto:95.75,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'AGROLEON pagó agosto completo'},
-{id:407,fecha:'2026-09-02',desc:'Pasaje Loja',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:'Viaje a Loja'},
-{id:408,fecha:'2026-09-02',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:409,fecha:'2026-09-02',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:410,fecha:'2026-09-03',desc:'Pasaje a Nambacola',cuenta:'Efectivo',monto:3.85,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:411,fecha:'2026-09-03',desc:'Odontólogo — sustitución bracket',cuenta:'Efectivo',monto:10.0,tipo:'EGRESO',cat:'Salud',reimb:'NO',empresa:'',nota:''},
-{id:412,fecha:'2026-09-03',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:413,fecha:'2026-09-03',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:414,fecha:'2026-09-04',desc:'Billar',cuenta:'Efectivo',monto:10.5,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:''},
-{id:415,fecha:'2026-09-04',desc:'Cerveza',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:416,fecha:'2026-09-04',desc:'Comida',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:417,fecha:'2026-09-05',desc:'Cuota préstamo JA — septiembre',cuenta:'Jardín Azuayo',monto:105.58,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Cuota sept 2026'},
-{id:418,fecha:'2026-09-05',desc:'JA Avance #7 — liquidado',cuenta:'Jardín Azuayo',monto:132.62,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Avance #7'},
-{id:419,fecha:'2026-09-05',desc:'JA Avance #8 — liquidado',cuenta:'Jardín Azuayo',monto:58.95,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Avance #8'},
-{id:420,fecha:'2026-09-05',desc:'JA Avance #9 — liquidado',cuenta:'Jardín Azuayo',monto:152.35,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Avance #9'},
-{id:421,fecha:'2026-09-05',desc:'JA Avance #10 — liquidado',cuenta:'Jardín Azuayo',monto:50.72,tipo:'EGRESO',cat:'Préstamo Jardín Azuayo',reimb:'NO',empresa:'',nota:'Avance #10'},
-{id:422,fecha:'2026-09-05',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:423,fecha:'2026-09-05',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:424,fecha:'2026-09-05',desc:'Partido de volley',cuenta:'Efectivo',monto:10.0,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:''},
-{id:425,fecha:'2026-09-05',desc:'Billar',cuenta:'Efectivo',monto:8.0,tipo:'EGRESO',cat:'Social/Invitaciones',reimb:'NO',empresa:'',nota:''},
-{id:426,fecha:'2026-09-06',desc:'Comida',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:427,fecha:'2026-09-06',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Regreso a Sucúa'},
-{id:428,fecha:'2026-09-06',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:429,fecha:'2026-09-06',desc:'Pasaje Nambacola→Loja',cuenta:'Efectivo',monto:3.85,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:430,fecha:'2026-09-06',desc:'Pasaje Loja→Sucúa',cuenta:'Efectivo',monto:22.1,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:'Regreso a Sucúa'},
-{id:431,fecha:'2026-09-06',desc:'Agua',cuenta:'Efectivo',monto:0.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:432,fecha:'2026-09-07',desc:'Desayuno',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:433,fecha:'2026-09-07',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:434,fecha:'2026-09-07',desc:'Transferencia Efectivo→JA',cuenta:'Efectivo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:435,fecha:'2026-09-07',desc:'Transferencia Efectivo→JA',cuenta:'Jardín Azuayo',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:436,fecha:'2026-09-07',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:437,fecha:'2026-09-08',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:438,fecha:'2026-09-08',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:439,fecha:'2026-09-09',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:440,fecha:'2026-09-09',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:441,fecha:'2026-09-09',desc:'Tabacos y aguas',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:442,fecha:'2026-09-09',desc:'Alitas',cuenta:'Jardín Azuayo',monto:5.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:443,fecha:'2026-09-10',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:444,fecha:'2026-09-10',desc:'Isotretinoína — tratamiento acné',cuenta:'Jardín Azuayo',monto:12.0,tipo:'EGRESO',cat:'Salud',reimb:'NO',empresa:'',nota:''},
-{id:445,fecha:'2026-09-10',desc:'Gorra',cuenta:'Jardín Azuayo',monto:6.0,tipo:'EGRESO',cat:'Ropa/Vestimenta',reimb:'NO',empresa:'',nota:''},
-{id:446,fecha:'2026-09-10',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:447,fecha:'2026-09-11',desc:'Almuerzo (Méndez) — factura AGROLEON',cuenta:'Jardín Azuayo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:448,fecha:'2026-09-11',desc:'Pago viáticos ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:139.99,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'Pago viáticos ECUAQUIMICA sept'},
-{id:449,fecha:'2026-09-11',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Guayaquil',monto:39.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:450,fecha:'2026-09-11',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Pichincha',monto:39.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:451,fecha:'2026-09-11',desc:'Almuerzo invitación vendedores AGROLEON — aprobado jefe',cuenta:'Banco Pichincha',monto:25.75,tipo:'EGRESO',cat:'Representación/Clientes',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA — aprobado jefe'},
-{id:452,fecha:'2026-09-11',desc:'Tabacos y aguas',cuenta:'Banco Pichincha',monto:3.2,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:453,fecha:'2026-09-12',desc:'Almuerzo (Macas) — factura AGROLEON',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:454,fecha:'2026-09-12',desc:'Almuerzo (Macas) — factura ECUAQUIMICA',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:455,fecha:'2026-09-12',desc:'Depósito efectivo→Pichincha',cuenta:'Efectivo',monto:2.15,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:456,fecha:'2026-09-12',desc:'Depósito efectivo→Pichincha',cuenta:'Banco Pichincha',monto:2.15,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:457,fecha:'2026-09-12',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:458,fecha:'2026-09-12',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:459,fecha:'2026-09-12',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:460,fecha:'2026-09-12',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:461,fecha:'2026-09-12',desc:'Carrera a Huambi (Joselin AGROLEON)',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'A devolver por Joselin AGROLEON'},
-{id:462,fecha:'2026-09-12',desc:'Taxi Macas→Sucúa (Joselin AGROLEON)',cuenta:'Efectivo',monto:14.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'A devolver por Joselin AGROLEON'},
-{id:463,fecha:'2026-09-12',desc:'Tabacos',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:464,fecha:'2026-09-13',desc:'Almuerzo',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:465,fecha:'2026-09-13',desc:'Lavado de ropa',cuenta:'Efectivo',monto:5.2,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:466,fecha:'2026-09-13',desc:'Merienda',cuenta:'Efectivo',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:467,fecha:'2026-09-13',desc:'Tabacos',cuenta:'Jardín Azuayo',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:468,fecha:'2026-09-14',desc:'Desayuno — factura ECUAQUIMICA',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:469,fecha:'2026-09-14',desc:'Merienda — factura AGROLEON',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:470,fecha:'2026-09-14',desc:'Aguas',cuenta:'Banco Pichincha',monto:1.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:471,fecha:'2026-09-14',desc:'Aguas',cuenta:'Banco Pichincha',monto:0.45,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:472,fecha:'2026-09-14',desc:'Devolución Joselin — carreras sábado',cuenta:'Banco Pichincha',monto:19.0,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'Joselin pagó lo adeudado'},
-{id:473,fecha:'2026-09-14',desc:'Tabacos',cuenta:'Jardín Azuayo',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:474,fecha:'2026-09-14',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:60.99,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:475,fecha:'2026-09-14',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:60.99,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:476,fecha:'2026-09-14',desc:'Merienda — factura AGROLEON',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:477,fecha:'2026-09-15',desc:'Almuerzo — factura AGROLEON',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:478,fecha:'2026-09-15',desc:'Merienda — factura AGROLEON',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:479,fecha:'2026-09-15',desc:'Guanábana/fruta',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:480,fecha:'2026-09-15',desc:'Aguas',cuenta:'Banco Pichincha',monto:1.45,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:481,fecha:'2026-09-15',desc:'Aguas',cuenta:'Banco Pichincha',monto:1.1,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:482,fecha:'2026-09-15',desc:'Anticipo quincena septiembre',cuenta:'Banco Guayaquil',monto:200.0,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Anticipo quincena sept 2026'},
-{id:483,fecha:'2026-09-15',desc:'Apoyo mamá — septiembre',cuenta:'Banco Guayaquil',monto:120.6,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:'Cuota mensual mamá'},
-{id:484,fecha:'2026-09-16',desc:'Hospedaje Gualaquiza 2 noches — fact AGROLEON',cuenta:'Jardín Azuayo',monto:26.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:485,fecha:'2026-09-16',desc:'Avance JA — recibido',cuenta:'Jardín Azuayo',monto:200.0,tipo:'INGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo CERO avances'},
-{id:486,fecha:'2026-09-16',desc:'Arriendo septiembre',cuenta:'Jardín Azuayo',monto:110.0,tipo:'EGRESO',cat:'Arriendo',reimb:'NO',empresa:'',nota:'Pago mensual arriendo'},
-{id:487,fecha:'2026-09-16',desc:'Almuerzo — factura AGROLEON',cuenta:'Jardín Azuayo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:488,fecha:'2026-09-16',desc:'Merienda — factura AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:489,fecha:'2026-09-16',desc:'Cajetilla cigarros',cuenta:'Banco Pichincha',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:490,fecha:'2026-09-16',desc:'Aguas y papas',cuenta:'Banco Pichincha',monto:1.55,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:491,fecha:'2026-09-16',desc:'Aguas y papas',cuenta:'Banco Pichincha',monto:0.55,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:492,fecha:'2026-09-16',desc:'Hospedaje Yantzaza — fact AGROLEON',cuenta:'Banco Pichincha',monto:20.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:493,fecha:'2026-09-16',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Guayaquil',monto:78.3,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:494,fecha:'2026-09-16',desc:'Transferencia Guayaquil→Pichincha',cuenta:'Banco Pichincha',monto:78.3,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:495,fecha:'2026-09-17',desc:'Desayuno',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:496,fecha:'2026-09-17',desc:'Almuerzo y merienda — factura AGROLEON',cuenta:'Banco Pichincha',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:497,fecha:'2026-09-17',desc:'Hospedaje Yantzaza — fact AGROLEON',cuenta:'Banco Pichincha',monto:12.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:498,fecha:'2026-09-17',desc:'Combustible camioneta JAC — fact AGROLEON',cuenta:'Banco Pichincha',monto:51.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:499,fecha:'2026-09-17',desc:'Depósito efectivo→Pichincha',cuenta:'Efectivo',monto:5.8,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:500,fecha:'2026-09-17',desc:'Depósito efectivo→Pichincha',cuenta:'Banco Pichincha',monto:5.8,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:501,fecha:'2026-09-17',desc:'Reembolso combustible — AGROLEON',cuenta:'Banco Pichincha',monto:51.0,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'AGROLEON pagó combustible JAC'},
-{id:502,fecha:'2026-09-17',desc:'Ajuste conciliación Guayaquil',cuenta:'Banco Guayaquil',monto:1.1,tipo:'EGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Conciliación real vs ledger'},
-{id:503,fecha:'2026-09-17',desc:'Ajuste conciliación Pichincha',cuenta:'Banco Pichincha',monto:0.45,tipo:'EGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Conciliación real vs ledger'},
-{id:504,fecha:'2026-09-17',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:0.21,tipo:'EGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:'Conciliación real vs ledger'},
-{id:505,fecha:'2026-09-18',desc:'Almuerzo y merienda — factura AGROLEON',cuenta:'Banco Pichincha',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:506,fecha:'2026-09-18',desc:'Cervezas',cuenta:'Banco Pichincha',monto:10.5,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:507,fecha:'2026-09-18',desc:'Cervezas',cuenta:'Banco Pichincha',monto:8.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:508,fecha:'2026-09-18',desc:'Cervezas',cuenta:'Banco Pichincha',monto:12.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:509,fecha:'2026-09-18',desc:'Agua',cuenta:'Banco Pichincha',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:510,fecha:'2026-09-18',desc:'Recarga celular',cuenta:'Banco Pichincha',monto:1.1,tipo:'EGRESO',cat:'Comunicaciones',reimb:'NO',empresa:'',nota:''},
-{id:511,fecha:'2026-09-19',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:100.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:512,fecha:'2026-09-19',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:100.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:513,fecha:'2026-09-19',desc:'Gasolina',cuenta:'Efectivo',monto:30.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:514,fecha:'2026-09-19',desc:'Parqueadero',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:515,fecha:'2026-09-19',desc:'Merienda',cuenta:'Efectivo',monto:3.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:516,fecha:'2026-09-19',desc:'Cerveza',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alcohol',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo'},
-{id:517,fecha:'2026-09-19',desc:'Prestobarba',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:518,fecha:'2026-09-19',desc:'Merienda',cuenta:'Efectivo',monto:5.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:519,fecha:'2026-09-21',desc:'Gasolina',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:520,fecha:'2026-09-21',desc:'Aguas',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:521,fecha:'2026-09-21',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:522,fecha:'2026-09-21',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:523,fecha:'2026-09-22',desc:'Almuerzo y merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:524,fecha:'2026-09-23',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:525,fecha:'2026-09-23',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:526,fecha:'2026-09-23',desc:'Aguas',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:527,fecha:'2026-09-24',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:528,fecha:'2026-09-24',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:529,fecha:'2026-09-25',desc:'Desayuno',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:530,fecha:'2026-09-25',desc:'Tarjeta estacionamiento',cuenta:'Efectivo',monto:1.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:531,fecha:'2026-09-25',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Banco Pichincha',monto:6.4,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:532,fecha:'2026-09-26',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:533,fecha:'2026-09-26',desc:'Merienda — factura ECUAQUIMICA',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:534,fecha:'2026-09-26',desc:'Lavado de moto',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:535,fecha:'2026-09-26',desc:'Avance JA — recibido',cuenta:'Jardín Azuayo',monto:100.0,tipo:'INGRESO',cat:'Avance JA',reimb:'NO',empresa:'',nota:'🔴 Violación protocolo — vence 05/oct $103.22'},
-{id:536,fecha:'2026-09-26',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:16.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:537,fecha:'2026-09-26',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:16.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:538,fecha:'2026-09-26',desc:'Préstamo a Geovanny (AGROLEON)',cuenta:'Jardín Azuayo',monto:35.0,tipo:'EGRESO',cat:'Préstamo personal',reimb:'NO',empresa:'',nota:'A devolver por Geovanny'},
-{id:539,fecha:'2026-09-27',desc:'Retiro efectivo desde JA',cuenta:'Jardín Azuayo',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Para viaje Tena lunes'},
-{id:540,fecha:'2026-09-27',desc:'Retiro efectivo desde JA',cuenta:'Efectivo',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:541,fecha:'2026-09-27',desc:'Almuerzo',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:542,fecha:'2026-09-27',desc:'Merienda',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:543,fecha:'2026-09-27',desc:'Tabacos y aguas',cuenta:'Efectivo',monto:3.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:544,fecha:'2026-09-28',desc:'Manilla',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Ropa/Vestimenta',reimb:'NO',empresa:'',nota:''},
-{id:545,fecha:'2026-09-28',desc:'Aguas y helados',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:546,fecha:'2026-09-28',desc:'Almuerzo — factura ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:547,fecha:'2026-09-28',desc:'Merienda — factura AGROLEON',cuenta:'Efectivo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:548,fecha:'2026-09-28',desc:'Hospedaje Tena 2 noches — fact AGROLEON',cuenta:'Efectivo',monto:34.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:549,fecha:'2026-09-29',desc:'Almuerzo — factura AGROLEON',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:550,fecha:'2026-09-29',desc:'Merienda — factura AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:551,fecha:'2026-09-29',desc:'Transferencia JA→Pichincha',cuenta:'Jardín Azuayo',monto:8.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:552,fecha:'2026-09-29',desc:'Transferencia JA→Pichincha',cuenta:'Banco Pichincha',monto:8.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:553,fecha:'2026-09-29',desc:'Comisión transferencia bancaria',cuenta:'Jardín Azuayo',monto:0.4,tipo:'EGRESO',cat:'Comisiones bancarias',reimb:'NO',empresa:'',nota:''},
-{id:554,fecha:'2026-09-29',desc:'Desayuno',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:555,fecha:'2026-09-30',desc:'Sueldo septiembre (resto)',cuenta:'Banco Guayaquil',monto:433.85,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Sueldo sept 2026 — resto'},
-{id:556,fecha:'2026-09-30',desc:'Almuerzo — factura AGROLEON',cuenta:'Banco Pichincha',monto:3.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:557,fecha:'2026-09-30',desc:'Parqueadero camioneta',cuenta:'Banco Pichincha',monto:0.5,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:558,fecha:'2026-09-30',desc:'Merienda (sin factura)',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:559,fecha:'2026-09-30',desc:'Retiro efectivo desde Guayaquil',cuenta:'Banco Guayaquil',monto:100.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:560,fecha:'2026-09-30',desc:'Retiro efectivo desde Guayaquil',cuenta:'Efectivo',monto:100.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:561,fecha:'2026-09-30',desc:'Combustible camioneta — fact AGROLEON',cuenta:'Efectivo',monto:55.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:562,fecha:'2026-09-30',desc:'Reembolso combustible — AGROLEON',cuenta:'Banco Pichincha',monto:55.0,tipo:'INGRESO',cat:'Reembolso',reimb:'NO',empresa:'',nota:'AGROLEON pagó combustible'},
-{id:563,fecha:'2026-09-30',desc:'Hospedaje 2 noches Puyo (jue-vie) — fact AGROLEON',cuenta:'Banco Pichincha',monto:20.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-// ── OCTUBRE 2026 ──────────────────────────────────────────
-{id:564,fecha:'2026-10-01',desc:'Almuerzo Puyo',cuenta:'Banco Pichincha',monto:2.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:565,fecha:'2026-10-01',desc:'Aguas Puyo',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Personal sin factura'},
-{id:566,fecha:'2026-10-01',desc:'Merienda Puyo — fact AGROLEON',cuenta:'Banco Pichincha',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:567,fecha:'2026-10-01',desc:'Crema hidratante (sol fuerte ruta)',cuenta:'Banco Pichincha',monto:13.0,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:'Gasto personal no reembolsable'},
-{id:568,fecha:'2026-10-01',desc:'Alimentación Puyo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:569,fecha:'2026-10-01',desc:'Suscripción Claude AI',cuenta:'Banco Pichincha',monto:23.0,tipo:'EGRESO',cat:'Servicios digitales',reimb:'NO',empresa:'',nota:'Gasto personal'},
-{id:570,fecha:'2026-10-01',desc:'Comisión avisos/notificaciones — Banco Guayaquil',cuenta:'Banco Guayaquil',monto:2.06,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:'Comisión banco Guayaquil'},
-{id:571,fecha:'2026-10-02',desc:'Gorra',cuenta:'Banco Pichincha',monto:5.0,tipo:'EGRESO',cat:'Ropa/Personal',reimb:'NO',empresa:'',nota:'Gasto personal'},
-{id:572,fecha:'2026-10-02',desc:'Almuerzo Puyo — fact AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:573,fecha:'2026-10-02',desc:'Merienda Puyo — fact AGROLEON',cuenta:'Banco Pichincha',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:574,fecha:'2026-10-02',desc:'Alimentación — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:1.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:575,fecha:'2026-10-02',desc:'Aguas y tabacos',cuenta:'Banco Pichincha',monto:2.0,tipo:'EGRESO',cat:'Tabaco/Personal',reimb:'NO',empresa:'',nota:'Personal sin factura'},
-{id:576,fecha:'2026-10-02',desc:'Aguas y tabacos',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Tabaco/Personal',reimb:'NO',empresa:'',nota:'Personal sin factura'},
-{id:577,fecha:'2026-10-02',desc:'Depósito efectivo → Pichincha',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Efectivo a Pichincha'},
-{id:578,fecha:'2026-10-02',desc:'Depósito efectivo → Pichincha',cuenta:'Banco Pichincha',monto:4.75,tipo:'INGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Desde Efectivo'},
-{id:579,fecha:'2026-10-03',desc:'Estuche teléfono + mica cámara',cuenta:'Banco Pichincha',monto:13.0,tipo:'EGRESO',cat:'Tecnología/Personal',reimb:'NO',empresa:'',nota:'Gasto personal'},
-{id:580,fecha:'2026-10-03',desc:'Agua',cuenta:'Banco Pichincha',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Personal'},
-{id:581,fecha:'2026-10-03',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Guayaquil',monto:51.79,tipo:'EGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Transferencia interna'},
-{id:582,fecha:'2026-10-03',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Pichincha',monto:51.79,tipo:'INGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Desde Guayaquil'},
-{id:583,fecha:'2026-10-03',desc:'Comisión transferencia Guayaquil→Pichincha',cuenta:'Banco Pichincha',monto:0.6,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:'Comisión banco'},
-{id:584,fecha:'2026-10-03',desc:'Transferencia Guayaquil → Jardín Azuayo',cuenta:'Banco Guayaquil',monto:280.0,tipo:'EGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Para pago JA 5 oct'},
-{id:585,fecha:'2026-10-03',desc:'Transferencia Guayaquil → Jardín Azuayo',cuenta:'Jardín Azuayo',monto:280.0,tipo:'INGRESO',cat:'Transferencia',reimb:'NO',empresa:'',nota:'Desde Guayaquil'},
-{id:586,fecha:'2026-10-03',desc:'Almuerzo',cuenta:'Banco Pichincha',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:587,fecha:'2026-10-03',desc:'Lavado de ropa',cuenta:'Banco Pichincha',monto:6.4,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:588,fecha:'2026-10-03',desc:'Gasolina moto',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:589,fecha:'2026-10-03',desc:'Retiro JA → Efectivo',cuenta:'Jardín Azuayo',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:590,fecha:'2026-10-03',desc:'Retiro JA → Efectivo',cuenta:'Efectivo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:591,fecha:'2026-10-04',desc:'Gastos fiesta Macas',cuenta:'Efectivo',monto:36.0,tipo:'EGRESO',cat:'Entretenimiento',reimb:'NO',empresa:'',nota:''},
-{id:592,fecha:'2026-10-04',desc:'Transferencia/Pago',cuenta:'Banco Pichincha',monto:10.0,tipo:'EGRESO',cat:'Varios',reimb:'NO',empresa:'',nota:''},
-{id:593,fecha:'2026-10-04',desc:'Almuerzo',cuenta:'Jardín Azuayo',monto:6.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:594,fecha:'2026-10-04',desc:'Merienda',cuenta:'Banco Pichincha',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:595,fecha:'2026-10-04',desc:'Adelanto JA $200 (descuento nov 5: $203.29)',cuenta:'Jardín Azuayo',monto:200.0,tipo:'INGRESO',cat:'Adelanto crédito JA',reimb:'NO',empresa:'',nota:'⚠️ Descuento 05/11: $203.29'},
-{id:596,fecha:'2026-10-05',desc:'Pago obligación JA (cuota + avances)',cuenta:'Jardín Azuayo',monto:412.29,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Cuota $105.78 + Avance1 $203.29 + Avance2 $103.22'},
-{id:597,fecha:'2026-10-06',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:598,fecha:'2026-10-06',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:4.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:599,fecha:'2026-10-06',desc:'Aguas',cuenta:'Jardín Azuayo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:600,fecha:'2026-10-07',desc:'Pasaje Sucúa→Macas',cuenta:'Jardín Azuayo',monto:1.85,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA — concurso cacao | Reimb: ECUAQUIMICA'},
-{id:601,fecha:'2026-10-07',desc:'Pasaje Macas→Puyo',cuenta:'Jardín Azuayo',monto:8.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reembolsable ECUAQUIMICA — concurso cacao | Reimb: ECUAQUIMICA'},
-{id:602,fecha:'2026-10-07',desc:'Transferencia JA → Pichincha',cuenta:'Jardín Azuayo',monto:4.27,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:603,fecha:'2026-10-07',desc:'Transferencia JA → Pichincha',cuenta:'Banco Pichincha',monto:4.27,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:604,fecha:'2026-10-08',desc:'Aguas',cuenta:'Banco Pichincha',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:605,fecha:'2026-10-08',desc:'Chocolates',cuenta:'Banco Pichincha',monto:5.0,tipo:'EGRESO',cat:'Entretenimiento',reimb:'NO',empresa:'',nota:'Concurso cacao Lago Agrio'},
-{id:606,fecha:'2026-10-08',desc:'Snacks (papas y varios)',cuenta:'Banco Pichincha',monto:2.52,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:607,fecha:'2026-10-09',desc:'Retiro Pichincha → Efectivo',cuenta:'Banco Pichincha',monto:20.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:608,fecha:'2026-10-09',desc:'Retiro Pichincha → Efectivo',cuenta:'Efectivo',monto:20.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:609,fecha:'2026-10-09',desc:'Aguas',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:610,fecha:'2026-10-09',desc:'Pasaje Puyo→Macas',cuenta:'Efectivo',monto:7.2,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Fact ECUAQUIMICA — regreso Lago Agrio | Reimb: ECUAQUIMICA'},
-{id:611,fecha:'2026-10-09',desc:'Pasaje Puyo→Macas (2do tramo)',cuenta:'Efectivo',monto:1.65,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Fact ECUAQUIMICA — regreso Lago Agrio | Reimb: ECUAQUIMICA'},
-{id:612,fecha:'2026-10-09',desc:'Almuerzo (sin factura)',cuenta:'Efectivo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:613,fecha:'2026-10-09',desc:'Merienda (sin factura)',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:614,fecha:'2026-10-10',desc:'Préstamo hermana → JA',cuenta:'Jardín Azuayo',monto:20.0,tipo:'INGRESO',cat:'Préstamo personal',reimb:'NO',empresa:'',nota:'⚠️ Deuda: devolver $20 a hermana'},
-{id:615,fecha:'2026-10-10',desc:'Almuerzo',cuenta:'Jardín Azuayo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:616,fecha:'2026-10-10',desc:'Cerveza',cuenta:'Jardín Azuayo',monto:9.2,tipo:'EGRESO',cat:'Entretenimiento',reimb:'NO',empresa:'',nota:'🔴 VIOLA PROTOCOLO: CERO alcohol'},
-{id:617,fecha:'2026-10-10',desc:'Merienda',cuenta:'Jardín Azuayo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:618,fecha:'2026-10-11',desc:'Adelanto JA $50 (a pagar: $51.33)',cuenta:'Jardín Azuayo',monto:50.0,tipo:'INGRESO',cat:'Adelanto crédito JA',reimb:'NO',empresa:'',nota:'🔴 VIOLA PROTOCOLO — descuento próximo mes: $51.33'},
-{id:619,fecha:'2026-10-11',desc:'Almuerzo y merienda (sin factura)',cuenta:'Jardín Azuayo',monto:9.2,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Feriado - sin factura'},
-{id:620,fecha:'2026-10-11',desc:'Desayuno (sin factura)',cuenta:'Jardín Azuayo',monto:1.6,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Feriado - sin factura'},
-{id:621,fecha:'2026-10-11',desc:'Tabacos',cuenta:'Jardín Azuayo',monto:1.1,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:622,fecha:'2026-10-12',desc:'Almuerzo',cuenta:'Jardín Azuayo',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:623,fecha:'2026-10-12',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:624,fecha:'2026-10-12',desc:'Cobro viáticos ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:168.78,tipo:'INGRESO',cat:'Reembolso viáticos',reimb:'NO',empresa:'',nota:'Pago total viáticos pendientes'},
-{id:625,fecha:'2026-10-13',desc:'Arriendo',cuenta:'Banco Guayaquil',monto:110.0,tipo:'EGRESO',cat:'Vivienda',reimb:'NO',empresa:'',nota:''},
-{id:626,fecha:'2026-10-13',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:627,fecha:'2026-10-13',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Pichincha',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:628,fecha:'2026-10-13',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:4.25,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:629,fecha:'2026-10-13',desc:'Transferencia Pichincha → JA',cuenta:'Banco Pichincha',monto:7.25,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:630,fecha:'2026-10-13',desc:'Transferencia Pichincha → JA',cuenta:'Jardín Azuayo',monto:7.25,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:631,fecha:'2026-10-13',desc:'Tabacos',cuenta:'Jardín Azuayo',monto:1.1,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:632,fecha:'2026-10-13',desc:'Retiro JA → Efectivo',cuenta:'Jardín Azuayo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:633,fecha:'2026-10-13',desc:'Retiro JA → Efectivo',cuenta:'Efectivo',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:634,fecha:'2026-10-13',desc:'Comisión cajero externo',cuenta:'Jardín Azuayo',monto:0.52,tipo:'EGRESO',cat:'Comisiones bancarias',reimb:'NO',empresa:'',nota:'Cajero de otro banco'},
-{id:635,fecha:'2026-10-13',desc:'Lavado de ropa',cuenta:'Banco Pichincha',monto:4.4,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:636,fecha:'2026-10-13',desc:'Abono deuda Junior (productos Temu)',cuenta:'Banco Pichincha',monto:6.25,tipo:'EGRESO',cat:'Deudas personales',reimb:'NO',empresa:'',nota:'Deuda total $35 — saldo pendiente $28.75'},
-{id:637,fecha:'2026-10-14',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:3.25,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:638,fecha:'2026-10-14',desc:'Snack (papa)',cuenta:'Jardín Azuayo',monto:0.64,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:639,fecha:'2026-10-14',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Facturado ECUAQUIMICA'},
-{id:640,fecha:'2026-10-14',desc:'Almuerzo (Logroño) — fact AGROLEON',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:641,fecha:'2026-10-14',desc:'Tabacos y agua',cuenta:'Efectivo',monto:2.5,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:642,fecha:'2026-10-15',desc:'Desayuno',cuenta:'Jardín Azuayo',monto:1.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:643,fecha:'2026-10-15',desc:'Almuerzo Méndez — fact AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Facturado AGROLEON'},
-{id:644,fecha:'2026-10-15',desc:'Quincena ECUAQUIMICA — oct 15',cuenta:'Banco Guayaquil',monto:200.0,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Quincena 1ra mitad oct'},
-{id:645,fecha:'2026-10-15',desc:'Apoyo casa mamá',cuenta:'Banco Guayaquil',monto:120.6,tipo:'EGRESO',cat:'Familia',reimb:'NO',empresa:'',nota:'Aporte mensual familia'},
-{id:646,fecha:'2026-10-15',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:647,fecha:'2026-10-15',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Guayaquil',monto:50.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:648,fecha:'2026-10-15',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Pichincha',monto:50.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:649,fecha:'2026-10-15',desc:'Farmacia — bloqueador solar + cuidado de pelo',cuenta:'Banco Pichincha',monto:27.19,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:''},
-{id:650,fecha:'2026-10-16',desc:'Desayuno',cuenta:'Banco Pichincha',monto:4.6,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:651,fecha:'2026-10-16',desc:'Corte de pelo',cuenta:'Banco Pichincha',monto:3.5,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:652,fecha:'2026-10-16',desc:'Cobro prestamo Geovanny (AGROLEON)',cuenta:'Efectivo',monto:35.0,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:'Prestamo Sept 26 saldado'},
-{id:653,fecha:'2026-10-16',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Efectivo',monto:16.5,tipo:'EGRESO',cat:'Entretenimiento',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Factura dice solo alimentación | Reimb: ECUAQUIMICA'},
-{id:654,fecha:'2026-10-16',desc:'Tabacos',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:655,fecha:'2026-10-16',desc:'Depósito efectivo → Pichincha',cuenta:'Efectivo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:656,fecha:'2026-10-16',desc:'Depósito efectivo → Pichincha',cuenta:'Banco Pichincha',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:657,fecha:'2026-10-17',desc:'Minoxidil',cuenta:'Banco Pichincha',monto:23.5,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:''},
-{id:658,fecha:'2026-10-17',desc:'Desayuno',cuenta:'Banco Pichincha',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:659,fecha:'2026-10-17',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:660,fecha:'2026-10-17',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:5.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:661,fecha:'2026-10-17',desc:'Tabacos',cuenta:'Jardín Azuayo',monto:1.1,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:662,fecha:'2026-10-18',desc:'Almuerzo',cuenta:'Jardín Azuayo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:663,fecha:'2026-10-18',desc:'Papel y cloro',cuenta:'Jardín Azuayo',monto:4.1,tipo:'EGRESO',cat:'Hogar',reimb:'NO',empresa:'',nota:''},
-{id:664,fecha:'2026-10-18',desc:'Chocolates y agua',cuenta:'Jardín Azuayo',monto:1.65,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:665,fecha:'2026-10-18',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:666,fecha:'2026-10-18',desc:'Aguas',cuenta:'Efectivo',monto:2.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:667,fecha:'2026-10-20',desc:'Adaptador MacBook (puertos)',cuenta:'Banco Guayaquil',monto:20.0,tipo:'EGRESO',cat:'Tecnología/Personal',reimb:'NO',empresa:'',nota:''},
-{id:668,fecha:'2026-10-20',desc:'Cable HDMI — exposición',cuenta:'Banco Guayaquil',monto:10.0,tipo:'EGRESO',cat:'Tecnología/Personal',reimb:'NO',empresa:'',nota:''},
-{id:669,fecha:'2026-10-20',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Guayaquil',monto:8.18,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:670,fecha:'2026-10-20',desc:'Transferencia Guayaquil → Pichincha',cuenta:'Banco Pichincha',monto:8.18,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:671,fecha:'2026-10-21',desc:'Desayuno Gualaquiza',cuenta:'Banco Pichincha',monto:1.35,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:672,fecha:'2026-10-21',desc:'Almuerzo Gualaquiza — fact AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:673,fecha:'2026-10-20',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:674,fecha:'2026-10-20',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:0.85,tipo:'INGRESO',cat:'Ajuste bancario',reimb:'NO',empresa:'',nota:'Posible comisión/interés JA'},
-{id:675,fecha:'2026-10-21',desc:'Merienda Gualaquiza — fact AGROLEON',cuenta:'Banco Pichincha',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:676,fecha:'2026-10-21',desc:'Aguas y tabacos',cuenta:'Banco Pichincha',monto:2.0,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:677,fecha:'2026-10-21',desc:'Préstamo hermana María',cuenta:'Banco Pichincha',monto:80.0,tipo:'INGRESO',cat:'Préstamo personal',reimb:'NO',empresa:'',nota:'A devolver'},
-{id:678,fecha:'2026-10-21',desc:'Habitación Gualaquiza',cuenta:'Banco Pichincha',monto:15.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:679,fecha:'2026-10-22',desc:'Almuerzo Yantzaza — fact AGROLEON',cuenta:'Banco Pichincha',monto:3.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:680,fecha:'2026-10-22',desc:'Hospedaje Yantzaza — fact AGROLEON',cuenta:'Banco Pichincha',monto:12.0,tipo:'EGRESO',cat:'Hospedaje',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:681,fecha:'2026-10-22',desc:'Transferencia JA → Pichincha',cuenta:'Jardín Azuayo',monto:13.32,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:682,fecha:'2026-10-22',desc:'Transferencia JA → Pichincha',cuenta:'Banco Pichincha',monto:13.32,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:683,fecha:'2026-10-23',desc:'Combustible — fact AGROLEON',cuenta:'Banco Pichincha',monto:44.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:684,fecha:'2026-10-23',desc:'Almuerzo — fact AGROLEON',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:685,fecha:'2026-10-23',desc:'Merienda — fact AGROLEON',cuenta:'Banco Pichincha',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:686,fecha:'2026-10-24',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:687,fecha:'2026-10-24',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:688,fecha:'2026-10-25',desc:'Merienda',cuenta:'Banco Pichincha',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:689,fecha:'2026-10-25',desc:'Desayuno y aguas',cuenta:'Banco Pichincha',monto:3.69,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:690,fecha:'2026-10-26',desc:'Reembolso combustible AGROLEON',cuenta:'Banco Pichincha',monto:44.0,tipo:'INGRESO',cat:'Reembolso viáticos',reimb:'NO',empresa:'',nota:'Combustible 23/10 saldado'},
-{id:691,fecha:'2026-10-26',desc:'Cobro viáticos AGROLEON — pendiente total',cuenta:'Banco Pichincha',monto:247.75,tipo:'INGRESO',cat:'Reembolso viáticos',reimb:'NO',empresa:'',nota:'Saldo pendiente viáticos ant. + sem oct 21-23'},
-{id:692,fecha:'2026-10-26',desc:'Ajuste hospedaje AGROLEON',cuenta:'Banco Pichincha',monto:4.0,tipo:'INGRESO',cat:'Reembolso viáticos',reimb:'NO',empresa:'',nota:'Diferencia factura hospedaje'},
-{id:693,fecha:'2026-10-26',desc:'Devolución préstamo hermana María',cuenta:'Banco Pichincha',monto:80.0,tipo:'EGRESO',cat:'Deudas personales',reimb:'NO',empresa:'',nota:'Préstamo oct 21 saldado ✅'},
-{id:694,fecha:'2026-10-26',desc:'Tabacos',cuenta:'Banco Pichincha',monto:1.65,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:695,fecha:'2026-10-26',desc:'Lavado de ropa',cuenta:'Banco Pichincha',monto:5.2,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:696,fecha:'2026-10-26',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:697,fecha:'2026-10-26',desc:'Agua',cuenta:'Banco Pichincha',monto:1.0,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:698,fecha:'2026-10-26',desc:'Tabacos',cuenta:'Banco Pichincha',monto:1.65,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:699,fecha:'2026-10-26',desc:'Golosinas',cuenta:'Banco Pichincha',monto:2.3,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:700,fecha:'2026-10-27',desc:'Pasaje viaje Cuenca — fact AGROLEON',cuenta:'Banco Pichincha',monto:6.0,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'AGROLEON',nota:'Reimb: AGROLEON'},
-{id:701,fecha:'2026-10-27',desc:'Jugo',cuenta:'Banco Pichincha',monto:2.5,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:702,fecha:'2026-10-28',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:703,fecha:'2026-10-28',desc:'Comisión interbancaria',cuenta:'Banco Pichincha',monto:0.36,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:704,fecha:'2026-10-28',desc:'Comisión bancaria',cuenta:'Banco Pichincha',monto:0.24,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:705,fecha:'2026-10-28',desc:'Retiro Pichincha → Efectivo',cuenta:'Banco Pichincha',monto:30.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:706,fecha:'2026-10-28',desc:'Retiro Pichincha → Efectivo',cuenta:'Efectivo',monto:30.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:707,fecha:'2026-10-28',desc:'Seguro banco',cuenta:'Banco Pichincha',monto:0.36,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:708,fecha:'2026-10-28',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:709,fecha:'2026-10-28',desc:'Billetera',cuenta:'Efectivo',monto:17.5,tipo:'EGRESO',cat:'Ropa/Personal',reimb:'NO',empresa:'',nota:''},
-{id:710,fecha:'2026-10-29',desc:'Desayuno',cuenta:'Efectivo',monto:2.75,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:711,fecha:'2026-10-28',desc:'Comisión bancaria',cuenta:'Banco Pichincha',monto:0.6,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:712,fecha:'2026-10-29',desc:'Almuerzo',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:713,fecha:'2026-10-29',desc:'Bebida',cuenta:'Efectivo',monto:1.95,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:714,fecha:'2026-10-29',desc:'Enjuague bucal y pasta dental',cuenta:'Banco Pichincha',monto:8.7,tipo:'EGRESO',cat:'Higiene personal',reimb:'NO',empresa:'',nota:''},
-{id:715,fecha:'2026-10-29',desc:'Comisión bancaria',cuenta:'Banco Pichincha',monto:0.36,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:716,fecha:'2026-10-29',desc:'Tabacos',cuenta:'Banco Pichincha',monto:1.65,tipo:'EGRESO',cat:'Personal',reimb:'NO',empresa:'',nota:''},
-{id:717,fecha:'2026-10-29',desc:'Cerveza 🔴',cuenta:'Banco Pichincha',monto:3.55,tipo:'EGRESO',cat:'Entretenimiento',reimb:'NO',empresa:'',nota:'🔴 3er incumplimiento CERO alcohol oct'},
-{id:718,fecha:'2026-10-30',desc:'Transferencia Pichincha → JA',cuenta:'Banco Pichincha',monto:40.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:719,fecha:'2026-10-30',desc:'Transferencia Pichincha → JA',cuenta:'Jardín Azuayo',monto:40.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:720,fecha:'2026-10-30',desc:'Comisión interbancaria',cuenta:'Banco Pichincha',monto:0.36,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:721,fecha:'2026-10-30',desc:'Retiro JA → Efectivo',cuenta:'Jardín Azuayo',monto:10.0,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:722,fecha:'2026-10-30',desc:'Retiro JA → Efectivo',cuenta:'Efectivo',monto:10.0,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:723,fecha:'2026-10-30',desc:'Desayuno y almuerzo — fact ECUAQUIMICA',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:724,fecha:'2026-10-30',desc:'Piercing',cuenta:'Efectivo',monto:4.0,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:''},
-{id:725,fecha:'2026-10-30',desc:'Pasaje Sucúa → Zamora',cuenta:'Banco Pichincha',monto:18.75,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:726,fecha:'2026-10-30',desc:'Pasaje Zamora → Loja',cuenta:'Efectivo',monto:4.5,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:727,fecha:'2026-10-30',desc:'Pasaje Loja → Nambacola',cuenta:'Efectivo',monto:3.85,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:728,fecha:'2026-10-30',desc:'Préstamo KITS',cuenta:'Efectivo',monto:50.0,tipo:'INGRESO',cat:'Préstamo/Deuda',reimb:'NO',empresa:'',nota:''},
-{id:729,fecha:'2026-10-30',desc:'Tabaco',cuenta:'Banco Pichincha',monto:0.55,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:730,fecha:'2026-10-30',desc:'Comisión bancaria',cuenta:'Banco Pichincha',monto:0.1,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:731,fecha:'2026-10-30',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Efectivo',monto:5.0,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA'},
-{id:732,fecha:'2026-10-30',desc:'Sueldo octubre — resto',cuenta:'Banco Guayaquil',monto:433.85,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Sueldo oct 2026 — resto'},
-{id:733,fecha:'2026-10-31',desc:'Entrada fiesta',cuenta:'Efectivo',monto:18.0,tipo:'EGRESO',cat:'Entretenimiento/Salidas',reimb:'NO',empresa:'',nota:''},
-{id:734,fecha:'2026-10-31',desc:'Cervezas — fiesta',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Entretenimiento/Salidas',reimb:'NO',empresa:'',nota:''},
-{id:735,fecha:'2026-10-31',desc:'Tabacos y aguas — fiesta',cuenta:'Efectivo',monto:3.0,tipo:'EGRESO',cat:'Entretenimiento/Salidas',reimb:'NO',empresa:'',nota:''},
-{id:736,fecha:'2026-10-30',desc:'Factura viaje Loja — reembolso extra',cuenta:'Efectivo',monto:45.32,tipo:'EGRESO',cat:'Transporte',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:'Reimb: ECUAQUIMICA | Fact incluida en app para recuperar gasto viaje Loja'},
-// ── NOVIEMBRE 2026 ──────────────────────────────────────
-{id:1001,fecha:'2026-11-01',desc:'Suscripción Claude',cuenta:'Banco Guayaquil',monto:23.00,tipo:'EGRESO',cat:'Suscripciones/Digital',reimb:'NO',empresa:'',nota:''},
-{id:1002,fecha:'2026-11-03',desc:'Odontólogo',cuenta:'Efectivo',monto:5.00,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:''},
-{id:1003,fecha:'2026-11-03',desc:'Helados',cuenta:'Efectivo',monto:1.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1004,fecha:'2026-11-03',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:360.40,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1005,fecha:'2026-11-03',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:360.40,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1006,fecha:'2026-11-04',desc:'Pasaje Nambacola→Loja',cuenta:'Efectivo',monto:3.50,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:1007,fecha:'2026-11-04',desc:'Pasaje Loja→Sucúa',cuenta:'Banco Pichincha',monto:22.00,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:1008,fecha:'2026-11-05',desc:'Cuota mensual JA',cuenta:'Jardín Azuayo',monto:105.78,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:'Débito automático'},
-{id:1009,fecha:'2026-11-05',desc:'Descuento adelanto JA oct 4',cuenta:'Jardín Azuayo',monto:203.29,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:''},
-{id:1010,fecha:'2026-11-05',desc:'Descuento adelanto JA oct 11',cuenta:'Jardín Azuayo',monto:51.33,tipo:'EGRESO',cat:'Obligación JA',reimb:'NO',empresa:'',nota:''},
-{id:1011,fecha:'2026-11-05',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Efectivo',monto:3.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1012,fecha:'2026-11-05',desc:'Aguas y tabacos',cuenta:'Efectivo',monto:2.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1013,fecha:'2026-11-05',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:8.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1014,fecha:'2026-11-06',desc:'Aguas',cuenta:'Banco Pichincha',monto:1.50,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1015,fecha:'2026-11-06',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:7.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1016,fecha:'2026-11-06',desc:'Panes y colas ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:8.15,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Sin factura — no reembolsable'},
-{id:1017,fecha:'2026-11-06',desc:'Comisión Guayaquil',cuenta:'Banco Guayaquil',monto:1.72,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:1018,fecha:'2026-11-06',desc:'Transferencia Guayaquil→JA',cuenta:'Banco Guayaquil',monto:48.73,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1019,fecha:'2026-11-06',desc:'Transferencia Guayaquil→JA',cuenta:'Jardín Azuayo',monto:48.73,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1020,fecha:'2026-11-06',desc:'Depósito KITS — custodia',cuenta:'Jardín Azuayo',monto:67.32,tipo:'INGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'KITS — no tocar'},
-{id:1021,fecha:'2026-11-07',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:6.40,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1022,fecha:'2026-11-08',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:5.50,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1023,fecha:'2026-11-08',desc:'Merienda — sin factura',cuenta:'Banco Pichincha',monto:5.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Sin factura'},
-{id:1024,fecha:'2026-11-08',desc:'Tabacos',cuenta:'Banco Pichincha',monto:1.60,tipo:'EGRESO',cat:'Personal/Ocio',reimb:'NO',empresa:'',nota:''},
-{id:1025,fecha:'2026-11-08',desc:'Comida extra Méndez',cuenta:'Banco Pichincha',monto:7.50,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1026,fecha:'2026-11-08',desc:'Retiro efectivo Pichincha',cuenta:'Banco Pichincha',monto:20.00,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1027,fecha:'2026-11-08',desc:'Retiro efectivo Pichincha',cuenta:'Efectivo',monto:20.00,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1028,fecha:'2026-11-08',desc:'Combustible moto',cuenta:'Banco Pichincha',monto:5.00,tipo:'EGRESO',cat:'Transporte',reimb:'NO',empresa:'',nota:''},
-{id:1029,fecha:'2026-11-09',desc:'Almuerzo',cuenta:'Banco Pichincha',monto:4.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1030,fecha:'2026-11-09',desc:'Merienda shawarmas',cuenta:'Efectivo',monto:10.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:'Con amiga'},
-{id:1031,fecha:'2026-11-10',desc:'Préstamo a Fabricio',cuenta:'Efectivo',monto:5.00,tipo:'EGRESO',cat:'Préstamo personal',reimb:'NO',empresa:'',nota:'Fabricio saldado ✅'},
-{id:1032,fecha:'2026-11-10',desc:'Desayuno',cuenta:'Efectivo',monto:2.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1033,fecha:'2026-11-10',desc:'Depósito KITS — custodia',cuenta:'Jardín Azuayo',monto:20.00,tipo:'INGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'KITS — no tocar'},
-{id:1034,fecha:'2026-11-10',desc:'Comisión transferencia JA',cuenta:'Jardín Azuayo',monto:1.47,tipo:'EGRESO',cat:'Comisión bancaria',reimb:'NO',empresa:'',nota:''},
-{id:1035,fecha:'2026-11-10',desc:'Cobro parcial Fabricio',cuenta:'Efectivo',monto:3.50,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:''},
-{id:1036,fecha:'2026-11-10',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Efectivo',monto:3.50,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1037,fecha:'2026-11-10',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Efectivo',monto:2.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1038,fecha:'2026-11-10',desc:'Cobro Fabricio saldo',cuenta:'Banco Pichincha',monto:1.50,tipo:'INGRESO',cat:'Cobro deuda',reimb:'NO',empresa:'',nota:'Deuda saldada ✅'},
-{id:1039,fecha:'2026-11-10',desc:'Almuerzo — fact ECUAQUIMICA',cuenta:'Banco Pichincha',monto:3.50,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1040,fecha:'2026-11-11',desc:'Alimentación — fact ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:6.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1041,fecha:'2026-11-11',desc:'Depósito KITS Agrícola',cuenta:'Jardín Azuayo',monto:44.84,tipo:'INGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'KITS Agrícola — no tocar'},
-{id:1042,fecha:'2026-11-11',desc:'Retiro JA→Efectivo',cuenta:'Jardín Azuayo',monto:44.85,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1043,fecha:'2026-11-11',desc:'Retiro JA→Efectivo',cuenta:'Efectivo',monto:44.85,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:''},
-{id:1044,fecha:'2026-11-11',desc:'Pastillas gripe',cuenta:'Efectivo',monto:3.00,tipo:'EGRESO',cat:'Salud/Personal',reimb:'NO',empresa:'',nota:''},
-{id:1045,fecha:'2026-11-12',desc:'Almuerzo — fact AGROLEON',cuenta:'Efectivo',monto:2.50,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:''},
-{id:1046,fecha:'2026-11-12',desc:'Merienda — fact ECUAQUIMICA',cuenta:'Jardín Azuayo',monto:6.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1047,fecha:'2026-11-13',desc:'Almuerzo — fact AGROLEON',cuenta:'Jardín Azuayo',monto:3.00,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:''},
-{id:1048,fecha:'2026-11-13',desc:'Botella whisky',cuenta:'Jardín Azuayo',monto:25.00,tipo:'EGRESO',cat:'Entretenimiento/Salidas',reimb:'NO',empresa:'',nota:''},
-{id:1049,fecha:'2026-11-13',desc:'Ajuste conciliación JA',cuenta:'Jardín Azuayo',monto:1.46,tipo:'INGRESO',cat:'Ajuste',reimb:'NO',empresa:'',nota:''},
-{id:1050,fecha:'2026-11-14',desc:'Almuerzo — fact AGROLEON',cuenta:'Efectivo',monto:4.75,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'AGROLEON',nota:''},
-{id:1051,fecha:'2026-11-14',desc:'Desayuno — fact ECUAQUIMICA',cuenta:'Efectivo',monto:2.50,tipo:'EGRESO',cat:'Alimentación',reimb:'SÍ',empresa:'ECUAQUIMICA',nota:''},
-{id:1052,fecha:'2026-11-14',desc:'Aguas',cuenta:'Efectivo',monto:3.00,tipo:'EGRESO',cat:'Alimentación',reimb:'NO',empresa:'',nota:''},
-{id:1053,fecha:'2026-11-14',desc:'Impresiones',cuenta:'Efectivo',monto:1.00,tipo:'EGRESO',cat:'Varios',reimb:'NO',empresa:'',nota:''},
-{id:1054,fecha:'2026-11-14',desc:'Candado',cuenta:'Efectivo',monto:2.00,tipo:'EGRESO',cat:'Hogar',reimb:'NO',empresa:'',nota:''},
-{id:1055,fecha:'2026-11-14',desc:'Comisión ventas AGROLEON',cuenta:'Banco Pichincha',monto:150.00,tipo:'INGRESO',cat:'Comisión',reimb:'NO',empresa:'',nota:''},
-{id:1056,fecha:'2026-11-14',desc:'Depósito KITS Agrícola',cuenta:'Jardín Azuayo',monto:44.84,tipo:'INGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'Consolidado en JA'},
-{id:1057,fecha:'2026-11-14',desc:'Anticipo quincena ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:200.00,tipo:'INGRESO',cat:'Sueldo',reimb:'NO',empresa:'',nota:'Anticipo nov 2026'},
-{id:1058,fecha:'2026-11-14',desc:'Décimo tercer sueldo adelantado',cuenta:'Banco Guayaquil',monto:486.43,tipo:'INGRESO',cat:'Décimo tercer sueldo',reimb:'NO',empresa:'',nota:'Pago adelantado nov 2026'},
-// Préstamo KITS $50 en efectivo (nov 6 — faltaba en datos)
-{id:1059,fecha:'2026-11-06',desc:'Préstamo KITS en efectivo — custodia',cuenta:'Jardín Azuayo',monto:50.00,tipo:'INGRESO',cat:'Custodia/Paso',reimb:'NO',empresa:'KITS Agrícola',nota:'$50 prestado KITS — consolidado en JA'},
-// Transferencia Pichincha→JA $117.87 (consolida KITS)
-{id:1060,fecha:'2026-11-13',desc:'Transferencia Pichincha→JA (consolida KITS)',cuenta:'Banco Pichincha',monto:117.87,tipo:'EGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Consolida todo KITS en JA'},
-{id:1061,fecha:'2026-11-13',desc:'Transferencia Pichincha→JA (consolida KITS)',cuenta:'Jardín Azuayo',monto:117.87,tipo:'INGRESO',cat:'Transferencia interna',reimb:'NO',empresa:'',nota:'Consolida todo KITS en JA'}
-];
+var PRELOADED=[]; // v3.4: tu historial vive solo en tu teléfono (formato v4) y en tus respaldos
 
 // STATE
 // CREDIT LINES & CARDS
-var CREDITOS_DEFAULT = [
-  {id:'cred1', nombre:'Línea de Crédito JA', tipo:'linea', banco:'Jardín Azuayo', limite:1000.00, deuda:105.52, tasaAnual:15.68, notas:'Corte día 27 · Pago día 5 · Nº 22304 · Último pago c/interés', debitoAuto:true, debitoDia:5, ultimoDebito:'2026-11'}
-];
+var CREDITOS_DEFAULT = [];
 var userCreditos = [];
 
 // PERSONAL DEBTS
-var DEUDAS_DEFAULT = [
-  {id:'deuda1', nombre:'Deuda a hermana', monto:20.00, notas:''},
-  {id:'deuda2', nombre:'Deuda a Junior', monto:28.75, notas:''}
-];
+var DEUDAS_DEFAULT = [];
 var userDeudas = [];
 var userCobros = []; // Dinero que otros me deben a mí
 
@@ -2617,7 +2479,7 @@ function init(){
   try{ saved=JSON.parse(localStorage.getItem(STORE_KEY)); }catch(e){ saved=null; }
   if(!saved||!Array.isArray(saved.transactions)){
     var v3=null; try{ v3=JSON.parse(localStorage.getItem(STORE_KEY_V3)); }catch(e){}
-    if(v3&&v3.transactions){ saved=migrarV3(v3); origen='v3'; }
+    if(v3&&v3.transactions){ saved=migrarV3(v3); origen=PRELOADED.length?'v3':'v3-incompleto'; }
     else { saved=datosNuevos(); origen='nuevo'; }
   }
   saved=normalizarGuardado(saved);
@@ -2697,8 +2559,20 @@ function init(){
     {nombre:'Dinero libre',pct:5,color:'#94a3b8'}
   ];
 
+  if(!state.perfil._seedClaude){
+    state.perfil._seedClaude=true;
+    var _ya=(state.obligaciones||[]).some(function(o){return /claude/i.test(o.nombre||'');});
+    if(!_ya&&state._origenCarga!=='nuevo'){
+      var _mes=mesLocal(), _pag=state.transactions.some(function(t){return t.tipo==='EGRESO'&&/claude/i.test(t.desc||'')&&t.fecha.slice(0,7)===_mes;});
+      (state.obligaciones=state.obligaciones||[]).push({id:'oblig_claude',nombre:'Suscripción Claude',icono:'🤖',monto:23,diaPago:1,duracion:'indefinido',
+        fechaInicio:_mes+'-01',notas:'$20 + $3 IVA del banco',cat:'Suscripciones/Digital',pagos:_pag?[{mes:_mes,monto:23,fecha:_mes+'-01'}]:[]});
+    }
+    state._seedNuevo=true;
+  }
   ejecutarDebitosAutomaticos();
-  if(state._origenCarga!=='v4'){
+  if(state._origenCarga==='v3-incompleto'){
+    mostrarErrorFatal(new Error('Tus datos están en el formato anterior. Restaura tu último respaldo (Mi Perfil → Restaurar). No se modificó nada.'));
+  } else if(state._origenCarga!=='v4'||state._seedNuevo){
     var okMig=saveState();
     if(state._origenCarga==='v3'&&okMig) setTimeout(function(){ showToast('✅ Datos actualizados a la versión '+APP_VERSION); },1600);
   }
@@ -3517,11 +3391,12 @@ function updateHomeWidget(){
   var totalBruto = Object.values(bal).reduce(function(a,b){return a+b;},0);
   var totalDisp = totalBruto - kitsTotal;
 
+  var _apart=apartadoMetas(); totalDisp=r2(totalDisp-_apart);
   document.getElementById('home-total').textContent = fmt$(totalDisp);
   var _dt=deudasTotales(), _cob=(userCobros||[]).reduce(function(s,c){return s+(c.monto||0);},0);
-  var _neto=r2(totalDisp-_dt.total+_cob);
+  var _neto=r2(totalDisp+_apart-_dt.total+_cob);
   var _hn=document.getElementById('home-neto');
-  if(_hn) _hn.innerHTML=_dt.total>0||_cob>0?'Patrimonio neto <b style="color:'+(_neto>=0?'#34d399':'#ff5c7a')+'">'+fmt$(_neto)+'</b> · debes '+fmt$(_dt.total)+(_cob>0?' · te deben '+fmt$(_cob):''):'';
+  if(_hn) _hn.innerHTML=(_apart>0?'🎯 '+fmt$(_apart)+' apartado para metas<br>':'')+(_dt.total>0||_cob>0?'Patrimonio neto <b style="color:'+(_neto>=0?'#34d399':'#ff5c7a')+'">'+fmt$(_neto)+'</b> · debes '+fmt$(_dt.total)+(_cob>0?' · te deben '+fmt$(_cob):''):'');
   var ef = (bal['Efectivo']||0);
   var cuentas = totalBruto - ef;
   document.getElementById('home-efectivo').textContent = '$' + ef.toFixed(2);
@@ -4125,6 +4000,7 @@ function renderScreen(screen){
   if(screen==='credito') renderCredito();
   if(screen==='deudas') renderDeudas();
   if(screen==='nueva') renderNuevaTiles();
+  if(screen==='plan') renderPlan();
 }
 
 function renderNuevaTiles(){
@@ -4301,7 +4177,7 @@ function renderDashboard(){
   });
 
   // ── H. RESERVA Y DISPONIBLE FINAL ──
-  var reserva = state.reservaAhorro||0;
+  var reserva = (state.reservaAhorro||0)+apartadoMetas(); // incluye lo apartado para metas
   // Disponible = saldo real − obligaciones pendientes − cuotas crédito aún no debitadas − reserva
   var totalComprometido = totalObligPend + totalCuotaCredito + reserva;
   var disponible = saldoReal - totalComprometido;
@@ -4534,7 +4410,7 @@ function renderDashboard(){
 
   // ── §6 OBJETIVOS FINANCIEROS ──
   (function(){
-    var objetivos=state.objetivos||[];
+    var objetivos=(state.objetivos||[]).filter(function(o){return !o.completado;});
     var h='<div class="cc-card">'
       +'<div class="cc-card-header"><div class="cc-card-title">🏆 Objetivos financieros</div>'
       +'<button class="cc-card-action" onclick="ccAddObjetivo()">+ Nuevo</button></div>';
@@ -4564,7 +4440,7 @@ function renderDashboard(){
           +'</div>'
           +'<div class="cc-obj-bar-bg"><div class="cc-obj-bar" style="width:'+pct.toFixed(1)+'%;background:'+colCard+'"></div></div>'
           +'<div style="display:flex;gap:8px">'
-            +'<button onclick="ccVerPlanObjetivo((state.objetivos||[]).find(function(o){return o.id==='+obj.id+'}))" style="flex:1;font-size:12px;font-weight:600;color:#fff;background:rgba(10,132,255,0.2);border:0.5px solid rgba(10,132,255,0.4);border-radius:10px;padding:7px;cursor:pointer;font-family:-apple-system,sans-serif">📋 Ver plan</button>'
+            +'<button onclick="ccVerPlanObjetivo((state.objetivos||[]).find(function(o){return String(o.id)===\''+obj.id+'\'}))" style="flex:1;font-size:12px;font-weight:600;color:#fff;background:rgba(10,132,255,0.2);border:0.5px solid rgba(10,132,255,0.4);border-radius:10px;padding:7px;cursor:pointer;font-family:-apple-system,sans-serif">📋 Ver plan</button>'
             +'<button onclick="ccEditObjetivo(\''+obj.id+'\')" style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.4);background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.1);border-radius:10px;padding:7px 12px;cursor:pointer;font-family:-apple-system,sans-serif">Editar</button>'
           +'</div>'
         +'</div>';
@@ -5509,6 +5385,7 @@ function renderPerfil(){
         }).join('')
       )
     +'</div>'
+    +htmlCalendarioPerfil()
     // ── RESPALDO Y SEGURIDAD ──────────────────────────────
     +'<div class="glass-card" style="margin-bottom:16px;padding:16px 18px">'
       +'<div style="font-size:11px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">💾 Respaldo de tus datos</div>'
@@ -9064,7 +8941,7 @@ function generarReporte(){
   var filtered=state.transactions.filter(function(t){ return t.fecha>=desde && t.fecha<=hasta; });
   if(!filtered.length){ document.getElementById('reporte-output').textContent='Sin movimientos en ese período.'; return; }
 
-  var lineas=['=== REPORTE FINANCIERO ===','Javier Rivas — Nov 2026',''];
+  var lineas=['=== REPORTE FINANCIERO ===',(state.perfil&&state.perfil.nombre||'')+' — '+hoyLocal(),''];
 
   if(state.rptTipo==='reimb'){
     var eq=filtered.filter(function(t){return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA';});

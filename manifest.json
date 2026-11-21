@@ -1,7 +1,7 @@
 {
   "name": "Finanzas JR",
   "short_name": "FinanzasJR",
-  "description": "App de finanzas personales de Javier Rivas",
+  "description": "App de finanzas personales",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
