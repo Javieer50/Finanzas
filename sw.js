@@ -1,4 +1,4 @@
-const CACHE = 'finanzas-jr-v66-3.9.0';
+const CACHE = 'finanzas-jr-v68-4.0.1';
 const FILES = [
   './index.html',
   './manifest.json',
@@ -20,6 +20,8 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+  // El asistente IA y cualquier otra dirección externa van directo a la red (sin caché)
+  if (e.request.method !== 'GET' || url.origin !== self.location.origin) return;
   const isHTML = url.pathname === '/' || url.pathname.endsWith('.html') || url.pathname.endsWith('/');
 
   if (isHTML) {

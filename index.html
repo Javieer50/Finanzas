@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-title" content="Finanzas JR">
 <meta name="theme-color" content="#071a1d">
 <meta name="color-scheme" content="dark">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.workers.dev; font-src 'self' data:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Finanzas JR</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -1019,6 +1019,116 @@ body *{text-transform:none!important}
 .oblig-item.pagada>*{opacity:.78}
 .oblig-item.pagada{border-color:rgba(48,209,88,.28)!important}
 
+/* ══ v4.0 ══ */
+/* Más aire bajo el notch / Dynamic Island en toda la app */
+:root{--safe-top:max(env(safe-area-inset-top,0px),24px);--top-gap:18px}
+.nav-header{padding-top:calc(var(--safe-top) + var(--top-gap))!important}
+#screen-home .app-header,.app-header{padding-top:calc(var(--safe-top) + var(--top-gap))!important}
+#screen-home .home-scroll{padding-top:calc(var(--safe-top) + var(--top-gap) + 66px)!important}
+/* Franja de la barra de estado: lo que se desplaza por debajo no choca con la hora ni el notch */
+.status-scrim{position:fixed;left:0;right:0;top:0;height:calc(var(--safe-top) + 6px);z-index:150;pointer-events:none;
+  background:linear-gradient(180deg,rgba(6,14,28,.92) 0%,rgba(6,14,28,.6) 70%,rgba(6,14,28,0) 100%)}
+/* Hojas inferiores: nunca más arriba que el notch + margen */
+.modal-sheet{max-height:calc(var(--vvh,100dvh) - var(--safe-top) - 28px)!important}
+#tx-modal .tx-sheet{max-height:calc(var(--vvh,100dvh) - var(--safe-top) - 28px)!important}
+.salud-modal-sheet{max-height:calc(var(--vvh,100dvh) - var(--safe-top) - 28px)!important}
+.hist-sheet{max-height:calc(var(--vvh,100dvh) - var(--safe-top) - 28px)!important}
+.nc-sheet{top:calc(var(--safe-top) + 28px)!important}
+
+/* Curva patrimonial ↔ metas del Plan */
+.cv-metas{display:flex;align-items:center;gap:10px;margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(251,191,36,.08);border:0.5px solid rgba(251,191,36,.3)}
+.cv-metas div{flex:1;min-width:0}.cv-metas b{display:block;font-size:12.5px;color:#fcd34d}
+.cv-metas small{display:block;font-size:11.5px;color:var(--ink2);margin-top:2px;line-height:1.35}
+.cv-metas button{flex-shrink:0;padding:7px 11px;border-radius:11px;font-size:12px;font-weight:700;background:rgba(251,191,36,.16);border:0.5px solid rgba(251,191,36,.45);color:#fcd34d}
+
+/* Cuentas › No disponible */
+.cu-kits{display:flex;align-items:center;gap:12px;width:100%;margin-top:10px;padding:14px;border-radius:22px;text-align:left;color:#fff;
+  background:linear-gradient(140deg,rgba(167,139,250,.28),rgba(76,29,149,.22));border:0.5px solid rgba(196,181,253,.4);box-shadow:var(--g-shadow)}
+.cu-kits .ic{width:42px;height:42px;border-radius:13px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#c4b5fd,#6d28d9)}
+.cu-kits .tx{flex:1;min-width:0}.cu-kits b{display:block;font-size:15px}.cu-kits small{display:block;font-size:12px;color:var(--ink2);margin-top:1px}
+.cu-kits .am{font:800 18px var(--num);color:#d8b4fe;white-space:nowrap}.cu-kits .ch{color:var(--ink3);font-size:20px;margin-left:2px}
+
+/* Ícono del asistente */
+.icon-ia{--t1:#a5f3fc;--t2:#7c3aed;background:radial-gradient(120% 120% at 20% 10%,#67e8f9 0%,#8b5cf6 45%,#db2777 100%)!important}
+
+/* ══ ASISTENTE ══ */
+#screen-ia.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
+#screen-ia .nav-header{flex-shrink:0}
+.ia-head-t{flex:1;min-width:0}
+.ia-head-t .nav-title{line-height:1.1}
+#ia-status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink3);margin-top:2px}
+#ia-status i{width:7px;height:7px;border-radius:50%;background:#8e8e93}#ia-status i.on{background:#30d158;box-shadow:0 0 8px #30d158}
+.ia-hbtn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.18);color:#fff;flex-shrink:0}
+#ia-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:6px 16px 18px}
+#ia-msgs{display:flex;flex-direction:column;gap:12px}
+.ia-hello{text-align:center;padding:28px 6px 10px;display:flex;flex-direction:column;align-items:center}
+.ia-orb{width:74px;height:74px;border-radius:50%;margin-bottom:14px;background:radial-gradient(circle at 30% 28%,#ecfeff 0%,#67e8f9 18%,#8b5cf6 55%,#db2777 100%);box-shadow:0 0 40px rgba(139,92,246,.55),inset 0 -6px 18px rgba(0,0,0,.25);animation:iaOrb 6s ease-in-out infinite}
+@keyframes iaOrb{0%,100%{transform:scale(1);filter:hue-rotate(0deg)}50%{transform:scale(1.05);filter:hue-rotate(25deg)}}
+@media (prefers-reduced-motion:reduce){.ia-orb{animation:none}}
+.ia-hello>b{font-size:22px;color:#fff;letter-spacing:-.3px}
+.ia-hello p{font-size:14px;color:var(--ink2);line-height:1.5;margin:6px 0 16px;max-width:330px}
+.ia-sugs{display:flex;flex-direction:column;gap:8px;width:100%}
+.ia-sugs button{text-align:left;padding:12px 14px;border-radius:16px;font-size:14px;color:#fff;background:var(--g-fill);border:0.5px solid rgba(255,255,255,.16);box-shadow:var(--g-shadow)}
+.ia-cta{padding:13px 22px;border-radius:16px;font-size:15px;font-weight:700;color:#fff;background:linear-gradient(135deg,#7c3aed,#c77dff);border:none}
+.ia-u{display:flex;justify-content:flex-end}
+.ia-u div{max-width:82%;padding:10px 14px;border-radius:20px 20px 6px 20px;font-size:15px;line-height:1.42;color:#fff;background:linear-gradient(140deg,#7c3aed,#a855f7);box-shadow:0 6px 18px -8px rgba(124,58,237,.8);word-wrap:break-word}
+.ia-a{max-width:94%}
+.ia-body{padding:12px 15px;border-radius:20px 20px 20px 6px;background:var(--g-fill);border:0.5px solid rgba(255,255,255,.15);box-shadow:var(--g-shadow);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);font-size:15px;line-height:1.5;color:#f4f4f8;word-wrap:break-word}
+.ia-body p{margin:0 0 8px}.ia-body p:last-child{margin-bottom:0}
+.ia-body .ia-h{font-weight:700;color:#fff;margin-top:6px}
+.ia-body b{color:#fff}
+.ia-body ul,.ia-body ol{margin:4px 0 8px;padding-left:20px}.ia-body li{margin:3px 0}
+.ia-body code{font-size:13px;background:rgba(0,0,0,.25);padding:1px 5px;border-radius:6px}
+.ia-tbl{overflow-x:auto;margin:6px 0 8px}
+.ia-tbl table{border-collapse:collapse;font-size:13px;min-width:100%}
+.ia-tbl th,.ia-tbl td{padding:6px 8px;border-bottom:0.5px solid rgba(255,255,255,.12);text-align:left;white-space:nowrap}
+.ia-tbl th{color:var(--ink2);font-weight:600}
+.ia-src{margin:6px 4px 0;font-size:12.5px;color:var(--ink2)}
+.ia-src summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:0.5px solid rgba(255,255,255,.12)}
+.ia-src summary::-webkit-details-marker{display:none}
+.ia-src summary::before{content:'ⓘ';font-size:12px}
+.ia-src ul{list-style:none;margin:8px 0 0;padding:10px 12px;border-radius:14px;background:rgba(0,0,0,.2)}
+.ia-src li+li{margin-top:8px;padding-top:8px;border-top:0.5px solid rgba(255,255,255,.08)}
+.ia-src li b{display:block;color:#fff;font-size:12.5px}
+.ia-src li span{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.ia-src li span.err{color:#ff8fa3}
+.ia-w{border-radius:20px;padding:13px 14px;background:linear-gradient(150deg,rgba(251,191,36,.14),rgba(255,255,255,.05));border:0.5px solid rgba(251,191,36,.45);box-shadow:var(--g-shadow)}
+.ia-w.autorizado{background:linear-gradient(150deg,rgba(48,209,88,.13),rgba(255,255,255,.04));border-color:rgba(48,209,88,.4)}
+.ia-w.rechazado,.ia-w.error{opacity:.75;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.05)}
+.ia-w-t{font-size:12px;font-weight:700;color:#fcd34d}.ia-w.autorizado .ia-w-t{color:#30d158}.ia-w.rechazado .ia-w-t,.ia-w.error .ia-w-t{color:var(--ink2)}
+.ia-w-h{font-size:16px;font-weight:700;color:#fff;margin:3px 0 8px}
+.ia-w-rows{border-radius:13px;background:rgba(0,0,0,.2);padding:2px 12px}
+.ia-w-rows div{display:flex;justify-content:space-between;gap:10px;padding:7px 0;font-size:13.5px;color:var(--ink2)}
+.ia-w-rows div+div{border-top:0.5px solid rgba(255,255,255,.08)}
+.ia-w-rows b{color:#fff;text-align:right}
+.ia-w-err{font-size:12.5px;color:#ff8fa3;margin-top:8px}
+.ia-w-btn{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}
+.ia-w-btn button{padding:11px;border-radius:14px;font-size:14px;font-weight:700;background:rgba(255,255,255,.08);border:0.5px solid rgba(255,255,255,.18);color:#fff}
+.ia-w-btn .ok{background:rgba(48,209,88,.22);border-color:rgba(48,209,88,.55);color:#5df28a}
+.ia-e{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 13px;border-radius:16px;background:rgba(255,92,122,.12);border:0.5px solid rgba(255,92,122,.35);font-size:13.5px;color:#ffc2cd;line-height:1.4}
+.ia-e button{flex-shrink:0;padding:7px 12px;border-radius:11px;background:rgba(255,255,255,.1);border:0.5px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:600}
+.ia-typing{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);padding:4px 4px}
+.ia-typing span{display:inline-flex;gap:4px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.08)}
+.ia-typing i{width:6px;height:6px;border-radius:50%;background:#c9a3ff;animation:iaDot 1.2s infinite}
+.ia-typing i:nth-child(2){animation-delay:.15s}.ia-typing i:nth-child(3){animation-delay:.3s}
+@keyframes iaDot{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+.ia-bar{flex-shrink:0;display:flex;align-items:flex-end;gap:8px;padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 10px);border-top:0.5px solid rgba(255,255,255,.08);background:linear-gradient(0deg,rgba(8,12,30,.75),rgba(8,12,30,.35));-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.ia-bar textarea{flex:1;min-width:0;resize:none;max-height:120px;padding:11px 15px;border-radius:22px;font:16px/1.35 -apple-system,BlinkMacSystemFont,sans-serif;color:#fff;background:rgba(255,255,255,.09);border:0.5px solid rgba(255,255,255,.2);outline:none}
+.ia-bar textarea::placeholder{color:var(--ink3)}
+#ia-send{width:42px;height:42px;border-radius:50%;flex-shrink:0;border:none;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff}
+#ia-send:disabled{opacity:.4}
+.ia-steps{font-size:13px;color:var(--ink2);line-height:1.5;margin-top:4px}.ia-steps ol{margin:6px 0 0;padding-left:18px}.ia-steps li{margin:4px 0}
+.ia-steps code{font-size:12px;background:rgba(0,0,0,.3);padding:0 4px;border-radius:5px;color:#e9d5ff}
+.ia-lb{display:block;font-size:12px;color:rgba(255,255,255,.6);margin-top:14px}
+.ia-priv{font-size:11.5px;color:var(--ink3);line-height:1.45;margin-top:12px}
+.ia-hl{display:flex;flex-direction:column;gap:6px;max-height:50vh;overflow-y:auto;margin-top:6px}
+.ia-hi{display:flex;align-items:center;gap:6px;border-radius:14px;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.1)}
+.ia-hi.sel{border-color:rgba(201,163,255,.6)}
+.ia-hi .t{flex:1;min-width:0;text-align:left;padding:10px 12px;background:none;border:none;color:#fff}
+.ia-hi .t b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ia-hi .t small{font-size:11.5px;color:var(--ink3)}
+.ia-hi .d{padding:10px 12px;background:none;border:none;font-size:15px}
+.ia-a.parcial .ia-body{background:none!important;border:none!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:2px 6px;font-size:13.5px;color:var(--ink2)}
+
 </style>
 </head>
 <body>
@@ -1026,6 +1136,7 @@ body *{text-transform:none!important}
 <div id="toast" class="toast"></div>
 
 <!-- HOME SCREEN -->
+<div class="status-scrim" aria-hidden="true"></div>
 <div class="screen active" id="screen-home">
   <div class="app-header">
     <div class="hd-left" onclick="goTo('perfil')">
@@ -1119,9 +1230,9 @@ body *{text-transform:none!important}
         <div class="app-icon-bg icon-deudas"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4L4 9v8c0 6.5 5.2 11.5 12 13 6.8-1.5 12-6.5 12-13V9L16 4z" stroke="#fff" stroke-width="2.1" fill="rgba(255,255,255,0.1)"/><path d="M16 13v5" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="16" cy="21.5" r="1.6" fill="#fff"/></svg></div>
         <div class="app-icon-label">Deudas</div>
       </div>
-      <div class="app-icon" onclick="goTo('kits')">
-        <div class="app-icon-bg icon-kits"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="8" y="15" width="16" height="13" rx="3.5" stroke="#fff" stroke-width="2.2"/><path d="M11 15v-4a5 5 0 0 1 10 0v4" stroke="#fff" stroke-width="2.2"/><circle cx="16" cy="21" r="2.2" fill="#fff"/><line x1="16" y1="23" x2="16" y2="25.5" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg></div>
-        <div class="app-icon-label">No disp.</div>
+      <div class="app-icon" onclick="abrirAsistente()">
+        <div class="app-icon-bg icon-ia"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4c.9 5.6 3.4 8.1 9 9-5.6.9-8.1 3.4-9 9-.9-5.6-3.4-8.1-9-9 5.6-.9 8.1-3.4 9-9z" fill="#fff"/><path d="M25 19c.4 2.4 1.5 3.5 4 4-2.5.4-3.6 1.6-4 4-.4-2.4-1.5-3.6-4-4 2.5-.5 3.6-1.6 4-4z" fill="rgba(255,255,255,.8)"/></svg></div>
+        <div class="app-icon-label">Asistente</div>
       </div>
       <div class="app-icon" onclick="goTo('plan')">
         <div class="app-icon-bg icon-plan"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M4 24c4-1 6-9 10-9s5 5 9 5 4-8 5-11" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="23" cy="20" r="2.2" fill="#fff"/><path d="M4 28h24" stroke="rgba(255,255,255,0.6)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
@@ -1137,7 +1248,7 @@ body *{text-transform:none!important}
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v3.9.0</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.0.1</div>
   </div>
 </div>
 
@@ -1499,6 +1610,22 @@ body *{text-transform:none!important}
   </div>
 </div>
 
+<!-- ASISTENTE IA -->
+<div class="inner-screen" id="screen-ia">
+  <div class="nav-header">
+    <button class="back-btn" onclick="goBack()">‹</button>
+    <div class="ia-head-t"><div class="nav-title">Asistente</div><div id="ia-status"></div></div>
+    <button class="ia-hbtn" onclick="iaHistorial()" aria-label="Conversaciones"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button>
+    <button class="ia-hbtn" onclick="iaNueva()" aria-label="Nueva conversación"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></button>
+    <button class="ia-hbtn" onclick="iaAjustes()" aria-label="Ajustes del asistente"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+  </div>
+  <div id="ia-scroll"><div id="ia-msgs"></div></div>
+  <div class="ia-bar">
+    <textarea id="ia-input" rows="1" placeholder="Pregunta sobre tu dinero…" oninput="iaAutoAlto(this)" onkeydown="iaTecla(event)" aria-label="Mensaje para el asistente"></textarea>
+    <button id="ia-send" onclick="iaSubmit()" aria-label="Enviar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  </div>
+</div>
+
 <!-- REPORTE -->
 <div class="inner-screen" id="screen-reporte">
   <div class="nav-header">
@@ -1686,7 +1813,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='3.9.0';
+var APP_VERSION='4.0.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -2302,6 +2429,8 @@ function renderCuentas(){
       +'<span class="cu-amt"><b>'+fmt$(t)+'</b>'+(k>0?'<small style="color:'+e.sub+'">tuyo '+fmt$(p)+' · KITS '+fmt$(k)+'</small>':'')+'</span>'
     +'</button>';
   });
+  h+='<button class="cu-kits" onclick="goTo(\'kits\')"><span class="ic"><svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="8" y="15" width="16" height="13" rx="3.5" stroke="#fff" stroke-width="2.4"/><path d="M11 15v-4a5 5 0 0 1 10 0v4" stroke="#fff" stroke-width="2.4"/></svg></span>'
+    +'<span class="tx"><b>No disponible</b><small>'+(kt>0?'Dinero de KITS en custodia · no es tuyo':'Sin dinero de terceros en custodia')+'</small></span><span class="am">'+fmt$(kt)+'</span><span class="ch">›</span></button>';
   var mv=state.transactions.filter(function(x){return !x.arch&&x.tipo==='EGRESO'&&natOf(x)==='transferencia';}).slice(0,5);
   if(mv.length){
     h+='<div class="cu-sec">Movimientos entre cuentas</div><div class="card" style="padding:6px 14px">';
@@ -4846,6 +4975,7 @@ function goBack(){
 function updateDock(){}
 
 function renderScreen(screen){
+  if(screen==='ia') iaRender();
   if(screen==='dashboard') renderDashboard();
   if(screen==='historial') renderHistorial();
   if(screen==='reimb') renderReimb();
@@ -5140,18 +5270,18 @@ function renderDashboard(){
 
   // ── §2 PRÓXIMOS 30 DÍAS: pagos e ingresos programados, con saldo proyectado ──
   (function(){
-    var hoyS=hoyLocal(), fin=addDias(hoyS,30), ev=[];
+    var hoyS=hoyLocal(), fin=mesLocal()+'-'+String(diasDelMes(mesLocal())).padStart(2,'0'), ev=[];
     try{ ev=eventosProgramados(hoyS,fin); }catch(e){}
     var sale=r2(ev.filter(function(e){return e.tipo==='EGR';}).reduce(function(a,e){return a+e.monto;},0));
     var entra=r2(ev.filter(function(e){return e.tipo==='ING';}).reduce(function(a,e){return a+e.monto;},0));
     var saldo=r2(disponibleReal()-apartadoMetas());
     var h='<div class="cc-card">'
-      +'<div class="cc-card-header"><div class="cc-card-title">📅 Próximos 30 días</div>'
+      +'<div class="cc-card-header"><div class="cc-card-title">📅 Lo que queda de '+MESES[+mesLocal().slice(5,7)-1]+'</div>'
       +'<button class="cc-card-action" onclick="goTo(\'plan\')">Flujo de caja</button></div>'
-      +'<div class="pc-sum"><div><small>Salen</small><b style="color:#ff8fa3">−'+fmt$(sale)+'</b></div><div><small>Entran</small><b style="color:#5eead4">+'+fmt$(entra)+'</b></div><div><small>Saldo hoy</small><b>'+fmt$(saldo)+'</b></div></div>';
-    if(!ev.length){ h+='<div style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:14px 0">Sin pagos ni ingresos programados</div>'; }
+      +'<div class="pc-sum"><div><small>Salen este mes</small><b style="color:#ff8fa3">'+(sale>0?'−':'')+fmt$(sale)+'</b></div><div><small>Entran</small><b style="color:#5eead4">'+(entra>0?'+':'')+fmt$(entra)+'</b></div><div><small>Saldo hoy</small><b>'+fmt$(saldo)+'</b></div></div>';
+    if(!ev.length){ h+='<div style="font-size:13px;color:rgba(255,255,255,0.5);text-align:center;padding:14px 0">No quedan pagos ni ingresos programados este mes</div>'; }
     var corr=saldo;
-    ev.slice(0,10).forEach(function(e){
+    ev.forEach(function(e){
       corr=r2(corr+(e.tipo==='ING'?e.monto:-e.monto));
       var d=ymdToDate(e.fecha), dh=difDias(hoyS,e.fecha);
       var cuando=dh===0?'Hoy':dh===1?'Mañana':'En '+dh+' días';
@@ -8408,12 +8538,12 @@ function setAnaView(v){ anaSelectedMes=v; renderAnalisis(); }
 
 var curvaVista='anual'; // 'anual' | 'mensual'
 function setCurvaVista(v){ curvaVista=v; renderCurva(); }
-function renderCurva(){
+function renderCurva_base(){
   var el=document.getElementById('ana-curva-card');
   if(!el) return;
   var MNOMBRES=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   var meta=state.meta||{};
-  var metaMonto=parseFloat(meta.monto)||0;
+  var metaMonto=metasActivasTotal();
   var W=320,H=120,PL=4,PR=4,PT=14,PB=20;
   var gW=W-PL-PR, gH=H-PT-PB;
 
@@ -8518,7 +8648,7 @@ function renderCurva(){
     }
   });
   var metaY2=metaMonto>0?(PT+gH-(((metaMonto-pm2)/pr2)*gH)):null;
-  var metaLine2=metaY2!=null?'<line x1="'+PL+'" y1="'+metaY2.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+metaY2.toFixed(1)+'" stroke="rgba(251,191,36,0.6)" stroke-width="1" stroke-dasharray="4,3"/><text x="'+(W-PR-2)+'" y="'+(metaY2-3).toFixed(1)+'" text-anchor="end" font-size="9" fill="rgba(251,191,36,0.9)">META $'+Math.round(metaMonto)+'</text>':'';
+  var metaLine2=metaY2!=null?'<line x1="'+PL+'" y1="'+metaY2.toFixed(1)+'" x2="'+(W-PR)+'" y2="'+metaY2.toFixed(1)+'" stroke="rgba(251,191,36,0.6)" stroke-width="1" stroke-dasharray="4,3"/><text x="'+(W-PR-2)+'" y="'+(metaY2-3).toFixed(1)+'" text-anchor="end" font-size="9" fill="rgba(251,191,36,0.9)">METAS $'+Math.round(metaMonto)+'</text>':'';
   var diff3=puntos2[n2-1].v-puntos2[0].v;
   var tc3=diff3>=0?'var(--green)':'var(--red)';
   var label3=MNOMBRES[parseInt(meses[0].slice(5))-1]+' — '+MNOMBRES[parseInt(meses[n2-1].slice(5))-1]+' '+meses[n2-1].slice(0,4);
@@ -9917,7 +10047,7 @@ function initSwipeModals(){
       if(!dragging) return;
       var dy=e.touches[0].clientY-startY;
       // Only allow drag-down when sheet is scrolled to top
-      if(dy>0&&sheet.scrollTop<=0){
+      if(dy>0&&_scrollArriba(e.target,sheet)){
         sheet.style.transform='translateY('+Math.min(dy*0.6,160)+'px)';
         sheet.style.transition='none';
         sheet.style.opacity=String(Math.max(0.4,1-dy/300));
@@ -9928,7 +10058,7 @@ function initSwipeModals(){
       dragging=false;
       var dy=e.changedTouches[0].clientY-startY;
       sheet.style.transition='transform .25s ease,opacity .25s ease';
-      if(dy>80&&sheet.scrollTop<=0){
+      if(dy>80&&_scrollArriba(e.target,sheet)){
         sheet.style.transform='translateY(100%)';
         sheet.style.opacity='0';
         setTimeout(function(){
@@ -10320,6 +10450,611 @@ function irAMetas(){ planTab='metas'; goTo('plan'); }
   function ajustar(){ var r=document.documentElement.style; r.setProperty('--vvh',vv.height+'px'); r.setProperty('--vvt',vv.offsetTop+'px'); }
   vv.addEventListener('resize',ajustar); vv.addEventListener('scroll',ajustar); ajustar();
 })();
+
+/* ══════════════════════════════════════════════════════════════
+   ASISTENTE FINANCIERO IA v4.0
+   · La IA (Claude) corre detrás de TU servidor (Cloudflare Worker):
+     la clave de la API nunca está en el teléfono.
+   · Los datos no salen completos: la IA pide herramientas y la app
+     responde solo lo que se consultó, calculado aquí con las mismas
+     fórmulas de la app (verificable).
+   · Toda acción que cambie datos requiere tu autorización explícita.
+   ══════════════════════════════════════════════════════════════ */
+var IA_KEY='finanzas_jr_ia', IA_CFG_KEY='finanzas_jr_ia_cfg';
+var IA_MAX_CHATS=40, IA_MAX_VUELTAS=8, IA_TIMEOUT=90000;
+var _ia={chats:[],actual:null,ocupado:false,estado:''};
+
+/* ── Almacenamiento ── */
+function iaCfg(){ try{ return JSON.parse(localStorage.getItem(IA_CFG_KEY)||'{}')||{}; }catch(e){ return {}; } }
+function iaGuardarCfg(c){ try{ localStorage.setItem(IA_CFG_KEY,JSON.stringify(c)); }catch(e){} }
+function iaCargar(){
+  try{ var d=JSON.parse(localStorage.getItem(IA_KEY)||'{}'); _ia.chats=Array.isArray(d.chats)?d.chats:[]; _ia.actual=d.actual||null; }catch(e){ _ia.chats=[]; }
+  _ia.chats.forEach(_iaReparar);
+}
+function iaGuardar(){
+  _ia.chats.sort(function(a,b){ return (b.act||'')<(a.act||'')?-1:1; });
+  if(_ia.chats.length>IA_MAX_CHATS) _ia.chats=_ia.chats.slice(0,IA_MAX_CHATS);
+  var d={chats:_ia.chats,actual:_ia.actual};
+  try{ localStorage.setItem(IA_KEY,JSON.stringify(d)); }
+  catch(e){ // sin espacio: se quitan chats antiguos
+    while(_ia.chats.length>1){ _ia.chats.pop(); try{ localStorage.setItem(IA_KEY,JSON.stringify({chats:_ia.chats,actual:_ia.actual})); return; }catch(_){} }
+  }
+}
+// Si la app se cerró a mitad de una respuesta, se deja la conversación en un estado válido
+function _iaReparar(c){
+  c.api=c.api||[]; c.ui=c.ui||[];
+  var pend=c.ui.some(function(u){return u.r==='w'&&u.estado==='pendiente';});
+  var last=c.api[c.api.length-1];
+  if(!pend&&last&&last.role==='assistant'&&Array.isArray(last.content)&&last.content.some(function(b){return b.type==='tool_use';})) c.api.pop();
+  if(!pend) c.pendRes=null;
+}
+function iaChat(){ var c=_ia.chats.find(function(x){return x.id===_ia.actual;}); return c||null; }
+function iaNuevoChat(){
+  var c={id:'chat_'+Date.now(),titulo:'Nueva conversación',creado:new Date().toISOString(),act:new Date().toISOString(),api:[],ui:[],pendRes:null};
+  _ia.chats.unshift(c); _ia.actual=c.id; iaGuardar(); return c;
+}
+
+/* ── Contexto y reglas para la IA ── */
+function iaSistema(){
+  var p=state.perfil||{}, hoy=hoyLocal(), d=ymdToDate(hoy);
+  return [
+    'Eres el Asistente Financiero de FinanzasJR, la app de finanzas personales de '+(p.nombre||'Javier')+' (Ecuador, dólares USD).',
+    'Hoy es '+DIAS[d.getDay()]+' '+hoy+'. Responde siempre en español, claro y breve, con tono cercano y profesional.',
+    '',
+    'REGLAS OBLIGATORIAS',
+    '1. Usa EXCLUSIVAMENTE datos que obtengas con las herramientas en esta conversación. Nunca inventes movimientos, saldos, fechas ni resultados. Si una cifra no está en los resultados, no la des.',
+    '2. Antes de responder sobre dinero, consulta la herramienta adecuada aunque creas saberlo. Puedes llamar varias herramientas.',
+    '3. Explica de dónde sale cada cifra importante (qué herramienta/sección de la app) y cómo la calculaste. Para operaciones propias usa la herramienta calcular y muestra la fórmula.',
+    '4. Si no hay datos suficientes, dilo claramente y explica qué falta registrar.',
+    '5. Nunca crees, modifiques ni elimines registros por tu cuenta. Solo puedes PROPONER una acción con registrar_movimiento o crear_meta cuando el usuario lo pida expresamente; la app le mostrará una tarjeta y solo se ejecuta si él la autoriza. No digas que algo quedó registrado hasta recibir el resultado autorizado.',
+    '6. Las simulaciones son estimaciones: indica los supuestos.',
+    '7. No des asesoría legal ni de inversiones específicas; da información para decidir.',
+    '',
+    'CÓMO FUNCIONA SU DINERO (para interpretar bien los datos)',
+    '- Sueldo de ECUAQUIMICA: anticipo el día 15 y saldo el último día del mes (si cae fin de semana se adelanta al viernes). Décimos acumulados.',
+    '- AGROLEON paga comisiones variables por metas de venta y reembolsa gastos de ruta por facturas (en grupos, no por mes).',
+    '- ECUAQUIMICA reembolsa viáticos por mes: el mes se cierra al terminar y paga entre el 11 y el 16 del mes siguiente. El "Extra EQ" es lo que pagan por encima de las facturas.',
+    '- KITS es dinero de terceros en custodia (seguros de kits agrícolas): NO es suyo; ya está restado del disponible.',
+    '- Los reembolsos y préstamos NO son ingresos; las transferencias entre cuentas no son gasto. Las cuotas de deuda se reportan aparte del gasto de consumo.',
+    '- "Disponible" = saldo en cuentas − KITS − dinero apartado para metas.',
+    '',
+    'FORMATO',
+    '- Respuestas cortas: primero la respuesta directa, luego el detalle. Usa **negritas** para cifras clave y listas con "- ".',
+    '- Montos con formato $1,234.56. Fechas como "lun 15 dic".',
+    '- Termina, cuando aporte, con una recomendación práctica concreta basada en los datos.'
+  ].join('\n');
+}
+
+/* ── Herramientas ── */
+function _num(v){ return typeof v==='number'?v:parseMonto(String(v==null?'':v)); }
+function _fechaOk(s){ return typeof s==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(s)&&!isNaN(ymdToDate(s)); }
+function _mesOk(s){ return typeof s==='string'&&/^\d{4}-\d{2}$/.test(s); }
+function _txv(t){ var o={id:t.id,fecha:t.fecha,tipo:t.tipo,monto:t.monto,descripcion:t.desc,cuenta:t.cuenta,categoria:t.cat,naturaleza:natOf(t)}; if(t.reimb==='SÍ') o.reembolsable_por=t.empresa||'sí'; if(t.nota) o.nota=t.nota; return o; }
+function _hist3(){ var out=[], cur=mesLocal(); for(var k=1;k<=3;k++){ var ym=ymAdd(cur,-k), f=flujoMes(ym); if(f.n>0) out.push({mes:ym,f:f}); } return out; }
+function _prom(arr,fn){ return arr.length?r2(arr.reduce(function(s,x){return s+fn(x);},0)/arr.length):0; }
+function _iaReembolsos(){
+  var paid=new Set(state.reimbPagados||[]), enC=new Set();
+  (state.ciclosEQ||[]).forEach(function(c){ (c.txIds||[]).forEach(function(id){enC.add(id);}); });
+  var abiertasEQ={}, ag={}, agN=0;
+  state.transactions.forEach(function(t){
+    if(t.reimb!=='SÍ'||t.cat==='Custodia/Paso'||paid.has(t.id)) return;
+    var m=t.fecha.slice(0,7);
+    if(t.empresa==='ECUAQUIMICA'&&!enC.has(t.id)) abiertasEQ[m]=r2((abiertasEQ[m]||0)+t.monto);
+    if(t.empresa==='AGROLEON'){ ag[m]=r2((ag[m]||0)+t.monto); agN++; }
+  });
+  var ciclos=(state.ciclosEQ||[]).filter(function(c){return c.estado!=='pagado';}).map(function(c){ return {mes:c.nombre,total_a_cobrar:c.total,facturas:c.gastosBase!=null?c.gastosBase:r2(c.total-(c.extraMonto||0)),extra:c.extraMonto||0,pago_esperado:'entre el 11 y el 16 del mes siguiente'}; });
+  var totEQ=r2(ciclos.reduce(function(s,c){return s+c.total_a_cobrar;},0)+Object.keys(abiertasEQ).reduce(function(s,k){return s+abiertasEQ[k];},0));
+  var totAG=r2(Object.keys(ag).reduce(function(s,k){return s+ag[k];},0));
+  return {ecuaquimica:{meses_cerrados_por_cobrar:ciclos,facturas_abiertas_por_mes:abiertasEQ,total:totEQ},agroleon:{facturas_por_mes:ag,numero_facturas:agN,total:totAG},
+    total_por_cobrar:r2(totEQ+totAG),extra_eq:eqExtraResumen(),fuente:'Sección Reembolsos'};
+}
+var IA_TOOLS=[
+  {name:'resumen_financiero',description:'Foto actual de las finanzas: saldo por cuenta, dinero de KITS (no es suyo), disponible, apartado para metas, deudas, cobros, reembolsos por cobrar, patrimonio neto y salud financiera. Úsala primero para preguntas generales.',input_schema:{type:'object',properties:{}}},
+  {name:'resumen_mes',description:'Ingresos y gastos de un mes clasificados (ordinarios, extraordinarios, gasto de consumo, cuotas de deuda, préstamos, reembolsos), gasto por categoría y fuentes de ingreso. Si es el mes en curso compara con el mismo día del mes anterior.',input_schema:{type:'object',properties:{mes:{type:'string',description:'AAAA-MM. Por defecto el mes actual.'}}}},
+  {name:'buscar_movimientos',description:'Busca movimientos reales con filtros y devuelve totales y la lista (máximo 150).',input_schema:{type:'object',properties:{desde:{type:'string',description:'AAAA-MM-DD'},hasta:{type:'string',description:'AAAA-MM-DD'},tipo:{type:'string',enum:['INGRESO','EGRESO']},categoria:{type:'string'},cuenta:{type:'string'},texto:{type:'string',description:'busca en descripción y nota'},empresa:{type:'string',enum:['ECUAQUIMICA','AGROLEON']},limite:{type:'integer'}}}},
+  {name:'tendencia',description:'Serie mensual de ingresos ordinarios, extraordinarios, gasto, ahorro y tasa de ahorro de los últimos N meses, con promedios y principales categorías.',input_schema:{type:'object',properties:{meses:{type:'integer',description:'2 a 12, por defecto 6'}}}},
+  {name:'obligaciones',description:'Pagos fijos del mes (arriendo, suscripciones, familia...) con monto, día y si ya se pagaron.',input_schema:{type:'object',properties:{mes:{type:'string',description:'AAAA-MM'}}}},
+  {name:'creditos',description:'Líneas de crédito: límite, deuda, disponible, tasa, avances con cuotas pendientes y débito automático.',input_schema:{type:'object',properties:{}}},
+  {name:'deudas_personales',description:'Lo que debe a personas y lo que le deben, con abonos, y deudas ya saldadas.',input_schema:{type:'object',properties:{}}},
+  {name:'reembolsos',description:'Reembolsos por cobrar de ECUAQUIMICA (meses cerrados y facturas abiertas) y AGROLEON (facturas por mes), y Extra EQ.',input_schema:{type:'object',properties:{}}},
+  {name:'metas',description:'Metas de ahorro del Plan: monto, apartado, faltante, aporte sugerido y capacidad de ahorro mensual real.',input_schema:{type:'object',properties:{}}},
+  {name:'proyeccion_flujo',description:'Flujo de caja proyectado hasta el próximo sueldo: pagos e ingresos programados, gasto diario estimado, punto más bajo y gasto seguro por día.',input_schema:{type:'object',properties:{}}},
+  {name:'salud_financiera',description:'Puntaje de salud financiera (0-100) con sus componentes, explicación y qué mejorar.',input_schema:{type:'object',properties:{}}},
+  {name:'perfil_ingresos',description:'Configuración de sueldo y pagos: sueldo fijo, quincena, saldo, fecha de ingreso, décimos, viáticos, comisiones registradas.',input_schema:{type:'object',properties:{}}},
+  {name:'simular_compra',description:'Simula un gasto o compra: cómo queda el flujo de caja, el punto más bajo y si alcanza sin quedar en negativo.',input_schema:{type:'object',properties:{monto:{type:'number'},fecha:{type:'string',description:'AAAA-MM-DD, por defecto hoy'},descripcion:{type:'string'}},required:['monto']}},
+  {name:'simular_ahorro',description:'Cuánto tiempo o cuánto aporte mensual hace falta para juntar un monto, comparado con su capacidad real de ahorro.',input_schema:{type:'object',properties:{monto_objetivo:{type:'number'},aporte_mensual:{type:'number'},meses:{type:'integer'},ya_tiene:{type:'number'}},required:['monto_objetivo']}},
+  {name:'simular_recorte',description:'Cuánto ahorraría al mes y al año si reduce un porcentaje el gasto de una categoría (promedio de los últimos 3 meses completos).',input_schema:{type:'object',properties:{categoria:{type:'string'},porcentaje:{type:'number'}},required:['categoria','porcentaje']}},
+  {name:'simular_credito',description:'Simula un préstamo con cuota fija (sistema francés): cuota, intereses, total y cuánto pesaría en su ingreso.',input_schema:{type:'object',properties:{monto:{type:'number'},tasa_anual:{type:'number',description:'porcentaje, p. ej. 15.6'},meses:{type:'integer'}},required:['monto','tasa_anual','meses']}},
+  {name:'calcular',description:'Calculadora exacta para operaciones aritméticas (+ - * / ^ paréntesis). Úsala para mostrar cálculos verificables.',input_schema:{type:'object',properties:{expresion:{type:'string'}},required:['expresion']}},
+  {name:'registrar_movimiento',description:'PROPONE registrar un ingreso o egreso. La app pide autorización al usuario antes de guardarlo. Úsala solo si el usuario lo pide expresamente.',input_schema:{type:'object',properties:{tipo:{type:'string',enum:['INGRESO','EGRESO']},monto:{type:'number'},descripcion:{type:'string'},cuenta:{type:'string',enum:['Efectivo','Banco Pichincha','Jardín Azuayo','Banco Guayaquil']},categoria:{type:'string'},fecha:{type:'string',description:'AAAA-MM-DD, por defecto hoy'},reembolsable_por:{type:'string',enum:['ECUAQUIMICA','AGROLEON']}},required:['tipo','monto','descripcion','cuenta']}},
+  {name:'crear_meta',description:'PROPONE crear una meta de ahorro en el Plan. La app pide autorización al usuario antes de crearla.',input_schema:{type:'object',properties:{nombre:{type:'string'},monto:{type:'number'},meses:{type:'integer'},icono:{type:'string',description:'un emoji'}},required:['nombre','monto']}}
+];
+var IA_ESCRITURA={registrar_movimiento:1,crear_meta:1};
+
+// Calculadora segura (sin eval)
+function iaCalcular(expr){
+  var s=String(expr||'').replace(/,/g,'').replace(/\s+/g,''), i=0;
+  if(!/^[0-9+\-*/^().%]+$/.test(s)||s.length>200) throw new Error('Expresión no válida');
+  function num(){ var m=s.slice(i).match(/^\d+(\.\d+)?/); if(!m) throw new Error('Número esperado'); i+=m[0].length; var v=+m[0]; if(s[i]==='%'){ i++; v=v/100; } return v; }
+  function prim(){ if(s[i]==='('){ i++; var v=suma(); if(s[i]!==')') throw new Error('Falta )'); i++; return v; } if(s[i]==='-'){ i++; return -prim(); } if(s[i]==='+'){ i++; return prim(); } return num(); }
+  function pot(){ var b=prim(); if(s[i]==='^'){ i++; return Math.pow(b,pot()); } return b; }
+  function prod(){ var v=pot(); while(s[i]==='*'||s[i]==='/'){ var o=s[i++], w=pot(); if(o==='/'&&w===0) throw new Error('División para cero'); v=o==='*'?v*w:v/w; } return v; }
+  function suma(){ var v=prod(); while(s[i]==='+'||s[i]==='-'){ var o=s[i++], w=prod(); v=o==='+'?v+w:v-w; } return v; }
+  var r=suma(); if(i!==s.length) throw new Error('Expresión incompleta'); if(!isFinite(r)) throw new Error('Resultado no válido');
+  return Math.round(r*1e6)/1e6;
+}
+
+function iaEjecutar(nombre,inp){
+  inp=inp||{}; var hoy=hoyLocal(), cur=mesLocal();
+  switch(nombre){
+  case 'resumen_financiero': {
+    var b=calcBalances(), k=calcKits(), cuentas=CUENTAS_TODAS.map(function(c){ return {cuenta:c,saldo:r2(b[c]||0),kits_custodia:r2(k[c]||0),propio:r2((b[c]||0)-(k[c]||0))}; });
+    var bruto=r2(cuentas.reduce(function(s,c){return s+c.saldo;},0)), kt=r2(cuentas.reduce(function(s,c){return s+c.kits_custodia;},0)), propio=r2(bruto-kt);
+    var ap=apartadoMetas(), dt=deudasTotales(), cob=r2((userCobros||[]).reduce(function(s,c){return s+(c.monto||0);},0)), sal=null;
+    try{ var sd=calcSaludFinanciera(); sal={puntaje:sd.score,nivel:saludLabel(sd.score)}; }catch(e){}
+    var re=_iaReembolsos();
+    return {fecha:hoy,cuentas:cuentas,total_en_cuentas:bruto,kits_no_es_suyo:kt,dinero_propio:propio,apartado_para_metas:ap,disponible_para_gastar:r2(propio-ap),
+      deudas:{credito:dt.credito,personales:dt.personales,total:dt.total},le_deben:cob,reembolsos_por_cobrar:re.total_por_cobrar,
+      patrimonio_neto:r2(propio-dt.total+cob),salud_financiera:sal,
+      calculo:'disponible = total en cuentas − KITS − apartado metas; patrimonio neto = dinero propio − deudas + lo que le deben (no incluye reembolsos por cobrar)',
+      fuente:'Inicio y Mis cuentas (saldos = saldo base + todos los movimientos registrados)'};
+  }
+  case 'resumen_mes': {
+    var ym=_mesOk(inp.mes)?inp.mes:cur, f=flujoMes(ym), enCurso=ym===cur, dia=+hoy.slice(8,10);
+    var cats=Object.keys(f.catMap).map(function(c){return {categoria:c,gasto:f.catMap[c]};}).sort(function(a,b){return b.gasto-a.gasto;});
+    var fu=Object.keys(f.fuentes).map(function(c){return {fuente:c,monto:r2(f.fuentes[c])};}).sort(function(a,b){return b.monto-a.monto;}).slice(0,10);
+    var out={mes:ym,en_curso:enCurso,movimientos:f.n,ingresos_ordinarios:f.ingOrd,ingresos_extraordinarios:f.ingExtra,ingresos_totales:f.ing,gasto_consumo:f.gasto,
+      cuotas_deuda_pagadas:f.deuda,prestamos_o_avances_recibidos:f.finIn,prestamos_entregados_o_pagados:f.finOut,reembolsos_cobrados:f.reemb,cobros_recibidos:f.cobro,
+      ahorro_neto:f.net,ahorro_con_ingreso_ordinario:f.netOrd,tasa_ahorro_pct:f.tasa,gasto_por_categoria:cats,fuentes_de_ingreso:fu,
+      calculo:'ahorro_neto = ingresos (ordinarios + extraordinarios) − gasto de consumo. Gasto de consumo excluye transferencias, KITS, gastos reembolsables y el capital de cuotas de deuda. Tasa = (ordinarios − gasto) / ordinarios.',
+      fuente:'Análisis financiero (clasificación económica de cada movimiento)'};
+    if(enCurso){ var pm=ymAdd(ym,-1), fp=flujoMes(pm,dia); out.dia_del_mes=dia; out.dias_del_mes=diasDelMes(ym); out.mes_anterior_al_mismo_dia={mes:pm,hasta_dia:dia,ingresos:fp.ing,gasto_consumo:fp.gasto,ahorro_neto:fp.net}; out.nota='Mes incompleto: el sueldo llega el 15 y a fin de mes; compara con el mismo día del mes anterior.'; }
+    return out;
+  }
+  case 'buscar_movimientos': {
+    var lim=Math.max(1,Math.min(150,parseInt(inp.limite)||40)), q=(inp.texto||'').toLowerCase().trim(), cat=(inp.categoria||'').toLowerCase().trim();
+    var lst=state.transactions.filter(function(t){
+      if(_fechaOk(inp.desde)&&t.fecha<inp.desde) return false; if(_fechaOk(inp.hasta)&&t.fecha>inp.hasta) return false;
+      if(inp.tipo&&t.tipo!==inp.tipo) return false; if(inp.cuenta&&t.cuenta.toLowerCase().indexOf(String(inp.cuenta).toLowerCase())<0) return false;
+      if(cat&&t.cat.toLowerCase().indexOf(cat)<0&&canonCat(t.cat).toLowerCase().indexOf(cat)<0) return false;
+      if(inp.empresa&&!(t.reimb==='SÍ'&&t.empresa===inp.empresa)) return false;
+      if(q&&((t.desc||'')+' '+(t.nota||'')).toLowerCase().indexOf(q)<0) return false;
+      return true;
+    }).sort(function(a,b){return b.fecha.localeCompare(a.fecha)||b.id-a.id;});
+    var ti=0,te=0; lst.forEach(function(t){ if(t.tipo==='INGRESO') ti+=t.monto; else te+=t.monto; });
+    return {coincidencias:lst.length,total_ingresos:r2(ti),total_egresos:r2(te),mostrando:Math.min(lim,lst.length),movimientos:lst.slice(0,lim).map(_txv),
+      nota:'Los totales suman todos los movimientos encontrados (incluye transferencias y KITS si coinciden con el filtro; revisa la naturaleza de cada uno).',fuente:'Historial'};
+  }
+  case 'tendencia': {
+    var n=Math.max(2,Math.min(12,parseInt(inp.meses)||6)), serie=[];
+    for(var i=n-1;i>=0;i--){ var y=ymAdd(cur,-i), fx=flujoMes(y); if(fx.n===0&&i>0) continue;
+      var top=Object.keys(fx.catMap).sort(function(a,b){return fx.catMap[b]-fx.catMap[a];}).slice(0,3).map(function(c){return c+' '+fmt$(fx.catMap[c]);});
+      serie.push({mes:y,completo:i>0,ingresos_ordinarios:fx.ingOrd,ingresos_extra:fx.ingExtra,gasto_consumo:fx.gasto,cuotas_deuda:fx.deuda,ahorro:fx.net,tasa_ahorro_pct:fx.tasa,top_categorias:top}); }
+    var comp=serie.filter(function(x){return x.completo;});
+    return {serie:serie,promedio_meses_completos:{meses:comp.length,ingreso_ordinario:_prom(comp,function(x){return x.ingresos_ordinarios;}),gasto:_prom(comp,function(x){return x.gasto_consumo;}),ahorro:_prom(comp,function(x){return x.ahorro;})},
+      fuente:'Análisis financiero · Tendencia',nota:'El mes en curso está incompleto.'};
+  }
+  case 'obligaciones': {
+    var mo=_mesOk(inp.mes)?inp.mes:cur, ob=getObligacionesMesFor(mo).map(function(o){ return {nombre:o.nombre,monto:o.montoActual,dia_pago:o.diaPago,pagada:o.pagadaEsteMes,categoria:o.cat||'',notas:o.notas||''}; });
+    var tot=r2(ob.reduce(function(s,o){return s+o.monto;},0)), pag=r2(ob.filter(function(o){return o.pagada;}).reduce(function(s,o){return s+o.monto;},0));
+    return {mes:mo,obligaciones:ob,total:tot,pagado:pag,pendiente:r2(tot-pag),fuente:'Obligaciones'};
+  }
+  case 'creditos': {
+    return {creditos:(userCreditos||[]).map(function(c){
+      var avs=(c.avances||[]).filter(function(a){return !a.pagado;}).map(function(a){ var n=a.formaPago==='diferido'?(a.cuotas||1):1, pg=a.cuotasPagadas||0; return {fecha:a.fecha,monto:a.monto,total_a_pagar:a.montoAPagar,cuotas:n,cuotas_pagadas:pg,proxima_cuota:pg<n?cuotaAvance(a,pg+1):0,saldo:saldoAvance(a)}; });
+      return {nombre:c.nombre,banco:c.banco,limite:c.limite,deuda:c.deuda,disponible:r2((c.limite||0)-(c.deuda||0)),tasa_anual_pct:c.tasaAnual,debito_automatico:c.debitoAuto?('día '+c.debitoDia):'no',avances_pendientes:avs};
+    }),fuente:'Crédito',calculo:'deuda = suma de saldos de avances pendientes; disponible = límite − deuda'};
+  }
+  case 'deudas_personales': {
+    function ab(x){ return r2((x.pagos||[]).reduce(function(s,p){return s+p.monto;},0)); }
+    return {debo:(userDeudas||[]).map(function(d){return {a:d.nombre,saldo:d.monto,abonado:ab(d),notas:d.notas||''};}),me_deben:(userCobros||[]).map(function(d){return {quien:d.nombre,saldo:d.monto,abonado:ab(d)};}),
+      saldadas_recientes:(state.deudasSaldadas||[]).slice(0,8).map(function(x){return {nombre:x.nombre,total:x.total,fecha:x.fecha};}),totales:deudasTotales(),fuente:'Deudas'};
+  }
+  case 'reembolsos': return _iaReembolsos();
+  case 'metas': {
+    var cap=capacidadAhorroMensual();
+    return {metas:metasOrdenadas().map(function(o,i){ var falta=r2(Math.max(0,o.meta-(o.acumulado||0))); return {nombre:o.nombre,icono:o.icono,monto:o.meta,apartado:o.acumulado||0,falta:falta,completada:!!o.completado,activa:!o.completado&&i===0,plazo_meses:o.meses||null,
+      aporte_mensual_sugerido:o.meses?r2(falta/Math.max(1,o.meses-mesesTranscurridos(o))):null,meses_con_capacidad_actual:cap>0?Math.ceil(falta/cap):null}; }),
+      total_apartado:apartadoMetas(),capacidad_ahorro_mensual:cap,calculo:'capacidad = promedio de (ingreso ordinario − gasto) de los últimos 3 meses completos',fuente:'Plan › Metas'};
+  }
+  case 'proyeccion_flujo': {
+    var p=proyectarFlujo(), ult=p.dias.length?p.dias[p.dias.length-1].bal:p.inicio;
+    return {desde:p.hoy,hasta:p.fin,saldo_inicial_disponible:p.inicio,gasto_diario_estimado:{total:p.gv,propio:p.gvPropio,trabajo_por_reembolsar:p.gvTrabajo},
+      eventos:p.ev.map(function(e){return {fecha:e.fecha,tipo:e.tipo==='ING'?'ingreso':'pago',monto:e.monto,concepto:e.desc,certeza:e.certeza};}),
+      punto_mas_bajo:{fecha:p.min.fecha,saldo:p.min.bal},saldo_al_final:ult,gasto_seguro_por_dia:p.seguro,
+      calculo:'saldo de cada día = saldo anterior + ingresos − pagos programados − gasto diario estimado (promedio de tus gastos variables recientes)',fuente:'Plan › Flujo de caja'};
+  }
+  case 'salud_financiera': {
+    var s=calcSaludFinanciera();
+    return {puntaje:s.score,nivel:saludLabel(s.score),componentes:s.componentes.map(function(c){return {nombre:c.nombre,puntos:c.pts,maximo:c.max,estado:c.status,detalle:String(c.detalle||'').replace(/<[^>]+>/g,''),como_mejorar:String(c.mejora||'').replace(/<[^>]+>/g,'')};}),
+      base:'últimos 3 meses completos, solo ingresos ordinarios',fuente:'Salud financiera'};
+  }
+  case 'perfil_ingresos': {
+    var c=cfgIngresos(), pf=state.perfil||{};
+    return {sueldo_fijo:c.sueldoFijo,anticipo_quincena_dia15:c.quincena,saldo_fin_de_mes:c.saldoSueldo,fecha_ingreso:c.fechaIngreso,decimos:c.decimos,fondos_reserva:c.fondosReserva,viatico_diario:c.viaticoDiario,dias_ruta_mes:c.diasRuta,
+      comisiones_agroleon_registradas:(pf.comisiones||[]).map(function(x){return {concepto:x.concepto,valor:x.valor,fecha:x.fecha};}),fuente:'Mi perfil'};
+  }
+  case 'simular_compra': {
+    var m=r2(_num(inp.monto)); if(!(m>0)) throw new Error('Monto inválido');
+    var fe=_fechaOk(inp.fecha)&&inp.fecha>=hoy?inp.fecha:hoy, pr=proyectarFlujo(), minA=pr.min, minB={bal:fe===hoy?r2(pr.inicio-m):pr.inicio,fecha:hoy}, neg=0;
+    pr.dias.forEach(function(d){ var v=d.fecha>=fe?r2(d.bal-m):d.bal; if(v<minB.bal) minB={bal:v,fecha:d.fecha}; if(v<0) neg++; });
+    var h3=_hist3(), ingP=_prom(h3,function(x){return x.f.ingOrd;}), cap=capacidadAhorroMensual();
+    var ver=minB.bal<0?'No alcanza: el saldo quedaría en negativo':minB.bal<50?'Alcanza justo: quedarías con menos de $50 en el punto más bajo':'Alcanza';
+    return {compra:inp.descripcion||'',monto:m,fecha:fe,veredicto:ver,punto_mas_bajo_sin_compra:{fecha:minA.fecha,saldo:minA.bal},punto_mas_bajo_con_compra:{fecha:minB.fecha,saldo:minB.bal},dias_en_negativo:neg,
+      porcentaje_del_ingreso_mensual:ingP>0?Math.round(m/ingP*1000)/10:null,meses_de_ahorro_que_representa:cap>0?Math.round(m/cap*10)/10:null,horizonte_hasta:pr.fin,
+      supuestos:'usa el flujo de caja proyectado (pagos e ingresos programados y gasto diario promedio); no incluye ingresos inciertos',fuente:'Plan › Flujo de caja'};
+  }
+  case 'simular_ahorro': {
+    var obj=r2(_num(inp.monto_objetivo)), ya=r2(_num(inp.ya_tiene)||0), fal=r2(Math.max(0,obj-ya)), cp=capacidadAhorroMensual(), r={monto_objetivo:obj,ya_tiene:ya,falta:fal,capacidad_ahorro_mensual_real:cp};
+    if(!(obj>0)) throw new Error('Monto objetivo inválido');
+    if(_num(inp.aporte_mensual)>0){ var ap=r2(_num(inp.aporte_mensual)); r.aporte_mensual=ap; r.meses_necesarios=Math.ceil(fal/ap); r.calculo='meses = falta ÷ aporte = '+fal+' ÷ '+ap; }
+    else if(parseInt(inp.meses)>0){ var ms=parseInt(inp.meses); r.meses=ms; r.aporte_mensual_necesario=r2(fal/ms); r.calculo='aporte = falta ÷ meses = '+fal+' ÷ '+ms; }
+    else if(cp>0){ r.meses_con_capacidad_actual=Math.ceil(fal/cp); r.calculo='meses = falta ÷ capacidad = '+fal+' ÷ '+cp; }
+    else r.nota='No hay capacidad de ahorro positiva en los últimos 3 meses completos; indica un aporte mensual para simular.';
+    var aporteRef=r.aporte_mensual||r.aporte_mensual_necesario; if(aporteRef&&cp>0) r.aporte_vs_capacidad_pct=Math.round(aporteRef/cp*100);
+    r.fuente='Análisis (capacidad de ahorro) y Plan › Metas'; return r;
+  }
+  case 'simular_recorte': {
+    var pc=_num(inp.porcentaje), cq=String(inp.categoria||'').toLowerCase(); if(!(pc>0&&pc<=100)) throw new Error('Porcentaje inválido');
+    var hs=_hist3(), nombreCat=null;
+    hs.forEach(function(x){ Object.keys(x.f.catMap).forEach(function(c){ if(!nombreCat&&c.toLowerCase().indexOf(cq)>=0) nombreCat=c; }); });
+    if(!nombreCat) return {encontrado:false,nota:'No hay gasto registrado en una categoría parecida a "'+inp.categoria+'" en los últimos 3 meses completos.',categorias_disponibles:Object.keys((hs[0]||{f:{catMap:{}}}).f.catMap)};
+    var prom=_prom(hs,function(x){return x.f.catMap[nombreCat]||0;}), ah=r2(prom*pc/100);
+    return {categoria:nombreCat,meses_base:hs.map(function(x){return x.mes+': '+fmt$(x.f.catMap[nombreCat]||0);}),gasto_promedio_mensual:prom,recorte_pct:pc,ahorro_mensual:ah,ahorro_anual:r2(ah*12),
+      calculo:'promedio de 3 meses × '+pc+'% = '+prom+' × '+(pc/100)+' = '+ah,fuente:'Análisis · gasto por categoría'};
+  }
+  case 'simular_credito': {
+    var M=_num(inp.monto), ta=_num(inp.tasa_anual), nm=parseInt(inp.meses); if(!(M>0&&nm>0&&nm<=360&&ta>=0)) throw new Error('Datos inválidos');
+    var im=ta/12/100, cu=im?M*im/(1-Math.pow(1+im,-nm)):M/nm; cu=r2(cu);
+    var tot=r2(cu*nm), h=_hist3(), ingP=_prom(h,function(x){return x.f.ingOrd;});
+    var oblM=r2(getObligacionesMesFor(cur).reduce(function(s,o){return s+o.montoActual;},0));
+    var cuotasAct=r2((userCreditos||[]).reduce(function(s,c){ return s+(c.avances||[]).filter(function(a){return !a.pagado;}).reduce(function(t,a){ var n=a.formaPago==='diferido'?(a.cuotas||1):1, pg=a.cuotasPagadas||0; return t+(pg<n?cuotaAvance(a,pg+1):0); },0); },0));
+    return {monto:M,tasa_anual_pct:ta,meses:nm,cuota_mensual:cu,total_a_pagar:tot,intereses:r2(tot-M),ingreso_ordinario_promedio:ingP,
+      cuota_sobre_ingreso_pct:ingP>0?Math.round(cu/ingP*1000)/10:null,carga_financiera_actual:{obligaciones:oblM,cuotas_credito:cuotasAct},
+      carga_financiera_con_credito_pct:ingP>0?Math.round((oblM+cuotasAct+cu)/ingP*1000)/10:null,
+      calculo:'cuota = M·i / (1 − (1+i)^−n), i = tasa anual / 12',referencia:'Se suele recomendar que las deudas no pasen del 30-40% del ingreso',fuente:'Simulación (fórmula de cuota fija)'};
+  }
+  case 'calcular': return {expresion:inp.expresion,resultado:iaCalcular(inp.expresion)};
+  }
+  throw new Error('Herramienta desconocida: '+nombre);
+}
+function iaEtiqueta(n,i){
+  i=i||{};
+  var L={resumen_financiero:'Saldos y resumen general',resumen_mes:'Resumen de '+(i.mes?nombreMesEQ(i.mes):'este mes'),buscar_movimientos:'Movimientos'+(i.texto?' «'+i.texto+'»':'')+(i.categoria?' · '+i.categoria:'')+(i.desde?' desde '+i.desde:'')+(i.hasta?' hasta '+i.hasta:''),
+    tendencia:'Tendencia de '+(i.meses||6)+' meses',obligaciones:'Obligaciones',creditos:'Créditos',deudas_personales:'Deudas',reembolsos:'Reembolsos',metas:'Metas',proyeccion_flujo:'Flujo de caja',salud_financiera:'Salud financiera',perfil_ingresos:'Perfil de ingresos',
+    simular_compra:'Simulación de compra '+(i.monto?fmt$(+i.monto||0):''),simular_ahorro:'Simulación de ahorro',simular_recorte:'Simulación de recorte '+(i.categoria||''),simular_credito:'Simulación de crédito',calcular:'Cálculo: '+(i.expresion||''),
+    registrar_movimiento:'Registrar movimiento',crear_meta:'Crear meta'};
+  return L[n]||n;
+}
+
+/* ── Acciones que modifican datos: solo con autorización ── */
+function iaValidarEscritura(n,i){
+  if(n==='registrar_movimiento'){
+    var tipo=i.tipo==='INGRESO'?'INGRESO':i.tipo==='EGRESO'?'EGRESO':null, m=r2(_num(i.monto));
+    if(!tipo) throw new Error('Tipo inválido'); if(!(m>0&&m<=100000)) throw new Error('Monto inválido');
+    if(CUENTAS_TODAS.indexOf(i.cuenta)<0) throw new Error('Cuenta inválida');
+    var cats=tipo==='INGRESO'?TX_CATS_IN:TX_CATS_EG, cat=cats.find(function(c){return c.toLowerCase()===String(i.categoria||'').toLowerCase();})||'Varios';
+    var fe=_fechaOk(i.fecha)?i.fecha:hoyLocal(); if(fe>hoyLocal()) throw new Error('La fecha no puede ser futura');
+    var desc=limpiarTexto(String(i.descripcion||'')).slice(0,80); if(!desc) throw new Error('Falta la descripción');
+    var emp=tipo==='EGRESO'&&(i.reembolsable_por==='ECUAQUIMICA'||i.reembolsable_por==='AGROLEON')?i.reembolsable_por:'';
+    return {tipo:tipo,monto:m,cuenta:i.cuenta,cat:cat,fecha:fe,desc:desc,empresa:emp};
+  }
+  if(n==='crear_meta'){
+    var nm=limpiarTexto(String(i.nombre||'')).slice(0,40), mo=r2(_num(i.monto)), ms=parseInt(i.meses)||0;
+    if(!nm) throw new Error('Falta el nombre'); if(!(mo>0&&mo<=1000000)) throw new Error('Monto inválido');
+    return {nombre:nm,monto:mo,meses:ms>0&&ms<=120?ms:null,icono:(String(i.icono||'').match(/\p{Extended_Pictographic}/u)||['🎯'])[0]};
+  }
+  throw new Error('Acción no permitida');
+}
+function iaAplicarEscritura(n,v){
+  if(n==='registrar_movimiento'){
+    var tx={id:nuevoId(),fecha:v.fecha,desc:v.desc,cuenta:v.cuenta,monto:v.monto,tipo:v.tipo,cat:v.cat,reimb:v.empresa?'SÍ':'NO',empresa:v.empresa,nota:'Registrado con el Asistente'};
+    state.transactions.push(tx); ordenarTx(); saveState(); try{ updateHomeWidget(); }catch(e){}
+    return {ok:true,registrado:{id:tx.id,fecha:tx.fecha,tipo:tx.tipo,monto:tx.monto,descripcion:tx.desc,cuenta:tx.cuenta,categoria:tx.cat,reembolsable_por:v.empresa||null},saldo_cuenta_ahora:r2(calcBalances()[tx.cuenta]||0)};
+  }
+  if(n==='crear_meta'){
+    state.objetivos=state.objetivos||[];
+    var o={id:'meta_'+Date.now(),nombre:v.nombre,meta:v.monto,meses:v.meses,icono:v.icono,acumulado:0,creada:hoyLocal(),orden:(state.objetivos.length?Math.max.apply(null,state.objetivos.map(function(x){return x.orden||0;}))+1:0)};
+    state.objetivos.push(o); saveState(); try{ updateHomeWidget(); }catch(e){}
+    return {ok:true,meta_creada:{nombre:o.nombre,monto:o.meta,meses:o.meses}};
+  }
+}
+function iaDescEscritura(n,i){
+  try{ var v=iaValidarEscritura(n,i); }catch(e){ return {error:e.message}; }
+  if(n==='registrar_movimiento') return {filas:[['Tipo',v.tipo==='INGRESO'?'Ingreso':'Egreso'],['Monto',fmt$(v.monto)],['Concepto',v.desc],['Cuenta',v.cuenta],['Categoría',v.cat],['Fecha',fechaCorta(v.fecha)]].concat(v.empresa?[['Reembolsa',v.empresa]]:[]),titulo:(v.tipo==='INGRESO'?'Registrar ingreso':'Registrar egreso')};
+  return {filas:[['Meta',v.icono+' '+v.nombre],['Monto',fmt$(v.monto)]].concat(v.meses?[['Plazo',v.meses+' meses']]:[]),titulo:'Crear meta'};
+}
+
+/* ── Conexión con el servidor ── */
+function iaListo(){ var c=iaCfg(); return !!(c.url&&c.token); }
+function _iaUrl(p){ return iaCfg().url.replace(/\/+$/,'')+p; }
+function iaPreparar(c){
+  // Últimos mensajes, empezando en un mensaje del usuario con texto; resultados antiguos resumidos
+  var api=c.api, ini=0;
+  if(api.length>24){ ini=api.length-24; while(ini<api.length&&!(api[ini].role==='user'&&(typeof api[ini].content==='string'||api[ini].content.some(function(b){return b.type==='text';})&&!api[ini].content.some(function(b){return b.type==='tool_result';})))) ini++; }
+  var cut=api.length-6;
+  return api.slice(ini).map(function(m,k){
+    if(ini+k>=cut||m.role!=='user'||typeof m.content==='string') return m;
+    return {role:'user',content:m.content.map(function(b){ return b.type==='tool_result'?{type:'tool_result',tool_use_id:b.tool_use_id,content:'[resultado anterior omitido; vuelve a consultar si lo necesitas]'}:b; })};
+  });
+}
+function iaLlamar(c){
+  var ctl=typeof AbortController!=='undefined'?new AbortController():null, to=setTimeout(function(){ if(ctl) ctl.abort(); },IA_TIMEOUT);
+  return fetch(_iaUrl('/chat'),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+iaCfg().token},
+    body:JSON.stringify({system:iaSistema(),messages:iaPreparar(c),tools:IA_TOOLS}),signal:ctl?ctl.signal:undefined})
+  .then(function(r){ return r.json().catch(function(){return {};}).then(function(j){ clearTimeout(to);
+    if(r.status===401) throw new Error('La clave de acceso no coincide con la del servidor. Revísala en ajustes del asistente.');
+    if(r.status===403) throw new Error('El servidor no acepta solicitudes desde esta dirección. Revisa ALLOWED_ORIGIN en Cloudflare.');
+    if(r.status===429) throw new Error((j&&j.mensaje)||'Demasiadas consultas seguidas. Espera un minuto.');
+    if(!r.ok) throw new Error((j&&j.mensaje)||'El servidor respondió con error '+r.status+'.');
+    if(!j||!Array.isArray(j.content)) throw new Error('Respuesta inesperada del servidor.');
+    return j; }); },function(e){ clearTimeout(to); throw new Error(e&&e.name==='AbortError'?'La IA tardó demasiado en responder. Intenta de nuevo.':'No hay conexión con el asistente. Revisa tu internet o la dirección del servidor.'); });
+}
+
+/* ── Conversación ── */
+function iaEnviar(texto){
+  texto=limpiarTexto(String(texto||'')).trim(); if(!texto||_ia.ocupado) return;
+  if(!iaListo()){ iaAjustes(); return; }
+  var c=iaChat()||iaNuevoChat();
+  var res=[];
+  c.ui.forEach(function(u){ if(u.r==='w'&&u.estado==='pendiente'){ u.estado='rechazado'; res.push({type:'tool_result',tool_use_id:u.id,content:'El usuario no autorizó esta acción (escribió otro mensaje). No la ejecutes.'}); } });
+  res=(c.pendRes||[]).concat(res); c.pendRes=null;
+  var nuevo=res.concat([{type:'text',text:texto}]), last=c.api[c.api.length-1];
+  if(last&&last.role==='user'){ last.content=(typeof last.content==='string'?[{type:'text',text:last.content}]:last.content).concat(nuevo); c.ui=c.ui.filter(function(u){return u.r!=='e';}); }
+  else c.api.push({role:'user',content:res.length?nuevo:texto});
+  c.ui.push({r:'u',t:texto,ts:new Date().toISOString()});
+  if(c.titulo==='Nueva conversación') c.titulo=texto.slice(0,60);
+  c.act=new Date().toISOString(); c.fuentes=[];
+  iaGuardar(); iaPintar(); iaCiclo(c);
+}
+function iaCiclo(c,vuelta){
+  vuelta=vuelta||0; _ia.ocupado=true; _ia.estado=vuelta?'Analizando…':'Pensando…'; iaPintar();
+  if(vuelta>=IA_MAX_VUELTAS){ _ia.ocupado=false; c.ui.push({r:'e',t:'La consulta necesitó demasiados pasos. Intenta preguntarlo de forma más concreta.'}); iaGuardar(); iaPintar(); return; }
+  iaLlamar(c).then(function(j){
+    if(c.id!==_ia.actual&&!_ia.chats.some(function(x){return x.id===c.id;})) return;
+    c.api.push({role:'assistant',content:j.content});
+    var txt=j.content.filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('\n').trim();
+    var tus=j.content.filter(function(b){return b.type==='tool_use';});
+    c.fuentes=c.fuentes||[];
+    if(!tus.length){
+      c.ui.push({r:'a',t:txt||'(sin respuesta)',fuentes:c.fuentes,ts:new Date().toISOString(),uso:j.usage||null}); c.fuentes=[];
+      _ia.ocupado=false; c.act=new Date().toISOString(); iaGuardar(); iaPintar(); return;
+    }
+    if(txt) c.ui.push({r:'a',t:txt,fuentes:[],ts:new Date().toISOString(),parcial:true});
+    var res=[], escr=[];
+    tus.forEach(function(tu){
+      if(IA_ESCRITURA[tu.name]){ escr.push(tu); return; }
+      _ia.estado='Consultando: '+iaEtiqueta(tu.name,tu.input).toLowerCase()+'…';
+      var out, err=false;
+      try{ out=iaEjecutar(tu.name,tu.input); }catch(e){ out={error:e.message}; err=true; }
+      var s=JSON.stringify(out); if(s.length>14000) s=s.slice(0,14000)+'…[recortado: usa filtros más específicos]';
+      res.push({type:'tool_result',tool_use_id:tu.id,content:s,is_error:err||undefined});
+      c.fuentes.push({n:tu.name,i:tu.input,et:iaEtiqueta(tu.name,tu.input),fuente:out&&out.fuente||'',calculo:out&&out.calculo||'',err:err?out.error:''});
+    });
+    if(escr.length){
+      c.pendRes=res;
+      escr.forEach(function(tu){ c.ui.push({r:'w',id:tu.id,n:tu.name,i:tu.input,estado:'pendiente'}); });
+      _ia.ocupado=false; iaGuardar(); iaPintar(); return;
+    }
+    c.api.push({role:'user',content:res}); iaGuardar(); iaCiclo(c,vuelta+1);
+  }).catch(function(e){
+    _ia.ocupado=false;
+    // se deshace el último mensaje del usuario sin respuesta para poder reintentar
+    c.ui.push({r:'e',t:e.message,retry:true}); iaGuardar(); iaPintar();
+  });
+}
+function iaReintentar(){
+  var c=iaChat(); if(!c||_ia.ocupado) return;
+  c.ui=c.ui.filter(function(u){return u.r!=='e';});
+  var last=c.api[c.api.length-1];
+  if(last&&last.role==='assistant'){ if(Array.isArray(last.content)&&last.content.some(function(b){return b.type==='tool_use';})) c.api.pop(); else return; }
+  iaCiclo(c);
+}
+function iaAutorizar(id,ok){
+  var c=iaChat(); if(!c||_ia.ocupado) return;
+  var u=c.ui.find(function(x){return x.r==='w'&&x.id===id;}); if(!u||u.estado!=='pendiente') return;
+  var content;
+  if(ok){
+    try{ var v=iaValidarEscritura(u.n,u.i), r=iaAplicarEscritura(u.n,v); u.estado='autorizado'; u.res=r; content=JSON.stringify(r); showToast('✅ '+(u.n==='crear_meta'?'Meta creada':'Movimiento registrado')); }
+    catch(e){ u.estado='error'; u.err=e.message; content=JSON.stringify({error:e.message}); }
+  } else { u.estado='rechazado'; content='El usuario NO autorizó esta acción. No la ejecutes ni insistas; pregunta si desea algo distinto.'; }
+  c.pendRes=(c.pendRes||[]).concat([{type:'tool_result',tool_use_id:id,content:content}]);
+  var faltan=c.ui.some(function(x){return x.r==='w'&&x.estado==='pendiente';});
+  iaGuardar(); iaPintar();
+  if(!faltan){ c.api.push({role:'user',content:c.pendRes}); c.pendRes=null; iaGuardar(); iaCiclo(c,1); }
+}
+
+/* ── Interfaz ── */
+function iaMd(t){
+  var h=esc(t).replace(/\r/g,''), out=[], lista=null;
+  function inl(s){ return s.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s).,;:!?]|$)/g,'$1<i>$2</i>').replace(/`([^`]+)`/g,'<code>$1</code>'); }
+  var lines=h.split('\n'), i=0;
+  while(i<lines.length){
+    var l=lines[i];
+    if(/^\s*\|.*\|\s*$/.test(l)&&i+1<lines.length&&/^\s*\|[\s:|-]+\|\s*$/.test(lines[i+1])){
+      if(lista){ out.push('</'+lista+'>'); lista=null; }
+      var cab=l.trim().slice(1,-1).split('|'), filas=[]; i+=2;
+      while(i<lines.length&&/^\s*\|.*\|\s*$/.test(lines[i])){ filas.push(lines[i].trim().slice(1,-1).split('|')); i++; }
+      out.push('<div class="ia-tbl"><table><tr>'+cab.map(function(x){return '<th>'+inl(x.trim())+'</th>';}).join('')+'</tr>'+filas.map(function(f){return '<tr>'+f.map(function(x){return '<td>'+inl(x.trim())+'</td>';}).join('')+'</tr>';}).join('')+'</table></div>');
+      continue;
+    }
+    var mU=l.match(/^\s*[-•*]\s+(.*)$/), mO=l.match(/^\s*\d+[.)]\s+(.*)$/), mH=l.match(/^\s*#{1,4}\s+(.*)$/);
+    if(mU||mO){ var tp=mU?'ul':'ol'; if(lista!==tp){ if(lista) out.push('</'+lista+'>'); out.push('<'+tp+'>'); lista=tp; } out.push('<li>'+inl((mU||mO)[1])+'</li>'); }
+    else { if(lista){ out.push('</'+lista+'>'); lista=null; }
+      if(mH) out.push('<p class="ia-h">'+inl(mH[1])+'</p>'); else if(l.trim()) out.push('<p>'+inl(l)+'</p>'); }
+    i++;
+  }
+  if(lista) out.push('</'+lista+'>');
+  return out.join('');
+}
+var IA_SUGERENCIAS=['¿Cuánto puedo gastar hasta mi próximo sueldo?','¿En qué gasté más este mes?','¿Me alcanza para una TV de $450?','¿Cómo voy con mis metas?','¿Cuánto me deben de reembolsos?','Si saco un crédito de $1,000 a 12 meses al 15.6%, ¿cuánto pagaría?'];
+function iaRender(){ if(!_ia._cargado){ iaCargar(); _ia._cargado=true; } iaPintar(); }
+function iaPintar(){
+  var box=document.getElementById('ia-msgs'); if(!box) return;
+  var c=iaChat(), h='';
+  var st=document.getElementById('ia-status'); if(st) st.innerHTML=iaListo()?'<i class="on"></i>Conectado a tus datos'+(iaCfg().gratis!==false?' · gratis':''):'<i></i>Sin configurar';
+  if(!iaListo()){
+    h='<div class="ia-hello"><div class="ia-orb"></div><b>Conecta tu asistente</b><p>Funciona gratis con la IA de Cloudflare, en tu propio servidor seguro. Solo necesitas configurarlo una vez.</p><button class="ia-cta" onclick="iaAjustes()">Configurar ahora</button></div>';
+  } else if(!c||!c.ui.length){
+    h='<div class="ia-hello"><div class="ia-orb"></div><b>Hola'+((state.perfil||{}).nombre?', '+esc(state.perfil.nombre.split(' ')[0]):'')+'</b><p>Pregúntame sobre tus cuentas, gastos, metas o deudas. Respondo solo con tus datos reales y te muestro de dónde sale cada cifra.</p>'
+      +'<div class="ia-sugs">'+IA_SUGERENCIAS.map(function(s,i){return '<button onclick="iaEnviar(IA_SUGERENCIAS['+i+'])">'+esc(s)+'</button>';}).join('')+'</div></div>';
+  } else {
+    c.ui.forEach(function(u){
+      if(u.r==='u') h+='<div class="ia-u"><div>'+esc(u.t).replace(/\n/g,'<br>')+'</div></div>';
+      else if(u.r==='a'){
+        h+='<div class="ia-a'+(u.parcial?' parcial':'')+'"><div class="ia-body">'+iaMd(u.t)+'</div>';
+        if(u.fuentes&&u.fuentes.length){
+          h+='<details class="ia-src"><summary>Cómo lo calculé · '+u.fuentes.length+' consulta'+(u.fuentes.length>1?'s':'')+'</summary><ul>'
+            +u.fuentes.map(function(f){ return '<li><b>'+esc(f.et)+'</b>'+(f.fuente?'<span>Fuente: '+esc(f.fuente)+'</span>':'')+(f.calculo?'<span>'+esc(f.calculo)+'</span>':'')+(f.err?'<span class="err">'+esc(f.err)+'</span>':'')+'</li>'; }).join('')+'</ul></details>';
+        }
+        h+='</div>';
+      } else if(u.r==='w'){
+        var d=iaDescEscritura(u.n,u.i);
+        h+='<div class="ia-w '+u.estado+'"><div class="ia-w-t">'+(u.estado==='pendiente'?'🔐 Necesita tu autorización':u.estado==='autorizado'?'✅ Autorizado y guardado':u.estado==='error'?'⚠️ No se pudo guardar':'✋ No autorizado')+'</div><div class="ia-w-h">'+esc(d.titulo||'Acción')+'</div>'
+          +(d.error?'<div class="ia-w-err">'+esc(d.error)+'</div>':'<div class="ia-w-rows">'+d.filas.map(function(f){return '<div><span>'+f[0]+'</span><b>'+esc(f[1])+'</b></div>';}).join('')+'</div>')
+          +(u.err?'<div class="ia-w-err">'+esc(u.err)+'</div>':'')
+          +(u.estado==='pendiente'?'<div class="ia-w-btn"><button onclick="iaAutorizar(\''+u.id+'\',false)">No autorizar</button>'+(d.error?'':'<button class="ok" onclick="iaAutorizar(\''+u.id+'\',true)">Autorizar</button>')+'</div>':'')+'</div>';
+      } else if(u.r==='e') h+='<div class="ia-e">'+esc(u.t)+(u.retry?'<button onclick="iaReintentar()">Reintentar</button>':'')+'</div>';
+    });
+  }
+  if(_ia.ocupado) h+='<div class="ia-typing"><span><i></i><i></i><i></i></span>'+esc(_ia.estado)+'</div>';
+  box.innerHTML=h;
+  var sc=document.getElementById('ia-scroll'); if(sc) requestAnimationFrame(function(){ sc.scrollTop=sc.scrollHeight; });
+  var btn=document.getElementById('ia-send'); if(btn) btn.disabled=_ia.ocupado;
+}
+function iaSubmit(){
+  var t=document.getElementById('ia-input'); if(!t||_ia.ocupado) return;
+  var v=t.value; if(!v.trim()) return; t.value=''; iaAutoAlto(t); iaEnviar(v);
+}
+function iaAutoAlto(t){ t.style.height='auto'; t.style.height=Math.min(120,t.scrollHeight)+'px'; }
+function iaTecla(e){ if(e.key==='Enter'&&!e.shiftKey&&!('ontouchstart' in window)){ e.preventDefault(); iaSubmit(); } }
+function iaNueva(){ if(_ia.ocupado) return; var c=iaChat(); if(c&&!c.ui.length) { iaPintar(); return; } iaNuevoChat(); iaPintar(); }
+function iaHistorial(){
+  if(!_ia._cargado) iaCargar();
+  var ls=_ia.chats.filter(function(c){return c.ui.length;});
+  var ov=_modalBase('ia-hist','Conversaciones',(ls.length?'<div class="ia-hl">'+ls.map(function(c){
+      return '<div class="ia-hi'+(c.id===_ia.actual?' sel':'')+'"><button class="t" onclick="iaAbrirChat(\''+c.id+'\')"><b>'+esc(c.titulo)+'</b><small>'+fechaCorta(c.act.slice(0,10))+' · '+c.ui.filter(function(u){return u.r==='u';}).length+' preguntas</small></button><button class="d" aria-label="Borrar" onclick="iaBorrarChat(\''+c.id+'\')">🗑</button></div>'; }).join('')+'</div>'
+    :'<div style="color:rgba(255,255,255,.55);font-size:14px;padding:8px 0">Aún no tienes conversaciones.</div>')
+    +'<button onclick="document.getElementById(\'ia-hist\').remove();iaNueva()" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff">Nueva conversación</button>'
+    +'<button onclick="document.getElementById(\'ia-hist\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cerrar</button>');
+}
+function iaAbrirChat(id){ var el=document.getElementById('ia-hist'); if(el) el.remove(); if(_ia.ocupado) return; _ia.actual=id; iaGuardar(); iaPintar(); }
+function iaBorrarChat(id){
+  confirmarApp('Borrar conversación','Se borrará de este teléfono. Tus movimientos no se tocan.','Borrar',function(){
+    _ia.chats=_ia.chats.filter(function(c){return c.id!==id;}); if(_ia.actual===id) _ia.actual=null; iaGuardar(); iaPintar(); iaHistorial(); },true);
+}
+function iaGenerarToken(){
+  var a=new Uint8Array(24); crypto.getRandomValues(a);
+  var t=btoa(String.fromCharCode.apply(null,a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  var el=document.getElementById('ia-tok'); if(el){ el.value=t; el.type='text'; }
+  try{ navigator.clipboard.writeText(t).then(function(){ showToast('📋 Clave copiada: pégala en Cloudflare como APP_TOKEN'); }); }catch(e){}
+}
+function iaAjustes(){
+  var c=iaCfg();
+  var ov=_modalBase('ia-cfg','Conectar asistente',
+    '<div class="ia-steps"><b>Gratis, una sola vez:</b><ol><li>En Cloudflare (cuenta gratuita) crea un Worker y pega el archivo <u>finanzasjr-ia-worker.js</u>.</li><li>En el Worker: <b>Bindings › Add › Workers AI</b> con el nombre <code>AI</code>.</li><li>En <b>Variables and Secrets</b>: el secreto <code>APP_TOKEN</code> (toca “Generar” abajo y pégalo) y la variable <code>ALLOWED_ORIGIN</code> = <code>'+esc(location.origin)+'</code></li><li>Pega aquí la dirección del Worker.</li></ol></div>'
+    +'<label class="ia-lb">Dirección del servidor</label><input id="ia-url" placeholder="https://finanzasjr-ia.tu-usuario.workers.dev" value="'+esc(c.url||'')+'" autocapitalize="off" autocorrect="off" spellcheck="false" style="'+_inpP+'">'
+    +'<label class="ia-lb">Clave de acceso (APP_TOKEN)</label><div style="display:flex;gap:8px;align-items:center"><input id="ia-tok" type="password" value="'+esc(c.token||'')+'" autocapitalize="off" autocorrect="off" spellcheck="false" style="'+_inpP+';flex:1"><button onclick="iaGenerarToken()" style="margin-top:6px;padding:12px;border-radius:12px;background:rgba(255,255,255,.08);border:0.5px solid rgba(255,255,255,.18);color:#fff;font-size:13px;font-weight:600;white-space:nowrap">Generar</button></div>'
+    +'<div id="ia-test" style="font-size:12.5px;margin-top:10px;min-height:18px;color:rgba(255,255,255,.6)"></div>'
+    +'<button id="ia-cfg-ok" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#c77dff);color:#fff">Guardar y probar conexión</button>'
+    +'<div class="ia-priv">🔒 La IA corre en tu propio servidor de Cloudflare, que no usa tus datos para entrenar modelos. Este teléfono guarda la dirección y tu clave de acceso, que no se incluyen en los respaldos. El asistente recibe solo los datos que consulta y no puede cambiar nada sin tu autorización. La cuota gratuita diaria se renueva a las 7 pm.</div>'
+    +(_ia.chats.length?'<button onclick="iaBorrarTodo()" style="'+_btnP+'background:transparent;color:#ff8fa3">Borrar todas las conversaciones</button>':'')
+    +'<button onclick="document.getElementById(\'ia-cfg\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5)">Cerrar</button>');
+  document.getElementById('ia-cfg-ok').onclick=function(){
+    var url=(document.getElementById('ia-url').value||'').trim().replace(/\/+$/,''), tok=(document.getElementById('ia-tok').value||'').trim(), out=document.getElementById('ia-test');
+    if(!/^https:\/\/[a-z0-9.-]+(\.[a-z]{2,})(:\d+)?(\/[\w\-./]*)?$/i.test(url)){ out.innerHTML='<span style="color:#ff8fa3">La dirección debe empezar con https://</span>'; return; }
+    if(tok.length<16){ out.innerHTML='<span style="color:#ff8fa3">La clave de acceso debe tener al menos 16 caracteres. Usa “Generar”.</span>'; return; }
+    iaGuardarCfg({url:url,token:tok}); out.textContent='Probando conexión…';
+    iaProbar().then(function(j){ var cc=iaCfg(); cc.proveedor=j.proveedor||''; cc.modelo=j.modelo||''; cc.gratis=j.gratis!==false; iaGuardarCfg(cc); out.innerHTML='<span style="color:#30d158">✅ Conectado'+(j.gratis!==false?' · gratis':'')+(j.modelo?' · '+esc(String(j.modelo).replace(/^@cf\/[^/]+\//,'')):'')+'</span>'; iaPintar(); setTimeout(function(){ var m=document.getElementById('ia-cfg'); if(m) m.remove(); },900); })
+      .catch(function(e){ out.innerHTML='<span style="color:#ff8fa3">'+esc(e.message)+'</span>'; iaPintar(); });
+  };
+}
+function iaProbar(){
+  return fetch(_iaUrl('/salud'),{headers:{'Authorization':'Bearer '+iaCfg().token}}).then(function(r){
+    return r.json().catch(function(){return {};}).then(function(j){
+      if(r.status===401) throw new Error('El servidor respondió, pero la clave de acceso no coincide con APP_TOKEN.');
+      if(r.status===403) throw new Error('El servidor rechazó esta dirección. Revisa ALLOWED_ORIGIN (debe ser '+location.origin+').');
+      if(!r.ok||!j.ok) throw new Error((j&&j.mensaje)||'El servidor respondió con error '+r.status+'.');
+      return j; });
+  },function(){ throw new Error('No se pudo conectar. Revisa la dirección del servidor (y que la app permita esa dirección).'); });
+}
+function iaBorrarTodo(){
+  confirmarApp('Borrar conversaciones','Se borran todas las conversaciones del asistente en este teléfono. Tus movimientos no se tocan.','Borrar todo',function(){
+    _ia.chats=[]; _ia.actual=null; iaGuardar(); iaPintar(); var m=document.getElementById('ia-cfg'); if(m) m.remove(); },true);
+}
+
+/* ══ v4.0 — notch, ventanas que se cierran deslizando, mes actual en Centro de Control,
+   metas conectadas a la curva patrimonial, No disponible dentro de Cuentas ══ */
+
+/* iOS: tras cerrar el teclado, a veces la app queda desplazada hacia arriba (bajo el notch). */
+(function(){
+  function reponer(){ if(window.scrollY||window.pageYOffset||document.documentElement.scrollTop){ window.scrollTo(0,0); document.documentElement.scrollTop=0; document.body.scrollTop=0; } }
+  document.addEventListener('focusout',function(e){ if(e.target&&/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) setTimeout(function(){ if(!document.activeElement||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) reponer(); },80); });
+  window.addEventListener('scroll',function(){ if(!document.activeElement||!/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) reponer(); },{passive:true});
+  if(window.visualViewport) window.visualViewport.addEventListener('resize',function(){ if(Math.abs(window.visualViewport.height-window.innerHeight)<40) reponer(); });
+  window.addEventListener('orientationchange',function(){ setTimeout(reponer,300); });
+  document.addEventListener('visibilitychange',function(){ if(!document.hidden) reponer(); });
+})();
+
+/* ¿El dedo está sobre algo que todavía puede desplazarse hacia arriba? */
+function _scrollArriba(t,stop){
+  for(var n=t;n&&n!==stop&&n.nodeType===1;n=n.parentNode){ if(n.scrollTop>0) return false; }
+  return !(stop&&stop.scrollTop>0);
+}
+/* Deslizar hacia abajo para cerrar cualquier hoja inferior */
+function hojaArrastrable(sheet,cerrar){
+  if(!sheet||sheet._drag) return; sheet._drag=1;
+  var y0=0,x0=0,dy=0,activo=false,ok=false;
+  sheet.addEventListener('touchstart',function(e){ y0=e.touches[0].clientY; x0=e.touches[0].clientX; dy=0; activo=true; ok=_scrollArriba(e.target,sheet)&&!/INPUT|TEXTAREA|SELECT/.test(e.target.tagName); },{passive:true});
+  sheet.addEventListener('touchmove',function(e){
+    if(!activo||!ok) return; dy=e.touches[0].clientY-y0;
+    if(Math.abs(e.touches[0].clientX-x0)>Math.abs(dy)&&dy<20){ ok=false; return; }
+    if(dy>0){ sheet.style.transition='none'; sheet.style.transform='translateY('+Math.round(dy*0.85)+'px)'; }
+  },{passive:true});
+  sheet.addEventListener('touchend',function(){
+    if(!activo) return; activo=false; if(!ok){ return; }
+    sheet.style.transition='transform .25s cubic-bezier(.2,.9,.25,1)';
+    if(dy>90){ sheet.style.transform='translateY(110%)'; setTimeout(function(){ cerrar(); sheet.style.transition=''; sheet.style.transform=''; },230); }
+    else sheet.style.transform='';
+  },{passive:true});
+}
+document.addEventListener('DOMContentLoaded',function(){
+  setTimeout(function(){
+    hojaArrastrable(document.getElementById('salud-modal-sheet'),function(){ var m=document.getElementById('salud-modal'); if(m) m.classList.remove('open'); document.body.style.overflow=''; });
+    try{ migrarMetaAntigua(); }catch(e){}
+  },0);
+});
+
+/* ── Curva patrimonial: la línea de meta son tus metas del Plan ── */
+function metasActivasTotal(){ return r2((state.objetivos||[]).filter(function(o){return !o.completado;}).reduce(function(s,o){return s+(o.meta||0);},0)); }
+function renderCurva(){
+  renderCurva_base();
+  var el=document.getElementById('ana-curva-card'); if(!el||!el.firstElementChild) return;
+  var act=(typeof metasOrdenadas==='function'?metasOrdenadas():[]).filter(function(o){return !o.completado;});
+  var tot=metasActivasTotal(), ap=apartadoMetas();
+  var nota=document.createElement('div'); nota.className='cv-metas';
+  nota.innerHTML=act.length
+    ?'<div><b>Línea dorada: tus metas del Plan '+fmt$(tot)+'</b><small>'+act.slice(0,3).map(function(o){return esc((o.icono||'🎯')+' '+o.nombre);}).join(' · ')+(act.length>3?' y '+(act.length-3)+' más':'')+' · apartado '+fmt$(ap)+'</small></div><button onclick="irAMetas()">Ver metas</button>'
+    :'<div><b>Sin metas activas</b><small>Crea metas en Plan › Metas y aparecerán como línea en esta curva.</small></div><button onclick="irAMetas()">Crear meta</button>';
+  el.firstElementChild.appendChild(nota);
+}
+// La meta antigua de Análisis pasa a ser una meta del Plan (una sola vez)
+function migrarMetaAntigua(){
+  var m=state.meta||{}; if(m.migradaPlan) return;
+  var monto=parseFloat(m.monto)||0;
+  if(monto>0){
+    state.objetivos=state.objetivos||[];
+    if(!state.objetivos.some(function(o){return Math.abs((o.meta||0)-monto)<0.01;})){
+      var cant=parseFloat(m.cantidad)||0, meses=m.unidad==='años'||m.unidad==='anios'?cant*12:cant;
+      state.objetivos.push({id:'meta_'+Date.now(),nombre:'Meta de ahorro',meta:r2(monto),meses:meses>0?Math.round(meses):null,icono:'🎯',acumulado:0,creada:hoyLocal(),
+        orden:(state.objetivos.length?Math.max.apply(null,state.objetivos.map(function(x){return x.orden||0;}))+1:0)});
+    }
+  }
+  m.migradaPlan=true; state.meta=m; saveState();
+}
+
+/* ── Asistente: abrir ── */
+function abrirAsistente(){ goTo('ia'); }
 
 </script>
 <script>
