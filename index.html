@@ -1316,7 +1316,7 @@ html.kb #tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.2.1</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.3.0</div>
   </div>
 </div>
 
@@ -1877,7 +1877,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.2.1';
+var APP_VERSION='4.3.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -2847,7 +2847,7 @@ var NAV_ALIAS={obligaciones:'oblig',reembolsos:'reimb',reporte:'plan'};
 function _diasEntre(a,b){ return difDias(a,b); }
 function _descartada(id){ var v=(state.notifDescartadas||{})[id]; return !!v&&v>=hoyLocal(); }
 
-function construirNotificaciones(){
+function construirNotificaciones_base(){
   var hoy=hoyLocal(), mes=mesLocal(), dia=+hoy.slice(8,10), L=[];
   function add(n){ if(!_descartada(n.id)) L.push(n); }
   var bal=calcBalances(), kits=calcKits();
@@ -11110,6 +11110,120 @@ function renderCalendario(){
 
 /* Arranque */
 document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){ try{ X(); comAGMigrar(); homeExtras(); }catch(e){ console.warn(e); } },0); });
+
+/* ══ v4.3 — Consejos diarios y resumen semanal en notificaciones ══ */
+function _gastosReales(desde,hasta){
+  return state.transactions.filter(function(t){ return t.fecha>=desde&&t.fecha<=hasta&&!t.arch&&flujoTx(t).gasto>0; });
+}
+function _sumaGasto(arr){ return r2(arr.reduce(function(s,t){return s+flujoTx(t).gasto;},0)); }
+function _diaDelAnio(f){ var d=ymdToDate(f), i=new Date(d.getFullYear(),0,1); return Math.floor((d-i)/86400000); }
+function consejosDelDia(){
+  var hoy=hoyLocal(), mes=mesLocal(), dia=+hoy.slice(8,10), dow=ymdToDate(hoy).getDay(), out=[], pool=[];
+  var di=_ingresoDiario?_ingresoDiario():0;
+  // ── Siempre: cuánto puedes gastar hoy ──
+  try{
+    var pr=proyectarFlujo();
+    if(pr.min.bal>=0&&pr.seguro>0&&pr.proxSueldo){
+      out.push({id:'tip_hoy_'+hoy,grupo:'consejo',nivel:'bajo',icon:'🧭',titulo:'Hoy puedes gastar hasta '+fmt$(pr.seguro),
+        texto:'Gastando eso por día llegas bien a tu próximo ingreso ('+fechaCorta(pr.proxSueldo.fecha)+') con todos tus pagos cubiertos. Tu ritmo actual es '+fmt$(pr.gvPropio)+'/día.',nav:'plan',descarte:'manana'});
+    }
+  }catch(e){}
+  // ── Sueldo a punto de llegar ──
+  try{ var pi=_proxIngreso(); if(pi.np&&difDias(hoy,pi.np.fecha)<=2&&difDias(hoy,pi.np.fecha)>=0)
+    out.push({id:'tip_llega_'+pi.np.fecha,grupo:'consejo',nivel:'medio',icon:'💼',titulo:(difDias(hoy,pi.np.fecha)===0?'Hoy':difDias(hoy,pi.np.fecha)===1?'Mañana':'Pasado mañana')+' llega tu '+(pi.np.clave==='q'?'anticipo':'sueldo')+' ('+fmt$(pi.np.monto)+')',
+      texto:'Cuando lo registres te propondré cuánto apartar para tu fondo de emergencia y tu meta. Decidirlo antes evita que se vaya en gasto diario.',descarte:'manana'}); }catch(e){}
+  // ── Grupo de consejos que rotan (uno distinto cada día) ──
+  pool.push(function(){ // gasto hormiga
+    var g=_gastosReales(mes+'-01',hoy).filter(function(t){return t.monto<=3&&t.reimb!=='SÍ';}); if(g.length<8) return null; var s=_sumaGasto(g);
+    return {k:'hormiga',icon:'🐜',titulo:g.length+' gastos pequeños este mes suman '+fmt$(s),texto:'Gastos de $3 o menos (snacks, bebidas, recargas). Al mes son '+fmt$(s)+(di>0?' = '+(Math.round(s/di*10)/10)+' días de tu trabajo':'')+'. Elegir 2 o 3 para dejar ayuda más de lo que parece.',nav:'historial'};
+  });
+  pool.push(function(){ // pagos fijos al año
+    var ob=getObligacionesMesFor(mes); if(!ob.length) return null; var t=r2(ob.reduce(function(s,o){return s+o.montoActual;},0)), top=ob.slice().sort(function(a,b){return b.montoActual-a.montoActual;})[0];
+    return {k:'fijos',icon:'📅',titulo:'Tus pagos fijos suman '+fmt$(t)+' al mes',texto:'Son '+fmt$(r2(t*12))+' al año. El mayor es '+top.nombre+' ('+fmt$(top.montoActual)+'). Revisa una vez al año si alguno se puede bajar o negociar.',nav:'oblig'};
+  });
+  pool.push(function(){ // sueldo comprometido
+    var c=compromisoProxSueldo(); if(!c||c.pct<40) return null;
+    return {k:'comp',icon:'⚖️',titulo:'El '+c.pct+'% de tu próximo sueldo ya tiene dueño',texto:'De los '+fmt$(c.sueldo.monto)+' del '+fechaCorta(c.sueldo.fecha)+', '+fmt$(c.total)+' se van en pagos hasta el '+fechaCorta(c.hasta)+'. Lo que gastes hoy de más lo sentirás ese día.',nav:'credito'};
+  });
+  pool.push(function(){ // fondo de emergencia
+    var f=estadoFondo(); if(f.listo) return null; var falta=r2(f.act.monto-f.ac), q=_sueldoMensual()/2*0.1;
+    return {k:'fondo',icon:'🛟',titulo:'Te faltan '+fmt$(falta)+' para el escalón '+f.act.n+' de tu fondo',texto:(q>0?'Apartando el 10% de cada pago ('+fmt$(q)+') lo logras en '+Math.ceil(falta/q)+' quincenas. ':'')+'Es lo que te evita pedir avances cuando algo se daña.',nav:'plan',accion:{lbl:'Apartar',fn:function(){goTo('plan');setPlanTab('metas');}}};
+  });
+  pool.push(function(){ // meta activa
+    var a=metasOrdenadas().filter(function(o){return !o.completado;})[0]; if(!a) return null; var falta=r2(Math.max(0,a.meta-(a.acumulado||0))); if(!falta) return null;
+    var sem=a.meses?r2(falta/Math.max(1,a.meses-mesesTranscurridos(a))/4.33):r2(falta/26);
+    return {k:'meta',icon:a.icono||'🎯',titulo:'Para '+a.nombre+': '+fmt$(sem)+' por semana',texto:'Te faltan '+fmt$(falta)+'. '+(a.meses?'Así llegas en el plazo que elegiste.':'A ese ritmo la tienes en unos 6 meses.')+' Lo apartado deja de contar como disponible para que no lo gastes sin querer.',nav:'plan',accion:{lbl:'Ver meta',fn:function(){goTo('plan');setPlanTab('metas');}}};
+  });
+  pool.push(function(){ // dinero adelantado a empresas
+    var r=financiaEmpresas(); if(r.total<50) return null;
+    return {k:'empresas',icon:'🏢',titulo:'Tienes '+fmt$(r.total)+' adelantados a tus empresas',texto:(di>0?'Equivale a '+Math.round(r.total/di)+' días de tu sueldo. ':'')+'Mientras no te reembolsen, ese dinero no lo puedes usar. Entregar las facturas a tiempo acelera el pago.',nav:'reimb'};
+  });
+  pool.push(function(){ // intereses de avances
+    var it=interesesAvancesAnio(); if(it<5) return null;
+    return {k:'interes',icon:'💸',titulo:'Este año pagaste '+fmt$(it)+' en intereses de avances',texto:(di>0?'Son '+(Math.round(it/di*10)/10)+' días de trabajo regalados al banco. ':'')+'Cada mes sin avances es dinero que se queda contigo.',nav:'credito'};
+  });
+  pool.push(function(){ // día más caro de la semana
+    var desde=addDias(hoy,-56), g=_gastosReales(desde,addDias(hoy,-1)).filter(function(t){return t.reimb!=='SÍ'&&natOf(t)==='operativo'&&!/obligaci/i.test(t.desc);}); if(g.length<15) return null;
+    var porDia=[0,0,0,0,0,0,0]; g.forEach(function(t){ porDia[ymdToDate(t.fecha).getDay()]+=t.monto; });
+    var max=porDia.indexOf(Math.max.apply(null,porDia)), prom=r2(porDia[max]/8);
+    return {k:'diacaro',icon:'📆',titulo:'Los '+DIAS[max]+' son tu día más caro',texto:'En las últimas 8 semanas gastaste en promedio '+fmt$(prom)+' cada '+DIAS[max]+'. Planear ese día (comida, salidas) es donde más puedes ahorrar.',nav:'calendario'};
+  });
+  pool.push(function(){ // categoría que más pesa este mes
+    if(dia<10) return null; var f=flujoMes(mes), k=Object.keys(f.catMap).filter(function(c){return !/Familia|Hogar|Suscrip/.test(c);}).sort(function(a,b){return f.catMap[b]-f.catMap[a];})[0]; if(!k) return null;
+    var fp=flujoMes(ymAdd(mes,-1),dia), ant=fp.catMap[k]||0;
+    return {k:'cat',icon:CAT_ICONS[k]||'📊',titulo:k+': '+fmt$(f.catMap[k])+' en lo que va del mes',texto:'Es tu mayor gasto variable. '+(ant>0?'Al mismo día del mes pasado llevabas '+fmt$(ant)+'. ':'')+'Ponerle un tope semanal en el Presupuesto ayuda a no pasarte.',nav:'analisis'};
+  });
+  pool.push(function(){ // fin de semana
+    if(dow!==5&&dow!==6) return null; var desde=addDias(hoy,-35), g=_gastosReales(desde,addDias(hoy,-1)).filter(function(t){var d=ymdToDate(t.fecha).getDay();return (d===5||d===6||d===0)&&/Salidas|Ocio|Alcohol|Entreten/.test(t.cat);});
+    if(g.length<3) return null; var s=_sumaGasto(g);
+    return {k:'finde',icon:'🎉',titulo:'Fin de semana: tus salidas promedian '+fmt$(r2(s/5)),texto:'Es lo que gastaste en salidas por fin de semana el último mes. Decide hoy un monto y llévalo en efectivo: es la forma más fácil de no pasarte.'};
+  });
+  var vals=pool.map(function(f){ try{ return f(); }catch(e){ return null; } }).filter(Boolean);
+  if(vals.length){
+    var i=_diaDelAnio(hoy)%vals.length, t=vals[i];
+    out.push({id:'tip_'+t.k+'_'+hoy,grupo:'consejo',nivel:'bajo',icon:t.icon,titulo:t.titulo,texto:t.texto,nav:t.nav,accion:t.accion,descarte:'manana'});
+    if(vals.length>3){ var t2=vals[(i+Math.ceil(vals.length/2))%vals.length]; if(t2!==t) out.push({id:'tip_'+t2.k+'_'+hoy,grupo:'consejo',nivel:'bajo',icon:t2.icon,titulo:t2.titulo,texto:t2.texto,nav:t2.nav,accion:t2.accion,descarte:'manana'}); }
+  }
+  // ── Resumen de la semana (lunes a miércoles) ──
+  try{
+    if(dow>=1&&dow<=3){
+      var lun=addDias(hoy,-(dow-1)-7), dom=addDias(lun,6), prevL=addDias(lun,-7), prevD=addDias(lun,-1);
+      var ga=_gastosReales(lun,dom), gp=_gastosReales(prevL,prevD), sa=_sumaGasto(ga), sp=_sumaGasto(gp);
+      if(ga.length){
+        var cat={}; ga.forEach(function(t){ var k=canonCat(t.cat); cat[k]=(cat[k]||0)+flujoTx(t).gasto; }); var top=Object.keys(cat).sort(function(a,b){return cat[b]-cat[a];})[0];
+        var dif=sp>0?Math.round((sa-sp)/sp*100):null;
+        out.push({id:'semana_'+lun,grupo:dif!==null&&dif<=-10?'logro':'consejo',nivel:'bajo',icon:'🗓',titulo:'Tu semana: gastaste '+fmt$(sa)+(dif!==null?' ('+(dif>0?'+':'')+dif+'% vs la anterior)':''),
+          texto:'Del '+fechaCorta(lun)+' al '+fechaCorta(dom)+'. Donde más: '+top+' ('+fmt$(r2(cat[top]))+').'+(dif!==null&&dif<=-10?' ¡Bien! Gastaste menos que la semana pasada.':dif!==null&&dif>=15?' Esta semana intenta volver a tu ritmo.':''),nav:'calendario',descarte:'siempre'});
+      }
+    }
+  }catch(e){}
+  // ── Logro: escalón del fondo alcanzado ──
+  try{ var fo=estadoFondo(), al=fo.es.pasos.filter(function(p){return fo.ac>=p.monto;}); if(al.length) out.push({id:'fondo_esc_'+al.length,grupo:'logro',nivel:'bajo',icon:'🛟',titulo:'Fondo de emergencia: escalón '+al.length+' de 3 logrado',texto:'Tienes '+fmt$(fo.ac)+' apartados para imprevistos.',nav:'plan',descarte:'siempre'}); }catch(e){}
+  return out;
+}
+function construirNotificaciones(){
+  var L=construirNotificaciones_base();
+  // No celebrar "gastas menos" si en realidad no estás registrando gastos
+  if(L.some(function(n){return /^sinreg_/.test(n.id);})) L=L.filter(function(n){return !/^ritmo_bajo_/.test(n.id);});
+  var ids={}; L.forEach(function(n){ ids[n.id]=1; });
+  try{ consejosDelDia().forEach(function(n){ if(!ids[n.id]&&!_descartada(n.id)){ L.push(n); ids[n.id]=1; } }); }catch(e){ console.warn(e); }
+  L.sort(function(a,b){ return (a.grupo==='accion'?0:a.grupo==='cobro'?1:2)-(b.grupo==='accion'?0:b.grupo==='cobro'?1:2)||NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]; });
+  return L;
+}
+/* "Ocultar consejos" ahora los oculta solo por hoy (antes era para siempre y no volvían a salir) */
+function ncLimpiarConsejos(){
+  var hoy=hoyLocal(); state.notifDescartadas=state.notifDescartadas||{};
+  var n=0; _ncLista.forEach(function(x){ if(x.grupo==='consejo'||x.grupo==='logro'){ state.notifDescartadas[x.id]=hoy; n++; } });
+  if(!n){ showToast('No hay consejos para ocultar'); return; }
+  saveState(); _ncLista=construirNotificaciones(); renderCentroNotif(); renderNotifWidget(); showToast(n+' consejo'+(n>1?'s':'')+' ocultado'+(n>1?'s':'')+' hasta mañana');
+}
+document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){
+  try{
+    var x=X(); if(x.ncReset) return; var d=state.notifDescartadas||{}, cambio=false;
+    Object.keys(d).forEach(function(k){ if(d[k]==='9999-12-31'&&/^(ritmo_|cat_sube_|extra_|ajustes_|util_|avance_|racha_|meta_)/.test(k)){ delete d[k]; cambio=true; } });
+    x.ncReset=true; if(cambio){ saveState(); try{ renderNotifWidget(); }catch(e){} }
+  }catch(e){}
+},0); });
 
 </script>
 <script>
