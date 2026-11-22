@@ -1393,7 +1393,7 @@ html.kb #tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.4.0</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.4.1</div>
   </div>
 </div>
 
@@ -1925,7 +1925,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.4.0';
+var APP_VERSION='4.4.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -5088,25 +5088,33 @@ function renderDashboard(){
   (function(){
     var todayStr=hoyLocal(); // fecha local (antes usaba UTC y después de las 19:00 cambiaba de día)
     var mesStr=todayStr.slice(0,7);
-    var txHoy=state.transactions.filter(function(t){return t.tipo==='EGRESO'&&t.fecha===todayStr&&esGastoReal(t);});
-    var txMes=state.transactions.filter(function(t){return t.tipo==='EGRESO'&&t.fecha&&t.fecha.slice(0,7)===mesStr&&esGastoReal(t);});
-    var totalHoy=txHoy.reduce(function(s,t){return s+t.monto;},0);
-    var totalMes=txMes.reduce(function(s,t){return s+t.monto;},0);
-    function rowHtml(t){
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid rgba(255,255,255,0.05)">'
-        +'<div style="flex:1;min-width:0"><div style="font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+t.desc+'</div>'
-        +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">'+t.cat+(t.cuenta?' · '+t.cuenta:'')+'</div></div>'
-        +'<div style="font-size:14px;font-weight:700;color:#ff3b30;margin-left:12px;white-space:nowrap">-$'+t.monto.toFixed(2)+'</div>'
-        +'</div>';
-    }
-    var noHoy='<div style="text-align:center;color:rgba(255,255,255,0.3);padding:14px 0;font-size:13px">Sin gastos hoy 🎉</div>';
+    function _etq(t){ if(esGastoReal(t)) return ''; var n=natOf(t);
+      if(t.reimb==='SÍ') return '↩ Te lo reembolsa '+(t.empresa||'la empresa');
+      if(n==='transferencia') return '⇄ Traspaso entre tus cuentas'; if(n==='custodia') return '🔒 Dinero de KITS (no es tuyo)';
+      if(n==='financiamiento') return '🤝 Préstamo o avance'; if(n==='ajuste') return '⚖️ Ajuste de saldo'; if(n==='ahorro') return '🎯 Ahorro'; return 'No cuenta como gasto tuyo'; }
+    var egHoy=state.transactions.filter(function(t){return t.tipo==='EGRESO'&&t.fecha===todayStr;});
+    var egMes=state.transactions.filter(function(t){return t.tipo==='EGRESO'&&t.fecha&&t.fecha.slice(0,7)===mesStr;});
+    var txHoy=egHoy.filter(esGastoReal), txMes=egMes.filter(esGastoReal), otHoy=egHoy.filter(function(t){return !esGastoReal(t);}), otMes=egMes.filter(function(t){return !esGastoReal(t);});
+    var totalHoy=r2(txHoy.reduce(function(s,t){return s+t.monto;},0)), totalMes=r2(txMes.reduce(function(s,t){return s+t.monto;},0));
+    var sumOH=r2(otHoy.reduce(function(s,t){return s+t.monto;},0)), sumOM=r2(otMes.reduce(function(s,t){return s+t.monto;},0));
+    function rowHtml(t){ var e=_etq(t);
+      return '<div onclick="showDetail('+t.id+')" style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);cursor:pointer">'
+        +'<div style="flex:1;min-width:0"><div style="font-size:13px;color:'+(e?'rgba(255,255,255,0.75)':'#fff')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+(CAT_ICONS[t.cat]||'📌')+' '+esc(t.desc)+'</div>'
+        +'<div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:1px">'+(e?'<span style="color:#fbbf24">'+e+'</span>':esc(t.cat))+(t.cuenta?' · '+esc(t.cuenta.replace('Banco ','')):'')+'</div></div>'
+        +'<div style="font-size:14px;font-weight:700;color:'+(e?'rgba(255,255,255,0.45)':'#ff3b30')+';margin-left:12px;white-space:nowrap">-$'+t.monto.toFixed(2)+'</div></div>'; }
+    function lista(tx,ot,max,vacio){
+      var h=tx.length?tx.slice(0,max).map(rowHtml).join(''):vacio;
+      if(tx.length>max) h+='<div style="color:rgba(255,255,255,0.35);text-align:center;padding:6px;font-size:12px">+'+(tx.length-max)+' gastos más</div>';
+      if(ot.length) h+='<div style="font-size:11.5px;font-weight:600;color:rgba(255,255,255,0.5);margin:12px 0 2px">Otros egresos que no cuentan como gasto tuyo · '+fmt$(r2(ot.reduce(function(s,t){return s+t.monto;},0)))+'</div>'+ot.slice(0,max).map(rowHtml).join('')+(ot.length>max?'<div style="color:rgba(255,255,255,0.35);text-align:center;padding:6px;font-size:12px">+'+(ot.length-max)+' más</div>':'');
+      return h; }
+    var noHoy='<div style="text-align:center;color:rgba(255,255,255,0.3);padding:14px 0;font-size:13px">Sin gastos tuyos hoy 🎉</div>';
     var noMes='<div style="text-align:center;color:rgba(255,255,255,0.3);padding:14px 0;font-size:13px">Sin gastos este mes</div>';
-    window._cgHoyList=txHoy.length?txHoy.map(rowHtml).join(''):noHoy;
-    window._cgMesList=txMes.length?txMes.slice(0,20).map(rowHtml).join('')+(txMes.length>20?'<div style="color:rgba(255,255,255,0.3);text-align:center;padding:6px;font-size:12px">+'+(txMes.length-20)+' más</div>':''):noMes;
+    window._cgHoyList=lista(txHoy,otHoy,50,noHoy);
+    window._cgMesList=lista(txMes,otMes,40,noMes)+'<button onclick="histFilters.mesRapido=\''+mesStr+'\';histFilters.tipo=\'EGRESO\';goTo(\'historial\')" style="width:100%;margin-top:10px;padding:10px;border-radius:12px;background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:#fff;font-size:13px;font-weight:600">Ver todos los egresos del mes en Historial</button>';
     window._cgHoyTotal=totalHoy;
     window._cgMesTotal=totalMes;
-    window._cgHoySub=txHoy.length+' movimiento'+(txHoy.length!==1?'s':'')+' hoy';
-    window._cgMesSub=txMes.length+' movimiento'+(txMes.length!==1?'s':'')+' en '+mesStr;
+    window._cgHoySub=txHoy.length+' gasto'+(txHoy.length!==1?'s':'')+' tuyo'+(txHoy.length!==1?'s':'')+' hoy'+(otHoy.length?' · +'+fmt$(sumOH)+' en '+otHoy.length+' egreso'+(otHoy.length>1?'s':'')+' que no son gasto tuyo':'');
+    window._cgMesSub=txMes.length+' gastos tuyos en el mes'+(otMes.length?' · +'+fmt$(sumOM)+' en reembolsables, traspasos y otros':'');
     var h='<div class="cc-card" style="margin-bottom:12px">'
       +'<div class="cc-card-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">'
       +'<div class="cc-card-title">💸 Gastos</div>'
@@ -5116,7 +5124,7 @@ function renderDashboard(){
       +'</div></div>'
       +'<div style="font-size:28px;font-weight:700;color:#ff3b30;margin-bottom:2px" id="cc-gastos-total">'+(totalHoy>0?'-':'')+fmt$(totalHoy)+'</div>'
       +'<div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:12px" id="cc-gastos-sub">'+window._cgHoySub+'</div>'
-      +'<div id="cc-gastos-list" style="max-height:220px;overflow-y:auto">'+window._cgHoyList+'</div>'
+      +'<div id="cc-gastos-list" style="max-height:440px;overflow-y:auto;-webkit-overflow-scrolling:touch">'+window._cgHoyList+'</div>'
       +'</div>';
     document.getElementById('cc-gastos').innerHTML=h;
   })();
