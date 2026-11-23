@@ -1279,6 +1279,10 @@ html.kb #tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
 .cq-mov div{display:flex;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,.06)}.cq-mov em{font-style:normal;font-family:var(--num)}.cq-mov .in{color:#30d158}.cq-mov .out{color:#ff8fa3}
 .mi-note{margin-top:8px;font-size:11.5px;color:var(--ink3);line-height:1.4}
 .plan-tabs{grid-template-columns:repeat(3,1fr)!important}.plan-tab{font-size:12.5px!important;white-space:nowrap}
+/* Ventanas centradas (atajos, confirmaciones, ajustes…): nunca bajo la isla dinámica ni bajo la barra de inicio */
+div:has(> .lg-dialog){padding-top:calc(var(--safe-top) + 14px)!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 14px)!important;padding-left:16px!important;padding-right:16px!important;overflow:hidden!important;box-sizing:border-box}
+.lg-dialog{max-height:100%!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;margin:auto!important;box-sizing:border-box}
+html.kb div:has(> .lg-dialog){top:var(--vvt,0px)!important;bottom:auto!important;height:var(--vvh,100%)!important;padding-top:10px!important}
 
 </style>
 </head>
@@ -1400,7 +1404,7 @@ html.kb #tx-modal.open{top:var(--vvt,0px);bottom:auto;height:var(--vvh,100dvh)}
       </div>
     </div>
     <div class="scroll-hint">Finanzas JR</div>
-    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.4.4</div>
+    <div style="text-align:center;padding:8px 0 4px;font-size:10px;color:rgba(255,255,255,0.18);letter-spacing:0.3px">FinanzasJR v4.4.5</div>
   </div>
 </div>
 
@@ -1932,7 +1936,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.4.4';
+var APP_VERSION='4.4.5';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
