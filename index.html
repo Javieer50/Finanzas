@@ -1521,14 +1521,14 @@ html.t-claro{--vz-hi:#6250d6!important;--vz-lo:rgba(24,20,48,.14)!important;--vz
 .pm .vz-seg{margin-top:0}
 
 /* ══ v4.8 · Barra superior unida a la del iPhone ══ */
-:root{--hdr-bg:linear-gradient(180deg,rgba(10,14,36,.94) 0%,rgba(14,18,46,.86) 100%);--hdr-line:rgba(255,255,255,.09)}
+:root{--hdr-gap:24px;--hdr-bg:linear-gradient(180deg,rgba(10,14,36,.94) 0%,rgba(14,18,46,.86) 100%);--hdr-line:rgba(255,255,255,.09)}
 .status-scrim{display:none!important}
-#screen-home .app-header{position:absolute!important;top:0;left:0;right:0;z-index:6;padding:calc(var(--safe-top) + 6px) 20px 12px!important;
+#screen-home .app-header{position:absolute!important;top:0;left:0;right:0;z-index:6;padding:calc(var(--safe-top) + var(--hdr-gap)) 20px 12px!important;
   background:var(--hdr-bg)!important;-webkit-mask-image:none!important;mask-image:none!important;
   -webkit-backdrop-filter:blur(24px) saturate(170%)!important;backdrop-filter:blur(24px) saturate(170%)!important;
   border-bottom:0.5px solid var(--hdr-line);box-shadow:0 10px 26px -18px rgba(0,0,0,.7)}
-#screen-home .home-scroll{padding-top:calc(var(--safe-top) + 78px)!important}
-.inner-screen>.nav-header{position:relative;z-index:5;flex-wrap:wrap;flex-shrink:0;padding:calc(var(--safe-top) + 6px) 16px 10px!important;
+#screen-home .home-scroll{padding-top:calc(var(--safe-top) + var(--hdr-gap) + 72px)!important}
+.inner-screen>.nav-header{position:relative;z-index:5;flex-wrap:wrap;flex-shrink:0;padding:calc(var(--safe-top) + var(--hdr-gap)) 16px 10px!important;
   background:var(--hdr-bg);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
   border-bottom:0.5px solid var(--hdr-line);box-shadow:0 10px 26px -18px rgba(0,0,0,.7)}
 body.tb-root .inner-screen.open>.nav-header{padding-left:20px!important}
@@ -1562,6 +1562,66 @@ html.t-claro .nav-header .back-btn{background-color:rgba(24,20,48,.05)!important
 .h46-at .lg48{justify-content:center;align-items:center;padding:8px 14px}
 .h46-at .lg48.eq{min-width:118px}.h46-at .lg48.ag{min-width:84px}
 .h46-at .lg48 img{margin:0;max-width:none}
+
+/* ══ v4.9 · Tarjetas claras de crédito (Jardín Azuayo, Pichincha) con colores legibles ══ */
+.credit-card.cc-light{border:1px solid rgba(20,0,60,.09)!important;box-shadow:0 1px 2px rgba(20,0,60,.06),0 16px 34px -18px rgba(0,0,0,.55)!important}
+.credit-card.cc-light::before{background:rgba(20,0,60,.035)!important}
+.credit-card.cc-ja::after{content:'';position:absolute;left:0;top:18px;bottom:18px;width:4px;border-radius:0 4px 4px 0;background:linear-gradient(180deg,#e11d48,#16a34a)}
+.cc-light .cc-type{color:rgba(20,0,60,.55)!important;font-weight:600}
+.cc-light .cc-label{color:rgba(20,0,60,.55)!important}
+.cc-light .cc-val{color:#14003c!important;font-weight:700!important}
+.cc-light .cc-row>div:nth-child(2) .cc-val{color:#be123c!important}
+.cc-light .cc-row>div:nth-child(3) .cc-val{color:#047857!important}
+.cc-light .cc-bar{background:rgba(20,0,60,.1)!important}
+.cc-light .cc-pct{color:rgba(20,0,60,.6)!important;font-weight:600}
+.cc-light [style*="rgba(48,209,88,0.8)"]{color:#047857!important;font-weight:600}
+.cc-light [style*="color:rgba(220,38,38,0.9)"]{color:#b91c1c!important;font-weight:700}
+.cc-light [style*="color:#dc2626"]{color:#b91c1c!important}
+.cc-light button[onclick^="marcarAvancePagado"]{color:#047857!important;background:rgba(16,163,94,.12)!important;border:1px solid rgba(4,120,87,.35)!important;font-weight:700}
+.cc-light button[onclick^="avanceCredito"]{color:#047857!important;background:linear-gradient(135deg,rgba(16,163,94,.16),rgba(16,163,94,.06))!important;border:1px solid rgba(4,120,87,.35)!important;font-weight:700!important}
+
+/* ══ Jardín Azuayo: tarjeta con el mismo vidrio de la app ══ */
+.credit-card.cc-ja{background:var(--g-fill)!important;border:0.5px solid rgba(255,255,255,.16)!important;-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);box-shadow:var(--g-shadow)!important;border-radius:24px!important;padding:18px 18px 16px 22px!important}
+.credit-card.cc-ja::before{display:none!important}
+.cc-ja>div[style*="position:absolute"]{top:14px!important;right:14px!important;background:#fff;border-radius:12px;padding:5px 7px;box-shadow:0 6px 14px -6px rgba(0,0,0,.45);line-height:0}
+.cc-ja .cc-type{color:rgba(255,255,255,.55)!important;padding-right:70px}
+.cc-ja .cc-name{color:#fff!important;padding-right:70px}
+.cc-ja .cc-label{color:rgba(255,255,255,.55)!important}
+.cc-ja .cc-val{color:#fff!important}
+.cc-ja .cc-row>div:nth-child(2) .cc-val{color:#ff8fa3!important}
+.cc-ja .cc-row>div:nth-child(3) .cc-val{color:#34d399!important}
+.cc-ja .cc-bar{background:rgba(255,255,255,.12)!important}
+.cc-ja .cc-pct{color:rgba(255,255,255,.55)!important}
+.cc-ja [style*="color:rgba(20,0,60,0.6)"]{color:rgba(255,255,255,.6)!important}
+.cc-ja [style*="rgba(48,209,88,0.8)"]{color:#34d399!important}
+.cc-ja [style*="background:rgba(220,38,38,0.08)"]{background:rgba(255,92,122,.08)!important;border-color:rgba(255,92,122,.3)!important;border-radius:16px!important}
+.cc-ja [style*="color:rgba(0,0,0,0.75)"]{color:#fff!important}
+.cc-ja [style*="color:rgba(0,0,0,0.45)"]{color:rgba(255,255,255,.5)!important}
+.cc-ja [style*="solid rgba(0,0,0,0.08)"]{border-bottom-color:rgba(255,255,255,.08)!important}
+.cc-ja [style*="color:#dc2626"],.cc-ja [style*="color:rgba(220,38,38,0.9)"]{color:#ff8fa3!important}
+html.t-claro .credit-card.cc-ja{background:#ffffff!important;border:1px solid rgba(24,20,48,.08)!important;box-shadow:0 1px 2px rgba(40,30,90,.06),0 12px 28px -16px rgba(40,30,90,.3)!important}
+html.t-claro .cc-ja>div[style*="position:absolute"]{box-shadow:none;border:1px solid rgba(24,20,48,.08)}
+html.t-claro .cc-ja .cc-type,html.t-claro .cc-ja .cc-label,html.t-claro .cc-ja .cc-pct{color:rgba(24,20,48,.55)!important}
+html.t-claro .cc-ja .cc-name,html.t-claro .cc-ja .cc-val,html.t-claro .cc-ja [style*="color:rgba(0,0,0,0.75)"]{color:#18142f!important}
+html.t-claro .cc-ja .cc-row>div:nth-child(2) .cc-val,html.t-claro .cc-ja [style*="color:#dc2626"],html.t-claro .cc-ja [style*="color:rgba(220,38,38,0.9)"]{color:#be123c!important}
+html.t-claro .cc-ja .cc-row>div:nth-child(3) .cc-val,html.t-claro .cc-ja [style*="rgba(48,209,88,0.8)"]{color:#047857!important}
+html.t-claro .cc-ja .cc-bar{background:rgba(24,20,48,.1)!important}
+html.t-claro .cc-ja [style*="color:rgba(20,0,60,0.6)"],html.t-claro .cc-ja [style*="color:rgba(0,0,0,0.45)"]{color:rgba(24,20,48,.55)!important}
+html.t-claro .cc-ja [style*="solid rgba(0,0,0,0.08)"]{border-bottom-color:rgba(24,20,48,.08)!important}
+html.t-claro .cc-ja [style*="background:rgba(220,38,38,0.08)"]{background:rgba(225,29,72,.05)!important;border-color:rgba(225,29,72,.22)!important}
+html.t-claro .cc-ja button[onclick^="marcarAvancePagado"],html.t-claro .cc-ja button[onclick^="avanceCredito"]{color:#047857!important;background:rgba(16,163,94,.1)!important;border:1px solid rgba(4,120,87,.3)!important}
+
+/* ══ Cuadro "Dinero disponible" ══ */
+#home-hoy{background:rgba(255,255,255,.07);border-radius:12px;padding:8px 10px;margin-top:12px}
+html.t-claro .widget-balance{background:radial-gradient(90% 70% at 100% 0%,rgba(139,92,246,.20) 0%,rgba(139,92,246,0) 62%),radial-gradient(85% 70% at 0% 105%,rgba(20,184,166,.18) 0%,rgba(20,184,166,0) 62%),#ffffff!important;
+  border:1px solid rgba(124,58,237,.14)!important;box-shadow:0 1px 2px rgba(40,30,90,.06),0 20px 40px -24px rgba(76,29,149,.45)!important}
+html.t-claro .wb-label{color:#5b4b8a!important}
+html.t-claro .wb-total{background:none!important;-webkit-text-fill-color:#1b1446!important;color:#1b1446!important}
+html.t-claro #home-hoy{background:rgba(124,58,237,.07)!important;color:#3f3566!important}
+html.t-claro #home-hoy b{color:#1b1446!important}
+html.t-claro .wb-pill{background:#ffffff!important;border:1px solid rgba(24,20,48,.08)!important;box-shadow:0 1px 2px rgba(40,30,90,.05),0 6px 14px -10px rgba(40,30,90,.25)!important}
+html.t-claro .wb-pill-label{color:rgba(24,20,48,.6)!important}
+html.t-claro .wb-pill-val{color:#1b1446!important}
 
 </style>
 </head>
@@ -2191,7 +2251,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.8.2';
+var APP_VERSION='4.9.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -12100,6 +12160,14 @@ function _arrastrar48(list){
 }
 /* Un atajo nuevo aparece también en Inicio */
 _w43('renderAtajos',function(){ try{ homeV46(); }catch(e){} });
+
+/* v4.9 · Tarjetas de crédito de fondo claro: marcar para usar colores legibles */
+function marcarTarjetas49(){
+  var cs=document.querySelectorAll('#screen-credito .credit-card');
+  [].forEach.call(cs,function(el,i){ var c=(userCreditos||[])[i], n=el.querySelector('.cc-name'), dark=n&&/rgb\(20, 0, 60\)|#14003c/i.test(n.getAttribute('style')||'');
+    var ja=!!(c&&c.banco==='Jardín Azuayo'); el.classList.toggle('cc-light',!!dark&&!ja); el.classList.toggle('cc-ja',ja); });
+}
+_w43('renderCredito',function(){ try{ marcarTarjetas49(); }catch(e){} });
 
 </script>
 <script>
