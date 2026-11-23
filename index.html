@@ -2251,7 +2251,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.9.1';
+var APP_VERSION='4.9.2';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -12169,10 +12169,14 @@ function marcarTarjetas49(){
 }
 _w43('renderCredito',function(){ try{ marcarTarjetas49(); }catch(e){} });
 
+/* v4.9.2 · Aviso de conexión: la app sigue funcionando sin internet */
+window.addEventListener('offline',function(){ try{ showToast('Sin conexión · la app sigue funcionando'); }catch(e){} });
+window.addEventListener('online',function(){ try{ showToast('Conexión recuperada'); }catch(e){} });
+
 </script>
 <script>
 // Modo sin conexión: registra el service worker de la app
-if('serviceWorker' in navigator && location.protocol==='https:'){
+if('serviceWorker' in navigator && (location.protocol==='https:'||location.hostname==='localhost')){
   navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(function(r){r.update()}).catch(function(){});
 }
 </script>
