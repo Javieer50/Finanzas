@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Finanzas JR">
-<meta name="theme-color" content="#071a1d">
+<meta name="theme-color" content="#0a0e24">
 <meta name="color-scheme" content="dark">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://*.workers.dev; font-src 'self' data:; manifest-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <title>Finanzas JR</title>
@@ -1534,19 +1534,14 @@ html.t-claro{--vz-hi:#6250d6!important;--vz-lo:rgba(24,20,48,.14)!important;--vz
 body.tb-root .inner-screen.open>.nav-header{padding-left:20px!important}
 .nav-header>.hub-seg{flex-basis:100%;margin:8px 0 0!important}
 .inner-screen>.nav-header+.scroll-content{padding-top:12px!important}
-/* Modo claro: la barra es de color (la hora y la batería del iPhone siempre son blancas) */
-html.t-claro{--hdr-bg:linear-gradient(165deg,#2b1c60 0%,#262f6c 55%,#1c4b63 100%)!important;--hdr-line:rgba(255,255,255,0)!important}
-html.t-claro #screen-home .app-header,html.t-claro .inner-screen>.nav-header{box-shadow:0 10px 24px -16px rgba(30,20,80,.45)!important}
-html.t-claro .nav-header .nav-title,html.t-claro #screen-home .hd-hola{color:#fff!important}
-html.t-claro #screen-home .hd-fecha{color:rgba(255,255,255,.72)!important}
-html.t-claro .nav-header .back-btn{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='20' viewBox='0 0 12 20'%3E%3Cpath d='M10 2L2 10l8 8' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") 14px center/11px 18px no-repeat,rgba(255,255,255,.16)!important;border-color:rgba(255,255,255,.28)!important;box-shadow:none!important}
-html.t-claro .nav-header .nav-action{background:rgba(255,255,255,.16)!important;border-color:rgba(255,255,255,.3)!important;color:#fff!important}
-html.t-claro .nav-header .hub-seg{background:rgba(255,255,255,.12)!important;border-color:rgba(255,255,255,.14)!important}
-html.t-claro .nav-header .hub-seg button{color:rgba(255,255,255,.78)!important}
-html.t-claro .nav-header .hub-seg button.on{background:#fff!important;color:#1e1846!important}
-html.t-claro #screen-home .hd-bell{background:rgba(255,255,255,.16)!important;border-color:rgba(255,255,255,.28)!important}
-html.t-claro #screen-home .hd-bell svg{stroke:#fff!important}
-
+/* Modo claro: barra blanca y sólida (el iPhone adapta la hora a fondo claro y su difuminado se funde con el blanco) */
+html.t-claro{--hdr-bg:#ffffff!important;--hdr-line:rgba(24,20,48,.09)!important}
+html.t-claro #screen-home .app-header,html.t-claro .inner-screen>.nav-header{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;box-shadow:0 1px 0 rgba(24,20,48,.06),0 8px 20px -14px rgba(40,30,90,.25)!important}
+html.t-claro #screen-home .hd-hola{color:#18142f!important}
+html.t-claro #screen-home .hd-fecha{color:rgba(24,20,48,.6)!important}
+html.t-claro #screen-home .hd-bell{background:rgba(24,20,48,.05)!important;border-color:rgba(24,20,48,.1)!important;box-shadow:none!important}
+html.t-claro #screen-home .hd-bell svg{stroke:#18142f!important}
+html.t-claro .nav-header .back-btn{background-color:rgba(24,20,48,.05)!important;border-color:rgba(24,20,48,.1)!important;box-shadow:none!important}
 /* ── Atajos de Inicio: accesos rápidos y editor ── */
 .h46-at .qa46 img{height:20px;width:auto;max-width:86px;object-fit:contain;margin-bottom:4px}
 .h46-at .qa46 small{color:rgba(255,255,255,.45)}
@@ -2196,7 +2191,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='4.8.1';
+var APP_VERSION='4.8.2';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -11747,7 +11742,7 @@ function aplicarTema46(t){
   if(claro){ if(!st){ st=document.createElement('style'); st.id='t46-claro'; document.head.appendChild(st); } st.textContent=_cssClaro46(); H.classList.add('t-claro'); _t46arbol(document.body); }
   else { if(st) st.textContent=''; H.classList.remove('t-claro'); _t46restaurar(); }
   var m=document.querySelector('meta[name="color-scheme"]'); if(m) m.setAttribute('content',claro?'light':'dark');
-  var tc=document.querySelector('meta[name="theme-color"]'); if(tc) tc.setAttribute('content',claro?'#221a48':'#071a1d');
+  var tc=document.querySelector('meta[name="theme-color"]'); if(tc) tc.setAttribute('content',claro?'#ffffff':'#0a0e24');
 }
 
 /* ── 6. Íconos dibujados en los títulos (en lugar de emojis) ── */
