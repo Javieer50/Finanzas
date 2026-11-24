@@ -1,4 +1,4 @@
-const CACHE = 'finanzas-jr-v90-4.9.2';
+const CACHE = 'finanzas-jr-v101-5.1.0';
 const PAGINA = './index.html';
 const EXTRAS = ['./manifest.json', './apple-touch-icon.png', './icon-192.png', './icon-512.png'];
 const ESPERA_RED = 3500; // ms: con señal débil, pasado este tiempo se abre la copia guardada
