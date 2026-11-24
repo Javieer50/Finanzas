@@ -2088,6 +2088,24 @@ html.t-claro .fl52-c{background:rgba(22,19,43,.04)!important}html.t-claro .fl52-
 html.t-claro .ra53-top div{background:rgba(22,19,43,.04)!important}html.t-claro .ra53-l{background:rgba(22,19,43,.03)!important}
 html.t-claro .ra53-m i{background:rgba(22,19,43,.08)!important}
 
+/* ══ v5.4 · Cuadro "Hoy puedes gastar" ══ */
+#home-hoy54{margin-top:12px}
+.hy54{position:relative;padding:15px 16px 13px;border-radius:var(--r-card,22px);background:var(--card);border:0.5px solid var(--card-b);cursor:pointer;overflow:hidden}
+.hy54::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,#34d399,#2dd4bf)}
+.hy54:active{transform:scale(.99)}
+.hy54-h{display:flex;justify-content:space-between;align-items:center}
+.hy54-h span{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:650;color:var(--ink-2)}
+.hy54-h span svg{color:var(--ok)}
+.hy54-h u{display:flex;align-items:center;gap:3px;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--brand-2)}
+.hy54-v{display:block;font:800 34px/1.1 var(--num,-apple-system);letter-spacing:-1px;color:var(--ink);margin-top:6px}
+.hy54-s{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.hy54-b{display:block;height:8px;border-radius:5px;background:rgba(255,255,255,.1);margin-top:10px;overflow:hidden}
+.hy54-b b{display:block;height:100%;border-radius:5px;transition:width .5s}
+.hy54-f{font-size:12.5px;color:var(--ink-3);margin-top:8px}
+html.t-claro .hy54-b{background:rgba(22,19,43,.08)!important}html.t-claro .hy54-h u{color:#6d28d9!important}
+html.priv51 .hy54-v,html.priv51 .hy54-s{filter:blur(8px)}
+.hy54-f b{color:var(--ink-2);font-weight:650}
+
 </style>
 </head>
 <body>
@@ -2716,7 +2734,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='5.3.0';
+var APP_VERSION='5.4.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -4159,7 +4177,7 @@ function proyectarFlujo(diasMin){
   var inc=ingresosInciertos();
   if(cfg.incluirInciertos) inc.forEach(function(i){ if(i.fecha&&i.fecha>hoy&&i.fecha<=fin) ev.push({fecha:i.fecha,monto:i.monto,tipo:'ING',desc:i.desc,certeza:'incierto',icon:i.icon}); });
   ev.sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:0;});
-  var gvPropio=gastoVariableDiario(), gvTrabajo=gastoTrabajoDiario(), gv=r2(gvPropio+gvTrabajo);
+  var gvPropio=gastoVariableDiario(), gvTrabajo=gastoTrabajoDiario(), gv=r2(gvPropio);
   var inicio=r2(disponibleReal()-apartadoMetas());
   var n=difDias(hoy,fin), dias=[], bal=inicio, cum=0, min={bal:inicio,fecha:hoy}, seguro=Infinity, sinGasto=inicio;
   for(var i=1;i<=n;i++){
@@ -4219,7 +4237,7 @@ function htmlFlujo(){
   h+='<div class="cc-card" style="padding:14px 16px">'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
       +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Gasto diario seguro</div><div style="font-size:22px;font-weight:800;color:'+col+'">'+fmt$(p.seguro)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">para no bajar de $0</div></div>'
-      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Tu ritmo actual</div><div style="font-size:22px;font-weight:800;color:#fff">'+fmt$(p.gv)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(p.gvTrabajo>0?'propio '+fmt$(p.gvPropio)+' + trabajo '+fmt$(p.gvTrabajo):'promedio 60 días')+'</div></div>'
+      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Tu ritmo actual</div><div style="font-size:22px;font-weight:800;color:#fff">'+fmt$(p.gv)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(p.gvTrabajo>0?'sin trabajo ('+fmt$(p.gvTrabajo)+'/día, se reembolsa)':'promedio 60 días')+'</div></div>'
     +'</div>'
     +(rojo?'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,92,122,0.1);border:0.5px solid rgba(255,92,122,0.35);font-size:13px;line-height:1.45;color:#ffc2cd">⚠️ A tu ritmo actual, el <b>'+fechaCorta(p.min.fecha)+'</b> quedarías en <b>−'+fmt$(Math.abs(p.min.bal))+'</b>. Bajando a <b>'+fmt$(p.seguro)+'/día</b> llegas sin pedir avance.</div>'
       :'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(52,211,153,0.08);border:0.5px solid rgba(52,211,153,0.3);font-size:13px;line-height:1.45;color:#b7f5dc">✅ A tu ritmo actual llegas sin avances hasta el '+fechaCorta(p.fin)+'. Lo que no gastes de la diferencia ('+fmt$(Math.max(0,p.seguro-p.gv))+'/día) puedes apartarlo para tu meta.</div>')
@@ -13297,6 +13315,92 @@ _w43('hoy52',function(){
   if(!f.querySelector('u')) f.insertAdjacentHTML('beforeend','<u>'+ic46('chev',14)+'</u>');
   f.onclick=function(e){ e.stopPropagation(); rachaModal53(); };
 });
+
+/* ══ v5.4 · "Hoy puedes gastar" + proyección más justa ══ */
+
+/* Cuánto puedes gastar HOY (incluido lo que ya gastaste hoy) para llegar con todos tus pagos cubiertos.
+   Se reparte tu dinero de forma pareja hasta el final de la proyección; manda el punto más ajustado. */
+function colchon54(){ var c=X().colchon; return c==null?25:Math.max(0,+c||0); }
+/* Ahorro del plan que falta apartar: el de cada cobro futuro y lo pendiente de este mes */
+function ahorroEventos54(pr){
+  var pa=X().planAhorro, out=[], hoy=hoyLocal(); if(!pa) return out;
+  (pr.ev||[]).forEach(function(e){ if(e.tipo!=='ING') return; var m=e.clave==='q'?pa.quincena:e.clave==='s'?pa.fin:0;
+    if(m>0) out.push({fecha:e.fecha,monto:r2(m),tipo:'EGR',desc:'Ahorro de tu plan',icon:'🐷',certeza:'seguro',ahorro:true}); });
+  // De este mes: si ya pasó la quincena y no apartaste lo de esa quincena, se aparta hoy
+  try{ var ym=mesLocal(), dia=+hoy.slice(8,10), hecho=planMes46(ym).ahReal, debe=dia>=15?pa.quincena:0, falta=r2(Math.max(0,debe-hecho));
+    if(falta>0) out.push({fecha:hoy,monto:falta,tipo:'EGR',desc:'Ahorro pendiente de la quincena',icon:'🐷',certeza:'seguro',ahorro:true,hoy:true}); }catch(e){}
+  return out;
+}
+function hoy54(){
+  var pr; try{ pr=proyectarFlujo(); }catch(e){ return null; } if(!pr) return null;
+  var hoy=hoyLocal(), gHoy=0; try{ gHoy=r2(porDia47(hoy,hoy)[hoy]||0); }catch(e){}
+  var aho=ahorroEventos54(pr), col=colchon54(), ahHoy=r2(aho.filter(function(e){return e.hoy;}).reduce(function(s,e){return s+e.monto;},0));
+  var evs=(pr.ev||[]).concat(aho.filter(function(e){return !e.hoy;})).sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:(a.tipo==='ING'?-1:1);});
+  var B0=r2(pr.inicio+gHoy-col-ahHoy), n=difDias(hoy,pr.fin), cum=0, A=B0, iMin=0, porFecha={};
+  evs.forEach(function(e){ porFecha[e.fecha]=(porFecha[e.fecha]||0)+(e.tipo==='ING'?e.monto:-e.monto); });
+  for(var i=1;i<=n;i++){ cum+=porFecha[addDias(hoy,i)]||0; var a=(B0+cum)/(i+1); if(a<A){ A=a; iMin=i; } }
+  A=Math.max(0,Math.floor(A*100+1e-6)/100); var hasta=addDias(hoy,iMin);
+  var ev=evs.filter(function(e){return e.fecha<=hasta;}), ahorro=r2(ahHoy+ev.filter(function(e){return e.ahorro;}).reduce(function(s,e){return s+e.monto;},0));
+  return {pr:pr,A:A,gHoy:gHoy,queda:r2(A-gHoy),B0:B0,inicio:r2(pr.inicio+gHoy),col:col,ahHoy:ahHoy,ahorro:ahorro,hasta:hasta,dias:iMin+1,ev:ev,
+    ing:r2(ev.filter(function(e){return e.tipo==='ING';}).reduce(function(s,e){return s+e.monto;},0)),
+    eg:r2(ev.filter(function(e){return e.tipo!=='ING'&&!e.ahorro;}).reduce(function(s,e){return s+e.monto;},0)),
+    ahFut:r2(ev.filter(function(e){return e.ahorro;}).reduce(function(s,e){return s+e.monto;},0))};
+}
+function htmlHoy54(){
+  var h=hoy54(); if(!h) return '';
+  var p=h.A>0?Math.min(100,h.gHoy/h.A*100):100, pas=h.queda<0, cero=h.A<=0;
+  var col=cero||pas?'#ff6b85':p>75?'#fbbf24':'#34d399';
+  var big=cero?'Solo lo necesario':pas?'−'+fmt$(-h.queda):fmt$(h.queda);
+  var sub=cero?'Tu dinero apenas cubre tus pagos hasta el '+fechaCorta(h.hasta)
+    :pas?'Hoy te pasaste: llevas '+fmt$(h.gHoy)+' de '+fmt$(h.A)
+    :(h.gHoy>0?'Te quedan de '+fmt$(h.A)+' · llevas '+fmt$(h.gHoy)+' hoy':'Tu límite de hoy');
+  return '<div class="hy54" role="button" tabindex="0" onclick="detalleHoy54()">'
+    +'<div class="hy54-h"><span>'+ic46('pulse',16)+'Hoy puedes gastar</span><u>Cómo se calcula '+ic46('chev',12)+'</u></div>'
+    +'<b class="hy54-v" style="color:'+(cero||pas?'#ff6b85':'')+'">'+big+'</b><small class="hy54-s">'+sub+'</small>'
+    +(cero?'':'<i class="hy54-b"><b style="width:'+p.toFixed(0)+'%;background:'+col+'"></b></i>')
+    +'<div class="hy54-f">'+(cero?'Gasta solo en lo indispensable hasta tu próximo cobro.':pas?'Mañana se recalcula con lo que te quede. Hoy evita más gastos.':'Ya separa '+(h.ahorro>0?'<b>'+fmt$(h.ahorro)+' de ahorro</b> y ':'')+'un colchón de <b>'+fmt$(h.col)+'</b>. Gastando eso cada día llegas al '+fechaCorta(h.pr.fin)+' con tus pagos cubiertos.')+'</div></div>';
+}
+function detalleHoy54(){
+  var h=hoy54(); if(!h) return;
+  var fila=function(n,v,c){ return '<div class="fl52-r"><span>'+n+'</span><b'+(c?' class="'+c+'"':'')+'>'+v+'</b></div>'; };
+  var lista=h.ev.map(function(e){ var i=e.tipo==='ING'; return '<div class="fl52-e"><span>'+esc(e.icon||'📅')+'</span><div><b>'+esc(e.desc)+'</b><small>'+_cap47(fechaCorta(e.fecha))+(e.certeza&&e.certeza!=='seguro'?' · '+e.certeza:'')+'</small></div><em class="'+(i?'in':'out')+'">'+(i?'+':'−')+fmt$(e.monto)+'</em></div>'; }).join('');
+  var libre=r2(h.B0+h.ing-h.eg-h.ahFut);
+  _modalBase('hy54m','Hoy puedes gastar '+(h.A>0?fmt$(h.A):'solo lo necesario'),
+    '<div class="fl52-p">Primero separamos tu <b>ahorro</b> y un <b>colchón</b>. Lo que queda se reparte en partes iguales hasta el <b>'+fechaCorta(h.hasta)+'</b>, el día más ajustado de las próximas semanas, contando tus cobros y pagos programados.</div>'
+    +'<div class="fl52-c">'+fila('Tu dinero al empezar el día',fmt$(h.inicio))+fila('Colchón para imprevistos (no se toca)','−'+fmt$(h.col),'out')+(h.ahHoy>0?fila('Ahorro pendiente de la quincena','−'+fmt$(h.ahHoy),'out'):'')+fila('Cobros hasta el '+fechaCorta(h.hasta),'+'+fmt$(h.ing),'in')+fila('Pagos programados hasta esa fecha','−'+fmt$(h.eg),'out')+(h.ahFut>0?fila('Ahorro de tu plan al cobrar','−'+fmt$(h.ahFut),'out'):'')
+    +'<div class="fl52-t">'+fila('Para el día a día',fmt$(libre))+fila('÷ '+h.dias+' días (hoy incluido)','= '+fmt$(h.A)+' por día')+'</div></div>'
+    +(lista?'<div class="fl52-s">Cobros y pagos que cuentan</div><div class="fl52-l">'+lista+'</div>':'')
+    +'<div class="fl52-tip">'+ic46('bulb',16)+'<span>Tu ritmo real es <b>'+fmt$(h.pr.gvPropio)+' por día</b>'+(h.pr.gvPropio>h.A?', más de lo que te alcanza. Bajarlo a '+fmt$(h.A)+' evita que te falte dinero.':', dentro de lo que te alcanza.')
+    +(h.pr.gvTrabajo>0?' Los gastos de trabajo que te reembolsan no se restan aquí.':'')+'</span></div>'
+    +'<button onclick="document.getElementById(\'hy54m\').remove();tabIr(\'plan\');try{setPlanTab(\'flujo\')}catch(e){}" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff">Ver flujo de caja completo</button>'
+    +'<button onclick="document.getElementById(\'hy54m\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>');
+}
+
+/* Inicio: el cuadro va justo debajo del dinero disponible */
+_w43('updateHomeWidget',function(){
+  var w=document.querySelector('.widget-balance'); if(!w) return;
+  var el=document.getElementById('home-hoy54'); if(!el){ el=document.createElement('div'); el.id='home-hoy54'; w.insertAdjacentElement('afterend',el); }
+  try{ el.innerHTML=htmlHoy54(); }catch(e){ el.innerHTML=''; }
+});
+/* Las fichas del cuadro de dinero: sin repetir "Puedes gastar hoy"; el aviso explica que es a tu ritmo actual */
+_w43('hoy52',function(){
+  var box=document.getElementById('hoy52'); if(!box) return;
+  [].forEach.call(box.querySelectorAll('.g'),function(g){ if(/Puedes gastar/.test(g.textContent)) g.remove(); });
+  var w=box.querySelector('.w'); if(w){ try{ var pr=proyectarFlujo(), sig=(pr.ev||[]).filter(function(e){return e.tipo==='ING'&&(e.clave==='s'||e.clave==='q')&&e.fecha>pr.min.fecha;})[0];
+    var em=w.querySelector('em'); if(em) em.innerHTML='Si sigues gastando '+fmt$(pr.gvPropio)+'/día, el '+fechaCorta(pr.min.fecha)+(sig?' (antes de tu cobro del '+fechaCorta(sig.fecha)+')':'')+' te faltarían <b>'+fmt$(-pr.min.bal)+'</b>';
+    var sm=w.querySelector('small'); if(sm) sm.textContent='Ojo, a tu ritmo actual'; }catch(e){} }
+  box.style.display=box.children.length?'':'none';
+});
+
+/* El colchón se edita junto con el plan de ahorro */
+_w43('editarPlanAhorro',function(){
+  var ov=document.getElementById('pa-modal'), ok=document.getElementById('pa-ok'); if(!ov||!ok||document.getElementById('pa-c')) return;
+  ok.insertAdjacentHTML('beforebegin','<label class="rp-lb">Colchón que no se toca en "Hoy puedes gastar"</label><input id="pa-c" inputmode="decimal" value="'+colchon54()+'" style="'+_inpP+'">');
+  ok.addEventListener('click',function(){ var v=parseMonto(document.getElementById('pa-c').value); X().colchon=v>=0?r2(v):25; saveState(); try{ updateHomeWidget(); }catch(e){} },true);
+});
+/* Al cargar el plan de ahorro, recalcular el cuadro de Inicio */
+function pintarHoy54(){ var el=document.getElementById('home-hoy54'); if(el){ try{ el.innerHTML=htmlHoy54(); }catch(e){} } }
+_w43('activarPlanAhorro',function(){ pintarHoy54(); });
 
 </script>
 <script>
