@@ -2106,6 +2106,37 @@ html.t-claro .hy54-b{background:rgba(22,19,43,.08)!important}html.t-claro .hy54-
 html.priv51 .hy54-v,html.priv51 .hy54-s{filter:blur(8px)}
 .hy54-f b{color:var(--ink-2);font-weight:650}
 
+/* ══ v5.5 · Tarjeta Gastos ══ */
+.cg55 .cc-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.cg55-seg{display:flex;gap:2px;padding:2px;border-radius:11px;background:rgba(255,255,255,.08)}
+.cg55-seg button{border:0;background:none;color:var(--ink-3);font:600 12.5px -apple-system,sans-serif;padding:5px 11px;border-radius:9px}
+.cg55-seg button.on{background:rgba(255,255,255,.18);color:var(--ink)}
+.cg55-big{font:800 32px/1.1 var(--num,-apple-system);letter-spacing:-1px;color:var(--bad)}
+.cg55-sub{display:block;font-size:13px;color:var(--ink-3);margin-top:2px}
+.cg55-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.cg55-chips span{display:inline-flex;align-items:center;gap:6px;padding:5px 9px;border-radius:10px;background:rgba(255,255,255,.06);font-size:12.5px;color:var(--ink-2)}
+.cg55-chips b{font:700 13px var(--num,-apple-system);color:var(--ink)}
+.cg55-chips i{width:8px;height:8px;border-radius:50%}.cg55-chips i.d{background:#a78bfa}.cg55-chips i.t{background:#2dd4bf}
+.cg55-chips .tot{background:transparent;border:0.5px solid var(--line)}
+.cg55-l{max-height:360px;overflow-y:auto;margin-top:10px;-webkit-overflow-scrolling:touch}
+.cg55-dia{display:flex;justify-content:space-between;padding:10px 2px 4px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.cg55-dia b{font:700 12.5px var(--num,-apple-system);color:var(--ink-2)}
+.cg55-r{display:flex;align-items:center;gap:10px;width:100%;padding:8px 0;border:0;background:none;text-align:left;color:var(--ink)}
+.cg55-r+.cg55-r{border-top:0.5px solid var(--line)}
+.cg55-ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.cg55-t{flex:1;min-width:0}.cg55-t b{display:block;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cg55-t small{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cg55-tag{display:inline-block;font-style:normal;font-size:11px;font-weight:600;padding:1px 7px;border-radius:7px;margin-top:3px}
+.cg55-tag.d{background:rgba(167,139,250,.16);color:#c4b5fd}.cg55-tag.t{background:rgba(45,212,191,.14);color:#34d399}
+.cg55-r em{font:700 14.5px var(--num,-apple-system);font-style:normal;white-space:nowrap;color:var(--bad)}
+.cg55-r em.deu,.cg55-r em.pre{color:#c4b5fd}.cg55-r em.tra{color:#34d399}
+.cg55-n{font-size:12px;color:var(--ink-3);margin-top:8px;line-height:1.4}
+html.t-claro .cg55-seg{background:rgba(22,19,43,.06)!important}html.t-claro .cg55-seg button.on{background:#fff!important;box-shadow:0 1px 3px rgba(22,19,43,.12)}
+html.t-claro .cg55-chips span{background:rgba(22,19,43,.045)!important}
+html.t-claro .cg55-tag.d{background:rgba(124,58,237,.1)!important;color:#6d28d9!important}html.t-claro .cg55-tag.t{background:rgba(13,148,136,.1)!important;color:#0f766e!important}
+html.t-claro .cg55-r em.deu,html.t-claro .cg55-r em.pre{color:#6d28d9!important}html.t-claro .cg55-r em.tra{color:#0f766e!important}
+html.priv51 .cg55-big,html.priv51 .cg55-chips b,html.priv51 .cg55-r em,html.priv51 .cg55-dia b{filter:blur(8px)}
+
 </style>
 </head>
 <body>
@@ -2734,7 +2765,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='5.4.1';
+var APP_VERSION='5.6.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -4230,13 +4261,13 @@ function htmlFlujo(){
       +'<div style="font-size:11px;color:rgba(255,255,255,0.4)">'+(p.min.fecha===p.hoy?'hoy':fechaCorta(p.min.fecha))+'</div></div>'
     +'</div>'
     +svgFlujo(p)
-    +'<div style="font-size:10px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px">Proyección hasta '+fechaCorta(p.fin)+' gastando tu ritmo actual de '+fmt$(p.gv)+'/día (incluye gastos de ruta que te reembolsan después)</div>'
+    +'<div style="font-size:10px;color:rgba(255,255,255,0.35);text-align:center;margin-top:4px">Proyección hasta '+fechaCorta(p.fin)+' gastando tu ritmo actual de '+fmt$(p.gv)+'/día (sin gastos de trabajo: esos te los reembolsan)</div>'
   +'</div>';
   // ── Alerta / gasto seguro ──
   var col=p.seguro>=p.gv?'#34d399':p.seguro>=p.gv*0.6?'#fbbf24':'#ff5c7a';
   h+='<div class="cc-card" style="padding:14px 16px">'
     +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'
-      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Gasto diario seguro</div><div style="font-size:22px;font-weight:800;color:'+col+'">'+fmt$(p.seguro)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">para no bajar de $0</div></div>'
+      +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Gasto diario seguro</div><div style="font-size:22px;font-weight:800;color:'+col+'">'+fmt$(p.seguro)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">con ahorro y colchón separados</div></div>'
       +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Tu ritmo actual</div><div style="font-size:22px;font-weight:800;color:#fff">'+fmt$(p.gv)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(p.gvTrabajo>0?'sin trabajo ('+fmt$(p.gvTrabajo)+'/día, se reembolsa)':'promedio 60 días')+'</div></div>'
     +'</div>'
     +(rojo?'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,92,122,0.1);border:0.5px solid rgba(255,92,122,0.35);font-size:13px;line-height:1.45;color:#ffc2cd">⚠️ A tu ritmo actual, el <b>'+fechaCorta(p.min.fecha)+'</b> quedarías en <b>−'+fmt$(Math.abs(p.min.bal))+'</b>. Bajando a <b>'+fmt$(p.seguro)+'/día</b> llegas sin pedir avance.</div>'
@@ -4670,7 +4701,7 @@ function init(){
       if(!c.catPago) c.catPago='Obligación JA'; // categoría usada en transacciones
       // Agregar avance legacy si no existe (por ID), independiente de otros avances
       if(!c.avances) c.avances=[];
-      var hasLegacy=c.avances.find(function(a){return a.id==='av_legacy_1000';});
+      var hasLegacy=c.legacyMigrado||c.avances.find(function(a){return a.id==='av_legacy_1000';}); c.legacyMigrado=true;
       if(!hasLegacy){
         c.avances.push({
           id:'av_legacy_1000',
@@ -4878,7 +4909,7 @@ function calcAnalisisFinanciero(mes){
   // ── Proyección al fin de mes ──
   var velocidad=isCurMes&&diaHoy>0?(eg/diaHoy):0;
   var proyEg=velocidad*diasMes;
-  var proyNet=ing-proyEg;
+  var proyNet=ing+(isCurMes&&typeof sueldoPendienteMes56==='function'?sueldoPendienteMes56():0)-proyEg;
   var daysRemaining=isCurMes?diasMes-diaHoy:0;
 
   // ── Obligaciones ──
@@ -8035,7 +8066,7 @@ function renderCredito_base(){
                 :'')
               +'<div style="font-size:11px;color:'+avTxt2+';margin-top:2px">'
                 +(interes>0?'Total c/interés: $'+a.montoAPagar.toFixed(2)+' · ':'')
-                +DIAS[d.getDay()]+' '+d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)
+                +'tomado el '+d.getDate()+'/'+('0'+(d.getMonth()+1)).slice(-2)+'/'+d.getFullYear()
                 +(c.debitoDia?' · Débito día '+c.debitoDia:'')
               +'</div>'
             +'</div>'
@@ -8653,7 +8684,8 @@ function renderAnalisis(){
     var _ck=_f.deuda?'Cuotas de deuda':canonCat(t.cat);
     eg+=_g;catMap[_ck]=(catMap[_ck]||0)+_g;cuentasEg[t.cuenta]=(cuentasEg[t.cuenta]||0)+_g;
   });
-  var net=ing-eg,tasaAhorro=ingOrdA>0?Math.round(((ingOrdA-eg)/ingOrdA)*100):0;
+  var _cur56=anaSelectedMes===mesLocal(), _pend56=_cur56?sueldoPendienteMes56():0, _d56=+hoyLocal().slice(8,10), _dm56=_cur56?diasDelMes(anaSelectedMes):1, _egP56=_cur56?eg/Math.max(1,_d56)*_dm56:eg;
+  var net=ing-eg,tasaAhorro=(ingOrdA+_pend56)>0?Math.round((((ingOrdA+_pend56)-_egP56)/(ingOrdA+_pend56))*100):0;
   ing=r2(ing); eg=r2(eg); net=r2(net); reimb=r2(reimb);
 
   // ── Gastos fijos vs variables (solo mes único) ──
@@ -8703,10 +8735,9 @@ function renderAnalisis(){
   if(isSingleMes&&anaSelectedMes===curMesYm){
     var pf=state.perfil||{};
     // quincena + sueldo restante (sueldoLiquido = quincena + sueldoRestante)
-    anaIngEsperado=(pf.quincena||0)+(pf.sueldoRestante||0);
+    anaIngEsperado=sueldoEsperadoMes56();
     // lo que ya llegó como INGRESO en el mes (excluye movimientos internos)
-    state.transactions.filter(function(t){return t.fecha.startsWith(anaSelectedMes)&&t.tipo==='INGRESO';})
-      .forEach(function(t){ if(t.cat!=='Custodia/Paso'&&t.cat!=='Transferencia interna') anaIngSalario+=t.monto; });
+    anaIngSalario=sueldoRecibidoMes56(anaSelectedMes);
   }
 
   // ── Empty state ──
@@ -8744,10 +8775,10 @@ function renderAnalisis(){
       {icon:'💚',label:'Ingresos',val:'$'+ing.toFixed(2),color:'var(--green)',tip:(ing-ingOrdA>0.005?'Incluye '+fmt$(ing-ingOrdA)+' extraordinarios':'Sueldo y comisiones')+' · sin préstamos ni reembolsos'},
       {icon:'❤️',label:'Egresos',val:'$'+eg.toFixed(2),color:'var(--red)',tip:'Gastos de tu propio bolsillo'},
       {icon:'💰',label:'Balance neto',val:(net>=0?'+':'')+net.toFixed(2),color:netC,tip:'Ingresos menos egresos'},
-      {icon:'📊',label:'Tasa de ahorro',val:ing>0?tasaAhorro+'%':'—',color:ing>0?taC:'rgba(255,255,255,0.4)',tip:'Del ingreso ordinario, sin contar décimos ni préstamos'},
+      {icon:'📊',label:'Tasa de ahorro',val:ing>0?tasaAhorro+'%':'—',color:ing>0?taC:'rgba(255,255,255,0.4)',tip:_cur56?'Proyectada al cierre: con tu sueldo que falta y tu ritmo de gasto':'Del ingreso ordinario, sin contar décimos ni préstamos'},
       {icon:'🏠',label:'Gastos fijos',val:isSingleMes?'$'+gastosFijos.toFixed(2):'—',color:'rgba(255,255,255,0.75)',tip:'Obligaciones y pagos fijos'},
       {icon:'🎲',label:'Gastos variables',val:isSingleMes?'$'+gastosVariables.toFixed(2):'—',color:'rgba(255,255,255,0.75)',tip:'Gastos discrecionales'},
-      {icon:'💳',label:'Total deudas',val:'$'+deudaTotal.toFixed(2),color:deudaTotal>0?'var(--orange)':'var(--green)',tip:'Deudas personales activas'},
+      {icon:'💳',label:'Deudas con personas',val:'$'+deudaTotal.toFixed(2),color:deudaTotal>0?'var(--orange)':'var(--green)',tip:'Sin tu crédito (ese va en Cuotas crédito)'},
       {icon:'💵',label:'Disponible',val:'$'+saldoDisp.toFixed(2),color:saldoC,tip:'Saldo en cuentas menos kits'}
     ];
     var h='<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px"><div class="card-title" style="margin-bottom:0">'+periodoLabel+'</div><div style="font-size:11px;color:rgba(255,255,255,0.3)">Resumen financiero</div></div>'
@@ -8765,7 +8796,7 @@ function renderAnalisis(){
     if(reimb>0) row2.push({bg:'rgba(245,158,11,0.08)',border:'rgba(245,158,11,0.2)',label:'💸 Reembolsables',val:'$'+reimb.toFixed(2),color:'var(--orange)',tip:'La empresa te reembolsa'});
     if(cobrosTotal>0) row2.push({bg:'rgba(52,211,153,0.08)',border:'rgba(52,211,153,0.2)',label:'💰 Por cobrar (préstamos)',val:'$'+cobrosTotal.toFixed(2),color:'var(--green)',tip:'Dinero prestado pendiente'});
     if(reimbPendTotal>0) row2.push({bg:'rgba(96,165,250,0.08)',border:'rgba(96,165,250,0.2)',label:'📋 Reembolsos EQ/AG',val:'$'+reimbPendTotal.toFixed(2),color:'#60a5fa',tip:'Ciclos/gastos pendientes de cobrar'});
-    if(isSingleMes&&totalCuotaCred>0) row2.push({bg:'rgba(255,107,107,0.08)',border:'rgba(255,107,107,0.2)',label:'💳 Cuotas crédito',val:'$'+totalCuotaCred.toFixed(2),color:'#ff5c7a',tip:'Cuotas avances este mes'});
+    if(isSingleMes&&totalCuotaCred>0) row2.push({bg:'rgba(255,107,107,0.08)',border:'rgba(255,107,107,0.2)',label:'💳 Próxima cuota',val:'$'+totalCuotaCred.toFixed(2),color:'#ff5c7a',tip:'Lo que se debita en tu próxima cuota de avances'});
     if(row2.length>0){
       var cols=row2.length===1?'1fr':row2.length===2?'1fr 1fr':'1fr 1fr 1fr';
       h+='<div style="display:grid;grid-template-columns:'+cols+';gap:7px;margin-top:7px">';
@@ -8776,10 +8807,10 @@ function renderAnalisis(){
     if(isSingleMes&&anaIngEsperado>0){
       var dif=anaIngSalario-anaIngEsperado;
       var difC=dif>=0?'#34d399':'#fbbf24';
-      var difTxt=dif>=0?'✅ Recibido completo':'⏳ Pendiente: $'+Math.abs(dif).toFixed(2);
+      var difTxt=dif>=-0.01?'✅ Recibido completo':'⏳ Recibido '+fmt$(anaIngSalario)+' · falta '+fmt$(Math.abs(dif));
       h+='<div style="margin-top:9px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:10px 12px;display:flex;justify-content:space-between;align-items:center">'
         +'<div><div style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.6)">💼 Sueldo EQ esperado este mes</div>'
-        +'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:1px">Perfil: quincena + sueldo restante</div></div>'
+        +'<div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:1px">Anticipo del 15 + sueldo de fin de mes</div></div>'
         +'<div style="text-align:right"><div style="font-size:13px;font-weight:800;color:#fff">$'+anaIngEsperado.toFixed(2)+'</div>'
         +'<div style="font-size:10px;color:'+difC+'">'+difTxt+'</div></div>'
       +'</div>';
@@ -8846,12 +8877,15 @@ function renderAnalisis(){
       {label:'Promedio 6 meses',ing:avgIng6,eg:a.avgEg6,show:a.hist6.length>0,mes:''}
     ];
     var h='<div class="card" style="margin-bottom:12px"><div class="card-title">📅 Comparación histórica</div>';
+    var _cur56b=anaSelectedMes===mesLocal(), _k56=_cur56b?(+hoyLocal().slice(8,10))/diasDelMes(anaSelectedMes):1;
+    if(_cur56b&&a.hist3.length){ try{ comparisons[0].eg=flujoMes(a.hist3[0].mes,+hoyLocal().slice(8,10)).gasto; comparisons[0].parcial=true; }catch(e){} }
     comparisons.forEach(function(c){
       if(!c.show||c.eg===0) return;
-      var dIngPct=c.ing>0?Math.round(((ing-c.ing)/c.ing)*100):null;
-      var dEgPct=c.eg>0?Math.round(((eg-c.eg)/c.eg)*100):null;
+      var _ceg=_cur56b&&!c.parcial?c.eg*_k56:c.eg;
+      var dIngPct=(!_cur56b&&c.ing>0)?Math.round(((ing-c.ing)/c.ing)*100):null;
+      var dEgPct=_ceg>0?Math.round(((eg-_ceg)/_ceg)*100):null;
       var subLabel=c.mes?(function(){var p=c.mes.split('-');return MESES[parseInt(p[1])-1].charAt(0).toUpperCase()+MESES[parseInt(p[1])-1].slice(1)+' '+p[0];})()+' ':c.label;
-      h+='<div style="margin-bottom:11px"><div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px">vs '+c.label+(c.mes?' ('+subLabel+')':'')+'</div>'
+      h+='<div style="margin-bottom:11px"><div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px">vs '+c.label+(c.mes?' ('+subLabel+')':'')+(_cur56b?' · a esta fecha':'')+'</div>'
         +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
       if(dIngPct!==null) h+='<div style="background:rgba(52,211,153,0.07);border:0.5px solid rgba(52,211,153,0.15);border-radius:10px;padding:9px"><div style="font-size:9px;color:rgba(255,255,255,0.35);margin-bottom:3px">Ingresos</div><div style="font-size:14px;font-weight:700;color:'+(dIngPct>=0?'var(--green)':'var(--orange)')+'">'+( dIngPct>=0?'▲':'▼')+Math.abs(dIngPct)+'%</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">Ref: $'+c.ing.toFixed(0)+'</div></div>';
       if(dEgPct!==null) h+='<div style="background:rgba(255,92,122,0.07);border:0.5px solid rgba(255,92,122,0.15);border-radius:10px;padding:9px"><div style="font-size:9px;color:rgba(255,255,255,0.35);margin-bottom:3px">Egresos</div><div style="font-size:14px;font-weight:700;color:'+(dEgPct<=0?'var(--green)':'var(--red)')+'">'+( dEgPct>=0?'▲':'▼')+Math.abs(dEgPct)+'%</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">Ref: $'+c.eg.toFixed(0)+'</div></div>';
@@ -8899,7 +8933,7 @@ function renderAnalisis(){
         +(a.proyNet<0?'<div style="font-size:11px;color:var(--red);margin-top:7px;padding:8px 10px;background:rgba(255,59,48,0.07);border-radius:9px">⚠️ A este ritmo, el mes cerrará en déficit. Debes reducir $'+(Math.abs(a.proyNet)/Math.max(a.daysRemaining,1)).toFixed(0)+'/día los próximos '+a.daysRemaining+' días.</div>':'<div style="font-size:11px;color:var(--green);margin-top:7px;padding:8px 10px;background:rgba(52,211,153,0.07);border-radius:9px">✅ Vas bien. Quedan '+a.daysRemaining+' días — mantén el ritmo actual.</div>')
       +'</div>';
     }
-    var avgNet=a.hist3.length>0?a.hist3.reduce(function(s,h2){return s+h2.net;},0)/a.hist3.length:net;
+    var avgNet=a.hist3.length>0?a.hist3.reduce(function(s,h2){return s+(h2.netOrd!=null?h2.netOrd:h2.net);},0)/a.hist3.length:net;
     h+='<div style="padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.07)">'
       +'<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:7px">Ahorro acumulado proyectado</div>'
       +'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
@@ -8957,7 +8991,7 @@ function renderAnalisis(){
     var catsSorted=Object.entries(catMap).sort(function(x,y){return y[1]-x[1];});
     var catAvg3=a?a.catAvg3:{};
     var h='<div class="card" style="margin-bottom:12px"><div class="card-title">📊 Análisis de mi dinero</div>';
-    h+='<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Dónde gastás más</div>'
+    h+='<div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px">Dónde gastas más</div>'
       +'<div style="display:flex;flex-direction:column;gap:9px;margin-bottom:14px">';
     catsSorted.forEach(function(e){
       var key=e[0],amt=e[1];
@@ -9093,9 +9127,9 @@ function renderCurva_base(){
   // ── VISTA ANUAL: todos los meses con TODAS las transacciones ──
   var allMs2={};
   state.transactions.forEach(function(t){allMs2[t.fecha.slice(0,7)]=true;});
-  var meses=Object.keys(allMs2).sort();
+  var meses=Object.keys(allMs2).sort(); var _skip56=[]; while(meses.length>2&&typeof mesIncompleto==='function'&&mesIncompleto(meses[0])) _skip56.push(meses.shift());
   if(meses.length<2){ el.innerHTML=''; return; }
-  var acum2=baseSum;
+  var acum2=baseSum; _skip56.forEach(function(m){ state.transactions.forEach(function(t){ if(t.fecha.slice(0,7)!==m) return; var _f=flujoTx(t); acum2+=_f.ingOrd+_f.ingExtra-_f.gasto; }); });
   var puntos2=[];
   meses.forEach(function(m){
     var txs=state.transactions.filter(function(t){return t.fecha.slice(0,7)===m;});
@@ -13275,13 +13309,13 @@ function vzMeses47(){
 /* Centro de Control: "Límite de gasto" con los mismos números que el resto de la app */
 _w43('renderDashboard',function(){
   var el=document.getElementById('cc-limites'); if(!el) return;
-  var pr=null; try{ pr=proyectarFlujo(); }catch(e){} var pd=planDiario53(), rit=pr?pr.gvPropio:0, seg=pr&&pr.min.bal>=0?pr.seguro:0;
+  var pr=null; try{ pr=proyectarFlujo(); }catch(e){} var pd=planDiario53(), rit=pr?pr.gvPropio:0, seg=pr?pr.seguro:0;
   var box=function(lbl,val,nota,col){ return '<div class="cc-limite-box"><div class="cc-limite-box-lbl">'+lbl+'</div><div class="cc-limite-box-val" style="color:'+col+'">'+val+'</div><div class="cc-limite-box-note">'+nota+'</div></div>'; };
   var col=seg>=pd?'#34d399':seg>=pd*0.6?'#fbbf24':'#ff6b85';
   el.innerHTML='<div class="cc-card"><div class="cc-card-header"><div class="cc-card-title">Límite de gasto</div></div>'
-    +'<div class="cc-limites-grid">'+box('Puedes gastar hoy',pr&&pr.min.bal<0?'Solo lo necesario':fmt$(seg),'sin quedarte corto para tus pagos',col)+box('Tu plan diario',fmt$(pd),'lo que te toca por día este mes','#a78bfa')+'</div>'
+    +'<div class="cc-limites-grid">'+box('Puedes gastar hoy',seg>0?fmt$(seg):'Solo lo necesario','con tu ahorro y colchón ya separados',col)+box('Tu plan diario',fmt$(pd),'lo que te toca por día este mes','#a78bfa')+'</div>'
     +'<div class="cc-limites-grid" style="margin-top:8px">'+box('Tu ritmo real',fmt$(rit),'lo que gastas por día (promedio)',rit<=pd?'#34d399':'#fbbf24')+box('Por semana',fmt$(r2(Math.min(seg||pd,pd)*7)),'si sigues tu plan','#a78bfa')+'</div>'
-    +'<div style="font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.45">"Puedes gastar hoy" mira tus próximos pagos y cobros; "Tu plan diario" sale de tu plan del mes (lo que entra menos fijos, cuotas y ahorro). Lo ideal es no pasar del menor de los dos.</div></div>';
+    +'<div style="font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.45">"Puedes gastar hoy" (el mismo de Inicio) mira tus próximos pagos y cobros y ya separa tu ahorro y un colchón; "Tu plan diario" sale de tu plan del mes (lo que entra menos fijos, cuotas y ahorro). Lo ideal es no pasar del menor de los dos.</div></div>';
 });
 
 /* ── Racha: cálculo con detalle y ventana ── */
@@ -13332,7 +13366,7 @@ function ahorroEventos54(pr){
   return out;
 }
 function hoy54(){
-  var pr; try{ pr=proyectarFlujo(); }catch(e){ return null; } if(!pr) return null;
+  var pr; try{ pr=(window._pfRaw56||proyectarFlujo)(); }catch(e){ return null; } if(!pr) return null;
   var hoy=hoyLocal(), gHoy=0; try{ gHoy=r2(porDia47(hoy,hoy)[hoy]||0); }catch(e){}
   var aho=ahorroEventos54(pr), col=colchon54(), ahHoy=r2(aho.filter(function(e){return e.hoy;}).reduce(function(s,e){return s+e.monto;},0));
   var evs=(pr.ev||[]).concat(aho.filter(function(e){return !e.hoy;})).sort(function(a,b){return a.fecha<b.fecha?-1:a.fecha>b.fecha?1:(a.tipo==='ING'?-1:1);});
@@ -13401,6 +13435,94 @@ _w43('editarPlanAhorro',function(){
 /* Al cargar el plan de ahorro, recalcular el cuadro de Inicio */
 function pintarHoy54(){ var el=document.getElementById('home-hoy54'); if(el){ try{ el.innerHTML=htmlHoy54(); }catch(e){} } }
 _w43('activarPlanAhorro',function(){ pintarHoy54(); });
+
+/* ══ v5.5 · Centro de Control: Gastos de Hoy / Semana / Mes, completos y bien separados ══ */
+var cgVista55='hoy';
+function _tipoGasto55(t){
+  if(t.tipo!=='EGRESO'||t.arch&&false) return null; var n=natOf(t);
+  if(n==='transferencia'||n==='custodia'||n==='ajuste'||n==='ahorro') return null;
+  var f=flujoTx(t);
+  if(f.gasto>0) return 'per';
+  if(f.deuda>0) return 'deu';
+  if(f.finOut>0) return 'pre';
+  if(t.reimb==='SÍ'&&t.cat!=='Custodia/Paso') return 'tra';
+  return null;
+}
+function rangoGastos55(v){ var hoy=hoyLocal(); if(v==='hoy') return [hoy,hoy]; if(v==='mes') return [hoy.slice(0,8)+'01',hoy];
+  var dw=ymdToDate(hoy).getDay(); return [addDias(hoy,-((dw+6)%7)),hoy]; }
+function datosGastos55(v){
+  var r=rangoGastos55(v), o={per:0,deu:0,tra:0,pre:0,tx:[]};
+  state.transactions.forEach(function(t){ if(t.fecha<r[0]||t.fecha>r[1]) return; var k=_tipoGasto55(t); if(!k) return; o[k]+=t.monto; o.tx.push({t:t,k:k}); });
+  o.per=r2(o.per); o.deu=r2(o.deu); o.tra=r2(o.tra); o.pre=r2(o.pre); o.tot=r2(o.per+o.deu+o.tra+o.pre); o.desde=r[0]; o.hasta=r[1];
+  o.tx.sort(function(a,b){ return a.t.fecha<b.t.fecha?1:a.t.fecha>b.t.fecha?-1:(b.t.id||0)-(a.t.id||0); });
+  return o;
+}
+var TAG55={per:'',deu:'<i class="cg55-tag d">Cuota / deuda</i>',tra:'<i class="cg55-tag t">Trabajo · te lo reembolsan</i>',pre:'<i class="cg55-tag d">Préstamo que diste</i>'};
+function htmlGastos55(){
+  var v=cgVista55, d=datosGastos55(v), nom={hoy:'Hoy',semana:'Semana',mes:'Mes'};
+  var per={hoy:'hoy',semana:'desde el lunes '+ymdToDate(d.desde).getDate(),mes:'en '+MESES[+d.hasta.slice(5,7)-1]};
+  var h='<div class="cc-card cg55"><div class="cc-card-header"><div class="cc-card-title">'+ic46('out',15,'ic46t')+'Gastos</div>'
+    +'<div class="cg55-seg" role="tablist">'+['hoy','semana','mes'].map(function(k){ return '<button role="tab" aria-selected="'+(k===v)+'" class="'+(k===v?'on':'')+'" onclick="cgVista55=\''+k+'\';pintarGastos55()">'+nom[k]+'</button>'; }).join('')+'</div></div>'
+    +'<div class="cg55-big">'+(d.per>0?'−':'')+fmt$(d.per)+'</div><small class="cg55-sub">Tus gastos '+per[v]+(v!=='hoy'?' · '+fmt$(r2(d.per/Math.max(1,difDias(d.desde,d.hasta)+1)))+' por día':'')+'</small>';
+  if(d.deu>0||d.tra>0||d.pre>0) h+='<div class="cg55-chips">'+(d.deu>0?'<span><i class="d"></i>Cuotas y deudas <b>'+fmt$(d.deu)+'</b></span>':'')+(d.pre>0?'<span><i class="d"></i>Préstamos que diste <b>'+fmt$(d.pre)+'</b></span>':'')+(d.tra>0?'<span><i class="t"></i>Trabajo <b>'+fmt$(d.tra)+'</b></span>':'')+'<span class="tot">Salió en total <b>'+fmt$(d.tot)+'</b></span></div>';
+  if(!d.tx.length){ h+=vacio50(v==='hoy'?'Hoy aún no registras gastos.':'Sin gastos en este periodo.'); return h+'</div>'; }
+  h+='<div class="cg55-l">'; var dia=null;
+  d.tx.forEach(function(z){ var t=z.t;
+    if(v!=='hoy'&&t.fecha!==dia){ dia=t.fecha; var sub=r2(d.tx.filter(function(q){return q.t.fecha===dia;}).reduce(function(s,q){return s+q.t.monto;},0));
+      h+='<div class="cg55-dia"><span>'+_cap47(fechaCorta(dia))+'</span><b>−'+fmt$(sub)+'</b></div>'; }
+    h+='<button class="cg55-r" onclick="showDetail('+t.id+')"><span class="cg55-ic" style="background:'+_rgba50(colorCat50(t.cat),.22)+'">'+esc(CAT_ICONS[t.cat]||'📌')+'</span>'
+      +'<span class="cg55-t"><b>'+esc(t.desc)+'</b><small>'+esc(t.cat)+' · '+esc((t.cuenta||'').replace('Banco ',''))+'</small>'+TAG55[z.k]+'</span>'
+      +'<em class="'+z.k+'">−'+fmt$(t.monto)+'</em></button>'; });
+  return h+'</div><div class="cg55-n">'+d.tx.length+' movimiento'+(d.tx.length===1?'':'s')+'. "Tus gastos" no incluye cuotas, préstamos ni gastos de trabajo; "Salió en total" sí.</div></div>';
+}
+function pintarGastos55(){ var el=document.getElementById('cc-gastos'); if(el) el.innerHTML=htmlGastos55(); }
+_w43('renderDashboard',function(){ try{ pintarGastos55(); }catch(e){ console.warn('gastos55',e); } });
+
+/* ══ v5.6 · Auditoría de cálculos: una sola fuente para cada número ══ */
+
+/* 1. "Puedes gastar hoy" es UNO solo en toda la app (con ahorro y colchón) */
+(function(){ var raw=window.proyectarFlujo; if(typeof raw!=='function') return; window._pfRaw56=raw;
+  var dentro=false, cache=null;
+  window.proyectarFlujo=function(){ var p=raw.apply(this,arguments); if(dentro) return p;
+    var k=state.transactions.length+'|'+hoyLocal()+'|'+JSON.stringify(X().planAhorro||{})+'|'+X().colchon+'|'+apartadoMetas()+'|'+p.inicio;
+    try{ dentro=true; var h=(cache&&cache.k===k)?cache.h:hoy54(); cache={k:k,h:h}; if(h){ p.seguroSinAhorro=p.seguro; p.seguro=h.A; p.hoy54=h; } }catch(e){} finally{ dentro=false; } return p; }; })();
+
+/* 2. Gráfico "Tu día": todo con el plan diario (igual que la racha) */
+function vzDia47(){
+  var hoy=hoyLocal(), desde=addDias(hoy,-13), m=porDia47(desde,hoy), d=[], tot=0;
+  for(var i=13;i>=0;i--){ var f=addDias(hoy,-i), v=r2(m[f]||0); if(i>0) tot+=v; d.push({f:f,v:v}); }
+  var prom=r2(tot/13), hoyV=d[13].v, lim=planDiario53();
+  var bajo=d.slice(0,13).filter(function(z){return z.v<=lim;}).length, maxD=d.slice(0,13).reduce(function(a,z){return z.v>a.v?z:a;},{v:-1});
+  var cols=d.map(function(z,i){ return {l:i%2===1||i===13?(i===13?'Hoy':String(ymdToDate(z.f).getDate())):'',v:z.v,hi:i===13,lbl:i===13&&z.v>0?fmt$(z.v):'',r:_cap47(_dc47(z.f))+': '+fmt$(z.v)+(lim?(z.v>lim?' · '+fmt$(r2(z.v-lim))+' sobre tu plan diario':' · dentro de tu plan diario'):'')}; });
+  var frase=hoyV>0?'Hoy llevas <b>'+fmt$(hoyV)+'</b> en el día a día. '+(lim?(hoyV<=lim?'Estás dentro de tu plan diario de '+fmt$(lim)+'.':'Pasaste tu plan diario de '+fmt$(lim)+' por '+fmt$(r2(hoyV-lim))+'.'):''):'Hoy aún no registras gastos del día a día.';
+  frase+=' En las últimas 2 semanas gastaste en promedio <b>'+fmt$(prom)+' por día</b>'+(lim?' y '+bajo+' de 13 días quedaste dentro de tu plan diario.':'.');
+  if(maxD.v>0) frase+=' Tu día más caro fue el '+_dc47(maxD.f)+' ('+fmt$(maxD.v)+').';
+  return card47('Tu día',frase,vzCols47(cols,{ref:lim?{v:lim,l:'Plan '+fmt$(lim)}:null,aria:'Gasto por día, últimos 14 días'}),
+    'cada barra es lo que gastaste ese día en comida, transporte, salidas y demás (sin arriendo, cuotas ni gastos de trabajo). La barra morada es hoy. La línea es tu plan diario del mes, el mismo que usa la racha.');
+}
+
+/* 3. Cuentas: "Patrimonio completo" = patrimonio neto (con lo que te deben) + bienes */
+_w43('renderCuentas',function(){
+  var el=document.querySelector('#cuentas-content .bi-pat'); if(!el) return; var p=patrimonio53(), bs=0;
+  try{ bs=(X().bienes||[]).reduce(function(s,b){ return s+(typeof valorBien==='function'?valorBien(b):(b.valor||0)); },0); }catch(e){}
+  var pat=r2(p.neto+bs);
+  el.innerHTML='<div><small>Patrimonio completo</small><b class="'+(pat>=0?'in':'out')+'">'+fmt$(pat)+'</b></div><small>Dinero propio '+fmt$(p.disp)+(p.reimb+p.cob>0?' + te deben '+fmt$(r2(p.reimb+p.cob)):'')+(bs>0?' + bienes '+fmt$(r2(bs)):'')+' − deudas '+fmt$(p.deu)+'</small>';
+});
+
+/* 4. Deudas: dejar claro que "Debes" es a personas y mostrar el total con crédito */
+_w43('renderDeudas',function(){
+  var dt=document.getElementById('deudas-total'); if(!dt) return; var sm=dt.parentNode.querySelector('small'); if(sm) sm.textContent='Debes a personas';
+  var t=deudasTotales(), ne=document.getElementById('deudas-neto');
+  if(ne&&t.credito>0&&!ne.querySelector('.dt56')) ne.insertAdjacentHTML('beforeend','<span class="dt56"><br>Con tu crédito ('+fmt$(t.credito)+') debes en total <b>'+fmt$(t.total)+'</b></span>');
+});
+
+/* 5. Sueldo pendiente del mes (para proyecciones del mes en curso) */
+function sueldoPendienteMes56(){ var hoy=hoyLocal(), ym=hoy.slice(0,7), ev=[];
+  try{ ev=(window._evRaw56||eventosProgramados)(addDias(hoy,1),ym+'-'+String(diasDelMes(ym)).padStart(2,'0')); }catch(e){}
+  return r2(ev.filter(function(e){ return e.clave==='q'||e.clave==='s'; }).reduce(function(s,e){return s+e.monto;},0)); }
+function sueldoRecibidoMes56(ym){ ym=ym||mesLocal();
+  return r2(state.transactions.filter(function(t){ return t.tipo==='INGRESO'&&t.fecha.slice(0,7)===ym&&natOf(t)==='operativo'&&(t.cat==='Sueldo'||/sueldo|anticipo|quincena/i.test(t.desc||''))&&!/comisi/i.test(t.desc||''); }).reduce(function(s,t){return s+t.monto;},0)); }
+function sueldoEsperadoMes56(){ var c=cfgIngresos(); return r2((c.quincena||0)+(c.saldoSueldo||0)); }
 
 </script>
 <script>
