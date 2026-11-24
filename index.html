@@ -2066,6 +2066,28 @@ html.t-claro .hoy52 .w{background:#fffbeb!important;border-color:rgba(180,83,9,.
 .fl52-tip svg{color:var(--warn);flex-shrink:0;margin-top:1px}.fl52-tip b{color:var(--ink)}
 html.t-claro .fl52-c{background:rgba(22,19,43,.04)!important}html.t-claro .fl52-e>span{background:rgba(22,19,43,.05)!important}html.t-claro .fl52-tip{background:#fffbeb!important}
 
+/* ══ v5.3 · Ventana de la racha ══ */
+.hoy52 .f u{margin-left:auto;color:var(--ink-3);display:flex;text-decoration:none;flex-shrink:0}
+.ra53-top{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:4px 0 12px}
+.ra53-top div{border-radius:14px;padding:10px 8px;background:rgba(255,255,255,.06);text-align:center}
+.ra53-top b{display:block;font:800 20px var(--num,-apple-system);color:var(--ink);letter-spacing:-.4px}.ra53-top b.in{color:var(--ok)}
+.ra53-top small{font-size:11.5px;color:var(--ink-3)}
+.ra53-p{font-size:13.5px;line-height:1.5;color:var(--ink-2);margin-bottom:10px}.ra53-p b{color:var(--ink)}
+.ra53-l{max-height:46vh;overflow-y:auto;border-radius:16px;background:rgba(255,255,255,.04);padding:2px 12px}
+.ra53-f{display:flex;align-items:center;gap:12px;padding:9px 0}.ra53-f+.ra53-f{border-top:0.5px solid var(--line)}
+.ra53-d{width:40px;flex-shrink:0;text-align:center;border-radius:11px;padding:4px 0;background:rgba(52,211,153,.14)}
+.ra53-f.mal .ra53-d{background:rgba(255,107,133,.16)}.ra53-f.hoy .ra53-d{background:rgba(167,139,250,.18)}
+.ra53-d small{display:block;font-size:10.5px;font-weight:600;color:var(--ink-3)}.ra53-d b{display:block;font:700 16px/1.1 var(--num,-apple-system);color:var(--ink)}
+.ra53-m{flex:1;min-width:0}.ra53-m>div{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ra53-m span{font-size:13.5px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ra53-m em{font:700 14.5px var(--num,-apple-system);font-style:normal;color:var(--ink);white-space:nowrap}.ra53-m em small{font-weight:500;font-size:12px;color:var(--ink-3)}
+.ra53-m i{display:block;height:5px;border-radius:3px;background:rgba(255,255,255,.1);margin-top:6px;overflow:hidden}
+.ra53-m i b{display:block;height:100%;border-radius:3px;background:var(--ok)}
+.ra53-f.mal .ra53-m i b{background:var(--bad)}.ra53-f.mal .ra53-m span{color:var(--bad)}.ra53-f.hoy .ra53-m i b{background:var(--brand-2)}
+.ra53-n{font-size:12.5px;color:var(--ink-3);margin-top:8px;text-align:center}
+html.t-claro .ra53-top div{background:rgba(22,19,43,.04)!important}html.t-claro .ra53-l{background:rgba(22,19,43,.03)!important}
+html.t-claro .ra53-m i{background:rgba(22,19,43,.08)!important}
+
 </style>
 </head>
 <body>
@@ -2694,7 +2716,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='5.2.1';
+var APP_VERSION='5.3.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -8987,7 +9009,7 @@ function renderCurva_base(){
   var gW=W-PL-PR, gH=H-PT-PB;
 
   // ── BASE: calcular patrimonio pre-histórico restando deltas históricos de BASE_BALANCES ──
-  var baseSum=Object.values(BASE_BALANCES).reduce(function(a,v){return a+v;},0);
+  var baseSum=(typeof baseCurva53==='function')?baseCurva53():Object.values(BASE_BALANCES).reduce(function(a,v){return a+v;},0);
   // Restar los deltas históricos para obtener el punto de partida antes del primer mes
   state.transactions.forEach(function(t){
     if(!t.arch) return; // solo históricas
@@ -10608,7 +10630,7 @@ function renderHistorial(){
   if(qf) qf.innerHTML=[['TODOS','Todo'],['INGRESO','Ingresos'],['EGRESO','Egresos'],['REIMB','Reembolsos'],['KITS','KITS'],['TRANS','Traspasos']].map(function(x){
     return '<button class="'+(histRapido===x[0]?'sel':'')+'" onclick="histSetRapido(\''+x[0]+'\')">'+x[1]+'</button>'; }).join('');
   // Resumen
-  var tin=0,teg=0; filtered.forEach(function(t){ if(t.tipo==='INGRESO') tin+=t.monto; else teg+=t.monto; });
+  var tin=0,teg=0; filtered.forEach(function(t){ var nt=natOf(t); if((nt==='transferencia'||nt==='custodia')&&f.tipo!=='TRANS'&&f.tipo!=='KITS') return; if(t.tipo==='INGRESO') tin+=t.monto; else teg+=t.monto; });
   tin=r2(tin); teg=r2(teg); var net=r2(tin-teg);
   var sb=document.getElementById('hist-sumbar');
   if(sb){ sb.style.display=filtered.length?'grid':'none';
@@ -13187,6 +13209,94 @@ function faltante52(){
     +'<button onclick="document.getElementById(\'fl52\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>');
   document.getElementById('fl52-ir').onclick=function(){ ov.remove(); tabIr('plan'); try{ setPlanTab('flujo'); }catch(e){} };
 }
+
+/* ══ v5.3 · Cálculos corregidos y unificados + ventana de la racha ══ */
+
+/* Patrimonio neto (líquido): lo tuyo + lo que te deben − lo que debes.
+   KITS no cuenta (no es tuyo). Los reembolsos que te deben las empresas SÍ cuentan. */
+function patrimonio53(){
+  var disp=0,ap=0,reimb=0,cob=0,deu=0;
+  try{ disp=disponibleReal(); }catch(e){} try{ ap=apartadoMetas(); }catch(e){} try{ reimb=financiaEmpresas().total; }catch(e){}
+  try{ cob=(userCobros||[]).reduce(function(s,c){return s+(c.monto||0);},0); }catch(e){} try{ deu=deudasTotales().total; }catch(e){}
+  return {disp:r2(disp),ap:r2(ap),reimb:r2(reimb),cob:r2(cob),deu:r2(deu),neto:r2(disp+reimb+cob-deu)};
+}
+/* Curva patrimonial: el último punto coincide con el patrimonio neto real de hoy */
+function baseCurva53(){
+  var s=0; state.transactions.forEach(function(t){ if(t.arch) return; var f=flujoTx(t); s+=f.ingOrd+f.ingExtra-f.gasto; });
+  return r2(patrimonio53().neto-s);
+}
+/* Un solo "plan diario" para toda la app: lo que te toca por día en el día a día según Tu mes */
+function planDiario53(ym){ ym=ym||mesLocal(); try{ var pm=planMes46(ym); return pm.diaPlan>0?r2(pm.diaPlan/diasDelMes(ym)):0; }catch(e){ return 0; } }
+
+/* Inicio: patrimonio neto completo */
+_w43('updateHomeWidget',function(){
+  var el=document.getElementById('home-neto'); if(!el) return; var p=patrimonio53();
+  el.innerHTML=(p.ap>0?ic46('target',13,'ic46t')+fmt$(p.ap)+' apartado para metas<br>':'')
+    +'Patrimonio neto <b style="color:'+(p.neto>=0?'#34d399':'#ff6b85')+'">'+fmt$(p.neto)+'</b>'+(p.deu>0?' · debes '+fmt$(p.deu):'')+(p.reimb+p.cob>0?' · te deben '+fmt$(r2(p.reimb+p.cob)):'');
+});
+
+/* Gráfico "Tu economía mes a mes": resultado económico = ingresos − gastos.
+   Las cuotas NO se restan: ese gasto ya se contó cuando usaste el dinero del avance. */
+function vzMeses47(){
+  var ym=mesLocal(), d=[], pos=0, n=0;
+  for(var k=5;k>=0;k--){ var m=ymAdd(ym,-k); var f=flujoMes(m); if(!f.n||(k>0&&typeof mesIncompleto==='function'&&mesIncompleto(m))) continue;
+    var v=r2(f.ing-f.gasto), cur=k===0; if(!cur){ n++; if(v>=0) pos++; }
+    d.push({l:_cap47(MESES[+m.slice(5,7)-1].slice(0,3)),v:v,soft:cur,r:_cap47(MESES[+m.slice(5,7)-1])+(cur?' (en curso)':'')+': ganaste '+fmt$(f.ing)+', gastaste '+fmt$(f.gasto)+' → '+(v>=0?'sobró ':'faltó ')+fmt$(Math.abs(v))+(f.finIn>0?' · pediste '+fmt$(f.finIn)+' en avances':'')}); }
+  if(d.length<2) return '';
+  var frase=n?'En <b>'+pos+' de '+n+'</b> meses ganaste más de lo que gastaste. ':'';
+  var neg=d.filter(function(z){return !z.soft&&z.v<0;});
+  frase+=neg.length?'En los meses en rojo gastaste más de lo que ganaste: esa diferencia salió de avances o de tus ahorros.':(n?'No has tenido meses en rojo.':'');
+  return card47('Tu economía, mes a mes',frase,vzDiv47(d,{aria:'Lo que sobró o faltó cada mes'}),'arriba de la línea (verde) es lo que te sobró después de tus gastos; abajo (rojo), lo que faltó. Las cuotas de avances no se restan aquí porque ese gasto ya se contó cuando usaste el dinero. El mes actual va más claro porque aún no termina.');
+}
+
+/* Gráfico "Tu día": la línea es tu plan diario (el mismo de la racha) */
+(function(){ var _vd=window.vzDia47; window.vzDia47=function(){
+  var h=_vd.apply(this,arguments), pd=planDiario53(); if(!pd) return h;
+  return h.replace(/Límite \$[\d,.]+/,'Plan '+fmt$(pd)); }; })();
+
+/* Centro de Control: "Límite de gasto" con los mismos números que el resto de la app */
+_w43('renderDashboard',function(){
+  var el=document.getElementById('cc-limites'); if(!el) return;
+  var pr=null; try{ pr=proyectarFlujo(); }catch(e){} var pd=planDiario53(), rit=pr?pr.gvPropio:0, seg=pr&&pr.min.bal>=0?pr.seguro:0;
+  var box=function(lbl,val,nota,col){ return '<div class="cc-limite-box"><div class="cc-limite-box-lbl">'+lbl+'</div><div class="cc-limite-box-val" style="color:'+col+'">'+val+'</div><div class="cc-limite-box-note">'+nota+'</div></div>'; };
+  var col=seg>=pd?'#34d399':seg>=pd*0.6?'#fbbf24':'#ff6b85';
+  el.innerHTML='<div class="cc-card"><div class="cc-card-header"><div class="cc-card-title">Límite de gasto</div></div>'
+    +'<div class="cc-limites-grid">'+box('Puedes gastar hoy',pr&&pr.min.bal<0?'Solo lo necesario':fmt$(seg),'sin quedarte corto para tus pagos',col)+box('Tu plan diario',fmt$(pd),'lo que te toca por día este mes','#a78bfa')+'</div>'
+    +'<div class="cc-limites-grid" style="margin-top:8px">'+box('Tu ritmo real',fmt$(rit),'lo que gastas por día (promedio)',rit<=pd?'#34d399':'#fbbf24')+box('Por semana',fmt$(r2(Math.min(seg||pd,pd)*7)),'si sigues tu plan','#a78bfa')+'</div>'
+    +'<div style="font-size:12.5px;color:var(--ink-3);margin-top:10px;line-height:1.45">"Puedes gastar hoy" mira tus próximos pagos y cobros; "Tu plan diario" sale de tu plan del mes (lo que entra menos fijos, cuotas y ahorro). Lo ideal es no pasar del menor de los dos.</div></div>';
+});
+
+/* ── Racha: cálculo con detalle y ventana ── */
+function rachaDet53(){
+  var hoy=hoyLocal(), d=addDias(hoy,-1), m=porDia47(addDias(hoy,-95),d), lim={}, dias=[], rota=null;
+  for(var k=0;k<90;k++){ var ym=d.slice(0,7); if(lim[ym]==null) lim[ym]=planDiario53(ym);
+    var g=r2(m[d]||0); if(!lim[ym]){ break; } if(g>lim[ym]){ rota={f:d,g:g,l:lim[ym]}; break; }
+    dias.push({f:d,g:g,l:lim[ym]}); d=addDias(d,-1); }
+  var hoyG=r2(porDia47(hoy,hoy)[hoy]||0), hoyL=planDiario53();
+  return {n:dias.length,dias:dias,rota:rota,hoy:{g:hoyG,l:hoyL}};
+}
+function racha51(){ return rachaDet53().n; }
+function rachaModal53(){
+  var r=rachaDet53(), tot=r2(r.dias.reduce(function(s,z){return s+z.g;},0)), ah=r2(r.dias.reduce(function(s,z){return s+Math.max(0,z.l-z.g);},0));
+  var fila=function(z,cls,eti){ var p=z.l>0?Math.min(100,z.g/z.l*100):0;
+    return '<div class="ra53-f '+cls+'"><div class="ra53-d"><small>'+DIAS[ymdToDate(z.f).getDay()].slice(0,3)+'</small><b>'+ymdToDate(z.f).getDate()+'</b></div>'
+      +'<div class="ra53-m"><div><span>'+eti+'</span><em>'+fmt$(z.g)+' <small>de '+fmt$(z.l)+'</small></em></div><i><b style="width:'+p.toFixed(0)+'%"></b></i></div></div>'; };
+  var h='<div class="ra53-top"><div><b>'+r.n+'</b><small>días seguidos</small></div><div><b>'+fmt$(tot)+'</b><small>gastaste en total</small></div><div><b class="in">'+fmt$(ah)+'</b><small>te sobró del plan</small></div></div>'
+    +'<div class="ra53-p">Cuenta los días en que tu gasto del día a día (comida, transporte, salidas…) no pasó de tu <b>plan diario</b>. No incluye arriendo, cuotas ni gastos que te reembolsan.</div>'
+    +'<div class="ra53-l">'
+    +fila({f:hoyLocal(),g:r.hoy.g,l:r.hoy.l},r.hoy.g<=r.hoy.l?'hoy':'mal','Hoy (aún no cuenta)')
+    +r.dias.map(function(z){ return fila(z,'ok',z.g===0?'Sin gastos':'Dentro del plan'); }).join('')
+    +(r.rota?fila(r.rota,'mal','Te pasaste por '+fmt$(r2(r.rota.g-r.rota.l))):'')+'</div>'
+    +(r.rota?'<div class="ra53-n">La racha empezó después del '+fechaCorta(r.rota.f)+', cuando gastaste '+fmt$(r.rota.g)+'.</div>':'')
+    +'<button onclick="document.getElementById(\'ra53\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>';
+  _modalBase('ra53',(r.n>=2?'🔥 ':'')+'Tu racha: '+r.n+' día'+(r.n===1?'':'s'),h);
+}
+_w43('hoy52',function(){
+  var box=document.getElementById('hoy52'); if(!box) return; var f=box.querySelector('.f'); if(!f) return;
+  f.setAttribute('role','button'); f.setAttribute('tabindex','0'); f.style.cursor='pointer';
+  if(!f.querySelector('u')) f.insertAdjacentHTML('beforeend','<u>'+ic46('chev',14)+'</u>');
+  f.onclick=function(e){ e.stopPropagation(); rachaModal53(); };
+});
 
 </script>
 <script>
