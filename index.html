@@ -2043,6 +2043,29 @@ html.t-claro .cc-hero::after,html.t-claro .fe-card::after{opacity:0!important}
 html.t-claro .fe-steps>div{background:rgba(22,19,43,.04)!important}
 .exp52+.exp52-c+.exp52{display:none!important}
 
+/* Aviso "te faltarían" completo y tocable */
+.hoy52>div.full{flex-basis:100%;cursor:pointer}
+.hoy52 em{font-style:normal;font-size:14px;line-height:1.35;color:var(--ink);white-space:normal}
+.hoy52 em b{font:700 15px var(--num,-apple-system);color:var(--warn)}
+.hoy52 u{margin-left:auto;color:var(--ink-3);display:flex;text-decoration:none;flex-shrink:0}
+.hoy52 .w{background:rgba(251,191,36,.1)!important;border:0.5px solid rgba(251,191,36,.3)}
+html.t-claro .hoy52 .w{background:#fffbeb!important;border-color:rgba(180,83,9,.22)!important}
+.fl52-p{font-size:14px;line-height:1.5;color:var(--ink-2);margin-bottom:12px}
+.fl52-c{border-radius:16px;background:rgba(255,255,255,.06);padding:4px 14px}
+.fl52-r{display:flex;justify-content:space-between;gap:10px;padding:9px 0;font-size:14px;color:var(--ink-2)}
+.fl52-r+.fl52-r{border-top:0.5px solid var(--line)}
+.fl52-r b{font:700 15px var(--num,-apple-system);color:var(--ink);white-space:nowrap}.fl52-r b.in{color:var(--ok)}.fl52-r b.out{color:var(--bad)}
+.fl52-t{border-top:1px solid var(--line)}.fl52-t .fl52-r span{font-weight:700;color:var(--ink)}
+.fl52-s{font-size:13px;font-weight:600;color:var(--ink-3);margin:14px 2px 6px}
+.fl52-l{max-height:220px;overflow-y:auto}
+.fl52-e{display:flex;align-items:center;gap:10px;padding:7px 0}.fl52-e+.fl52-e{border-top:0.5px solid var(--line)}
+.fl52-e>span{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.fl52-e div{flex:1;min-width:0}.fl52-e b{display:block;font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fl52-e small{font-size:12px;color:var(--ink-3)}
+.fl52-e em{font:700 14px var(--num,-apple-system);font-style:normal}.fl52-e em.in{color:var(--ok)}.fl52-e em.out{color:var(--bad)}
+.fl52-tip{display:flex;gap:10px;align-items:flex-start;margin-top:12px;padding:10px 12px;border-radius:14px;background:rgba(251,191,36,.1);color:var(--ink-2);font-size:13.5px;line-height:1.45}
+.fl52-tip svg{color:var(--warn);flex-shrink:0;margin-top:1px}.fl52-tip b{color:var(--ink)}
+html.t-claro .fl52-c{background:rgba(22,19,43,.04)!important}html.t-claro .fl52-e>span{background:rgba(22,19,43,.05)!important}html.t-claro .fl52-tip{background:#fffbeb!important}
+
 </style>
 </head>
 <body>
@@ -2671,7 +2694,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='5.2.0';
+var APP_VERSION='5.2.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -13077,7 +13100,7 @@ function hoy52(){
   hh.classList.add('v52'); var rc=document.getElementById('home-racha51'); if(rc) rc.classList.add('v52');
   var h='';
   try{ var pr=proyectarFlujo();
-    if(pr.min.bal<0) h+='<div class="w"><i>'+ic46('alert',16)+'</i><span><small>Te faltarían el '+fechaCorta(pr.min.fecha)+'</small><b>'+fmt$(-pr.min.bal)+'</b></span></div>';
+    if(pr.min.bal<0) h+='<div class="w full" role="button" tabindex="0" onclick="event.stopPropagation();faltante52()"><i>'+ic46('alert',16)+'</i><span><small>Ojo, para tus pagos</small><em>El '+fechaCorta(pr.min.fecha)+' te faltarían <b>'+fmt$(-pr.min.bal)+'</b></em></span><u>'+ic46('chev',14)+'</u></div>';
     else if(pr.proxSueldo) h+='<div class="g"><i>'+ic46('pulse',16)+'</i><span><small>Puedes gastar hoy</small><b>'+(pr.seguro>0?fmt$(pr.seguro):'Solo lo necesario')+'</b></span></div>';
   }catch(e){}
   var n=0; try{ n=racha51(); }catch(e){}
@@ -13144,6 +13167,26 @@ _w43('renderNuevaTiles',function(){ try{ qa52(); }catch(e){} });
   new MutationObserver(function(ms){ var vistos=new Set(); ms.forEach(function(m){ [].forEach.call(m.addedNodes,function(n){ if(n.nodeType===1&&!vistos.has(n)){ vistos.add(n); todo(n); } }); if(m.type==='childList'&&m.target.nodeType===1&&!vistos.has(m.target)){ vistos.add(m.target); todo(m.target); } }); })
     .observe(document.body,{childList:true,subtree:true});
 })();
+
+/* Detalle del aviso "te faltarían" */
+function faltante52(){
+  var pr; try{ pr=proyectarFlujo(); }catch(e){ return; } if(!pr) return;
+  var hasta=pr.min.fecha, ev=(pr.ev||[]).filter(function(e){ return e.fecha<=hasta; });
+  var ing=r2(ev.filter(function(e){return e.tipo==='ING';}).reduce(function(s,e){return s+e.monto;},0)), eg=r2(ev.filter(function(e){return e.tipo!=='ING';}).reduce(function(s,e){return s+e.monto;},0));
+  var dias=difDias(hoyLocal(),hasta), gd=r2(pr.gv*dias), falta=r2(-pr.min.bal);
+  var fila=function(n,v,c){ return '<div class="fl52-r"><span>'+n+'</span><b'+(c?' class="'+c+'"':'')+'>'+v+'</b></div>'; };
+  var lista=ev.map(function(e){ var i=e.tipo==='ING'; return '<div class="fl52-e"><span>'+esc(e.icon||'📅')+'</span><div><b>'+esc(e.desc)+'</b><small>'+_cap47(fechaCorta(e.fecha))+'</small></div><em class="'+(i?'in':'out')+'">'+(i?'+':'−')+fmt$(e.monto)+'</em></div>'; }).join('');
+  var dif=Math.max(0.5,Math.ceil(falta/Math.max(1,dias)*100)/100);
+  var ov=_modalBase('fl52','Te faltarían '+fmt$(falta),
+    '<div class="fl52-p">Si sigues gastando como hasta ahora, el <b>'+fechaCorta(hasta)+'</b> tu dinero no alcanzaría para todos tus pagos programados. Así se calcula:</div>'
+    +'<div class="fl52-c">'+fila('Tienes disponible hoy',fmt$(pr.inicio))+fila('Entra hasta esa fecha','+'+fmt$(ing),'in')+fila('Pagos programados','−'+fmt$(eg),'out')
+    +fila('Tu gasto diario ('+fmt$(pr.gv)+' × '+dias+' días)','−'+fmt$(gd),'out')+'<div class="fl52-t">'+fila('Quedaría el '+fechaCorta(hasta),'−'+fmt$(falta),'out')+'</div></div>'
+    +(lista?'<div class="fl52-s">Movimientos que cuentan</div><div class="fl52-l">'+lista+'</div>':'')
+    +'<div class="fl52-tip">'+ic46('bulb',16)+'<span>Para evitarlo, gasta unos <b>'+fmt$(dif)+' menos por día</b> hasta esa fecha, o mueve algún pago para después de tu sueldo.</span></div>'
+    +'<button id="fl52-ir" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff">Ver flujo de caja completo</button>'
+    +'<button onclick="document.getElementById(\'fl52\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>');
+  document.getElementById('fl52-ir').onclick=function(){ ov.remove(); tabIr('plan'); try{ setPlanTab('flujo'); }catch(e){} };
+}
 
 </script>
 <script>
