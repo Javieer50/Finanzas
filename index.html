@@ -2422,6 +2422,317 @@ html:not(.t-claro) .nb59.ok{color:#6ee7b7} html.t-claro .nb59.ok{color:#047857}
 /* Las luces solo se mueven en Inicio y en reposo: al desplazar o en otras pantallas se quedan quietas (ahorra batería) */
 body.in51 .wallpaper::before,body.scr59 .wallpaper::before{animation-play-state:paused!important}
 
+/* ══ v6.0 · Segunda ronda de diseño y animación ══ */
+
+/* ── 5a. Pantalla de inicio: alcancía ── */
+#splash46 .pig60{overflow:visible;filter:drop-shadow(0 18px 30px rgba(76,29,149,.45))}
+html:not(.t-claro) #splash46 .sh60{fill:rgba(0,0,0,.3)} html.t-claro #splash46 .sh60{fill:rgba(76,29,149,.16)}
+#splash46 .sh60{transform-origin:80px 136px;animation:sh60 .5s cubic-bezier(.3,1.3,.5,1) both,shb60 .36s .78s ease-in-out}
+#splash46 .bd60{transform-box:view-box;transform-origin:82px 128px;animation:in60 .5s cubic-bezier(.3,1.35,.5,1) both,sq60 .42s .76s cubic-bezier(.3,1.4,.5,1)}
+#splash46 .cn60{transform-box:fill-box;transform-origin:center;animation:cn60 .52s .26s cubic-bezier(.55,0,.75,.6) both}
+#splash46 .sp60 path{fill:none;stroke:#fde68a;stroke-width:3;stroke-linecap:round;stroke-dasharray:9;stroke-dashoffset:9;opacity:0;animation:sp60 .45s .8s ease-out forwards}
+#splash46 b{animation-delay:.35s!important}
+@keyframes in60{0%{opacity:0;transform:translateY(26px) scale(.7)}100%{opacity:1;transform:none}}
+@keyframes sh60{0%{opacity:0;transform:scale(.5)}100%{opacity:1;transform:none}}
+@keyframes shb60{50%{transform:scaleX(1.12)}}
+@keyframes cn60{0%{opacity:0;transform:translateY(-70px) scaleX(1)}15%{opacity:1}45%{transform:translateY(-34px) scaleX(.25)}70%{transform:translateY(-8px) scaleX(1)}100%{opacity:1;transform:translateY(36px) scaleX(.9)}}
+@keyframes sq60{0%{transform:none}35%{transform:scale(1.07,.9)}70%{transform:scale(.97,1.05) translateY(-4px)}100%{transform:none}}
+@keyframes sp60{0%{opacity:1;stroke-dashoffset:9}100%{opacity:0;stroke-dashoffset:-9}}
+@media (prefers-reduced-motion:reduce){#splash46 .bd60,#splash46 .cn60,#splash46 .sh60,#splash46 .sp60 path{animation:none!important}#splash46 .cn60{display:none}}
+
+/* ── Interruptores de Apariencia ── */
+.tm-sep60{font-size:12.5px;font-weight:650;margin:14px 4px 8px;color:var(--ink-3)}
+.sw60 .tg60{width:46px;height:28px;border-radius:999px;position:relative;flex-shrink:0;margin-left:auto;transition:background .25s}
+.sw60 .tg60 i{position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3);transition:transform .32s cubic-bezier(.3,1.4,.5,1)}
+.sw60.sel .tg60 i{transform:translateX(18px)}
+html:not(.t-claro) .sw60 .tg60{background:rgba(255,255,255,.16)} html:not(.t-claro) .sw60.sel .tg60{background:#34c759}
+html.t-claro .sw60 .tg60{background:rgba(24,20,47,.14)} html.t-claro .sw60.sel .tg60{background:#34c759}
+.sw60>i{display:none}
+
+/* ── 1a. Reflejos al inclinar ── */
+.tl60{display:none}
+html.tilt60 .tl60{display:block;position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:2;background-size:260% 260%!important;
+  background-position:calc(50% + var(--tx,0)*42%) calc(50% + var(--ty,0)*42%)!important}
+html.tilt60:not(.t-claro) .tl60{background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.17) 47%,rgba(220,210,255,.08) 52%,rgba(255,255,255,0) 62%);mix-blend-mode:plus-lighter}
+html.tilt60.t-claro .tl60{background:linear-gradient(115deg,rgba(255,255,255,0) 38%,rgba(255,255,255,.55) 47%,rgba(255,255,255,.2) 53%,rgba(255,255,255,0) 62%)}
+.cu-card,.credit-card{position:relative}
+
+/* ── 1b. Cápsula viva (isla dinámica) ── */
+#isla60{position:fixed;left:50%;z-index:30004;display:flex;align-items:center;gap:7px;border:0;font:inherit;cursor:pointer;
+  top:calc(env(safe-area-inset-top,0px) + 62px);height:34px;padding:0 14px 0 10px;border-radius:999px;transform:translate(-50%,-12px) scale(.85);opacity:0;pointer-events:none;
+  transition:transform .42s cubic-bezier(.3,1.35,.5,1),opacity .25s,width .3s;-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%)}
+#isla60.on{transform:translate(-50%,0) scale(1);opacity:1;pointer-events:auto}
+#isla60 .i60{display:flex;width:20px;height:20px;border-radius:50%;align-items:center;justify-content:center;background:rgba(52,211,153,.2);color:#34d399}
+#isla60 .t60{font-size:12.5px;font-weight:600;opacity:.7}
+#isla60 b{font:700 15px var(--num,-apple-system);font-variant-numeric:tabular-nums;letter-spacing:-.2px}
+#isla60 b.mal{color:#ff6b85}
+html:not(.t-claro) #isla60{background:linear-gradient(160deg,rgba(255,255,255,.18),rgba(255,255,255,.07));color:#fff;border:0.5px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 10px 26px -8px rgba(0,0,0,.6)}
+html.t-claro #isla60{background:rgba(255,255,255,.8);color:#18142f;border:0.5px solid #fff;box-shadow:0 10px 26px -8px rgba(60,40,140,.3)}
+/* En iPhone con isla dinámica (app instalada): se funde con la isla como una actividad en vivo */
+html:not(.t-claro) #isla60.dyn,html.t-claro #isla60.dyn{top:11px;height:37px;min-width:250px;justify-content:space-between;padding:0 16px 0 12px;background:#000;color:#fff;border:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+#isla60.dyn{transform:translate(-50%,0) scale(.5,.9)}
+#isla60.dyn.on{transform:translate(-50%,0) scale(1)}
+#isla60.dyn .t60{margin-right:auto}
+#isla60.dyn b.mal{color:#ff8fa3}
+
+/* ── 1c. Cabecera que se transforma ── */
+#screen-home .app-header .hd-hola,#screen-home .app-header .hd-fecha,#screen-home .app-header .hd-mini60{transition:font-size .28s ease,opacity .25s ease,transform .3s cubic-bezier(.3,1.2,.5,1),max-height .3s ease}
+#screen-home .app-header .hd-fecha{max-height:20px}
+.hd-mini60{font-size:13px;max-height:0;opacity:0;overflow:hidden;transform:translateY(6px)}
+.hd-mini60 b{font:700 14px var(--num,-apple-system);font-variant-numeric:tabular-nums}
+html:not(.t-claro) .hd-mini60{color:rgba(255,255,255,.65)} html:not(.t-claro) .hd-mini60 b{color:#fff}
+html.t-claro .hd-mini60{color:rgba(24,20,48,.6)} html.t-claro .hd-mini60 b{color:#18142f}
+#screen-home .app-header.hdc60 .hd-hola{font-size:18px!important}
+#screen-home .app-header.hdc60 .hd-fecha{max-height:0;opacity:0;transform:translateY(-6px)}
+#screen-home .app-header.hdc60 .hd-mini60{max-height:20px;opacity:1;transform:none}
+
+/* ── 1d. Borde que difumina bajo la barra ── */
+.edge60{position:fixed;left:0;right:0;bottom:0;height:128px;z-index:204;pointer-events:none;-webkit-backdrop-filter:blur(7px);backdrop-filter:blur(7px);
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 62%);mask-image:linear-gradient(to bottom,transparent 0,#000 62%)}
+html:not(.t-claro) .edge60{background:linear-gradient(to bottom,rgba(12,12,40,0),rgba(12,12,40,.42))}
+html.t-claro .edge60{background:linear-gradient(to bottom,rgba(244,242,251,0),rgba(244,242,251,.55))}
+body.kp-on .edge60{opacity:0}
+
+/* ── 2a. Menú contextual al mantener presionado ── */
+.hv-row{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.ctx60{position:fixed;inset:0;z-index:9990;transition:background .25s,-webkit-backdrop-filter .25s,backdrop-filter .25s}
+.ctx60.on{-webkit-backdrop-filter:blur(14px) saturate(140%);backdrop-filter:blur(14px) saturate(140%)}
+html:not(.t-claro) .ctx60.on{background:rgba(5,5,20,.45)} html.t-claro .ctx60.on{background:rgba(240,238,250,.4)}
+.ctx60-row{position:fixed!important;margin:0!important;z-index:2;border-radius:18px!important;transition:transform .32s cubic-bezier(.3,1.4,.5,1),box-shadow .3s;pointer-events:none}
+.ctx60.on .ctx60-row{transform:scale(1.035)}
+html:not(.t-claro) .ctx60-row{background:rgba(40,38,80,.92)!important;box-shadow:0 22px 50px -14px rgba(0,0,0,.8)}
+html.t-claro .ctx60-row{background:rgba(255,255,255,.96)!important;box-shadow:0 22px 50px -14px rgba(60,40,140,.45)}
+.ctx60-m{position:fixed;z-index:3;min-width:230px;border-radius:16px;overflow:hidden;transform:scale(.6);opacity:0;transition:transform .34s cubic-bezier(.3,1.35,.5,1),opacity .2s;-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}
+.ctx60.on .ctx60-m{transform:none;opacity:1}
+.ctx60.out .ctx60-m{transform:scale(.8);opacity:0;transition-duration:.18s}
+.ctx60.out .ctx60-row{transform:none}
+.ctx60-m button{display:flex;align-items:center;justify-content:space-between;width:100%;padding:13px 16px;border:0;background:transparent;font:500 16px -apple-system,BlinkMacSystemFont,sans-serif;text-align:left}
+html:not(.t-claro) .ctx60-m{background:rgba(50,48,90,.78);box-shadow:0 20px 50px -12px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.2)}
+html:not(.t-claro) .ctx60-m button{color:#fff} html:not(.t-claro) .ctx60-m button+button{border-top:0.5px solid rgba(255,255,255,.12)}
+html.t-claro .ctx60-m{background:rgba(255,255,255,.86);box-shadow:0 20px 50px -12px rgba(60,40,140,.4)}
+html.t-claro .ctx60-m button{color:#18142f} html.t-claro .ctx60-m button+button{border-top:0.5px solid rgba(24,20,47,.1)}
+.ctx60-m button.del{color:#ff5c7a!important}
+.ctx60-m button:active{background:rgba(127,127,127,.18)}
+
+/* ── 2b. Ícono que vuela al detalle ── */
+.dt60{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:11px;margin-right:10px;vertical-align:middle;font-size:18px;flex-shrink:0}
+.vu60f{position:fixed;z-index:10050;display:flex;align-items:center;justify-content:center;border-radius:12px;pointer-events:none;margin:0!important;transform-origin:0 0;font-size:18px}
+#detail-modal .modal-sheet.vu60{animation:vu60 .38s cubic-bezier(.2,.9,.3,1) both!important}
+@keyframes vu60{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+
+/* ── Tirar para actualizar: gota líquida ── */
+.ptr60{width:44px!important;height:44px!important;border-radius:0!important;overflow:visible!important;box-shadow:none!important;display:flex;align-items:center;justify-content:center}
+.drop60{display:block;width:30px;height:30px;border-radius:50% 50% 50% 50%/58% 58% 42% 42%;transform-origin:50% 0;transition:transform .08s linear;
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.85) 0 12%,rgba(255,255,255,0) 30%),linear-gradient(160deg,#c4b5fd,#8b5cf6 60%,#6d28d9);
+  box-shadow:inset 0 -3px 6px rgba(76,29,149,.45),0 8px 18px -6px rgba(109,40,217,.7)}
+.ptr60.listo .drop60{box-shadow:inset 0 -3px 6px rgba(76,29,149,.45),0 0 0 3px rgba(167,139,250,.35),0 8px 18px -6px rgba(109,40,217,.7)}
+.ptr60.gira{animation:none!important;transform:translateX(-50%) translateY(56px)!important}
+.ptr60.gira .drop60{animation:plop60 .5s cubic-bezier(.3,1.5,.5,1),bam60 .9s .5s ease-in-out infinite}
+@keyframes plop60{0%{transform:scale(1.25,.7)}45%{transform:scale(.85,1.15)}100%{transform:scale(1)}}
+@keyframes bam60{0%,100%{transform:scale(1) translateY(0)}50%{transform:scale(1.08,.92) translateY(3px)}}
+
+/* ── 3a. Anillos ── */
+.an60{display:flex;align-items:center;gap:16px;padding:14px 16px!important;cursor:pointer}
+.an60-s{width:112px;height:112px;flex-shrink:0;transform:rotate(-90deg);overflow:visible}
+.an60-s circle{fill:none;stroke-width:10;stroke-linecap:round}
+.an60-s .v2{stroke-width:10;filter:drop-shadow(0 0 2px rgba(0,0,0,.6))}
+.an60-s .g{stroke:#ff4f8b} .an60-s .a{stroke:#34d399} .an60-s .p{stroke:#38bdf8}
+.an60-s .tr{opacity:.18}
+.an60-l{flex:1;min-width:0;display:flex;flex-direction:column;gap:9px}
+.an60-r{display:flex;align-items:flex-start;gap:8px}
+.an60-r>i{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.an60-r.g>i{background:#ff4f8b}.an60-r.a>i{background:#34d399}.an60-r.p>i{background:#38bdf8}
+.an60-r small{display:block;font-size:12px;color:var(--ink-3)}
+.an60-r b{display:block;font:700 15px var(--num,-apple-system);font-variant-numeric:tabular-nums;color:var(--ink)}
+.an60-r b span{font:500 12.5px -apple-system,sans-serif;color:var(--ink-3)}
+.an60-r em{display:block;font-style:normal;font-size:11.5px;color:#ff6b85;font-weight:600}
+.an60-d{display:flex;gap:10px;padding:10px 0}
+.an60-d>i{width:12px;height:12px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.an60-d.g>i{background:#ff4f8b}.an60-d.a>i{background:#34d399}.an60-d.p>i{background:#38bdf8}
+.an60-d b{display:block;font-size:15px;color:var(--ink)} .an60-d small{display:block;font-size:13px;line-height:1.45;color:var(--ink-2);margin-top:2px}
+
+/* ── 3b. Tono del cuadro de dinero ── */
+.tn60{position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;transition:opacity .8s ease}
+.widget-balance{isolation:isolate}
+html:not(.t-claro) .tn60.ok{background:radial-gradient(120% 80% at 100% 100%,rgba(52,211,153,.20),rgba(52,211,153,0) 60%)}
+html:not(.t-claro) .tn60.at{background:radial-gradient(120% 80% at 100% 100%,rgba(251,191,36,.22),rgba(251,191,36,0) 60%)}
+html:not(.t-claro) .tn60.mal{background:radial-gradient(120% 80% at 100% 100%,rgba(255,92,122,.24),rgba(255,92,122,0) 60%)}
+html.t-claro .tn60.ok{background:radial-gradient(120% 80% at 100% 100%,rgba(52,211,153,.16),rgba(52,211,153,0) 60%)}
+html.t-claro .tn60.at{background:radial-gradient(120% 80% at 100% 100%,rgba(251,191,36,.2),rgba(251,191,36,0) 60%)}
+html.t-claro .tn60.mal{background:radial-gradient(120% 80% at 100% 100%,rgba(255,92,122,.16),rgba(255,92,122,0) 60%)}
+
+/* ── 3c. Esta semana como línea de tiempo ── */
+.h46-card.tlw60::before{content:'';position:absolute;left:37px;top:30px;bottom:52px;width:2px;border-radius:2px;transform-origin:top;animation:rail60 .9s .1s cubic-bezier(.3,.8,.25,1) both}
+html:not(.t-claro) .h46-card.tlw60::before{background:linear-gradient(to bottom,#a78bfa,rgba(167,139,250,.1))}
+html.t-claro .h46-card.tlw60::before{background:linear-gradient(to bottom,#8b5cf6,rgba(139,92,246,.1))}
+@keyframes rail60{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.ev60-hoy{display:flex;align-items:center;gap:12px;padding:2px 0 8px;position:relative;z-index:1}
+.ev60-hoy i{width:44px;display:flex;justify-content:center;flex-shrink:0}
+.ev60-hoy i::before{content:'';width:12px;height:12px;border-radius:50%;background:#a78bfa;box-shadow:0 0 0 0 rgba(167,139,250,.6);animation:lat60 2s ease-out infinite}
+.ev60-hoy span{font-size:13.5px;color:var(--ink-2)} .ev60-hoy span b{color:var(--ink)}
+.ev60-hoy small{margin-left:auto;font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+@keyframes lat60{0%{box-shadow:0 0 0 0 rgba(167,139,250,.55)}70%{box-shadow:0 0 0 10px rgba(167,139,250,0)}100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}}
+.tlw60 .ev52{position:relative;z-index:1}
+.tlw60 .ev52-d{border-radius:16px!important}
+html:not(.t-claro) .tlw60 .ev52-d{background:rgba(30,28,64,.9)!important}
+html.t-claro .tlw60 .ev52-d{background:#fff!important;box-shadow:0 1px 3px rgba(40,30,90,.1)}
+.tlw60 .ev52:has(.ev52-m.in) .ev52-d{box-shadow:inset 0 0 0 1.5px rgba(52,211,153,.55)!important}
+.tlw60 .ev52:has(.ev52-m.out) .ev52-d{box-shadow:inset 0 0 0 1.5px rgba(255,107,133,.5)!important}
+
+/* ── 4a. Teclado de vidrio ── */
+.kp-val{display:inline-block;transform-origin:0 70%;font-size:calc(38px * var(--kpz,1))!important;transition:color .25s,font-size .2s}
+.kp50.ing60 .kp-val:not(.vacio){color:#34d399!important}
+.kp50.eg60 .kp-val:not(.vacio){color:#ff8fa3!important}
+html.t-claro .kp50.ing60 .kp-val:not(.vacio){color:#059669!important}
+html.t-claro .kp50.eg60 .kp-val:not(.vacio){color:#e11d48!important}
+html:not(.t-claro) .kp50{background:linear-gradient(170deg,rgba(48,44,92,.78),rgba(20,20,50,.86))!important;-webkit-backdrop-filter:blur(34px) saturate(190%)!important;backdrop-filter:blur(34px) saturate(190%)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.24),0 -16px 40px -14px rgba(0,0,0,.7)!important}
+html:not(.t-claro) .kp-g button:not([data-k="del"]){background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.06))!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 2px 6px -2px rgba(0,0,0,.5)}
+html.t-claro .kp50{background:linear-gradient(170deg,rgba(255,255,255,.82),rgba(244,242,252,.88))!important;-webkit-backdrop-filter:blur(34px) saturate(190%)!important;backdrop-filter:blur(34px) saturate(190%)!important}
+html.t-claro .kp-g button:not([data-k="del"]){background:linear-gradient(160deg,#fff,rgba(255,255,255,.8))!important;box-shadow:inset 0 1px 0 #fff,0 1px 3px rgba(40,30,90,.12)!important}
+.kp-g button:active{transform:scale(.93)!important;transition:transform .08s}
+
+/* ── 5b. Día de pago ── */
+.pg60c{position:relative;border-radius:var(--r-card,22px);padding:16px 16px 14px;margin-bottom:14px;overflow:hidden}
+html:not(.t-claro) .pg60c{background:radial-gradient(120% 90% at 0% 0%,rgba(52,211,153,.35),rgba(52,211,153,0) 60%),radial-gradient(100% 80% at 100% 0%,rgba(251,191,36,.25),rgba(251,191,36,0) 60%),linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:0.5px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 16px 36px -18px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%)}
+html.t-claro .pg60c{background:radial-gradient(120% 90% at 0% 0%,rgba(52,211,153,.22),rgba(52,211,153,0) 60%),radial-gradient(100% 80% at 100% 0%,rgba(251,191,36,.2),rgba(251,191,36,0) 60%),rgba(255,255,255,.75);border:0.5px solid #fff;box-shadow:inset 0 1px 0 #fff,0 14px 32px -16px rgba(60,40,140,.28)}
+.pg60x{position:absolute;right:10px;top:10px;width:28px;height:28px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;transform:rotate(45deg);background:rgba(127,127,127,.18);color:var(--ink-2)}
+.pg60h{display:flex;align-items:center;gap:12px}
+.pg60e{font-size:30px;animation:pg60e 1.2s .3s ease-in-out 2}
+@keyframes pg60e{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg) scale(1.1)}75%{transform:rotate(12deg) scale(1.1)}}
+.pg60h small{display:block;font-size:13px;font-weight:600;color:#34d399}
+html.t-claro .pg60h small{color:#047857}
+.pg60h b{display:block;font:750 24px var(--num,-apple-system);color:var(--ink);letter-spacing:-.4px}
+.pg60b{display:flex;gap:3px;height:12px;margin:14px 0 10px;border-radius:999px;overflow:hidden}
+.pg60b i{display:block;height:100%;border-radius:3px;transform-origin:left}
+.pg60b .a,.pg60l .a i{background:#34d399}.pg60b .f,.pg60l .f i{background:#ff6b85}.pg60b .l,.pg60l .l i{background:#a78bfa}
+.pg60l{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pg60l>div>i{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.pg60l small{font-size:12px;color:var(--ink-3)} .pg60l b{display:block;font:700 15px var(--num,-apple-system);color:var(--ink);margin-top:2px}
+.pg60c p{font-size:13px;line-height:1.45;color:var(--ink-2);margin:10px 0 0}
+.pg60c p b{color:var(--ink)}
+
+/* ── 5c. Estados vacíos animados ── */
+.vac50 .vac50-i{animation:flota60 3.2s ease-in-out infinite;background-size:200% 200%!important;background-image:linear-gradient(145deg,#a78bfa,#2dd4bf,#a78bfa)!important;animation:flota60 3.2s ease-in-out infinite,brillo60 5s linear infinite}
+.vac50.v60-pig .vac50-i{transform-origin:50% 90%;animation:mece60 2.6s ease-in-out infinite,brillo60 5s linear infinite;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M50 30c0-9-8-15-19-15S12 21 12 30c0 5 3 9 7 12v6h6v-3c2 .6 4 .9 6 .9s4-.3 6-.9v3h6v-6c2-1.5 3.6-3.4 4.4-5.6H52v-6.8h-2.4z'/%3E%3Cpath d='M27 15.4c-1-3.4-4-5.4-7-5.4l1.5 6.5'/%3E%3Cpath d='M26 22h10'/%3E%3Ccircle cx='42' cy='27' r='1.4' fill='black'/%3E%3Cpath d='M12 30c-3 0-5 2-5 4'/%3E%3Ccircle cx='31' cy='7' r='3.5'/%3E%3C/svg%3E") center/contain no-repeat!important;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M50 30c0-9-8-15-19-15S12 21 12 30c0 5 3 9 7 12v6h6v-3c2 .6 4 .9 6 .9s4-.3 6-.9v3h6v-6c2-1.5 3.6-3.4 4.4-5.6H52v-6.8h-2.4z'/%3E%3Cpath d='M27 15.4c-1-3.4-4-5.4-7-5.4l1.5 6.5'/%3E%3Cpath d='M26 22h10'/%3E%3Ccircle cx='42' cy='27' r='1.4' fill='black'/%3E%3Cpath d='M12 30c-3 0-5 2-5 4'/%3E%3Ccircle cx='31' cy='7' r='3.5'/%3E%3C/svg%3E") center/contain no-repeat!important}
+.vac50.v60-lupa .vac50-i{animation:busca60 2.4s ease-in-out infinite,brillo60 5s linear infinite}
+.empty-state::before,.cal-empty::before,.hv-empty::before{animation:flota60 3.2s ease-in-out infinite}
+@keyframes flota60{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes mece60{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+@keyframes busca60{0%,100%{transform:translate(0,0) rotate(0)}25%{transform:translate(5px,-3px) rotate(8deg)}75%{transform:translate(-5px,2px) rotate(-8deg)}}
+@keyframes brillo60{from{background-position:0% 50%}to{background-position:200% 50%}}
+
+@media (prefers-reduced-motion:reduce){
+  .vac50 .vac50-i,.empty-state::before,.cal-empty::before,.hv-empty::before,.ev60-hoy i::before,.h46-card.tlw60::before,.pg60e,.ptr60.gira .drop60{animation:none!important}
+  #isla60,.ctx60-m,.ctx60-row,.hd-mini60{transition:none!important}
+}
+
+/* ══ v6.1 · Aviso de sueldo + Salud financiera ══ */
+
+/* ── Aviso de sueldo ── */
+.sd61{position:relative;border-radius:var(--r-card,22px);padding:14px 14px 12px;margin-bottom:14px;overflow:hidden;animation:sd61in .5s cubic-bezier(.3,1.3,.5,1) both}
+@keyframes sd61in{from{opacity:0;transform:translateY(-10px) scale(.97)}to{opacity:1;transform:none}}
+html:not(.t-claro) .sd61{background:radial-gradient(110% 90% at 0% 0%,rgba(46,158,106,.42),rgba(46,158,106,0) 60%),radial-gradient(100% 90% at 100% 100%,rgba(47,111,207,.38),rgba(47,111,207,0) 60%),linear-gradient(150deg,rgba(255,255,255,.14),rgba(255,255,255,.05));border:0.5px solid rgba(255,255,255,.2);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 16px 36px -18px rgba(0,0,0,.7);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%)}
+html.t-claro .sd61{background:radial-gradient(110% 90% at 0% 0%,rgba(46,158,106,.18),rgba(46,158,106,0) 60%),radial-gradient(100% 90% at 100% 100%,rgba(47,111,207,.16),rgba(47,111,207,0) 60%),rgba(255,255,255,.8);border:0.5px solid #fff;box-shadow:inset 0 1px 0 #fff,0 14px 32px -16px rgba(30,60,120,.3)}
+.sd61-t{display:flex;align-items:center;gap:12px}
+.sd61-lg{width:62px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sd61-lg img{width:54px;height:auto;display:block}
+html:not(.t-claro) .sd61-lg{background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.2)} html:not(.t-claro) .sd61 .lg57,html:not(.t-claro) .sd61-f .lg57{filter:brightness(0) invert(1)}
+html.t-claro .sd61-lg{background:#fff;box-shadow:0 1px 3px rgba(30,60,120,.12)}
+.sd61-t b{display:block;font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-.2px}
+.sd61-t small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.sd61-m{display:flex;align-items:baseline;gap:8px;margin:12px 2px 12px}
+.sd61-m span{font-size:12.5px;color:var(--ink-3)} .sd61-m small{font-size:12.5px;color:var(--ink-3)}
+.sd61-m b{font:750 26px var(--num,-apple-system);letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+html:not(.t-claro) .sd61-m b{color:#6ee7b7} html.t-claro .sd61-m b{color:#047857}
+.sd61-a{display:grid;grid-template-columns:1fr 1.4fr;gap:10px}
+.sd61-a button{height:44px;border-radius:14px;border:0;font:650 15px -apple-system,BlinkMacSystemFont,sans-serif}
+.sd61-si{background:linear-gradient(145deg,#10b981,#059669);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 8px 18px -8px rgba(5,150,105,.8)}
+html:not(.t-claro) .sd61-no{background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);box-shadow:inset 0 1px 0 rgba(255,255,255,.18)}
+html.t-claro .sd61-no{background:rgba(255,255,255,.85);color:#18142f;box-shadow:0 1px 3px rgba(30,60,120,.12)}
+.sd61-f{display:flex;flex-direction:column;align-items:center;gap:6px;margin:4px 0 10px}
+.sd61-f img{height:34px;width:auto} .sd61-f small{font-size:12.5px;color:var(--ink-3)}
+.sd61-d{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sd61-d button{height:40px;border-radius:12px;font:600 14px -apple-system,sans-serif}
+html:not(.t-claro) .sd61-d button{background:rgba(255,255,255,.07);color:rgba(255,255,255,.75);border:0.5px solid rgba(255,255,255,.14)}
+html:not(.t-claro) .sd61-d button.sel{background:rgba(52,211,153,.18);color:#6ee7b7;border-color:rgba(52,211,153,.5)}
+html.t-claro .sd61-d button{background:#fff;color:#18142f;border:0.5px solid rgba(24,20,47,.12)}
+html.t-claro .sd61-d button.sel{background:#e3f6ec;color:#047857;border-color:rgba(5,150,105,.45)}
+
+/* ── Salud financiera ── */
+html:not(.t-claro) .salud-modal-sheet{background:linear-gradient(165deg,rgba(52,44,96,.66) 0%,rgba(18,20,48,.8) 100%)!important;border:0.5px solid rgba(255,255,255,.16)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 -20px 50px -20px rgba(0,0,0,.7)!important}
+html.t-claro .salud-modal-sheet{background:linear-gradient(165deg,rgba(255,255,255,.84) 0%,rgba(244,242,252,.8) 100%)!important;border:0.5px solid #fff!important;box-shadow:inset 0 1px 0 #fff,0 -20px 50px -20px rgba(60,40,140,.35)!important}
+#salud-modal .sm-title{font-size:22px!important;font-weight:750!important;letter-spacing:-.4px;text-align:left!important;margin:4px 18px 0!important;color:var(--ink)!important}
+.sl61{padding:0 16px 8px}
+.sl61-f,.sl61-nt{display:block}
+.sl61-ut{display:block;min-width:0}
+.sl61-hero{position:relative;width:240px;max-width:100%;margin:4px auto 0}
+.sl61-g{width:100%;height:auto;display:block;overflow:visible}
+.sl61-g path{fill:none;stroke-linecap:round}
+.sl61-g .bd{stroke-width:6;opacity:.28}
+.sl61-g .pr{stroke-width:16;filter:drop-shadow(0 4px 10px rgba(0,0,0,.25))}
+.sl61-g .dot{stroke-width:4;transform-box:fill-box;transform-origin:center}
+html:not(.t-claro) .sl61-g .dot{stroke:#1d1b3f} html.t-claro .sl61-g .dot{stroke:#fff}
+.sl61-c{position:absolute;left:0;right:0;top:66px;display:flex;flex-direction:column;align-items:center}
+.sl61-n{font:800 64px/1 var(--num,-apple-system);letter-spacing:-3px;font-variant-numeric:tabular-nums}
+.sl61-c small{font-size:13px;color:var(--ink-3);margin-top:2px}
+.sl61-ch{margin-top:8px;padding:4px 12px;border-radius:999px;font-size:13px;font-weight:700;color:var(--c);background:color-mix(in srgb,var(--c) 18%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent)}
+.sl61-f{text-align:center;font-size:14.5px;line-height:1.45;color:var(--ink-2);margin:2px 12px 14px}
+.sl61-f b{color:var(--ink)}
+.sl61-par{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:9px 12px;border-radius:12px;margin-bottom:14px;color:#fbbf24;background:rgba(251,191,36,.1);box-shadow:inset 0 0 0 1px rgba(251,191,36,.3)}
+html.t-claro .sl61-par{color:#92400e}
+.sl61-s{font-size:14px;font-weight:700;color:var(--ink);margin:18px 2px 10px}
+.sl61-up{display:flex;flex-direction:column;gap:8px}
+.sl61-u{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:16px}
+.sl61-u em{font:750 17px var(--num,-apple-system);font-style:normal;min-width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+html:not(.t-claro) .sl61-u{background:linear-gradient(150deg,rgba(52,211,153,.14),rgba(255,255,255,.04));box-shadow:inset 0 1px 0 rgba(255,255,255,.14),inset 0 0 0 0.5px rgba(52,211,153,.3)}
+html:not(.t-claro) .sl61-u em{background:rgba(52,211,153,.2);color:#6ee7b7}
+html.t-claro .sl61-u{background:linear-gradient(150deg,#effaf4,#fff);box-shadow:0 1px 3px rgba(30,60,40,.08),inset 0 0 0 0.5px rgba(5,150,105,.2)}
+html.t-claro .sl61-u em{background:#d9f3e5;color:#047857}
+.sl61-ut b{display:block;font-size:14.5px;color:var(--ink)} .sl61-ut small{display:block;font-size:13px;line-height:1.4;color:var(--ink-2);margin-top:2px}
+.sl61-l{display:flex;flex-direction:column;gap:8px}
+.sl61-i{display:grid;grid-template-columns:44px 1fr 18px;align-items:center;column-gap:12px;width:100%;padding:11px 12px;border-radius:16px;border:0;text-align:left;font:inherit;cursor:pointer;transition:transform .15s}
+.sl61-i:active{transform:scale(.98)}
+html:not(.t-claro) .sl61-i{background:linear-gradient(150deg,rgba(255,255,255,.12),rgba(255,255,255,.04));box-shadow:inset 0 1px 0 rgba(255,255,255,.16),inset 0 0 0 0.5px rgba(255,255,255,.1)}
+html.t-claro .sl61-i{background:rgba(255,255,255,.78);box-shadow:inset 0 1px 0 #fff,0 1px 3px rgba(40,30,90,.08)}
+.sl61-r{position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.sl61-r svg.rg{position:absolute;inset:0;transform:rotate(-90deg)}
+.sl61-r circle{fill:none;stroke-width:4;stroke-linecap:round} .sl61-r .t{opacity:.15;stroke:currentColor}
+.sl61-i.ok .sl61-r{color:#34d399}.sl61-i.at .sl61-r{color:#fbbf24}.sl61-i.mal .sl61-r{color:#ff5c7a}.sl61-i.n .sl61-r{color:var(--ink-3)}
+.sl61-r .v{stroke:currentColor}
+.sl61-x b{display:block;font-size:14.5px;color:var(--ink)}
+.sl61-x small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.sl61-x small i{font-style:normal;font-weight:700}
+.sl61-i.ok .sl61-x i{color:#34d399}.sl61-i.at .sl61-x i{color:#d97706}.sl61-i.mal .sl61-x i{color:#ff5c7a}
+html:not(.t-claro) .sl61-i.at .sl61-x i{color:#fbbf24}
+.sl61-cv{color:var(--ink-3);transition:transform .25s}
+.sl61-i.ab .sl61-cv{transform:rotate(90deg)}
+.sl61-d{grid-column:1/-1;display:none;font-size:13px;line-height:1.5;color:var(--ink-2);padding:10px 2px 2px}
+.sl61-i.ab .sl61-d{display:block;animation:sd61in .3s ease both}
+.sl61-m{display:flex;gap:6px;align-items:flex-start;margin-top:8px;padding:8px 10px;border-radius:10px;color:var(--ink)}
+.sl61-m svg{flex-shrink:0;margin-top:2px;color:#fbbf24}
+html:not(.t-claro) .sl61-m{background:rgba(251,191,36,.08)} html.t-claro .sl61-m{background:#fff8e6}
+.sl61-ev{padding:10px 8px 4px;border-radius:16px}
+html:not(.t-claro) .sl61-ev{background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03));box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
+html.t-claro .sl61-ev{background:rgba(255,255,255,.78);box-shadow:inset 0 1px 0 #fff,0 1px 3px rgba(40,30,90,.08)}
+.sl61-ev.vac{font-size:13px;color:var(--ink-3);text-align:center;padding:16px}
+.sl61-e{width:100%;height:auto;display:block;overflow:visible}
+.sl61-e .ln{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.sl61-e .ar{stroke:none}
+html:not(.t-claro) .sl61-e .ln{stroke:#a78bfa} html.t-claro .sl61-e .ln{stroke:#7c3aed}
+html:not(.t-claro) .sl61-e .ar{fill:rgba(167,139,250,.16)} html.t-claro .sl61-e .ar{fill:rgba(124,58,237,.1)}
+.sl61-e text{font:600 10px -apple-system,sans-serif;text-anchor:middle;fill:var(--ink-3)}
+.sl61-e .vt{fill:var(--ink);font-weight:700}
+.sl61-w{display:flex;gap:3px;height:12px;border-radius:999px;overflow:hidden}
+.sl61-w i{display:block;height:100%;border-radius:3px}
+.sl61-w i.ok{background:#34d399}.sl61-w i.at{background:#fbbf24}.sl61-w i.mal{background:#ff5c7a}.sl61-w i.n{background:rgba(127,127,127,.35)}
+.sl61-wl{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px}
+.sl61-wl span{font-size:12px;color:var(--ink-3)} .sl61-wl b{color:var(--ink)}
+.sl61-nt{font-size:12.5px;line-height:1.45;color:var(--ink-3);margin:10px 2px 0}
+.sl61-cl{width:100%;height:48px;margin-top:18px;border:0;border-radius:14px;font:650 16px -apple-system,sans-serif;color:#fff;background:linear-gradient(145deg,#8b5cf6,#6d28d9);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 8px 20px -10px rgba(109,40,217,.8)}
+@media (prefers-reduced-motion:reduce){.sd61,.sl61-i.ab .sl61-d{animation:none}}
+
 </style>
 </head>
 <body>
@@ -2503,7 +2814,7 @@ body.in51 .wallpaper::before,body.scr59 .wallpaper::before{animation-play-state:
   <button data-t="plan" onclick="tabIr('plan')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-5 4 4 8-9"/><path d="M15 7h5v5"/></svg><span>Plan</span></button>
   <button data-t="mas" onclick="tabIr('mas')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>Más</span></button>
 </nav>
-<div id="splash46" aria-hidden="true"><img src="data:image/jpeg;base64,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" alt=""><b>FinanzasJR</b></div>
+<div id="splash46" aria-hidden="true"><svg class="pig60" viewBox="0 0 160 150" width="150" height="140"><defs><linearGradient id="pg60b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d8ccff"/><stop offset=".55" stop-color="#a78bfa"/><stop offset="1" stop-color="#7c3aed"/></linearGradient><linearGradient id="pg60c" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fde68a"/><stop offset=".6" stop-color="#fbbf24"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs><ellipse class="sh60" cx="80" cy="136" rx="44" ry="5"/><g class="cn60"><circle cx="80" cy="20" r="14" fill="url(#pg60c)"/><circle cx="80" cy="20" r="10" fill="none" stroke="#fff7d6" stroke-opacity=".7" stroke-width="1.5"/><path d="M83.5 15.5c-1-1.2-2.4-1.7-3.8-1.7-2 0-3.5 1-3.5 2.6 0 3.6 7.6 1.9 7.6 5.6 0 1.7-1.7 2.8-3.9 2.8-1.6 0-3.1-.6-4.1-1.9M80 11.5v17" fill="none" stroke="#92400e" stroke-width="1.8" stroke-linecap="round"/></g><g class="bd60"><path d="M40 86c-8-2-12 4-9 8 3 3 8 0 6-4" fill="none" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/><rect x="50" y="104" width="13" height="22" rx="6" fill="#8b5cf6"/><rect x="68" y="108" width="13" height="20" rx="6" fill="#7c3aed"/><rect x="92" y="108" width="13" height="20" rx="6" fill="#7c3aed"/><rect x="108" y="104" width="13" height="22" rx="6" fill="#8b5cf6"/><path d="M58 52 52 34l20 10z" fill="#b9a6ff"/><ellipse cx="82" cy="86" rx="50" ry="40" fill="url(#pg60b)"/><ellipse cx="66" cy="68" rx="22" ry="11" fill="#fff" opacity=".28" transform="rotate(-18 66 68)"/><rect x="69" y="47" width="24" height="5.5" rx="2.75" fill="#4c1d95"/><ellipse cx="131" cy="88" rx="11" ry="9.5" fill="#c4b5fd"/><circle cx="128" cy="88" r="1.8" fill="#5b21b6"/><circle cx="134" cy="88" r="1.8" fill="#5b21b6"/><circle cx="110" cy="74" r="3.4" fill="#2e1065"/><circle cx="111.2" cy="72.8" r="1" fill="#fff"/></g><g class="sp60"><path d="M80 36v-8M66 40l-5-6M94 40l5-6"/></g></svg></div>
 
 <!-- CENTRO DE NOTIFICACIONES (v3.5) -->
 <div class="nc" id="nc">
@@ -3050,7 +3361,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='5.9.0';
+var APP_VERSION='6.1.1';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -12501,11 +12812,11 @@ function homeV46(){
 }
 
 /* ── 5. Apariencia: oscuro, claro o automático ── */
-var TEMA_KEY46='finanzas_jr_tema', TEMA_NOM46={oscuro:'Oscuro',claro:'Claro (para el sol)',auto:'Automático, como tu iPhone'};
+var TEMA_KEY46='finanzas_jr_tema', TEMA_NOM46={oscuro:'Oscuro',claro:'Claro (para el sol)',auto:'Automático, como tu iPhone',sol:'Con el sol de Sucúa'};
 function temaPref46(){ try{ var v=localStorage.getItem(TEMA_KEY46); return TEMA_NOM46[v]?v:'oscuro'; }catch(e){ return 'oscuro'; } }
-function temaEfectivo46(){ var p=temaPref46(); if(p==='auto') return (window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'claro':'oscuro'; return p; }
+function temaEfectivo46(){ var p=temaPref46(); if(p==='sol') return (typeof solDia60==='function'&&solDia60())?'claro':'oscuro'; if(p==='auto') return (window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches)?'claro':'oscuro'; return p; }
 function temaModal(){
-  var p=temaPref46(), op=[['oscuro','moon','#312e81','Oscuro','El de siempre, ideal de noche'],['claro','sun','#f59e0b','Claro','Se lee mejor con sol, en ruta o en el campo'],['auto','auto','#0d9488','Automático','Cambia solo, igual que tu iPhone']];
+  var p=temaPref46(), op=[['oscuro','moon','#312e81','Oscuro','El de siempre, ideal de noche'],['claro','sun','#f59e0b','Claro','Se lee mejor con sol, en ruta o en el campo'],['auto','auto','#0d9488','Automático','Cambia solo, igual que tu iPhone'],['sol','sun','#ea580c','Con el sol de Sucúa',(typeof solTexto60==='function'?solTexto60():'Claro de día, oscuro de noche')]];
   var ov=_modalBase('tm-modal','Apariencia',op.map(function(o){ return '<button class="tm-op'+(o[0]===p?' sel':'')+'" data-v="'+o[0]+'"><span style="background:'+o[2]+';color:#fff">'+ic46(o[1],19)+'</span><div><b>'+o[3]+'</b><small>'+o[4]+'</small></div><i></i></button>'; }).join('')
     +'<button onclick="document.getElementById(\'tm-modal\').remove()" style="'+_btnP+'background:transparent;color:rgba(255,255,255,0.5);margin-top:8px">Listo</button>');
   [].forEach.call(ov.querySelectorAll('.tm-op'),function(b){ b.onclick=function(){ try{ localStorage.setItem(TEMA_KEY46,b.dataset.v); }catch(e){}
@@ -12578,7 +12889,7 @@ function _t46arbol(root){
   if(!root||root.nodeType!==1) return;
   var els=[root].concat([].slice.call(root.querySelectorAll('[style],[fill],[stroke],[stop-color]'))), tareas=[];
   els.forEach(function(el){
-    if(el.closest&&el.closest('.credit-card,.cu-card')) return;
+    if(el.closest&&el.closest('.credit-card,.cu-card,#splash46')) return;
     var s=el.style, mem=el.__t46||{}, props=[];
     if(s&&s.length){ for(var i=0;i<s.length;i++){ var p=s[i], role=_role46(p); if(!role) continue; var v=s.getPropertyValue(p); if(!v||mem[p]===v) continue; if(role!=='scheme'&&!_hay46(v)&&!/invert\(1\)|data:image\/svg/.test(v)) continue; props.push([p,v,role]); } }
     var at=[]; if(el instanceof SVGElement){ var ma=el.__t46a||{}; ['fill','stroke','stop-color'].forEach(function(a){ var v=el.getAttribute(a); if(v&&_hay46(v)&&!(ma[a]&&ma[a].out===v)) at.push([a,v]); }); }
@@ -12637,7 +12948,7 @@ function _obs46ini(){
   _w43('updateHomeWidget',function(){ homeV46(); });
   document.addEventListener('DOMContentLoaded',function(){
     try{ updateDock(state.currentScreen||'home'); homeV46(); }catch(e){}
-    var sp=document.getElementById('splash46'); if(sp){ setTimeout(function(){ sp.classList.add('out'); setTimeout(function(){ sp.remove(); },500); },650); }
+    var sp=document.getElementById('splash46'); if(sp){ setTimeout(function(){ sp.classList.add('out'); setTimeout(function(){ sp.remove(); },500); },(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)?400:1300); }
   });
 })();
 
@@ -13230,12 +13541,12 @@ function menuAtajo51(btn){
 /* ── 5. Tirar hacia abajo en Inicio para actualizar ── */
 (function(){
   var y0=null, dy=0, sc=null, ind=null;
-  function indic(){ if(ind) return ind; ind=document.createElement('div'); ind.className='ptr51'; ind.innerHTML='<img alt="">'; var s=document.querySelector('#splash46 img'); ind.querySelector('img').src=(s&&s.src)||ICON51||''; document.getElementById('screen-home').appendChild(ind); return ind; }
+  function indic(){ if(ind) return ind; ind=document.createElement('div'); ind.className='ptr51 ptr60'; ind.innerHTML='<i class="drop60"></i>'; document.getElementById('screen-home').appendChild(ind); return ind; }
   document.addEventListener('touchstart',function(e){ sc=document.querySelector('#screen-home .home-scroll'); if(state.currentScreen!=='home'||!sc||!sc.contains(e.target)||sc.scrollTop>0||_abierto51()){ y0=null; return; } y0=e.touches[0].clientY; dy=0; },{passive:true});
   document.addEventListener('touchmove',function(e){ if(y0===null) return; dy=e.touches[0].clientY-y0; if(dy<=0||sc.scrollTop>0){ if(ind) ind.style.opacity=0; return; }
-    var i=indic(), k=Math.min(1,dy/90); i.style.opacity=k; i.style.transform='translateX(-50%) translateY('+Math.min(70,dy*0.5)+'px) rotate('+(dy*2)+'deg) scale('+(0.6+0.4*k)+')'; i.classList.toggle('listo',dy>90); },{passive:true});
+    var i=indic(), k=Math.min(1,dy/90), st=Math.max(0,Math.min(1,(dy-40)/70)); i.style.opacity=Math.min(1,k*1.4); i.style.transform='translateX(-50%) translateY('+Math.min(70,dy*0.5)+'px)'; var dr=i.firstChild; if(dr){ dr.style.transform='scale('+(0.55+0.45*k-0.12*st)+','+(0.55+0.45*k+0.55*st)+')'; } var ya=dy>90; if(ya&&!i.classList.contains('listo')) hap50(); i.classList.toggle('listo',ya); },{passive:true});
   document.addEventListener('touchend',function(){ if(y0===null) return; var d=dy; y0=null; if(!ind) return;
-    if(d>90){ hap50(); ind.classList.add('gira'); actualizar51().then(function(){ setTimeout(function(){ ind.classList.remove('gira','listo'); ind.style.opacity=0; },350); }); }
+    if(d>90){ hap50(); if(ind.firstChild) ind.firstChild.style.transform=''; ind.classList.add('gira'); actualizar51().then(function(){ setTimeout(function(){ ind.classList.remove('gira','listo'); ind.style.opacity=0; },350); }); }
     else { ind.style.opacity=0; ind.classList.remove('listo'); } },{passive:true});
 })();
 function actualizar51(){
@@ -13290,7 +13601,7 @@ _w43('renderEstad',function(){ if(_vzAnim51) return; _vzAnim51=true; var b=docum
 document.addEventListener('scroll',function(e){ var sc=e.target; if(!sc.classList||!sc.classList.contains('scroll-content')) return; var nh=sc.parentElement&&sc.parentElement.querySelector(':scope > .nav-header'); if(nh) nh.classList.toggle('c51',sc.scrollTop>28); },true);
 
 /* ── 13. Pantalla de bloqueo ── */
-var ICON51=(function(){ var s=document.querySelector('#splash46 img'); return s?s.src:''; })();
+var ICON51=(function(){ var s=document.querySelector('#splash46 img'); return s?s.src:'apple-touch-icon.png'; })();
 _w43('mostrarBloqueo',function(){ var ov=document.getElementById('lock-screen'); if(!ov||ov.classList.contains('lock51')) return; ov.classList.add('lock51');
   var p=state.perfil||{}, h=new Date().getHours(), sal=h<12?'Buenos días':h<19?'Buenas tardes':'Buenas noches';
   var top=ov.firstElementChild, nm=top&&top.nextElementSibling; if(top) top.outerHTML='<img class="lock51-ic" src="'+ICON51+'" alt="">'; if(nm) nm.outerHTML='<div class="lock51-h">'+sal+(p.nombre?', '+esc(p.nombre.split(' ')[0]):'')+'</div>'; });
@@ -14105,6 +14416,409 @@ _w43('renderCuentas',function(){
 
 /* Al desplazar, las luces del fondo se detienen para que el desplazamiento vaya fluido */
 (function(){ var t=0; document.addEventListener('scroll',function(){ document.body.classList.add('scr59'); clearTimeout(t); t=setTimeout(function(){ document.body.classList.remove('scr59'); },350); },{passive:true,capture:true}); })();
+
+/* ══ v6.0 · Segunda ronda: el iPhone como parte del diseño, gestos, anillos, día de pago y más ══ */
+function pref60(k,def){ try{ var v=localStorage.getItem('fjr60_'+k); return v==null?def:v==='1'; }catch(e){ return def; } }
+function setPref60(k,v){ try{ localStorage.setItem('fjr60_'+k,v?'1':'0'); }catch(e){} }
+
+/* ── Sol de Sucúa (salida y puesta, cálculo astronómico NOAA) ── */
+function sol60(d){
+  d=d||new Date(); var lat=-2.468, lon=-78.167, tz=-5, N=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5), g=2*Math.PI/365*(N-1);
+  var eq=229.18*(0.000075+0.001868*Math.cos(g)-0.032077*Math.sin(g)-0.014615*Math.cos(2*g)-0.040849*Math.sin(2*g));
+  var de=0.006918-0.399912*Math.cos(g)+0.070257*Math.sin(g)-0.006758*Math.cos(2*g)+0.000907*Math.sin(2*g)-0.002697*Math.cos(3*g)+0.00148*Math.sin(3*g);
+  var la=lat*Math.PI/180, ha=Math.acos(Math.cos(90.833*Math.PI/180)/(Math.cos(la)*Math.cos(de))-Math.tan(la)*Math.tan(de))*180/Math.PI;
+  return {sale:720-4*(lon+ha)-eq+tz*60, pone:720-4*(lon-ha)-eq+tz*60};
+}
+function _hm60(m){ m=Math.round(m); return ('0'+Math.floor(m/60)).slice(-2)+':'+('0'+(m%60)).slice(-2); }
+function solDia60(){ var d=new Date(), s=sol60(d), m=d.getHours()*60+d.getMinutes(); return m>=s.sale&&m<s.pone; }
+function solTexto60(){ var s=sol60(); return 'Claro de '+_hm60(s.sale)+' a '+_hm60(s.pone)+', oscuro el resto'; }
+setInterval(function(){ try{ if(temaPref46()==='sol') aplicarTema46(temaEfectivo46()); }catch(e){} },60000);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden) try{ if(temaPref46()==='sol') aplicarTema46(temaEfectivo46()); }catch(e){} });
+
+/* ── Ajustes nuevos dentro de "Apariencia": reflejos al inclinar y sonidos ── */
+_w43('temaModal',function(){
+  var ov=document.getElementById('tm-modal'); if(!ov) return; var ult=[].slice.call(ov.querySelectorAll('.tm-op')).pop(); if(!ult) return;
+  var sw=function(id,ic,col,t,s,on){ return '<button class="tm-op sw60'+(on?' sel':'')+'" id="'+id+'" role="switch" aria-checked="'+(on?'true':'false')+'"><span style="background:'+col+';color:#fff">'+ic+'</span><div><b>'+t+'</b><small>'+s+'</small></div><em class="tg60"><i></i></em></button>'; };
+  ult.insertAdjacentHTML('afterend','<div class="tm-sep60">Efectos</div>'
+    +sw('sw60-tilt',ic46('spark',19),'#7c3aed','Reflejos al inclinar el teléfono','El vidrio refleja la luz cuando mueves el iPhone',pref60('tilt',false))
+    +sw('sw60-son',ic46('bell',19),'#0ea5e9','Sonidos al registrar','Un “ding” al recibir dinero y un “tic” al guardar un gasto',pref60('son',true)));
+  var ponSw=function(b,v){ b.classList.toggle('sel',v); b.setAttribute('aria-checked',v?'true':'false'); };
+  var bt=document.getElementById('sw60-tilt'), bs=document.getElementById('sw60-son');
+  bt.onclick=function(){ var v=!pref60('tilt',false); if(!v){ setPref60('tilt',false); tiltParar60(); ponSw(bt,false); return; }
+    tiltPedir60().then(function(ok){ setPref60('tilt',ok); ponSw(bt,ok); if(!ok) showToast('El iPhone no dio permiso para usar el movimiento'); }); };
+  bs.onclick=function(){ var v=!pref60('son',true); setPref60('son',v); ponSw(bs,v); if(v){ sonido60('in'); } };
+});
+
+/* ── 1a. El vidrio refleja la luz al inclinar el teléfono ── */
+var _tl60={on:false,x:0,y:0,tx:0,ty:0,raf:0};
+function _tlEv60(e){ if(e.gamma==null) return; _tl60.tx=Math.max(-1,Math.min(1,e.gamma/30)); _tl60.ty=Math.max(-1,Math.min(1,((e.beta||0)-45)/30));
+  if(!_tl60.raf) _tl60.raf=requestAnimationFrame(function paso(){ _tl60.x+=(_tl60.tx-_tl60.x)*0.12; _tl60.y+=(_tl60.ty-_tl60.y)*0.12;
+    var r=document.documentElement.style; r.setProperty('--tx',_tl60.x.toFixed(3)); r.setProperty('--ty',_tl60.y.toFixed(3));
+    _tl60.raf=(Math.abs(_tl60.tx-_tl60.x)+Math.abs(_tl60.ty-_tl60.y)>0.004)?requestAnimationFrame(paso):0; }); }
+function tiltIniciar60(){ if(_tl60.on||rm59()) return; _tl60.on=true; document.documentElement.classList.add('tilt60'); window.addEventListener('deviceorientation',_tlEv60); reflejos60(); }
+function tiltParar60(){ _tl60.on=false; document.documentElement.classList.remove('tilt60'); window.removeEventListener('deviceorientation',_tlEv60); }
+function tiltPedir60(){
+  var D=window.DeviceOrientationEvent; if(!D) return Promise.resolve(false);
+  if(typeof D.requestPermission==='function') return D.requestPermission().then(function(r){ if(r==='granted'){ tiltIniciar60(); return true; } return false; },function(){ return false; });
+  tiltIniciar60(); return Promise.resolve(true); }
+function reflejos60(){ if(!_tl60.on) return; [].forEach.call(document.querySelectorAll('.widget-balance,.cu-card,.credit-card,.cu-hero'),function(c){ if(!c.querySelector(':scope > .tl60')){ var s=document.createElement('span'); s.className='tl60'; s.setAttribute('aria-hidden','true'); c.appendChild(s); } }); }
+/* Si ya lo activaste: en iOS el permiso se confirma con el primer toque */
+if(pref60('tilt',false)){ var _tlP60=function(){ document.removeEventListener('pointerdown',_tlP60,true); tiltPedir60(); };
+  if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function') document.addEventListener('pointerdown',_tlP60,true); else setTimeout(tiltIniciar60,500); }
+
+/* ── 1b y 1c. Cápsula viva junto a la isla y cabecera que se transforma ── */
+var _isla60={top:null};
+function safeTop60(){ if(_isla60.top==null){ var p=document.createElement('div'); p.style.cssText='position:fixed;top:0;left:0;height:env(safe-area-inset-top,0px);width:1px;visibility:hidden'; document.body.appendChild(p); _isla60.top=p.offsetHeight; p.remove(); } return _isla60.top; }
+function isla60(){
+  var el=document.getElementById('isla60'); if(!el){ el=document.createElement('button'); el.id='isla60'; el.type='button'; el.setAttribute('aria-label','Hoy puedes gastar. Toca para subir');
+    el.onclick=function(){ var sc=document.querySelector('#screen-home .home-scroll'); if(sc) sc.scrollTo({top:0,behavior:rm59()?'auto':'smooth'}); hap50(); };
+    document.body.appendChild(el); el.classList.toggle('dyn',safeTop60()>=50&&(navigator.standalone||matchMedia('(display-mode: standalone)').matches)); }
+  return el; }
+function pintarIsla60(){ var h=null; try{ h=hoy54(); }catch(e){} var el=isla60(); if(!h) return;
+  var cero=h.A<=0, pas=h.queda<0, v=cero?'Solo lo necesario':pas?'−'+fmt$(-h.queda):fmt$(h.queda);
+  el.innerHTML='<span class="i60">'+ic46('pulse',14)+'</span><span class="t60">Hoy</span><b class="'+(cero||pas?'mal':'')+'">'+v+'</b>'; }
+function scrollHome60(){
+  var sc=document.querySelector('#screen-home .home-scroll'), hd=document.querySelector('#screen-home .app-header'); if(!sc||!hd) return;
+  var y=sc.scrollTop, enInicio=state.currentScreen==='home'&&!document.body.classList.contains('in51');
+  hd.classList.toggle('hdc60',enInicio&&y>70);
+  var hy=document.querySelector('#home-hoy54 .hy54'), el=isla60(), ver=false;
+  if(enInicio&&hy){ var r=hy.getBoundingClientRect(), hr=hd.getBoundingClientRect(); ver=r.bottom<hr.bottom+4; }
+  if(ver&&!el.classList.contains('on')){ pintarIsla60(); if(!el.classList.contains('dyn')) el.style.top=Math.round(hd.getBoundingClientRect().bottom+8)+'px'; }
+  el.classList.toggle('on',ver);
+}
+document.addEventListener('scroll',function(e){ if(e.target&&e.target.classList&&e.target.classList.contains('home-scroll')) scrollHome60(); },{passive:true,capture:true});
+_w43('updateDock',function(){ scrollHome60(); });
+_w43('updateHomeWidget',function(){
+  var hd=document.querySelector('#screen-home .app-header'), tot=document.getElementById('home-total'); if(!hd||!tot) return;
+  var m=hd.querySelector('.hd-mini60'); if(!m){ var f=hd.querySelector('.hd-fecha'); if(!f) return; m=document.createElement('div'); m.className='hd-mini60'; f.insertAdjacentElement('afterend',m); }
+  var vv=(typeof _num51!=='undefined'&&_num51.total!=null&&!document.documentElement.classList.contains('priv51'))?fmt$(_num51.total):tot.textContent; m.innerHTML='Disponible <b>'+esc(vv)+'</b>'; if(document.getElementById('isla60')&&document.getElementById('isla60').classList.contains('on')) pintarIsla60();
+});
+
+/* ── 1d. El contenido se desvanece bajo la barra de vidrio ── */
+(function(){ var e=document.createElement('div'); e.className='edge60'; e.setAttribute('aria-hidden','true'); document.body.appendChild(e); })();
+
+/* ── 2a. Mantener presionado un movimiento: menú contextual estilo iOS ── */
+var _lp60={t:0,x:0,y:0,row:null,trago:0};
+document.addEventListener('pointerdown',function(e){ var row=e.target.closest&&e.target.closest('#historial-list .hv-row'); if(!row) return;
+  clearTimeout(_lp60.t); _lp60={x:e.clientX,y:e.clientY,row:row,trago:0,t:setTimeout(function(){ menuTx60(row); },460)}; },{passive:true,capture:true});
+document.addEventListener('pointermove',function(e){ if(_lp60.row&&(Math.abs(e.clientX-_lp60.x)>8||Math.abs(e.clientY-_lp60.y)>8)){ clearTimeout(_lp60.t); _lp60.row=null; } },{passive:true,capture:true});
+['pointerup','pointercancel'].forEach(function(n){ document.addEventListener(n,function(){ clearTimeout(_lp60.t); },{passive:true,capture:true}); });
+document.addEventListener('contextmenu',function(e){ if(e.target.closest&&e.target.closest('#historial-list .hv-row')) e.preventDefault(); },true);
+function menuTx60(row){
+  var id=_txId51(row); if(id==null) return; var t=state.transactions.find(function(x){return x.id===id;}); if(!t) return;
+  _lp60.trago=Date.now(); _lp60.row=null; hap50();
+  var r=row.getBoundingClientRect(), ov=document.createElement('div'); ov.className='ctx60'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','Opciones del movimiento');
+  var cl=row.cloneNode(true); cl.removeAttribute('onclick'); cl.classList.add('ctx60-row'); cl.style.cssText='left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px';
+  var foto=false; try{ foto=fotoTiene(id); }catch(e){}
+  var it=function(a,ic,t,cls){ return '<button data-a="'+a+'" class="'+(cls||'')+'"><span>'+t+'</span>'+ic46(ic,19)+'</button>'; };
+  var menu=document.createElement('div'); menu.className='ctx60-m';
+  menu.innerHTML=it('ed','doc','Editar')+it('rep','repeat','Duplicar hoy')+(foto?it('foto','receipt','Ver factura'):'')+it('del','alert','Borrar','del');
+  ov.appendChild(cl); ov.appendChild(menu); document.body.appendChild(ov);
+  var abajo=r.bottom+12+menu.offsetHeight<innerHeight-90; menu.style.left=Math.max(14,Math.min(r.left+12,innerWidth-menu.offsetWidth-14))+'px';
+  menu.style.top=(abajo?r.bottom+10:Math.max(60,r.top-menu.offsetHeight-10))+'px'; menu.style.transformOrigin=(abajo?'20% 0':'20% 100%');
+  requestAnimationFrame(function(){ ov.classList.add('on'); });
+  var cerrar=function(f){ ov.classList.remove('on'); ov.classList.add('out'); setTimeout(function(){ ov.remove(); if(f) f(); },220); };
+  var armado=false; ov.addEventListener('pointerdown',function(){ armado=true; });
+  ov.addEventListener('click',function(e){ e.stopPropagation(); if(!armado) return; /* el clic de soltar el dedo no cierra el menú */ var b=e.target.closest('button[data-a]'); if(!b){ cerrar(); return; } var a=b.dataset.a;
+    cerrar(function(){ if(a==='ed') editarTx51(id); else if(a==='rep') repetirTx51(id); else if(a==='del') borrarTx51(id); else if(a==='foto') verFoto(id); }); });
+}
+
+/* ── 2b. Del movimiento a su detalle: el ícono vuela ── */
+var _vu60=null;
+document.addEventListener('click',function(e){ var row=e.target.closest&&e.target.closest('.hv-row'); if(!row) return; var ic=row.querySelector('.hv-ic'); if(!ic) return;
+  _vu60={t:Date.now(),r:ic.getBoundingClientRect(),html:ic.innerHTML,bg:ic.getAttribute('style')||'',cls:ic.className}; },true);
+_w43('showDetail',function(){
+  var v=_vu60; _vu60=null; var tt=document.getElementById('modal-title'); if(!tt) return;
+  var b=tt.querySelector('.dt60'); if(b) b.remove(); if(!v||Date.now()-v.t>600) return;
+  b=document.createElement('span'); b.className='dt60 '+v.cls.replace(/\bhv-ic\b/,''); b.setAttribute('style',v.bg); b.innerHTML=v.html; tt.insertBefore(b,tt.firstChild);
+  if(rm59()) return; var sh=document.querySelector('#detail-modal .modal-sheet'); if(sh){ sh.classList.add('vu60'); setTimeout(function(){ sh.classList.remove('vu60'); },600); }
+  requestAnimationFrame(function(){ var d=b.getBoundingClientRect(); if(!d.width) return; var f=document.createElement('span'); f.className='vu60f '+v.cls; f.setAttribute('style',v.bg+';left:'+v.r.left+'px;top:'+v.r.top+'px;width:'+v.r.width+'px;height:'+v.r.height+'px'); f.innerHTML=v.html; document.body.appendChild(f);
+    b.style.opacity='0'; var dx=d.left-v.r.left, dy=d.top-v.r.top, s=d.width/v.r.width;
+    var a=f.animate([{transform:'none'},{transform:'translate('+dx*0.5+'px,'+(dy*0.5-40)+'px) scale('+(1+s)/1.6+')',offset:0.55},{transform:'translate('+dx+'px,'+dy+'px) scale('+s+')'}],{duration:480,easing:'cubic-bezier(.3,.7,.25,1)',fill:'forwards'});
+    a.onfinish=function(){ b.style.opacity=''; f.remove(); }; });
+});
+
+/* ── 3a. Anillos del día ── */
+function datosAnillos60(){
+  var h=null; try{ h=hoy54(); }catch(e){} var ym=mesLocal(), hoy=hoyLocal(), o={};
+  o.gasto={v:h?h.gHoy:0,de:h?h.A:0}; o.gasto.p=o.gasto.de>0?o.gasto.v/o.gasto.de:(o.gasto.v>0?1:0);
+  var pa=X().planAhorro, meta=pa?r2((pa.quincena||0)+(pa.fin||0)):0, real=0; try{ real=planMes46(ym).ahReal||0; }catch(e){}
+  o.ahorro={v:r2(real),de:meta,p:meta>0?real/meta:0,sin:!meta};
+  var pd=0, dias=0, ok=0; try{ pd=planDiario53(ym); }catch(e){} var dia=+hoy.slice(8,10);
+  if(pd>0&&dia>1){ var m=porDia47(ym+'-01',addDias(hoy,-1)); for(var d=1;d<dia;d++){ var f=ym+'-'+('0'+d).slice(-2); dias++; if((m[f]||0)<=pd+0.005) ok++; } }
+  o.plan={v:ok,de:dias,p:dias?ok/dias:0,pd:pd};
+  return o;
+}
+var _an60=null;
+function htmlAnillos60(){
+  var o=datosAnillos60(), R=[46,34,22], C=R.map(function(r){ return 2*Math.PI*r; });
+  var cls=['g','a','p'], ps=[o.gasto.p,o.ahorro.p,o.plan.p];
+  var svg='<svg viewBox="0 0 110 110" class="an60-s" role="img" aria-label="Anillos del día">'+R.map(function(r,i){ var p=Math.max(0,Math.min(1.999,ps[i])), L=C[i]*Math.min(1,p), L2=p>1?C[i]*(p-1):0;
+    return '<circle class="tr '+cls[i]+'" cx="55" cy="55" r="'+r+'"/><circle class="v '+cls[i]+'" cx="55" cy="55" r="'+r+'" stroke-dasharray="'+L.toFixed(1)+' '+C[i].toFixed(1)+'" data-l="'+L.toFixed(1)+'"/>'+(L2?'<circle class="v2 '+cls[i]+'" cx="55" cy="55" r="'+r+'" stroke-dasharray="'+L2.toFixed(1)+' '+C[i].toFixed(1)+'"/>':''); }).join('')+'</svg>';
+  var fila=function(c,t,v,s){ return '<div class="an60-r '+c+'"><i></i><div><small>'+t+'</small><b>'+v+'</b>'+(s?'<em>'+s+'</em>':'')+'</div></div>'; };
+  return '<div class="h46-card an60" role="button" tabindex="0" onclick="detalleAnillos60()">'+svg+'<div class="an60-l">'
+    +fila('g','Gasto de hoy',fmt$(o.gasto.v)+' <span>de '+fmt$(o.gasto.de)+'</span>',o.gasto.p>1?'Te pasaste del límite':'')
+    +fila('a','Ahorro del mes',o.ahorro.sin?'<span>Sin plan de ahorro</span>':fmt$(o.ahorro.v)+' <span>de '+fmt$(o.ahorro.de)+'</span>','')
+    +fila('p','Días en tu plan',o.plan.de?o.plan.v+' <span>de '+o.plan.de+' días</span>':'<span>Empieza mañana</span>','')
+    +'</div></div>';
+}
+function pintarAnillos60(){
+  var hy=document.getElementById('home-hoy54'); if(!hy) return; var el=document.getElementById('home-anillos60');
+  if(!el){ el=document.createElement('div'); el.id='home-anillos60'; el.className='h46'; hy.insertAdjacentElement('afterend',el); }
+  var html=htmlAnillos60(); if(el._h===html) return; el._h=html; el.innerHTML='<div class="h46-h"><span>Tus anillos de hoy</span></div>'+html;
+  if(rm59()) return; var prev=_an60; _an60={};
+  [].forEach.call(el.querySelectorAll('circle.v'),function(c,i){ var L=+c.dataset.l, C=+c.getAttribute('stroke-dasharray').split(' ')[1], de=prev?prev[i]||0:0; _an60[i]=L;
+    if(c.animate&&Math.abs(de-L)>0.5) c.animate([{strokeDasharray:de+' '+C},{strokeDasharray:L+' '+C}],{duration:prev?700:1300,delay:prev?0:300+i*120,easing:'cubic-bezier(.3,.8,.25,1)',fill:'backwards'}); });
+}
+function detalleAnillos60(){
+  var o=datosAnillos60();
+  _modalBase('an60m','Tus anillos de hoy','<div class="fl52-p">Tres señales rápidas de cómo vas. Lo ideal: el rosado sin cerrarse del todo y el verde y el azul cerrados.</div>'
+    +'<div class="an60-d g"><i></i><div><b>Gasto de hoy</b><small>Llevas '+fmt$(o.gasto.v)+' de los '+fmt$(o.gasto.de)+' que puedes gastar hoy (ya con tu ahorro y colchón separados). Si da más de una vuelta, te pasaste.</small></div></div>'
+    +'<div class="an60-d a"><i></i><div><b>Ahorro del mes</b><small>'+(o.ahorro.sin?'Aún no tienes plan de ahorro. Créalo en Plan › Metas para llenar este anillo.':'Llevas '+fmt$(o.ahorro.v)+' apartados de los '+fmt$(o.ahorro.de)+' de tu plan de este mes.')+'</small></div></div>'
+    +'<div class="an60-d p"><i></i><div><b>Días en tu plan</b><small>'+(o.plan.de?'De '+o.plan.de+' días de este mes, en '+o.plan.v+' tu gasto del día a día no pasó de tu plan diario ('+fmt$(o.plan.pd)+').':'Se empieza a llenar desde mañana.')+'</small></div></div>'
+    +'<button onclick="document.getElementById(\'an60m\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>');
+}
+_w43('updateHomeWidget',function(){ try{ pintarAnillos60(); }catch(e){} try{ tinte60(); }catch(e){} try{ diaPago60(); }catch(e){} try{ reflejos60(); }catch(e){} });
+_w43('pintarHoy54',function(){ try{ pintarAnillos60(); }catch(e){} });
+
+/* ── 3b. El cuadro de dinero cambia de tono según cómo vas ── */
+function tinte60(){
+  var w=document.querySelector('.widget-balance'); if(!w) return; var h=null; try{ h=hoy54(); }catch(e){} if(!h) return;
+  var pd=0; try{ pd=planDiario53(); }catch(e){} var est=(h.pr&&h.pr.min&&h.pr.min.bal<0)||h.A<=0?'mal':(pd>0&&h.A<pd*0.6)?'at':'ok';
+  var t=w.querySelector(':scope > .tn60'); if(!t){ t=document.createElement('span'); t.className='tn60'; t.setAttribute('aria-hidden','true'); w.insertBefore(t,w.firstChild); }
+  t.className='tn60 '+est; w.dataset.est60=est;
+}
+
+/* ── 3c. Esta semana como línea de tiempo viva ── */
+_w43('hoy52',function(){ semana60(); });
+_w43('homeV46',function(){ semana60(); });
+_w43('semana52',function(){ semana60(); });
+function semana60(){
+  var c=document.querySelector('#home-semana .h46-card'); if(!c||c.querySelector('.ev60-hoy')) return; var evs=c.querySelectorAll('.ev52'); if(!evs.length) return;
+  c.classList.add('tlw60'); var h=null; try{ h=hoy54(); }catch(e){} var d=new Date();
+  c.insertAdjacentHTML('afterbegin','<div class="ev60-hoy"><i></i><span><b>Hoy</b> · '+DIAS[d.getDay()].slice(0,3).toLowerCase()+' '+d.getDate()+'</span>'+(h?'<small>'+(h.queda>=0?'te quedan '+fmt$(h.queda):'te pasaste '+fmt$(-h.queda))+'</small>':'')+'</div>');
+  if(rm59()) return; [].forEach.call(c.querySelectorAll('.ev52'),function(e,i){ if(e.animate) e.animate([{opacity:0,transform:'translateX(-10px)'},{opacity:1,transform:'none'}],{duration:420,delay:150+i*70,easing:'cubic-bezier(.2,.8,.25,1)',fill:'backwards'}); });
+}
+
+/* ── 4a. Teclado de vidrio: el número salta y toma color ── */
+_w43('_kpPinta50',function(){
+  var e=document.getElementById('kp50'); if(!e) return; var v=e.querySelector('.kp-val'); if(!v) return;
+  var ing=KP50.inp&&KP50.inp.id==='f-monto'&&state.currentTipo==='INGRESO'; e.classList.toggle('ing60',!!ing); e.classList.toggle('eg60',!ing&&!!KP50.val);
+  var n=(KP50.val||'').length; v.style.setProperty('--kpz',n>6?0.82:n>4?0.92:1);
+  if(e._u60!==KP50.val&&e._u60!=null&&!rm59()&&v.animate) v.animate([{transform:'scale(1.12)'},{transform:'scale(.97)'},{transform:'scale(1)'}],{duration:280,easing:'cubic-bezier(.3,1.5,.5,1)'});
+  e._u60=KP50.val;
+});
+
+/* ── 4b. Categorías según la hora y rebote al elegir ── */
+(function(){ var o=window.txCatsOrdenadas; if(typeof o!=='function') return;
+  window.txCatsOrdenadas=function(){ var l=o.apply(this,arguments); try{
+    var ahora=new Date(), hm=ahora.getHours()+ahora.getMinutes()/60, desde=addDias(hoyLocal(),-120), fh={}, f={};
+    state.transactions.forEach(function(t){ if(t.tipo!==state.currentTipo||t.fecha<desde) return; f[t.cat]=(f[t.cat]||0)+1;
+      if(t.id>1.6e12){ var d=new Date(t.id), h=d.getHours()+d.getMinutes()/60, dif=Math.abs(h-hm); if(Math.min(dif,24-dif)<=1.5) fh[t.cat]=(fh[t.cat]||0)+1; } });
+    var bono={}; if(state.currentTipo!=='INGRESO'){ if(hm<10.5){ bono['Alimentación']=3; bono['Transporte']=2.5; } else if(hm<15.5){ bono['Alimentación']=3; } else { bono['Alimentación']=2; bono['Entretenimiento/Salidas']=1.5; bono['Hogar']=1; } }
+    var sc=function(c){ return (f[c]||0)+3*(fh[c]||0)+(bono[c]||0); };
+    return l.slice().sort(function(a,b){ return sc(b)-sc(a)||l.indexOf(a)-l.indexOf(b); }); }catch(e){ return l; } }; })();
+_w43('txElegirCat',function(){ if(rm59()) return; var s=document.querySelector('#tx-cats .tx-cat.sel'); if(s&&s.animate) s.animate([{transform:'scale(.9)'},{transform:'scale(1.08)'},{transform:'scale(1)'}],{duration:380,easing:'cubic-bezier(.3,1.6,.5,1)'}); });
+
+/* ── 4c. Sonidos sutiles ── */
+var _ac60=null;
+function sonido60(tipo){
+  if(!pref60('son',true)) return; try{ if(!_ac60){ var A=window.AudioContext||window.webkitAudioContext; if(!A) return; _ac60=new A(); } if(_ac60.state==='suspended') _ac60.resume();
+    var t=_ac60.currentTime, nota=function(f,ini,dur,vol,forma){ var o=_ac60.createOscillator(), g=_ac60.createGain(); o.type=forma||'sine'; o.frequency.value=f;
+      g.gain.setValueAtTime(0.0001,t+ini); g.gain.exponentialRampToValueAtTime(vol,t+ini+0.012); g.gain.exponentialRampToValueAtTime(0.0001,t+ini+dur); o.connect(g); g.connect(_ac60.destination); o.start(t+ini); o.stop(t+ini+dur+0.02); };
+    if(tipo==='in'){ nota(1318.5,0,0.42,0.16); nota(1975.5,0.09,0.55,0.12); nota(2637,0.09,0.4,0.03); }
+    else { nota(1046.5,0,0.09,0.09,'triangle'); nota(1568,0.035,0.08,0.04); }
+  }catch(e){} }
+_w43('confirma50',function(r,t){ if(t) sonido60(t.tipo==='INGRESO'?'in':'out'); });
+
+/* ── 5b. Día de pago ── */
+function diaPago60(){
+  var wa=document.querySelector('#screen-home .widget-area'); if(!wa) return; var hoy=hoyLocal(), el=document.getElementById('home-pago60');
+  var ing=state.transactions.filter(function(t){ return t.fecha===hoy&&t.tipo==='INGRESO'&&!t.arch&&natOf(t)==='operativo'&&(t.cat==='Sueldo'||/sueldo|quincena|anticipo/i.test(t.desc||''))&&!/comisi/i.test(t.desc||''); });
+  var tot=r2(ing.reduce(function(s,t){return s+t.monto;},0));
+  if(!tot||ls59('pagoX')===hoy){ if(el) el.remove(); return; }
+  var pa=X().planAhorro, dia=+hoy.slice(8,10), ah=pa?r2(Math.min(tot,dia<=20?(pa.quincena||0):(pa.fin||0))):0, fij=0, sig=null, pr=null;
+  try{ pr=(window._pfRaw56||proyectarFlujo)(); var evs=(pr.ev||[]).filter(function(e){ return e.fecha>hoy; }); sig=evs.filter(function(e){ return e.tipo==='ING'&&(e.clave==='q'||e.clave==='s'); })[0];
+    fij=r2(evs.filter(function(e){ return e.tipo!=='ING'&&!e.ahorro&&(!sig||e.fecha<sig.fecha); }).reduce(function(s,e){ return s+e.monto; },0)); }catch(e){}
+  var libre=r2(tot-ah-fij), dias=sig?Math.max(1,difDias(hoy,sig.fecha)):null, w=function(v){ return Math.max(0,Math.min(100,v/tot*100)).toFixed(1); };
+  var html='<div class="pg60c" role="region" aria-label="Día de pago"><button class="pg60x" aria-label="Ocultar" onclick="ls59(\'pagoX\',hoyLocal());document.getElementById(\'home-pago60\').remove()">'+ic46('plus',16)+'</button>'
+    +'<div class="pg60h"><span class="pg60e">🎉</span><div><small>¡Día de pago!</small><b>Entró '+fmt$(tot)+'</b></div></div>'
+    +'<div class="pg60b"><i class="a" style="width:'+w(ah)+'%"></i><i class="f" style="width:'+w(fij)+'%"></i><i class="l" style="width:'+w(Math.max(0,libre))+'%"></i></div>'
+    +'<div class="pg60l"><div class="a"><i></i><small>Ahorro</small><b>'+fmt$(ah)+'</b></div><div class="f"><i></i><small>Fijos'+(sig?' hasta el '+fechaCorta(sig.fecha):'')+'</small><b>'+fmt$(fij)+'</b></div><div class="l"><i></i><small>Día a día</small><b>'+fmt$(Math.max(0,libre))+'</b></div></div>'
+    +'<p>'+(libre>0?(dias?'Te alcanza para unos <b>'+fmt$(r2(libre/dias))+' por día</b> hasta tu próximo cobro.':'Lo que queda es para tu día a día.'):'Tus fijos superan este pago: lo que falta sale de tu saldo.')+'</p></div>';
+  if(!el){ el=document.createElement('div'); el.id='home-pago60'; wa.insertBefore(el,wa.firstChild); }
+  if(el._h===html) return; var nuevo=!el._h; el._h=html; el.innerHTML=html;
+  if(nuevo&&!rm59()){ [].forEach.call(el.querySelectorAll('.pg60b i'),function(b,i){ if(b.animate) b.animate([{transform:'scaleX(0)'},{transform:'scaleX(1)'}],{duration:700,delay:300+i*160,easing:'cubic-bezier(.3,.9,.25,1)',fill:'backwards'}); });
+    if(ls59('pagoCf')!==hoy){ ls59('pagoCf',hoy); setTimeout(function(){ confeti59(90); },700); } }
+}
+
+/* ── 5c. Estados vacíos con ilustración animada ── */
+(function(){ var v=window.vacio50; if(typeof v!=='function') return;
+  window.vacio50=function(texto){ var h=v.apply(this,arguments), k=/gasto/i.test(texto)?'pig':/semana|tranquila/i.test(texto)?'cal':/encontr/i.test(texto)?'lupa':'cal';
+    return h.replace('class="vac50"','class="vac50 v60-'+k+'"'); }; })();
+
+/* ══ v6.1 · Aviso del sueldo de ECUAQUIMICA + Salud financiera rediseñada ══ */
+
+/* ── 1. ¿Ya te llegó tu sueldo? ──
+   El día de pago (15 y último día; si cae sábado o domingo, el viernes antes) se pregunta desde las 12:00.
+   "Aún no" lo esconde por hoy; los días siguientes se pregunta desde que abres la app, hasta que el depósito esté registrado. */
+function _esSueldoTx61(t){ return t.tipo==='INGRESO'&&!t.arch&&natOf(t)==='operativo'&&(t.cat==='Sueldo'||/sueldo|quincena|anticipo/i.test(t.desc||''))&&!/comisi/i.test(t.desc||''); }
+function _registrado61(e){
+  var a=addDias(e.fecha,-5), b=addDias(e.fecha,20), q=e.clave==='q', cfg=cfgIngresos();
+  return state.transactions.some(function(t){ if(!_esSueldoTx61(t)||t.fecha<a||t.fecha>b) return false;
+    var esQ=/quincena|anticipo/i.test(t.desc||''), esS=/sueldo/i.test(t.desc||'')&&!esQ;
+    if(q) return esQ||(!esS&&cfg.quincena>0&&Math.abs(t.monto-cfg.quincena)<=Math.max(5,cfg.quincena*0.15));
+    return esS||(!esQ&&Math.abs(t.monto-e.monto)<=Math.max(10,e.monto*0.3)); });
+}
+function sueldoPendiente61(){
+  var hoy=hoyLocal(), h=new Date().getHours(), cfg=cfgIngresos(), evs=[];
+  try{ evs=eventosProgramados(addDias(hoy,-20),hoy).filter(function(e){ return (e.clave==='q'||e.clave==='s')&&e.fecha>=cfg.fechaIngreso; }); }catch(e){ return null; }
+  evs.sort(function(a,b){ return a.fecha<b.fecha?-1:1; });
+  for(var i=0;i<evs.length;i++){ var e=evs[i];
+    if(e.fecha===hoy&&h<12) continue;                  // el día de pago, solo después del mediodía
+    if(_registrado61(e)) continue;
+    return {clave:e.clave,fecha:e.fecha,monto:e.monto,key:e.clave+'_'+e.fecha,atraso:difDias(e.fecha,hoy),nombre:e.clave==='q'?'quincena':'sueldo de fin de mes'};
+  }
+  return null;
+}
+function _pospuesto61(p){ return ls59('sp61_'+p.key)===hoyLocal(); }
+function pintarSueldo61(){
+  var wa=document.querySelector('#screen-home .widget-area'); if(!wa) return; var el=document.getElementById('home-sueldo61'), p=sueldoPendiente61();
+  if(!p||_pospuesto61(p)){ if(el) el.remove(); return; }
+  var html='<div class="sd61" role="region" aria-label="Confirmar sueldo">'
+    +'<div class="sd61-t"><span class="sd61-lg"><img class="lg57" src="'+LOGO_EQ+'" alt="ECUAQUIMICA"></span><div><b>¿Ya te llegó tu '+p.nombre+'?</b><small>'+(p.atraso>0?'Tocaba el '+fechaCorta(p.fecha)+(p.atraso===1?' (ayer)':' (hace '+p.atraso+' días)'):'Hoy es tu día de pago')+'</small></div></div>'
+    +'<div class="sd61-m"><span>Esperado</span><b>'+fmt$(p.monto)+'</b><small>a Banco Guayaquil</small></div>'
+    +'<div class="sd61-a"><button class="sd61-no" onclick="posponerSueldo61()">Aún no</button><button class="sd61-si" onclick="registrarSueldo61()">Sí, registrar</button></div></div>';
+  if(!el){ el=document.createElement('div'); el.id='home-sueldo61'; wa.insertBefore(el,wa.firstChild); }
+  if(el._h!==html){ el._h=html; el.innerHTML=html; }
+}
+function posponerSueldo61(){
+  var p=sueldoPendiente61(); if(!p) return; ls59('sp61_'+p.key,hoyLocal()); hap50();
+  var el=document.getElementById('home-sueldo61');
+  var fin=function(){ if(el) el.remove(); try{ renderNotifWidget(); }catch(e){} };
+  if(el&&el.animate&&!rm59()){ var a=el.animate([{opacity:1,transform:'none'},{opacity:0,transform:'scale(.96) translateY(-8px)'}],{duration:260,easing:'ease-in'}); a.onfinish=fin; } else fin();
+  showToast('Te lo vuelvo a preguntar mañana');
+}
+function registrarSueldo61(){
+  var p=sueldoPendiente61(); if(!p) return; var hoy=hoyLocal();
+  var ov=_modalBase('sd61m','Registrar tu '+p.nombre,
+    '<div class="sd61-f"><img class="lg57" src="'+LOGO_EQ+'" alt="ECUAQUIMICA"><small>Se guarda como ingreso en Banco Guayaquil</small></div>'
+    +'<label class="rp-lb">Monto que llegó</label><input id="sd61-v" inputmode="decimal" value="'+Number(p.monto).toFixed(2)+'" style="'+_inpP+';font-size:22px;font-weight:700">'
+    +(p.fecha!==hoy?'<label class="rp-lb">¿Cuándo llegó?</label><div class="sd61-d"><button class="sel" data-f="'+hoy+'">Hoy</button><button data-f="'+p.fecha+'">'+_cap47(fechaCorta(p.fecha))+'</button></div>':'')
+    +'<button id="sd61-ok" style="'+_btnP+'background:linear-gradient(135deg,#059669,#34d399);color:#fff;margin-top:14px">Guardar</button>'
+    +'<button onclick="document.getElementById(\'sd61m\').remove()" style="'+_btnP+'background:transparent">Cancelar</button>');
+  var fecha=hoy; [].forEach.call(ov.querySelectorAll('.sd61-d button'),function(b){ b.onclick=function(){ fecha=b.dataset.f; [].forEach.call(ov.querySelectorAll('.sd61-d button'),function(z){ z.classList.toggle('sel',z===b); }); }; });
+  document.getElementById('sd61-ok').onclick=function(){
+    var m=parseMonto(document.getElementById('sd61-v').value); if(!(m>0)){ showToast('⚠️ Escribe el monto'); return; }
+    ov.remove(); var el=document.getElementById('home-sueldo61'); if(el) el.remove();
+    crearTxRapida({fecha:fecha,desc:p.clave==='q'?'Quincena ECUAQUIMICA':'Sueldo ECUAQUIMICA',cuenta:'Banco Guayaquil',monto:r2(m),tipo:'INGRESO',cat:'Sueldo',reimb:'NO',nota:'Confirmado desde el aviso de sueldo'});
+  };
+}
+if(typeof KP_SEL50==='string') KP_SEL50+=',#sd61-v';
+_w43('updateHomeWidget',function(){ try{ pintarSueldo61(); }catch(e){ console.warn('sueldo61',e); } });
+/* Al cruzar el mediodía con la app abierta, aparece sin tener que recargar */
+setInterval(function(){ try{ if(state.currentScreen==='home') pintarSueldo61(); }catch(e){} },60000);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden) try{ pintarSueldo61(); }catch(e){} });
+/* También en la campana */
+(function(){ var cn=window.construirNotificaciones; if(typeof cn!=='function') return;
+  window.construirNotificaciones=function(){ var L=cn.apply(this,arguments); try{ var p=sueldoPendiente61();
+    if(p&&!_pospuesto61(p)) L.unshift({id:'sueldo61_'+p.key,grupo:'accion',nivel:p.atraso>0?'alto':'medio',icon:'💼',titulo:'¿Ya te llegó tu '+p.nombre+'?',
+      texto:(p.atraso>0?'Tocaba el '+fechaCorta(p.fecha)+'. ':'Hoy es tu día de pago. ')+'Esperado '+fmt$(p.monto)+' en Banco Guayaquil.',monto:p.monto,signo:'+',accion:{lbl:'Registrar',fn:function(){ registrarSueldo61(); }},nav:'home',descarte:'manana'}); }catch(e){}
+    return L; }; })();
+
+/* ── 2. Salud financiera rediseñada ── */
+var BANDAS61=[[0,30,'#ff5c7a','Crítica'],[30,50,'#fb923c','Débil'],[50,65,'#fbbf24','Atención'],[65,80,'#34d399','Buena'],[80,100,'#10b981','Excelente']];
+function _arco61(cx,cy,r,a0,a1){ var p=function(a){ var t=(a-90)*Math.PI/180; return [cx+r*Math.cos(t),cy+r*Math.sin(t)]; }, s=p(a0), e=p(a1); return 'M'+s[0].toFixed(2)+' '+s[1].toFixed(2)+' A'+r+' '+r+' 0 '+(a1-a0>180?1:0)+' 1 '+e[0].toFixed(2)+' '+e[1].toFixed(2); }
+function _ang61(v){ return -135+270*Math.max(0,Math.min(100,v))/100; }
+function _est61(c){ if(c.status==='pending') return ['Sin datos','n']; var k=c.pts/c.max; return k>=0.75?['Bien','ok']:k>=0.5?['Regular','at']:['Débil','mal']; }
+function _iconSal61(n){ return /ahorro/i.test(n)?'piggy':/gastos/i.test(n)?'bars':/endeud/i.test(n)?'card':/emergencia/i.test(n)?'shield':'up'; }
+function saludHtml61(sd){
+  var sc=sd.score, col=saludColor(sc), lbl=saludLabel(sc), comps=sd.componentes;
+  var bandas=BANDAS61.map(function(b){ return '<path d="'+_arco61(110,110,86,_ang61(b[0])+(b[0]?1.2:0),_ang61(b[1])-(b[1]<100?1.2:0))+'" class="bd" stroke="'+b[2]+'"/>'; }).join('');
+  var L=Math.PI*2*86*(270/360), on=L*sc/100, pt=(function(){ var t=(_ang61(sc)-90)*Math.PI/180; return [110+86*Math.cos(t),110+86*Math.sin(t)]; })();
+  var peor=comps.filter(function(c){ return c.status!=='pending'&&c.pts<c.max; }).sort(function(a,b){ return (b.max-b.pts)-(a.max-a.pts); }).slice(0,2);
+  var frase=sc>=80?'Tus finanzas están muy sanas. Mantén el ritmo.':sc>=65?'Vas bien. Con un par de ajustes llegas a excelente.':peor.length?'Lo que más te resta: <b>'+peor.map(function(c){ return c.nombre.toLowerCase(); }).join('</b> y <b>')+'</b>.':'Registra más movimientos para afinar tu puntaje.';
+  var h='<div class="sl61">'
+    +'<div class="sl61-hero"><svg viewBox="0 0 220 190" class="sl61-g" role="img" aria-label="Puntaje '+sc+' de 100, '+lbl+'"><defs><linearGradient id="sl61gr" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#ff5c7a"/><stop offset=".45" stop-color="#fbbf24"/><stop offset="1" stop-color="#10b981"/></linearGradient></defs>'
+      +bandas+'<path d="'+_arco61(110,110,86,-135,135)+'" class="pr" stroke="url(#sl61gr)" stroke-dasharray="'+on.toFixed(1)+' '+L.toFixed(1)+'" data-on="'+on.toFixed(1)+'" data-l="'+L.toFixed(1)+'"/>'
+      +'<circle class="dot" cx="'+pt[0].toFixed(1)+'" cy="'+pt[1].toFixed(1)+'" r="8" fill="'+col+'"/></svg>'
+      +'<div class="sl61-c"><b class="sl61-n" data-v="'+sc+'" style="color:'+col+'">'+sc+'</b><small>de 100</small><span class="sl61-ch" style="--c:'+col+'">'+lbl+'</span></div></div>'
+    +'<span class="sl61-f">'+frase+'</span>'
+    +(sd.isParcial?'<div class="sl61-par">'+ic46('alert',15)+'<span>Evaluación parcial: '+sd.pendientes+' indicador'+(sd.pendientes>1?'es':'')+' sin datos todavía.</span></div>':'');
+  if(peor.length) h+='<div class="sl61-s">Lo que más te sube el puntaje</div><div class="sl61-up">'+peor.map(function(c,i){ return '<div class="sl61-u"><em>+'+(c.max-c.pts)+'</em><span class="sl61-ut"><b>'+c.nombre+'</b><small>'+String(c.mejora||'').replace(/^→\s*/,'')+'</small></span></div>'; }).join('')+'</div>';
+  h+='<div class="sl61-s">Tus 5 indicadores</div><div class="sl61-l">'+comps.map(function(c,i){ var e=_est61(c), p=c.status==='pending'?0:c.pts/c.max, C=2*Math.PI*17;
+    return '<button class="sl61-i '+e[1]+'" aria-expanded="false" onclick="this.classList.toggle(\'ab\');this.setAttribute(\'aria-expanded\',this.classList.contains(\'ab\'))">'
+      +'<span class="sl61-r"><svg class="rg" viewBox="0 0 42 42"><circle class="t" cx="21" cy="21" r="17"/><circle class="v" cx="21" cy="21" r="17" stroke-dasharray="'+(C*p).toFixed(1)+' '+C.toFixed(1)+'" data-l="'+(C*p).toFixed(1)+'"/></svg>'+ic46(_iconSal61(c.nombre),17)+'</span>'
+      +'<span class="sl61-x"><b>'+c.nombre+'</b><small><i>'+e[0]+'</i> · '+(c.status==='pending'?'sin datos':c.pts+' de '+c.max+' pts')+'</small></span>'+ic46('chev',16,'sl61-cv')
+      +'<span class="sl61-d"><span>'+c.detalle+'</span>'+(c.mejora?'<span class="sl61-m">'+ic46('bulb',14)+String(c.mejora).replace(/^→\s*/,'')+'</span>':'')+'</span></button>'; }).join('')+'</div>';
+  var hist=state.saludHistorico||{}, ms=Object.keys(hist).sort().slice(-8);
+  if(ms.length>=2){ var W=300,H=96,px=function(i){ return 14+i*(W-28)/(ms.length-1); }, py=function(v){ return 12+(H-30)*(1-v/100); };
+    var d=ms.map(function(m,i){ return (i?'L':'M')+px(i).toFixed(1)+' '+py(hist[m]).toFixed(1); }).join(' ');
+    h+='<div class="sl61-s">Cómo ha cambiado</div><div class="sl61-ev"><svg viewBox="0 0 '+W+' '+H+'" class="sl61-e"><path class="ar" d="'+d+' L'+px(ms.length-1).toFixed(1)+' '+(H-18)+' L'+px(0).toFixed(1)+' '+(H-18)+' Z"/><path class="ln" d="'+d+'"/>'
+      +ms.map(function(m,i){ return '<circle cx="'+px(i).toFixed(1)+'" cy="'+py(hist[m]).toFixed(1)+'" r="3.6" fill="'+saludColor(hist[m])+'"/><text x="'+px(i).toFixed(1)+'" y="'+(py(hist[m])-8).toFixed(1)+'" class="vt">'+hist[m]+'</text><text x="'+px(i).toFixed(1)+'" y="'+(H-4)+'" class="mt">'+_cap47(MESES[+m.slice(5,7)-1].slice(0,3))+'</text>'; }).join('')+'</svg></div>';
+  } else h+='<div class="sl61-s">Cómo ha cambiado</div><div class="sl61-ev vac">Cuando tengas 2 meses cerrados verás aquí cómo sube tu puntaje.</div>';
+  h+='<div class="sl61-s">Cómo se calcula</div><div class="sl61-w">'+comps.map(function(c){ return '<i style="flex:'+c.max+'" class="'+_est61(c)[1]+'"></i>'; }).join('')+'</div>'
+    +'<div class="sl61-wl">'+comps.map(function(c){ return '<span>'+c.nombre+' <b>'+c.max+'</b></span>'; }).join('')+'</div>'
+    +'<span class="sl61-nt">Cada indicador aporta puntos hasta su máximo; la suma da tu puntaje de 0 a 100. Se recalcula con cada movimiento que registras.</span>'
+    +'<button class="sl61-cl" onclick="closeSaludModal({target:document.getElementById(\'salud-modal\')})">Listo</button></div>';
+  return h;
+}
+_w43('openSaludModal',function(){
+  var sd; try{ sd=calcSaludFinanciera(); }catch(e){ return; } var sh=document.querySelector('#salud-modal .salud-modal-scroll'); if(!sh) return;
+  var t=sh.querySelector('.sm-title'); if(t) t.textContent='Salud financiera';
+  ['sm-score-big','sm-parcial','sm-components','sm-evolucion'].forEach(function(id){ var e=document.getElementById(id); if(e){ e.style.display='none'; } });
+  var box=document.getElementById('sl61'); if(!box){ box=document.createElement('div'); box.id='sl61'; sh.appendChild(box); }
+  box.innerHTML=saludHtml61(sd);
+  if(rm59()) return;
+  var pr=box.querySelector('.pr'), dot=box.querySelector('.dot'), n=box.querySelector('.sl61-n'), on=+pr.dataset.on, L=+pr.dataset.l, v=+n.dataset.v;
+  if(pr.animate) pr.animate([{strokeDasharray:'0 '+L},{strokeDasharray:on+' '+L}],{duration:1200,delay:150,easing:'cubic-bezier(.3,.8,.25,1)',fill:'backwards'});
+  if(dot.animate) dot.animate([{opacity:0,transform:'scale(0)'},{opacity:1,transform:'scale(1.3)'},{opacity:1,transform:'none'}],{duration:500,delay:1200,fill:'backwards',easing:'cubic-bezier(.3,1.6,.5,1)'});
+  if(anim59()){ var t0=performance.now()+150; (function paso(tt){ var k=Math.max(0,Math.min(1,(tt-t0)/1200)), e=1-Math.pow(1-k,3); n.textContent=Math.round(v*e); if(k<1) requestAnimationFrame(paso); else n.textContent=v; })(t0); }
+  [].forEach.call(box.querySelectorAll('.sl61-r .v'),function(c,i){ var l=+c.dataset.l, C=c.getAttribute('stroke-dasharray').split(' ')[1]; if(c.animate) c.animate([{strokeDasharray:'0 '+C},{strokeDasharray:l+' '+C}],{duration:800,delay:400+i*90,easing:'cubic-bezier(.3,.8,.25,1)',fill:'backwards'}); });
+  [].forEach.call(box.querySelectorAll('.sl61-i,.sl61-u'),function(e,i){ if(e.animate) e.animate([{opacity:0,transform:'translateY(10px)'},{opacity:1,transform:'none'}],{duration:380,delay:300+i*50,easing:'cubic-bezier(.2,.8,.25,1)',fill:'backwards'}); });
+  var ln=box.querySelector('.sl61-e .ln'); if(ln&&ln.animate){ var LL=0; try{ LL=ln.getTotalLength(); }catch(e){} if(LL) ln.animate([{strokeDasharray:LL+' '+LL,strokeDashoffset:LL},{strokeDasharray:LL+' '+LL,strokeDashoffset:0}],{duration:1000,delay:600,easing:'ease-out',fill:'backwards'}); }
+});
+
+/* ── 3. Salud financiera: tres correcciones de método (los cálculos ya cuadraban) ──
+   a) Fondo de emergencia = lo apartado en tu Fondo de emergencia, con los mismos escalones de Plan (no el dinero del día a día).
+   b) Evolución patrimonial gradual: mitad el último mes, mitad la tendencia de los últimos 3 meses.
+   c) Endeudamiento: el límite por depender del crédito baja de forma gradual. */
+function _escPat61(pct){ return pct>=0.10?15:pct>=0.05?12:pct>=0?9:pct>=-0.03?5:pct>=-0.10?2:0; }
+(function(){ var cs=window.calcSaludFinanciera; if(typeof cs!=='function') return;
+  window.calcSaludFinanciera=function(){ var sd=cs.apply(this,arguments); try{
+    var a=sd.analisis||{}, C=sd.componentes, h3=a.hist3||[], avg=function(k){ return h3.length?h3.reduce(function(s,h){return s+(h[k]||0);},0)/h3.length:0; };
+    var ingRef=(h3.length?avg('ingOrd'):(a.ingOrd||0))||a.sueldo||0, dt=deudasTotales();
+    // c) Endeudamiento
+    var cD=C[2]; if(ingRef>0){
+      var mesesDeuda=dt.total/ingRef, base=dt.total===0?20:mesesDeuda<0.5?16:mesesDeuda<1?12:mesesDeuda<2?7:mesesDeuda<4?3:0;
+      var finAvg=h3.length?avg('finIn'):(a.finIn||0), dep=finAvg/ingRef, nPide=h3.filter(function(h){return (h.finIn||0)>0;}).length;
+      var tope=dep>0.10?Math.max(2,Math.round(20*(1-Math.min(1,dep)))):20, pts=Math.min(base,tope);
+      cD.pts=pts; cD.status='ok';
+      cD.detalle='Debes '+fmt$(dt.total)+(dt.total>0?' ('+(dt.credito>0?'crédito '+fmt$(dt.credito):'')+(dt.credito>0&&dt.personales>0?' + ':'')+(dt.personales>0?'personales '+fmt$(dt.personales):'')+')':'')+' = '+mesesDeuda.toFixed(1)+' meses de tu ingreso ordinario'+(base>=12?': es una deuda baja.':'.')
+        +(finAvg>0?' Pero recibes en promedio '+fmt$(finAvg)+'/mes en avances y préstamos ('+Math.round(dep*100)+'% de tu ingreso; pediste en '+nPide+' de los últimos '+h3.length+' meses)'+(tope<base?', y eso limita este indicador a '+tope+' puntos.':'.'):'');
+      cD.mejora=pts>=18?'Sin deudas que preocupen. Evita nuevos avances.':(tope<base?'Cada mes sin pedir avances sube este indicador: con la mitad de crédito llegarías a unos '+Math.min(base,Math.max(2,Math.round(20*(1-dep/2))))+' puntos.':'Paga primero la deuda de mayor tasa y evita nuevos avances.');
+    }
+    // a) Fondo de emergencia
+    var cE=C[3]; try{ var f=estadoFondo(), ac=f.ac, ps=f.es.pasos, e1=ps[0].monto, e2=ps[1].monto, e3=ps[2].monto;
+      cE.pts=ac>=e3?20:ac>=e2?15:ac>=e1?9:ac>=e1/2?4:ac>0?2:0; cE.status='ok';
+      var esc=ps.filter(function(p){return ac>=p.monto;}).length, sig=ps.find(function(p){return ac<p.monto;});
+      cE.detalle='Tienes '+fmt$(ac)+' apartados en tu Fondo de emergencia'+(esc?' (escalón '+esc+' de 3 logrado)':'')+'. Los escalones son '+fmt$(e1)+' (colchón inicial), '+fmt$(e2)+' (1 mes de gastos) y '+fmt$(e3)+' (3 meses). El dinero de tu día a día no cuenta: es para vivir hasta tu próximo sueldo.';
+      cE.mejora=!sig?'¡Fondo completo! Mantenlo apartado y no lo uses para gastos normales.':'Siguiente escalón: '+fmt$(sig.monto)+'. Faltan '+fmt$(r2(sig.monto-ac))+': apartando '+fmt$(r2((sig.monto-ac)/6))+' por mes lo logras en 6 meses.';
+    }catch(e){}
+    // b) Evolución patrimonial
+    var cP=C[4], hh=(a.hist||[]).slice(0,3);
+    if(hh.length){ var ult=hh[0], ingU=ult.ing||ult.ingOrd||0, ing3=hh.reduce(function(s,h){return s+(h.ing||0);},0)/hh.length, net3=hh.reduce(function(s,h){return s+h.net;},0)/hh.length;
+      var pU=ingU>0?ult.net/ingU:(ult.net>=0?0:-1), p3=ing3>0?net3/ing3:(net3>=0?0:-1), sU=_escPat61(pU), s3=_escPat61(p3);
+      cP.pts=hh.length>1?Math.round((sU+s3)/2):Math.min(10,sU); cP.status=hh.length>1?'ok':'parcial';
+      var nom=function(h){ return _cap47(MESES[+h.mes.slice(5,7)-1].slice(0,3)); }, sg=function(v){ return (v>=0?'+':'−')+fmt$(Math.abs(v)); };
+      cP.detalle='Últimos meses: '+hh.slice().reverse().map(function(h){ return nom(h)+' '+sg(h.net); }).join(', ')+'. En promedio tu patrimonio '+(net3>=0?'creció ':'bajó ')+fmt$(Math.abs(r2(net3)))+'/mes ('+(p3*100).toFixed(1)+'% de lo que ingresó)'
+        +'; el último mes ('+_cap47(MESES[+ult.mes.slice(5,7)-1])+') cerró en '+sg(ult.net)+' ('+(pU*100).toFixed(1).replace('-','−')+'%). Cuenta la mitad cada uno.';
+      cP.mejora=ult.net<0?'Cierra el mes en positivo: con '+fmt$(Math.abs(ult.net))+' menos de gasto '+_cap47(MESES[+ult.mes.slice(5,7)-1]).toLowerCase()+' habría quedado en cero.':cP.pts>=15?'Tendencia sólida. Sigue así.':'Apunta a que te sobre al menos el 10% de lo que ingresa cada mes ('+fmt$(r2(ing3*0.1))+').';
+    }
+    sd.score=C.reduce(function(s,c){return s+(c.pts||0);},0);
+    var sts=C.map(function(c){return c.status;}); sd.pendientes=sts.filter(function(x){return x==='pending';}).length; sd.isParcial=sd.pendientes>0||sts.some(function(x){return x==='parcial';});
+    if(state.saludHistorico&&state.saludHistorico[sd.mes]!=null) state.saludHistorico[sd.mes]=sd.score;
+  }catch(e){ console.warn('salud61',e); } return sd; }; })();
 
 </script>
 <script>
