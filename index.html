@@ -2882,6 +2882,39 @@ html.t-claro .sim63-c{background:rgba(255,255,255,.75);box-shadow:0 1px 2px rgba
 .rp63 b{color:var(--ink)}
 html:not(.t-claro) .rp63{background:rgba(251,191,36,.08)} html.t-claro .rp63{background:#fff8e6}
 
+/* ══ v6.4 · Cascada del flujo de caja ══ */
+.cs64{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+.cs64-r{display:grid;grid-template-columns:1fr auto;column-gap:10px;row-gap:5px;padding:7px 2px;border-radius:10px;cursor:pointer}
+.cs64-r.vz-sel{background:var(--vz-read)}
+.cs64-r span{font-size:13px;color:var(--vz-ink);min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cs64-r span i{font-style:normal;font-size:10.5px;font-weight:600;color:var(--vz-ink2);margin-left:4px;padding:1px 6px;border-radius:999px;background:var(--vz-read)}
+.cs64-r b{font:700 13.5px var(--num,-apple-system);font-variant-numeric:tabular-nums;text-align:right}
+.cs64-r b.in{color:var(--vz-pos)} .cs64-r b.out{color:var(--vz-neg)} .cs64-r b.tot{color:var(--vz-ink)}
+.cs64-r.fin{border-top:.5px solid var(--vz-grid);margin-top:4px;padding-top:10px}
+.cs64-r.fin span,.cs64-r:first-child span{font-weight:700}
+.cs64-t{grid-column:1/-1;position:relative;height:12px;border-radius:4px;background:var(--vz-grid)}
+.cs64-t s{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--vz-base)}
+.cs64-t em{position:absolute;top:0;height:100%;border-radius:4px;transition:transform .2s}
+.cs64-t em.tot{background:var(--vz-hi)} .cs64-t em.in{background:var(--vz-pos)} .cs64-t em.out{background:var(--vz-neg)}
+.cs64-t em.soft{opacity:.5;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 2px,transparent 2px 6px)}
+@media (prefers-reduced-motion:no-preference){.cs64-c .cs64-t em{animation:cs64 .7s cubic-bezier(.3,.8,.25,1) both}}
+.cs64-r:nth-child(2) em{animation-delay:.05s}.cs64-r:nth-child(3) em{animation-delay:.1s}.cs64-r:nth-child(4) em{animation-delay:.15s}.cs64-r:nth-child(5) em{animation-delay:.2s}.cs64-r:nth-child(6) em{animation-delay:.25s}.cs64-r:nth-child(7) em{animation-delay:.3s}.cs64-r:nth-child(8) em{animation-delay:.35s}.cs64-r:nth-child(9) em{animation-delay:.4s}.cs64-r:nth-child(10) em{animation-delay:.45s}.cs64-r:nth-child(11) em{animation-delay:.5s}
+@keyframes cs64{from{transform:scaleX(0);transform-origin:left}to{transform:scaleX(1);transform-origin:left}}
+
+/* ══ v6.5 · Pintura más liviana ══
+   El desenfoque (backdrop-filter) es lo más caro de dibujar en el iPhone. Sobre el fondo de luces suaves casi no se nota
+   en las tarjetas que se desplazan, así que queda solo en lo que flota: barra, cabecera, ventanas y cápsulas. */
+:is(html:not(.t-claro),html.t-claro) :is(.card,.cc-card,.glass-card,.mx-l,.hv-group,.h46-card,.hy54,.qa46,.ob50-c,.fin-card,.ru-card,.dv-item,.dv-hero,.cal-grid,.bi-card,.pf50,.widget-salud,.dv-empty,.oblig-item,.form-section,.reimb-company-card,.eqc,.stat-box,.at-b,.qa-tile,.nm-btn,.pa-card,.hx,.nw46,.pdx,.la-card,.cu-kits,.cc-hero,.reimb-header-card,.kits-header,.cu-hero,.sd61,.pg60c,.ep57-gl,.sl61-i,.sl61-u,.sl61-ev){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+:is(html:not(.t-claro),html.t-claro) :is(.cc-breakdown-item,.cc-limite-box,.pm-tp,.hist-qwrap,.hist-fbtn,.rf-btn,.bi-add,.hist-loadmore,.month-chip,.hub-seg,.plan-tabs,.pdx-seg,.nav-action,.cc-card-action,.ep57-ic,.pe62){-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* El cuadro de dinero conserva su vidrio (es el protagonista y no hay muchos) */
+:is(html:not(.t-claro),html.t-claro) .widget-balance{-webkit-backdrop-filter:blur(18px) saturate(170%)!important;backdrop-filter:blur(18px) saturate(170%)!important}
+/* Sin desenfoque en el borde inferior: solo el degradado */
+.edge60{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+/* Las tarjetas fuera de pantalla no se dibujan hasta que llegas a ellas */
+#estad-content>.cc-card.vz{content-visibility:auto;contain-intrinsic-size:auto 420px}
+/* Movimientos: los días fuera de pantalla no se calculan hasta que bajas */
+#historial-list>.hv-group,#historial-list>.sw51-grp{content-visibility:auto;contain-intrinsic-size:auto 260px}
+
 </style>
 </head>
 <body>
@@ -3510,7 +3543,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='6.3.0';
+var APP_VERSION='6.5.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -14452,7 +14485,7 @@ function vigilar59(){
   if(!_vz59||rm59()) return;
   if(!_io59&&window.IntersectionObserver) _io59=new IntersectionObserver(function(es){ es.forEach(function(en){ if(en.isIntersecting){ _io59.unobserve(en.target); dibujar59(en.target); } }); },{threshold:0.35});
   var cuenta={};
-  [].forEach.call(document.querySelectorAll('.inner-screen.open svg, #screen-home svg'),function(s){
+  [].forEach.call(document.querySelectorAll('.inner-screen.open svg.vz-svg, .inner-screen.open .cc-card svg:not(.ic46), #screen-home svg.vz-svg, #screen-home .cc-card svg:not(.ic46)'),function(s){
     if(_vz59.has(s)) return; _vz59.add(s); var r=s.getBoundingClientRect(); if(r.width<150||r.height<60) return;
     var sc=s.closest('.inner-screen,.screen'), k=(sc?sc.id:'')+':'+(s.getAttribute('class')||'')+':'+((cuenta[sc&&sc.id]=(cuenta[sc&&sc.id]||0)+1));
     if(_vzK59[k]) return; _vzK59[k]=1; if(_io59) _io59.observe(s); });
@@ -15315,6 +15348,100 @@ _w43('abrirReparto',function(r,id){
       return Object.assign({},n,{titulo:o.nombre+': el plazo no alcanza',texto:'Pide '+fmt$(v.pide)+'/mes y te sobran '+fmt$(Math.max(0,v.cap))+'. '+(v.mesesReales?'A tu ritmo la logras en ~'+v.mesesReales+' meses; puedes ajustar el plazo en Plan › Metas.':'Necesitas recortar gastos para avanzar.')}); });
     var d=+hoyLocal().slice(8,10), k=con.length?d%con.length:0, el=con.slice(k).concat(con.slice(0,k)).slice(0,2);
     return acc.concat(el); }catch(e){ return L; } }; })();
+
+/* ══ v6.4 · Flujo de caja: gráfico de cascada de los próximos movimientos ══ */
+function cascada64(p){
+  p=p||proyectarFlujo(); var n=p.dias.length; if(!n) return null;
+  var g={sueldo:0,reemb:0,com:0,otrosI:0,fijos:0,cuotas:0,otrosE:0};
+  (p.ev||[]).forEach(function(e){ var m=e.monto||0, d=e.desc||'';
+    if(e.tipo==='ING'){ if(e.comision) g.com+=m; else if(e.reemb||/vi[áa]ticos|reembolso/i.test(d)) g.reemb+=m; else if(e.clave==='q'||e.clave==='s'||/sueldo|quincena|anticipo|d[ée]cimo|fondos de reserva/i.test(d)) g.sueldo+=m; else g.otrosI+=m; }
+    else { if(e.oblig) g.fijos+=m; else if(/cuota|cr[ée]dito|JA\b|avance|adelanto/i.test(d)) g.cuotas+=m; else g.otrosE+=m; } });
+  var dia=r2(p.gvPropio*n), trab=r2(p.gvTrabajo*n);
+  Object.keys(g).forEach(function(k){ g[k]=r2(g[k]); });
+  var filas=[{n:'Hoy tienes',v:p.inicio,t:'tot'},
+    {n:'Sueldo y décimos',v:g.sueldo,t:'in'},{n:'Reembolsos',v:g.reemb,t:'in',prob:true},{n:'Comisión AGROLEON',v:g.com,t:'in',prob:true},{n:'Otros ingresos',v:g.otrosI,t:'in'},
+    {n:'Pagos fijos',v:-g.fijos,t:'out'},{n:'Cuotas del crédito',v:-g.cuotas,t:'out'},{n:'Otros pagos',v:-g.otrosE,t:'out'},
+    {n:'Tu día a día ('+fmt$(p.gvPropio)+'/día)',v:-dia,t:'out',est:true},{n:'Lo que adelantas por trabajo',v:-trab,t:'out',est:true}]
+    .filter(function(f){ return f.t==='tot'||Math.abs(f.v)>=0.01; });
+  var fin=r2(p.dias[n-1].bal);
+  filas.push({n:'Al '+fechaCorta(p.fin),v:fin,t:'tot',fin:true});
+  return {filas:filas,g:g,dia:dia,trab:trab,fin:fin,ini:p.inicio,min:p.min,finF:p.fin,n:n};
+}
+function htmlCascada64(c){
+  var run=0, pos=[]; c.filas.forEach(function(f){ if(f.t==='tot'){ pos.push([0,f.v]); run=f.v; } else { pos.push([run,run+f.v]); run=r2(run+f.v); } });
+  var lo=Math.min(0,Math.min.apply(null,pos.map(function(x){return Math.min(x[0],x[1]);}))), hi=Math.max.apply(null,pos.map(function(x){return Math.max(x[0],x[1]);}).concat([0.01]));
+  var X=function(v){ return (v-lo)/(hi-lo)*100; };
+  return '<div class="cs64" role="img" aria-label="'+_esc47(c.filas.map(function(f){return f.n+' '+fmt$(f.v);}).join(', '))+'">'+c.filas.map(function(f,i){ var a=pos[i], l=X(Math.min(a[0],a[1])), w=Math.max(0.8,Math.abs(X(a[1])-X(a[0])));
+    var cls=f.t==='tot'?'tot':f.v>=0?'in':'out', val=f.t==='tot'?fmt$(f.v):(f.v>=0?'+':'−')+fmt$(Math.abs(f.v));
+    return '<div class="cs64-r'+(f.fin?' fin':'')+'" data-r="'+_esc47(f.n+': '+val+(f.prob?' (probable)':f.est?' (estimado con tu ritmo)':''))+'"><span>'+_esc47(f.n)+(f.prob?' <i>probable</i>':f.est?' <i>estimado</i>':'')+'</span><b class="'+cls+'">'+val+'</b>'
+      +'<div class="cs64-t">'+(lo<0?'<s style="left:'+X(0).toFixed(1)+'%"></s>':'')+'<em class="'+cls+(f.prob||f.est?' soft':'')+'" style="left:'+l.toFixed(1)+'%;width:'+w.toFixed(1)+'%"></em></div></div>'; }).join('')+'</div>';
+}
+function textoCascada64(c){
+  var g=c.g, entra=r2(g.sueldo+g.reemb+g.com+g.otrosI), compromisos=r2(g.fijos+g.cuotas+g.otrosE), dif=r2(c.fin-c.ini);
+  var t='Con todo lo programado, de los <b>'+fmt$(c.ini)+'</b> de hoy llegarías al '+fechaCorta(c.finF)+' con unos <b>'+fmt$(c.fin)+'</b> ('+(dif>=0?'+':'−')+fmt$(Math.abs(dif))+').';
+  if(entra>0) t+=' De los '+fmt$(entra)+' que van a entrar, <b>'+Math.round(compromisos/entra*100)+'%</b> ya tiene destino en pagos fijos y cuotas, y el día a día se lleva otro '+Math.round(c.dia/entra*100)+'%.';
+  if(c.min&&c.min.bal<c.ini) t+=' El día más ajustado será el '+fechaCorta(c.min.fecha)+(c.min.bal<0?', cuando te faltarían <b>'+fmt$(-c.min.bal)+'</b>.':', con unos '+fmt$(c.min.bal)+'.');
+  if(g.com>0) t+=' Si la comisión no llega, terminarías con '+fmt$(r2(c.fin-g.com))+'.';
+  return t;
+}
+(function(){ var hf=window.htmlFlujo; if(typeof hf!=='function') return;
+  window.htmlFlujo=function(){ var h=hf.apply(this,arguments); try{
+    var c=cascada64(); if(!c) return h; var ancla='📅 Próximos movimientos</div>', i=h.indexOf(ancla); if(i<0) return h;
+    var g='<div class="cc-card vz cs64-c"><div class="vz-t">Qué significan para tu dinero</div><div class="vz-f">'+textoCascada64(c)+'</div><div class="vz-read" aria-live="polite">Toca una fila para ver el detalle</div>'
+      +htmlCascada64(c)+'<div class="vz-como"><b>Cómo leerlo:</b> la barra morada de arriba es tu dinero de hoy. Cada fila verde suma y cada roja resta, en orden, hasta llegar a la barra morada de abajo: lo que te quedaría. Lo más claro es estimado o probable (reembolsos, comisión y tu gasto diario a tu ritmo actual).</div></div>';
+    var j=h.lastIndexOf('<div class="cc-card"',i); if(j<0) return h;
+    return h.slice(0,j)+g+h.slice(j); }catch(e){ console.warn('cascada64',e); return h; } }; })();
+
+/* ══ v6.5 · Rendimiento: no recalcular lo mismo decenas de veces ══
+   Muchos cuadros (Inicio, anillos, cápsula, tono, plan, salud…) piden la misma proyección y los mismos eventos.
+   Ahora cada cálculo se hace una sola vez por "pasada": el resultado se guarda hasta que termina la acción
+   en curso o cambian tus datos (huella), y se entrega una copia para que nadie lo altere. */
+var _m65={pasada:0,huella:null,c:{}}, _m65lim=false;
+function huella65(){
+  var T=state.transactions||[], o=state.objetivos||[], ob=state.obligaciones||[], x=X(), s=T.length+'|'+(T[0]?T[0].id+':'+T[0].monto:'')+'|'+(T.length?T[T.length-1].id:'');
+  for(var i=0;i<o.length;i++) s+='|o'+(o[i].acumulado||0)+'/'+(o[i].meta||0)+'/'+(o[i].meses||0);
+  for(var j=0;j<ob.length;j++) s+='|b'+((ob[j].pagos||[]).length)+'/'+ob[j].monto;
+  s+='|d'+(userDeudas||[]).reduce(function(a,d){return a+(d.monto||0);},0)+'|c'+(userCreditos||[]).map(function(c){ return (c.deuda||0)+':'+((c.avances||[]).length)+':'+(c.ultimoDebito||''); }).join(',');
+  s+='|r'+((state.reimbPagados||[]).length)+'|e'+((state.ciclosEQ||[]).map(function(c){return c.estado;}).join(''))+'|p'+JSON.stringify(x.planAhorro||0)+x.colchon+'|f'+JSON.stringify(state.perfil&&[state.perfil.quincena,state.perfil.saldoSueldo,state.perfil.sueldoFijo])+'|'+hoyLocal();
+  return s;
+}
+function _limpiar65(){ _m65.c={}; _m65.huella=null; _m65lim=false; }
+function _copia65(v){ return Array.isArray(v)?v.slice():(v&&typeof v==='object'&&Object.getPrototypeOf(v)===Object.prototype)?Object.assign({},v):v; }
+function memo65(nombre,clave){
+  var f=window[nombre]; if(typeof f!=='function'||f.__m65) return;
+  var w=function(){ try{
+      var h=huella65(); if(h!==_m65.huella){ _m65.c={}; _m65.huella=h; }
+      if(!_m65lim){ _m65lim=true; Promise.resolve().then(_limpiar65); }   // la memoria dura solo la acción en curso
+      var k=nombre+'|'+(clave?clave.apply(null,arguments):Array.prototype.join.call(arguments,','));
+      if(Object.prototype.hasOwnProperty.call(_m65.c,k)) return _copia65(_m65.c[k]);
+      var r=f.apply(this,arguments); _m65.c[k]=r; return _copia65(r);
+    }catch(e){ return f.apply(this,arguments); } };
+  w.__m65=true; window[nombre]=w;
+}
+['eventosProgramados','proyectarFlujo','planMes46','hoy54','calcSaludFinanciera','calcAnalisisFinanciero','flujoMes','financiaEmpresas','calcBalances','calcKits',
+ 'disponibleReal','deudasTotales','apartadoMetas','gastoVariableDiario','gastoTrabajoDiario','trabajo63','porDia47','ingresosInciertos','comisionPromedio63','esenciales63',
+ 'escalonesFondo','intereses63','avancesMes63','capacidadAhorroMensual','datosAnillos60','planDiario53','rachaDet53','datosGastos55','patrimonio53','hormigaMes','sueldoPendiente61',
+ 'getObligacionesMesFor'].forEach(function(n){ memo65(n); });
+/* La proyección "cruda" que usa Hoy puedes gastar también */
+(function(){ var raw=window._pfRaw56; if(typeof raw!=='function'||raw.__m65) return; window._pfRawBase65=raw; memo65('_pfRawBase65'); window._pfRaw56=function(){ return window._pfRawBase65.apply(this,arguments); }; window._pfRaw56.__m65=true; })();
+/* Cambiar datos invalida la memoria al instante */
+_w43('saveState',function(){ _limpiar65(); });
+
+/* ── Pintura más liviana ── */
+/* La cápsula viva y la cabecera: como máximo una vez por fotograma al desplazar */
+(function(){ var pend=false; var orig=window.scrollHome60; if(typeof orig!=='function') return;
+  window.scrollHome60=function(){ if(pend) return; pend=true; requestAnimationFrame(function(){ pend=false; try{ orig(); }catch(e){} }); }; })();
+
+/* Movimientos: buscar posibles duplicados agrupando (antes comparaba cada movimiento con todos los demás) */
+window.histGetDupIds=function(txs){
+  var ids=new Set(), g={};
+  for(var i=0;i<txs.length;i++){ var a=txs[i]; var na=natOf(a); if(na==='transferencia'||na==='custodia') continue;
+    var k=a.tipo+'|'+a.cuenta+'|'+(a.desc||'').toLowerCase().trim(), c=Math.round((a.monto||0)*100);
+    [c-1,c,c+1].forEach(function(cc){ var l=g[k+'|'+cc]; if(!l) return; l.forEach(function(b){ if(Math.abs(a.monto-b.monto)>0.01) return;
+      if(Math.abs(new Date(a.fecha+'T12:00:00')-new Date(b.fecha+'T12:00:00'))<=86400000){ ids.add(a.id); ids.add(b.id); } }); });
+    (g[k+'|'+c]=g[k+'|'+c]||[]).push(a); }
+  return ids;
+};
 
 </script>
 <script>
