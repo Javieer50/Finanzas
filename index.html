@@ -2915,6 +2915,20 @@ html:not(.t-claro) .rp63{background:rgba(251,191,36,.08)} html.t-claro .rp63{bac
 /* Movimientos: los días fuera de pantalla no se calculan hasta que bajas */
 #historial-list>.hv-group,#historial-list>.sw51-grp{content-visibility:auto;contain-intrinsic-size:auto 260px}
 
+/* ══ v6.6 · Horizonte del flujo y mes a mes ══ */
+.fh66{margin:0 0 12px}
+.fh66 button{font-size:12.5px;padding:0 2px;white-space:nowrap}
+.mm66-r{padding:10px 0;border-top:.5px solid var(--vz-grid)}
+.mm66-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.mm66-h b{font-size:14.5px;color:var(--vz-ink)}
+.mm66-h b i{font-style:normal;font-size:11px;font-weight:600;color:var(--vz-ink2);margin-left:6px}
+.mm66-h em{font:750 17px var(--num,-apple-system);font-style:normal;font-variant-numeric:tabular-nums}
+.mm66-h em.tot{color:var(--vz-ink)} .mm66-h em.out{color:var(--vz-neg)}
+.mm66-d{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;font:600 12.5px var(--num,-apple-system);font-variant-numeric:tabular-nums}
+.mm66-d .in{color:var(--vz-pos)} .mm66-d .out{color:var(--vz-neg)}
+.mm66-s{font-size:12px;color:var(--vz-ink2);margin-top:3px}
+.ms66{font-size:11.5px;font-weight:700;color:var(--vz-ink2);padding:12px 0 2px;letter-spacing:.2px}
+
 </style>
 </head>
 <body>
@@ -3543,7 +3557,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='6.5.0';
+var APP_VERSION='6.6.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -4974,7 +4988,7 @@ function disponibleReal(){
   return r2(Object.keys(b).reduce(function(s,c){return s+b[c]-(k[c]||0);},0));
 }
 /* ── Proyección día a día ── */
-function proyectarFlujo(diasMin){
+function proyectarFlujo(diasMin,finFijo){
   var cfg=cfgIngresos(), hoy=hoyLocal();
   var tmp=eventosProgramados(addDias(hoy,1),addDias(hoy,75));
   // Horizonte: hasta el segundo pago de sueldo (mín. diasMin, máx. 45 días)
@@ -4982,6 +4996,7 @@ function proyectarFlujo(diasMin){
   var fin=pagos.length>1?pagos[1].fecha:(pagos.length?addDias(pagos[0].fecha,15):addDias(hoy,30));
   if(difDias(hoy,fin)<(diasMin||21)) fin=addDias(hoy,diasMin||21);
   if(difDias(hoy,fin)>45) fin=addDias(hoy,45);
+  if(finFijo&&finFijo>hoy) fin=finFijo;
   var ev=eventosProgramados(addDias(hoy,1),fin);
   var inc=ingresosInciertos();
   if(cfg.incluirInciertos) inc.forEach(function(i){ if(i.fecha&&i.fecha>hoy&&i.fecha<=fin) ev.push({fecha:i.fecha,monto:i.monto,tipo:'ING',desc:i.desc,certeza:'incierto',icon:i.icon}); });
@@ -4998,7 +5013,7 @@ function proyectarFlujo(diasMin){
     seguro=Math.min(seguro,(inicio+cum)/i);
   }
   return {hoy:hoy,fin:fin,inicio:inicio,gv:gv,dias:dias,ev:ev,min:min,seguro:r2(Math.max(0,seguro===Infinity?0:seguro)),
-    inciertos:inc,apartado:apartadoMetas(),gvPropio:gvPropio,gvTrabajo:gvTrabajo,proxSueldo:ev.filter(function(e){return e.clave==='s'||e.clave==='q';})[0]||null};
+    finFijo66:finFijo||null,inciertos:inc,apartado:apartadoMetas(),gvPropio:gvPropio,gvTrabajo:gvTrabajo,proxSueldo:ev.filter(function(e){return e.clave==='s'||e.clave==='q';})[0]||null};
 }
 /* ── Racha sin avances ni préstamos ── */
 function rachaSinAvances(){
@@ -5026,7 +5041,7 @@ function _certBadge(c){
   return '<span style="font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:'+m[0]+';border:0.5px solid '+m[0]+'66;border-radius:6px;padding:1px 5px;margin-left:6px">'+m[1]+'</span>';
 }
 function htmlFlujo(){
-  var p=proyectarFlujo(), cfg=cfgIngresos();
+  var p=proyectarFlujo(null,finFlujo66()), cfg=cfgIngresos();
   var rojo=p.min.bal<0, h='';
   // ── Tarjeta principal ──
   h+='<div class="cc-card" style="padding:16px">'
@@ -5048,7 +5063,7 @@ function htmlFlujo(){
       +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Gasto diario seguro</div><div style="font-size:22px;font-weight:800;color:'+col+'">'+fmt$(p.seguro)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">con ahorro y colchón separados</div></div>'
       +'<div style="background:rgba(255,255,255,0.04);border-radius:14px;padding:12px;text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.45)">Tu ritmo actual</div><div style="font-size:22px;font-weight:800;color:#fff">'+fmt$(p.gv)+'</div><div style="font-size:10px;color:rgba(255,255,255,0.35)">'+(p.gvTrabajo>0?'propio '+fmt$(p.gvPropio)+' + trabajo '+fmt$(p.gvTrabajo):'promedio 60 días')+'</div></div>'
     +'</div>'
-    +(rojo?'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,92,122,0.1);border:0.5px solid rgba(255,92,122,0.35);font-size:13px;line-height:1.45;color:#ffc2cd">⚠️ A tu ritmo actual, el <b>'+fechaCorta(p.min.fecha)+'</b> quedarías en <b>−'+fmt$(Math.abs(p.min.bal))+'</b>. Bajando a <b>'+fmt$(p.seguro)+'/día</b> llegas sin pedir avance.</div>'
+    +(rojo?'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(255,92,122,0.1);border:0.5px solid rgba(255,92,122,0.35);font-size:13px;line-height:1.45;color:#ffc2cd">⚠️ A tu ritmo actual, el <b>'+fechaCorta(p.min.fecha)+'</b> quedarías en <b>−'+fmt$(Math.abs(p.min.bal))+'</b>. Bajando a <b>'+fmt$(p.finFijo66&&p.seguroSinAhorro!=null?Math.min(p.seguro,p.seguroSinAhorro):p.seguro)+'/día</b> llegas sin pedir avance.</div>'
       :'<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(52,211,153,0.08);border:0.5px solid rgba(52,211,153,0.3);font-size:13px;line-height:1.45;color:#b7f5dc">✅ A tu ritmo actual llegas sin avances hasta el '+fechaCorta(p.fin)+'. Lo que no gastes de la diferencia ('+fmt$(Math.max(0,p.seguro-p.gv))+'/día) puedes apartarlo para tu meta.</div>')
   +'</div>';
   // ── Racha sin avances ──
@@ -5061,8 +5076,10 @@ function htmlFlujo(){
   // ── Calendario ──
   h+='<div class="cc-card" style="padding:14px 16px"><div class="cc-card-title" style="margin-bottom:10px">📅 Próximos movimientos</div>';
   if(!p.ev.length) h+='<div style="font-size:13px;color:rgba(255,255,255,0.4);text-align:center;padding:10px">Sin movimientos programados en este período</div>';
+  var _ms66=p.hoy.slice(0,7), _var66=p.fin.slice(0,7)!==p.hoy.slice(0,7);
   p.ev.forEach(function(e){
     var d=p.dias.find(function(x){return x.fecha===e.fecha;});
+    if(_var66&&e.fecha.slice(0,7)!==_ms66){ _ms66=e.fecha.slice(0,7); h+='<div class="ms66">'+_cap47(MESES[+_ms66.slice(5,7)-1])+' '+_ms66.slice(0,4)+'</div>'; }
     h+='<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:0.5px solid rgba(255,255,255,0.06)">'
       +'<div style="width:46px;text-align:center;flex-shrink:0"><div style="font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase">'+DIAS[ymdToDate(e.fecha).getDay()].slice(0,3)+'</div><div style="font-size:18px;font-weight:800;color:#fff;line-height:1">'+ymdToDate(e.fecha).getDate()+'</div></div>'
       +'<div style="flex:1;min-width:0"><div style="font-size:13px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+e.icon+' '+esc(e.desc)+'</div>'
@@ -5095,7 +5112,7 @@ function svgFlujo(p){
     var ing=x.ev.some(function(e){return e.tipo==='ING';}), egr=x.ev.some(function(e){return e.tipo==='EGR';});
     marks+='<circle cx="'+X(i).toFixed(1)+'" cy="'+Y(x.bal).toFixed(1)+'" r="3.5" fill="'+(ing&&!egr?'#34d399':egr&&!ing?'#ff5c7a':'#fbbf24')+'" stroke="#120626" stroke-width="1.5"/>'; });
   var lbls='', paso=Math.max(1,Math.round(pts.length/5));
-  for(var i=0;i<pts.length;i+=paso){ var d=ymdToDate(pts[i].fecha); lbls+='<text x="'+X(i).toFixed(1)+'" y="'+(H-4)+'" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="'+(i===0?'start':'middle')+'">'+d.getDate()+'/'+(d.getMonth()+1)+'</text>'; }
+  for(var i=0;i<pts.length;i+=paso){ var d=ymdToDate(pts[i].fecha); lbls+='<text x="'+X(i).toFixed(1)+'" y="'+(H-4)+'" fill="rgba(255,255,255,0.35)" font-size="9" text-anchor="'+(i===0?'start':i>=pts.length-1-paso/2?'end':'middle')+'">'+d.getDate()+'/'+(d.getMonth()+1)+'</text>'; }
   var yMin=p.dias.length?Y(p.min.bal):0;
   return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block;margin-top:6px">'
     +'<defs><linearGradient id="fgA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a78bfa" stop-opacity="0.35"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></linearGradient>'
@@ -15386,7 +15403,7 @@ function textoCascada64(c){
 }
 (function(){ var hf=window.htmlFlujo; if(typeof hf!=='function') return;
   window.htmlFlujo=function(){ var h=hf.apply(this,arguments); try{
-    var c=cascada64(); if(!c) return h; var ancla='📅 Próximos movimientos</div>', i=h.indexOf(ancla); if(i<0) return h;
+    var c=cascada64(proyectarFlujo(null,finFlujo66())); if(!c) return h; var ancla='📅 Próximos movimientos</div>', i=h.indexOf(ancla); if(i<0) return h;
     var g='<div class="cc-card vz cs64-c"><div class="vz-t">Qué significan para tu dinero</div><div class="vz-f">'+textoCascada64(c)+'</div><div class="vz-read" aria-live="polite">Toca una fila para ver el detalle</div>'
       +htmlCascada64(c)+'<div class="vz-como"><b>Cómo leerlo:</b> la barra morada de arriba es tu dinero de hoy. Cada fila verde suma y cada roja resta, en orden, hasta llegar a la barra morada de abajo: lo que te quedaría. Lo más claro es estimado o probable (reembolsos, comisión y tu gasto diario a tu ritmo actual).</div></div>';
     var j=h.lastIndexOf('<div class="cc-card"',i); if(j<0) return h;
@@ -15442,6 +15459,49 @@ window.histGetDupIds=function(txs){
     (g[k+'|'+c]=g[k+'|'+c]||[]).push(a); }
   return ids;
 };
+
+/* ══ v6.6 · Flujo de caja: horizonte a elegir (este mes por defecto, hasta 3 meses) ══ */
+var flujoH66=0;
+function finFlujo66(op){
+  op=op==null?flujoH66:op; var hoy=hoyLocal(), ym=mesLocal();
+  var f=function(k){ var m=ymAdd(ym,k); return m+'-'+String(diasDelMes(m)).padStart(2,'0'); };
+  return f(0)<=hoy?f(op+1):f(op);   // el último día del mes todo corre un mes
+}
+function baseMes66(){ var ym=mesLocal(); return finFlujo66(0).slice(0,7)!==ym?ymAdd(ym,1):ym; }
+function _mesC66(ym){ var n=MESES[+ym.slice(5,7)-1]; return n.charAt(0).toUpperCase()+n.slice(1,3); }
+function selectorFlujo66(){
+  var ym=baseMes66(), ultimo=ym!==mesLocal();
+  var op=[[0,'Este mes'],[1,'Hasta '+_mesC66(ymAdd(ym,1)).toLowerCase()],[2,'Hasta '+_mesC66(ymAdd(ym,2)).toLowerCase()],[3,'Hasta '+_mesC66(ymAdd(ym,3)).toLowerCase()]];
+  if(ultimo) op[0][1]=_mesC66(ym);
+  return '<div class="pe62 fh66" role="tablist" aria-label="Hasta cuándo ver">'+op.map(function(o){ return '<button role="tab" aria-selected="'+(o[0]===flujoH66)+'" class="'+(o[0]===flujoH66?'on':'')+'" onclick="flujoH66='+o[0]+';renderPlan()">'+o[1]+'</button>'; }).join('')+'</div>';
+}
+/* Mes a mes: qué entra, qué sale y con cuánto cierras cada mes */
+function mesAMes66(p){
+  var g={}, orden=[];
+  p.dias.forEach(function(d){ var ym=d.fecha.slice(0,7);
+    if(!g[ym]){ g[ym]={ym:ym,ent:0,pag:0,dia:0,n:0,fin:0}; orden.push(ym); }
+    var x=g[ym]; x.n++; x.dia+=p.gv; x.fin=d.bal;
+    (d.ev||[]).forEach(function(e){ if(e.tipo==='ING') x.ent+=e.monto; else x.pag+=e.monto; }); });
+  return orden.map(function(k){ var x=g[k]; x.ent=r2(x.ent); x.pag=r2(x.pag); x.dia=r2(x.dia); return x; });
+}
+function htmlMesAMes66(p){
+  var M=mesAMes66(p); if(M.length<2) return '';
+  var ini=p.inicio;
+  var filas=M.map(function(x,i){ var antes=i?M[i-1].fin:ini, dif=r2(x.fin-antes), mes=MESES[+x.ym.slice(5,7)-1];
+    return '<div class="mm66-r"><div class="mm66-h"><b>'+_cap47(mes)+(i===0?' <i>quedan '+x.n+' día'+(x.n>1?'s':'')+'</i>':'')+'</b><em class="'+(x.fin<0?'out':'tot')+'">'+(x.fin<0?'−':'')+fmt$(Math.abs(x.fin))+'</em></div>'
+      +'<div class="mm66-d">'+(x.ent>0?'<span class="in">+'+fmt$(x.ent)+' entra</span>':'')+(x.pag>0?'<span class="out">−'+fmt$(x.pag)+' pagos</span>':'')+'<span class="out">−'+fmt$(x.dia)+' día a día</span></div>'
+      +'<div class="mm66-s">'+(dif>=0?'Terminas el mes con '+fmt$(dif)+' más':'Terminas el mes con '+fmt$(-dif)+' menos')+' que al empezarlo'+(x.fin<0?'. Te faltaría dinero.':'.')+'</div></div>'; }).join('');
+  var peor=M.reduce(function(a,x){ return r2(x.ent-x.pag-x.dia)<r2(a.ent-a.pag-a.dia)?x:a; },M[0]);
+  var nota=M.every(function(x){ return x.fin>=0; })?'A tu ritmo actual cierras todos los meses en positivo.':'Hay meses que cierran en rojo: mira el día más ajustado arriba.';
+  if(M.length>2) nota+=' El mes más apretado es '+MESES[+peor.ym.slice(5,7)-1]+'.';
+  return '<div class="cc-card mm66"><div class="vz-t">Mes a mes</div><div class="vz-f">'+nota+'</div>'+filas
+    +'<div class="vz-como"><b>Cómo leerlo:</b> la cifra de la derecha es con cuánto cerrarías cada mes. "Día a día" es tu ritmo actual de '+fmt$(p.gv)+'/día (incluye lo que adelantas por trabajo). Mientras más lejos, más estimado: cambia en cuanto registras.</div></div>';
+}
+(function(){ var hf=window.htmlFlujo; if(typeof hf!=='function') return;
+  window.htmlFlujo=function(){ var h=hf.apply(this,arguments); try{
+    var sel=selectorFlujo66(), mm=''; try{ mm=htmlMesAMes66(proyectarFlujo(null,finFlujo66())); }catch(e){ console.warn('mm66',e); }
+    if(mm){ var i=h.indexOf('📅 Próximos movimientos</div>'), j=i<0?-1:h.lastIndexOf('<div class="cc-card"',i); if(j>=0) h=h.slice(0,j)+mm+h.slice(j); }
+    return sel+h; }catch(e){ console.warn('fh66',e); return h; } }; })();
 
 </script>
 <script>
