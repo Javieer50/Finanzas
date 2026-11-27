@@ -1314,8 +1314,8 @@ html.kb div:has(> .lg-dialog){top:var(--vvt,0px)!important;bottom:auto!important
 body.tb-hide .tabbar,html.kb .tabbar{transform:translateY(150%);opacity:0;pointer-events:none}
 body .scroll-content{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 104px)!important}
 #screen-home .home-scroll{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px)!important}
-body.tb-root .inner-screen.open .nav-header .back-btn{display:none}
-body.tb-root .inner-screen.open .nav-header{padding-left:20px!important}
+/* v6.8: las pestañas también tienen botón atrás (lleva a Inicio) */
+
 
 /* ── Selector entre pantallas hermanas ── */
 .hub-seg{display:flex;gap:3px;margin:0 16px 6px;padding:3px;border-radius:14px;background:rgba(255,255,255,.08);border:0.5px solid rgba(255,255,255,.12);flex-shrink:0}
@@ -1531,7 +1531,7 @@ html.t-claro{--vz-hi:#6250d6!important;--vz-lo:rgba(24,20,48,.14)!important;--vz
 .inner-screen>.nav-header{position:relative;z-index:5;flex-wrap:wrap;flex-shrink:0;padding:calc(var(--safe-top) + var(--hdr-gap)) 16px 10px!important;
   background:var(--hdr-bg);-webkit-backdrop-filter:blur(24px) saturate(170%);backdrop-filter:blur(24px) saturate(170%);
   border-bottom:0.5px solid var(--hdr-line);box-shadow:0 10px 26px -18px rgba(0,0,0,.7)}
-body.tb-root .inner-screen.open>.nav-header{padding-left:20px!important}
+
 .nav-header>.hub-seg{flex-basis:100%;margin:8px 0 0!important}
 .inner-screen>.nav-header+.scroll-content{padding-top:12px!important}
 /* Modo claro: barra blanca y sólida (el iPhone adapta la hora a fondo claro y su difuminado se funde con el blanco) */
@@ -2929,6 +2929,76 @@ html:not(.t-claro) .rp63{background:rgba(251,191,36,.08)} html.t-claro .rp63{bac
 .mm66-s{font-size:12px;color:var(--vz-ink2);margin-top:3px}
 .ms66{font-size:11.5px;font-weight:700;color:var(--vz-ink2);padding:12px 0 2px;letter-spacing:.2px}
 
+/* ══ v6.7 · Deslizar en Inicio sin trabas ══ */
+/* El vidrio dentro de otro vidrio obliga al teléfono a desenfocar dos veces en cada fotograma */
+.widget-balance .wb-pill{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#screen-home .home-scroll{overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch}
+/* El latido del "hoy" se repite 3 veces y se queda quieto (antes repintaba sin parar) */
+.ev60-hoy i::before{animation-iteration-count:3!important}
+/* Mientras deslizas no se anima nada detrás del vidrio */
+body.scr59 .wallpaper::before,body.scr59 .ev60-hoy i::before,body.scr59 .ep57-bg,body.scr59 .tn60{animation-play-state:paused!important}
+body.scr59 .sh59{display:none!important}
+
+/* ══ v6.9 · Código de colores: rojo malo · ámbar atento · verde bueno · azul información ══ */
+html:not(.t-claro){--s-bad:#ff6b85;--s-bad-bg:rgba(255,92,122,.14);--s-bad-bd:rgba(255,92,122,.45);--s-bad-ink:#ffd5dc;
+  --s-warn:#fbbf24;--s-warn-bg:rgba(251,191,36,.12);--s-warn-bd:rgba(251,191,36,.42);--s-warn-ink:#fde9b0;
+  --s-ok:#34d399;--s-ok-bg:rgba(52,211,153,.12);--s-ok-bd:rgba(52,211,153,.42);--s-ok-ink:#c4f5e0;
+  --s-info:#60a5fa;--s-info-bg:rgba(96,165,250,.12);--s-info-bd:rgba(96,165,250,.42);--s-info-ink:#d3e5ff}
+html.t-claro{--s-bad:#c8213f;--s-bad-bg:#fff0f2;--s-bad-bd:rgba(200,33,63,.3);--s-bad-ink:#5c1020;
+  --s-warn:#9a5a00;--s-warn-bg:#fff5dc;--s-warn-bd:rgba(154,90,0,.3);--s-warn-ink:#4a3200;
+  --s-ok:#0b7f56;--s-ok-bg:#e8f8f0;--s-ok-bd:rgba(11,127,86,.3);--s-ok-ink:#0c3d2b;
+  --s-info:#1d5fc2;--s-info-bg:#eaf2ff;--s-info-bd:rgba(29,95,194,.3);--s-info-ink:#11305f}
+
+/* El aviso */
+.av69.mal{--a:var(--s-bad);--ab:var(--s-bad-bg);--ad:var(--s-bad-bd);--ai:var(--s-bad-ink)}
+.av69.atento{--a:var(--s-warn);--ab:var(--s-warn-bg);--ad:var(--s-warn-bd);--ai:var(--s-warn-ink)}
+.av69.bien{--a:var(--s-ok);--ab:var(--s-ok-bg);--ad:var(--s-ok-bd);--ai:var(--s-ok-ink)}
+.av69.info{--a:var(--s-info);--ab:var(--s-info-bg);--ad:var(--s-info-bd);--ai:var(--s-info-ink)}
+html:not(.t-claro) .av69,html.t-claro .av69{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:14px;background:var(--ab)!important;box-shadow:inset 0 0 0 .5px var(--ad)!important;color:var(--ai)!important;font-size:13px;line-height:1.45;text-align:left}
+.av69>i{flex-shrink:0;width:28px;height:28px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--a) 20%,transparent);color:var(--a)}
+.av69>span{flex:1;min-width:0;display:block}
+html:not(.t-claro) .av69 b,html.t-claro .av69 b{display:block;color:var(--a)!important;font-size:13.5px;margin-bottom:1px}
+.av69 small{display:block;font-size:12.5px;color:var(--ai)}
+.av69 small b{display:inline;color:inherit!important;font-size:inherit}
+.av69>u{text-decoration:none;color:var(--a);align-self:center}
+.av69-in{margin-top:12px}
+/* Los avisos que ya existían toman el mismo código */
+html:not(.t-claro) .mf63.av69,html.t-claro .mf63.av69{color:var(--ai)!important}
+html:not(.t-claro) .mf63.av69>svg,html.t-claro .mf63.av69>svg,html:not(.t-claro) .mf63.av69 b,html.t-claro .mf63.av69 b{color:var(--a)!important}
+html:not(.t-claro) .mf63.av69 button,html.t-claro .mf63.av69 button{background:color-mix(in srgb,var(--a) 20%,transparent)!important;color:var(--a)!important}
+html:not(.t-claro) .rp63.av69>svg,html.t-claro .rp63.av69>svg{color:var(--a)!important}
+html:not(.t-claro) .rp63.av69 b,html.t-claro .rp63.av69 b{display:inline;color:var(--a)!important;font-size:inherit}
+
+/* Cifras y etiquetas con estado */
+html:not(.t-claro) .st69.mal,html.t-claro .st69.mal{color:var(--s-bad)!important}
+html:not(.t-claro) .st69.atento,html.t-claro .st69.atento{color:var(--s-warn)!important}
+html:not(.t-claro) .st69.bien,html.t-claro .st69.bien{color:var(--s-ok)!important}
+
+/* Avisos rápidos */
+html:not(.t-claro) #toast.mal69,html.t-claro #toast.mal69{background:var(--s-bad-bg)!important;box-shadow:inset 0 0 0 1px var(--s-bad-bd),0 10px 30px -10px rgba(0,0,0,.5)!important;color:var(--s-bad-ink)!important}
+html:not(.t-claro) #toast.bien69,html.t-claro #toast.bien69{background:var(--s-ok-bg)!important;box-shadow:inset 0 0 0 1px var(--s-ok-bd),0 10px 30px -10px rgba(0,0,0,.5)!important;color:var(--s-ok-ink)!important}
+html:not(.t-claro) #toast.mal69,html:not(.t-claro) #toast.bien69{-webkit-backdrop-filter:blur(30px) saturate(150%)!important;backdrop-filter:blur(30px) saturate(150%)!important}
+html.t-claro #toast.mal69,html.t-claro #toast.bien69{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+
+/* ── Alerta grave dentro del cuadro del dinero ── */
+#grave69{margin:12px 0 4px;border-radius:16px;overflow:hidden;position:relative;z-index:1}
+html:not(.t-claro) #grave69{background:linear-gradient(160deg,rgba(255,72,108,.38),rgba(220,40,80,.2));box-shadow:inset 0 0 0 1px rgba(255,107,133,.55),inset 0 1px 0 rgba(255,255,255,.12)}
+html.t-claro #grave69{background:#fff0f2;box-shadow:inset 0 0 0 1px rgba(200,33,63,.35),0 4px 14px -8px rgba(200,33,63,.35)}
+.gv69-h{display:flex;align-items:center;gap:6px;padding:9px 12px 2px;font:750 12.5px -apple-system,sans-serif;letter-spacing:.2px;color:var(--s-bad)}
+html:not(.t-claro) .gv69-h{color:#ff8fa3}
+.gv69-r{display:flex;gap:8px;align-items:center;padding:7px 12px 10px;cursor:pointer}
+.gv69-r+.gv69-r{border-top:.5px solid var(--s-bad-bd);padding-top:9px}
+.gv69-r span{flex:1;min-width:0}
+html:not(.t-claro) .gv69-r b,html.t-claro .gv69-r b{display:block;font-size:14.5px;font-weight:700;line-height:1.3}
+html:not(.t-claro) .gv69-r b{color:#fff!important} html.t-claro .gv69-r b{color:#7a0f24!important}
+.gv69-r small{display:block;font-size:12.5px;line-height:1.4;margin-top:2px;color:var(--s-bad-ink)}
+.gv69-r u{text-decoration:none;color:var(--s-bad);flex-shrink:0}
+@media (prefers-reduced-motion:no-preference){#grave69{animation:gv69 .5s cubic-bezier(.2,.8,.25,1) both}}
+@keyframes gv69{from{opacity:0;transform:translateY(-4px) scale(.98)}to{opacity:1;transform:none}}
+/* El borde del cuadro también avisa */
+html:not(.t-claro) .widget-balance.grave69{box-shadow:inset 0 0 0 1px rgba(255,107,133,.45),0 18px 40px -18px rgba(255,92,122,.5)!important}
+html.t-claro .widget-balance.grave69{box-shadow:inset 0 0 0 1px rgba(200,33,63,.28),0 18px 40px -20px rgba(200,33,63,.35)!important}
+
 </style>
 </head>
 <body>
@@ -3557,7 +3627,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='6.6.0';
+var APP_VERSION='6.9.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -13671,7 +13741,7 @@ function filasMov51(){
 (function(){
   var act=null;
   document.addEventListener('touchstart',function(e){
-    var t=e.touches[0]; if(t.clientX>24||state.currentScreen==='home'||state.currentScreen==='nueva'||document.body.classList.contains('tb-root')||_abierto51()) return;
+    var t=e.touches[0]; if(t.clientX>24||state.currentScreen==='home'||state.currentScreen==='nueva'||_abierto51()) return;
     var el=document.getElementById('screen-'+state.currentScreen); if(!el||!el.classList.contains('open')) return;
     var pk=state.screenStack[state.screenStack.length-1]||'home', pv=pk!=='home'?document.getElementById('screen-'+pk):null;
     act={el:el,pv:pv,x0:t.clientX,y0:t.clientY,t0:Date.now(),dx:0,ok:null,W:window.innerWidth};
@@ -14425,8 +14495,12 @@ document.addEventListener('pointerdown',function(e){
   if(!card||rm59()||card.classList.contains('tabbar')) return;
   var sh=card.querySelector(':scope > .sh59'); if(!sh){ sh=document.createElement('span'); sh.className='sh59'; sh.setAttribute('aria-hidden','true'); card.appendChild(sh); }
   var mover=function(ev){ var r=card.getBoundingClientRect(); sh.style.setProperty('--x',(ev.clientX-r.left)+'px'); sh.style.setProperty('--y',(ev.clientY-r.top)+'px'); };
-  mover(e); clearTimeout(sh._t); requestAnimationFrame(function(){ sh.classList.add('on'); });
-  var fin=function(){ sh.classList.remove('on'); sh._t=setTimeout(function(){ if(sh.parentNode) sh.remove(); },450);
+  mover(e); clearTimeout(sh._t); var x0=e.clientX, y0=e.clientY;
+  /* v6.7: el brillo espera un instante; si el dedo se mueve es un deslizamiento y no se pinta nada (el scroll arranca libre) */
+  var esp=setTimeout(function(){ esp=0; sh.classList.add('on'); },110);
+  var mv0=function(ev){ if(esp&&(Math.abs(ev.clientX-x0)>6||Math.abs(ev.clientY-y0)>6)){ clearTimeout(esp); esp=0; fin(); } };
+  document.addEventListener('pointermove',mv0,true); document.addEventListener('scroll',function sc0(){ document.removeEventListener('scroll',sc0,true); if(esp){ clearTimeout(esp); esp=0; } fin(); },{capture:true,passive:true,once:true});
+  var fin=function(){ if(esp){ clearTimeout(esp); esp=0; } document.removeEventListener('pointermove',mv0,true); sh.classList.remove('on'); sh._t=setTimeout(function(){ if(sh.parentNode) sh.remove(); },450);
     document.removeEventListener('pointermove',mover,true); document.removeEventListener('pointerup',fin,true); document.removeEventListener('pointercancel',fin,true); };
   document.addEventListener('pointermove',mover,true); document.addEventListener('pointerup',fin,true); document.addEventListener('pointercancel',fin,true);
 },{passive:true,capture:true});
@@ -14616,7 +14690,7 @@ _w43('renderCuentas',function(){
     return res; }; })();
 
 /* Al desplazar, las luces del fondo se detienen para que el desplazamiento vaya fluido */
-(function(){ var t=0; document.addEventListener('scroll',function(){ document.body.classList.add('scr59'); clearTimeout(t); t=setTimeout(function(){ document.body.classList.remove('scr59'); },350); },{passive:true,capture:true}); })();
+(function(){ var t=0; document.addEventListener('scroll',function(){ if(!document.body.classList.contains('scr59')) document.body.classList.add('scr59'); clearTimeout(t); t=setTimeout(function(){ document.body.classList.remove('scr59'); },350); },{passive:true,capture:true}); })();
 
 /* ══ v6.0 · Segunda ronda: el iPhone como parte del diseño, gestos, anillos, día de pago y más ══ */
 function pref60(k,def){ try{ var v=localStorage.getItem('fjr60_'+k); return v==null?def:v==='1'; }catch(e){ return def; } }
@@ -15502,6 +15576,176 @@ function htmlMesAMes66(p){
     var sel=selectorFlujo66(), mm=''; try{ mm=htmlMesAMes66(proyectarFlujo(null,finFlujo66())); }catch(e){ console.warn('mm66',e); }
     if(mm){ var i=h.indexOf('📅 Próximos movimientos</div>'), j=i<0?-1:h.lastIndexOf('<div class="cc-card"',i); if(j>=0) h=h.slice(0,j)+mm+h.slice(j); }
     return sel+h; }catch(e){ console.warn('fh66',e); return h; } }; })();
+
+/* ══ v6.7 · Campana: pocos avisos, precisos y con dinero de por medio ══
+   Antes salía uno por cada pago, cada tope y cada consejo (hasta ~18). Ahora:
+   · los pagos pendientes van juntos en uno solo, igual los topes del mes;
+   · se quitan avisos de "mantenimiento" que no cambian tu economía;
+   · los consejos se eligen por cuánto dinero está en juego (no al azar), máximo 2;
+   · un solo logro; en total, como máximo 6 (nunca se esconde algo crítico). */
+var MAX67=6;
+function _monto67(n){ if(n.impacto!=null) return n.impacto; if(n.monto) return n.monto; var m=String((n.titulo||'')+' '+(n.texto||'')).match(/\$([\d,]+(?:\.\d+)?)/); return m?parseFloat(m[1].replace(/,/g,'')):0; }
+/* Ritmo de los últimos 7 días contra tu plan diario: el consejo que más mueve el mes */
+function ritmoSemana67(){
+  var hoy=hoyLocal(), mes=mesLocal(), plan=planDiario53(); if(!(plan>0)) return null;
+  var desde=addDias(hoy,-7), ayer=addDias(hoy,-1), m=porDia47(desde,ayer), sem=0; Object.keys(m).forEach(function(k){ sem+=m[k]; });
+  var reg=state.transactions.some(function(t){ return !t.arch&&t.tipo==='EGRESO'&&t.fecha>=addDias(hoy,-2)&&t.fecha<=hoy; }); if(!reg) return null; // si no estás registrando, no hay ritmo real que juzgar
+  var prom=r2(sem/7), dm=diasDelMes(mes), dia=+hoy.slice(8,10), rest=dm-dia+1;
+  var md=porDia47(mes+'-01',ayer), usado=0; Object.keys(md).forEach(function(k){ usado+=md[k]; }); usado=r2(usado);
+  var queda=r2(plan*dm-usado), porDia=rest>0?r2(queda/rest):0;
+  return {plan:plan,prom:prom,usado:usado,queda:queda,porDia:porDia,rest:rest,dif:r2((prom-plan)*rest)};
+}
+function avisosEconomia67(){
+  var out=[], hoy=hoyLocal();
+  try{ var r=ritmoSemana67(); if(r){
+    if(r.prom>r.plan*1.1&&r.dif>=5) out.push({id:'sem67_'+hoy,grupo:'consejo',nivel:'medio',icon:'🧮',impacto:r.dif,
+      titulo:'Esta semana gastas '+fmt$(r.prom)+'/día; tu plan es '+fmt$(r.plan),
+      texto:'Si sigues así, el mes cierra unos '+fmt$(r.dif)+' sobre tu plan. '+(r.porDia>0?'Para volver al plan, gasta máximo '+fmt$(r.porDia)+' por día los '+r.rest+' días que quedan.':'Ya usaste todo lo planeado para el día a día de este mes: lo que gastes ahora sale de tu ahorro.'),
+      nav:'plan',descarte:'manana'});
+    else if(r.prom<r.plan*0.85&&r.queda>10&&+hoy.slice(8,10)>=7) out.push({id:'semb67_'+hoy,grupo:'logro',nivel:'bajo',icon:'🌱',impacto:r2((r.plan-r.prom)*r.rest),
+      titulo:'Vas por debajo de tu plan: '+fmt$(r.prom)+'/día de '+fmt$(r.plan),
+      texto:'A este ritmo te sobrarían unos '+fmt$(r2((r.plan-r.prom)*r.rest))+' a fin de mes. Apártalos para tu meta antes de que se vayan.',nav:'plan',accion:{lbl:'Ir a metas',fn:function(){goTo('plan');setPlanTab('metas');}},descarte:'manana'});
+  } }catch(e){ console.warn('sem67',e); }
+  return out;
+}
+(function(){ var cn=window.construirNotificaciones; if(typeof cn!=='function') return;
+  window.construirNotificaciones=function(){ var L=cn.apply(this,arguments); try{
+    var ids={}; L.forEach(function(n){ ids[n.id]=1; });
+    avisosEconomia67().forEach(function(n){ if(!ids[n.id]&&!_descartada(n.id)) L.push(n); });
+    // 1. Fuera lo que no cambia tu economía (mantenimiento) y lo repetido
+    L=L.filter(function(n){ return !/^(ajustes_|cuadre_|tip_hoy_)/.test(n.id); });
+    if(L.some(function(n){ return /^sem67_/.test(n.id); })) L=L.filter(function(n){ return !/^ritmo_alto_/.test(n.id); });
+    if(L.some(function(n){ return /^semb67_/.test(n.id); })) L=L.filter(function(n){ return !/^ritmo_bajo_/.test(n.id); });
+    // 2. Pagos pendientes: uno solo
+    var ob=L.filter(function(n){ return /^ob_/.test(n.id); });
+    if(ob.length>1){ var tot=r2(ob.reduce(function(s,n){ return s+(n.monto||0); },0)), venc=ob.filter(function(n){ return /vencida/.test(n.titulo); }).length;
+      var niv=ob.reduce(function(a,n){ return NC_NIVEL[n.nivel]<NC_NIVEL[a]?n.nivel:a; },'bajo');
+      L=L.filter(function(n){ return !/^ob_/.test(n.id); });
+      L.push({id:'obs67_'+ob.map(function(n){return n.id;}).join('|'),grupo:'accion',nivel:niv,icon:'📅',monto:tot,signo:'-',
+        titulo:ob.length+' pagos por hacer'+(venc?' ('+venc+' vencido'+(venc>1?'s':'')+')':''),
+        texto:ob.map(function(n){ return n.titulo.replace(/ vence /,': ').replace(/ vencida$/,': vencida')+' '+fmt$(n.monto||0); }).join(' · ')+'. Si ya pagaste alguno, regístralo para que tu saldo cuadre.',
+        nav:'oblig',accion:{lbl:'Ver pagos',fn:function(){ goTo((window.NAV_ALIAS&&NAV_ALIAS.oblig)||'oblig'); }},descarte:'manana'}); }
+    // 3. Topes del mes: uno solo
+    var tp=L.filter(function(n){ return /^(tope100_|tope80_|horm_)/.test(n.id); });
+    if(tp.length>1){ var pas=tp.filter(function(n){ return /^tope100_|^horm_.*_100$/.test(n.id); });
+      L=L.filter(function(n){ return !/^(tope100_|tope80_|horm_)/.test(n.id); });
+      var nom=function(n){ var m=n.titulo.match(/tope de (.+?):/)||n.titulo.match(/^(.+?): ya usaste/); return m?m[1]:/^Gastos pequeños/.test(n.titulo)?'gastos pequeños':n.titulo; };
+      L.push({id:'topes67_'+tp.map(function(n){return n.id;}).join('|'),grupo:pas.length?'accion':'consejo',nivel:pas.length?'alto':'medio',icon:'🎯',
+        titulo:pas.length?'Pasaste tu tope en '+pas.length+' categoría'+(pas.length>1?'s':''):'Cerca del tope en '+tp.length+' categorías',
+        texto:tp.map(function(n){ var m=(n.titulo+' '+n.texto).match(/\$[\d,.]+ de (?:tu tope de )?\$[\d,.]+/); return _cap47(nom(n))+(m?' '+m[0]:''); }).join(' · ')+'. Lo que pase del tope sale de tu ahorro.',
+        nav:'plan',accion:{lbl:'Ver plan',fn:function(){ goTo('plan'); setPlanTab('metas'); }},descarte:'manana'}); }
+    // 4. Repartir: acciones por urgencia; consejos por dinero en juego (máx. 2); un logro
+    var acc=L.filter(function(n){ return n.grupo==='accion'; }).sort(function(a,b){ return NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]||_monto67(b)-_monto67(a); });
+    var cob=L.filter(function(n){ return n.grupo==='cobro'; });
+    var con=L.filter(function(n){ return n.grupo==='consejo'; }).sort(function(a,b){ return _monto67(b)-_monto67(a); }).slice(0,2);
+    var lo=L.filter(function(n){ return n.grupo==='logro'; }).sort(function(a,b){ return NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]||_monto67(b)-_monto67(a); }).slice(0,1);
+    var urg=acc.filter(function(n){ return n.nivel==='critico'||n.nivel==='alto'||/^sueldo61_/.test(n.id); }), resto=acc.filter(function(n){ return urg.indexOf(n)<0; });
+    var orden=urg.concat(cob.slice(0,1),con.slice(0,1),resto,con.slice(1),cob.slice(1),lo);
+    var fin=orden.slice(0,Math.max(MAX67,urg.length));
+    fin.sort(function(a,b){ var g=function(n){ return n.grupo==='accion'?0:n.grupo==='cobro'?1:n.grupo==='consejo'?2:3; }; return g(a)-g(b)||NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]; });
+    return fin; }catch(e){ console.warn('nc67',e); return L; } }; })();
+
+/* ══ v6.9 · Colores que dicen algo: rojo = malo, ámbar = atento, verde = bueno, azul = para que sepas ══
+   · Un solo componente de aviso (.av69) para toda la app.
+   · Alerta grave dentro del cuadro del dinero disponible, solo cuando la hay:
+     quedarte en negativo, pagos vencidos o tu economía empeorando. */
+
+/* ── El componente ── */
+var TIPO69={mal:'alert',atento:'alert',bien:'check',info:'bulb'};
+function aviso69(tipo,titulo,texto,o){ o=o||{};
+  return '<aside class="av69 '+tipo+(o.cls?' '+o.cls:'')+'"'+(o.click?' role="button" tabindex="0" onclick="'+o.click+'"':'')+'><i>'+ic46(o.icon||TIPO69[tipo]||'bulb',16)+'</i><span>'
+    +(titulo?'<b>'+titulo+'</b>':'')+(texto?'<small>'+texto+'</small>':'')+'</span>'+(o.click?'<u>'+ic46('chev',14)+'</u>':'')+'</aside>'; }
+function tono69(v,bien,mal){ return v>=bien?'bien':v<=mal?'mal':'atento'; }
+
+/* ── ¿Tu economía va empeorando? (se mira con meses cerrados, no con el mes a medias) ── */
+function empeora69(){
+  var mes=mesLocal(), m1=ymAdd(mes,-1), m2=ymAdd(mes,-2), f1=flujoMes(m1), f2=flujoMes(m2), s=[];
+  if(f1.n>=10&&f2.n>=10&&f1.net<0&&f2.net<0) s.push({k:'rojo',t:'En '+MESES[+m2.slice(5,7)-1]+' y '+MESES[+m1.slice(5,7)-1]+' gastaste más de lo que te entró ('+fmt$(-f2.net)+' y '+fmt$(-f1.net)+')'});
+  var pide=r2((f1.finIn||0)+(f2.finIn||0)), paga=r2((f1.deuda||0)+(f2.deuda||0));
+  if(pide-paga>50) s.push({k:'deuda',t:'En 2 meses pediste '+fmt$(pide)+' en avances o préstamos y pagaste '+fmt$(paga)+': tu deuda crece'});
+  var H=state.saludHistorico||{}, hoyS=null; try{ hoyS=calcSaludFinanciera().score; }catch(e){}
+  var antes=H[m1]!=null?H[m1]:H[m2]; if(hoyS!=null&&antes!=null&&antes-hoyS>=10) s.push({k:'salud',t:'Tu salud financiera bajó de '+antes+' a '+hoyS});
+  var grave=s.some(function(x){return x.k==='rojo';})||s.length>=2;
+  return {grave:grave,señales:s};
+}
+/* ── Lo grave, en orden de urgencia ── */
+function graves69(){
+  var out=[], hoy=hoyLocal(), mes=mesLocal();
+  try{ var pr=proyectarFlujo(); if(pr.min.bal<0){ var d=difDias(hoy,pr.min.fecha);
+    out.push({k:'neg',titulo:'Te faltarían '+fmt$(-pr.min.bal)+' el '+fechaCorta(pr.min.fecha),
+      texto:'',
+      ir:"if(typeof faltante52==='function')faltante52();else{goTo('plan');setTimeout(function(){try{setPlanTab('flujo')}catch(e){}},50)}"});
+      var sig=(pr.ev||[]).filter(function(e){return e.tipo==='ING'&&(e.clave==='s'||e.clave==='q')&&e.fecha>pr.min.fecha;})[0];
+    out[out.length-1].texto=(d<=7?'En '+d+' día'+(d===1?'':'s')+'. ':'')+'Si sigues gastando '+fmt$(pr.gv)+'/día'+(sig?', antes de tu cobro del '+fechaCorta(sig.fecha)+' no te alcanza':' no te alcanza')+'. '+(pr.seguro>0?'Baja a '+fmt$(pr.seguro)+'/día para evitarlo.':'Gasta solo lo indispensable.');
+    } }catch(e){}
+  try{ var v=getObligacionesMes().filter(function(o){ if(o.pagadaEsteMes) return false; var f=o.duracion==='puntual'?(o.fechaInicio||hoy):mes+'-'+String(Math.min(o.diaPago||1,diasDelMes(mes))).padStart(2,'0'); o._f69=f; return f<hoy; });
+    if(v.length){ var t=r2(v.reduce(function(s,o){return s+(o.montoActual||0);},0));
+      out.push({k:'venc',titulo:(v.length===1?v[0].nombre+' está vencido':v.length+' pagos vencidos')+': '+fmt$(t),
+        texto:v.map(function(o){ return o.nombre+' (desde el '+fechaCorta(o._f69)+')'; }).join(' · ')+'. Si ya pagaste, regístralo para que tu saldo cuadre.',
+        ir:"goTo('oblig')"}); } }catch(e){}
+  try{ var e=empeora69(); if(e.grave) out.push({k:'peor',titulo:'Tu economía está empeorando',texto:e.señales.map(function(x){return x.t;}).join(' · ')+'.',ir:"openSaludModal()"}); }catch(e){}
+  return out;
+}
+/* ── La alerta dentro del cuadro del dinero ── */
+function pintarGrave69(){
+  var w=document.querySelector('.widget-balance'); if(!w) return; var g=[]; try{ g=graves69(); }catch(e){}
+  var box=document.getElementById('grave69');
+  if(!g.length){ if(box) box.remove(); w.classList.remove('grave69'); var hw0=document.querySelector('#hoy52 .w'); if(hw0) hw0.style.display=''; return; }
+  if(!box){ box=document.createElement('div'); box.id='grave69'; var ref=document.getElementById('home-neto'); if(ref) ref.insertAdjacentElement('afterend',box); else w.appendChild(box); }
+  w.classList.add('grave69');
+  box.innerHTML='<div class="gv69-h">'+ic46('alert',15)+'<span>'+(g.length===1?'Atención':g.length+' cosas graves')+'</span></div>'
+    +g.map(function(x){ return '<div class="gv69-r" role="button" tabindex="0" onclick="event.stopPropagation();'+x.ir+'"><span><b>'+x.titulo+'</b><small>'+x.texto+'</small></span><u>'+ic46('chev',14)+'</u></div>'; }).join('');
+  // El aviso ámbar de "a tu ritmo te faltaría" ya está aquí en rojo: no repetirlo
+  var hw=document.querySelector('#hoy52 .w'); if(hw) hw.style.display=g.some(function(x){return x.k==='neg';})?'none':'';
+}
+_w43('updateHomeWidget',function(){ pintarGrave69(); });
+_w43('hoy52',function(){ pintarGrave69(); });
+/* Al abrir, algunas migraciones corren después del primer dibujo: se vuelve a pintar una vez con todo listo */
+window.addEventListener('load',function(){ setTimeout(function(){ try{ if(typeof _limpiar65==='function') _limpiar65(); if(state.currentScreen==='home') updateHomeWidget(); }catch(e){} },700); });
+
+/* ── El aviso "a tu ritmo te faltaría": el ritmo que dice es el mismo con el que se calcula ── */
+_w43('hoy52',function(){ var w=document.querySelector('#hoy52 .w em'); if(!w) return; try{ var pr=proyectarFlujo();
+  w.innerHTML=w.innerHTML.replace(/Si sigues gastando \$[\d,.]+\/día/,'Si sigues gastando '+fmt$(pr.gv)+'/día'+(pr.gvTrabajo>0?' (con '+fmt$(pr.gvTrabajo)+' de trabajo)':'')); }catch(e){} });
+
+/* ── Campana: el color de cada aviso dice lo mismo en todas partes ── */
+try{ NC_COLOR.critico='var(--s-bad)'; NC_COLOR.alto='var(--s-bad)'; NC_COLOR.medio='var(--s-warn)'; NC_COLOR.bajo='var(--s-info)'; NC_COLOR.logro='var(--s-ok)'; }catch(e){}
+
+/* ── Avisos rápidos (toasts): rojo si algo salió mal, verde si salió bien ── */
+(function(){ var st=window.showToast; if(typeof st!=='function') return;
+  window.showToast=function(msg){ var r=st.apply(this,arguments); try{ var t=document.getElementById('toast'), s=String(msg||'');
+    var k=/^\s*(⚠️|❌|⛔|🚫)|no se pudo|error|inválid|requerid|complet[ae] /i.test(s)?'mal':/^\s*(✅|🎉|💚)|guardad|registrad|listo|actualizado|pagad/i.test(s)?'bien':'';
+    if(t){ t.classList.remove('mal69','bien69'); if(k) t.classList.add(k+'69'); } }catch(e){} return r; }; })();
+
+/* ── Flujo de caja: los cuadros de alerta usan el mismo código ── */
+(function(){ var hf=window.htmlFlujo; if(typeof hf!=='function') return;
+  window.htmlFlujo=function(){ var h=hf.apply(this,arguments); try{
+    h=h.replace(/<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba\(255,92,122,0\.1\)[^"]*">⚠️ ([\s\S]*?)<\/div>/,function(_,t){ return aviso69('mal','',t,{cls:'av69-in'}); })
+       .replace(/<div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba\(52,211,153,0\.08\)[^"]*">✅ ([\s\S]*?)<\/div>/,function(_,t){
+         t=t.replace(/ Lo que no gastes de la diferencia \(\$0\.00\/día\) puedes apartarlo para tu meta\./,'');
+         // Si más allá de lo que estás viendo te quedarías en negativo, no es "todo bien"
+         try{ var p0=proyectarFlujo(); if(p0.min.bal<0) return aviso69('atento','Hasta aquí llegas, pero el '+fechaCorta(p0.min.fecha)+' te faltarían '+fmt$(-p0.min.bal),'A tu ritmo de '+fmt$(p0.gv)+'/día no llegas a tu cobro siguiente. Elige un horizonte más largo arriba para verlo, y baja a '+fmt$(p0.seguro)+'/día para evitarlo.',{cls:'av69-in'}); }catch(e){}
+         return aviso69('bien','',t,{cls:'av69-in'}); });
+  }catch(e){} return h; }; })();
+
+/* ── Mes a mes: cada cierre con su color ── */
+(function(){ var mm=window.htmlMesAMes66; if(typeof mm!=='function') return;
+  window.htmlMesAMes66=function(p){ var h=mm.apply(this,arguments); try{ var M=mesAMes66(p), i=0;
+    h=h.replace(/<em class="(out|tot)">/g,function(z){ var x=M[i], prev=i?M[i-1].fin:p.inicio; i++; if(!x) return z; var k=x.fin<0?'mal':x.fin<prev?'atento':'bien'; return '<em class="'+(x.fin<0?'out':'tot')+' st69 '+k+'">'; });
+  }catch(e){} return h; }; })();
+
+/* ── Metas y plan que no alcanzan: ámbar; si no hay con qué, rojo ── */
+_w43('renderPlan',function(){ [].forEach.call(document.querySelectorAll('#plan-content .mf63'),function(a){ a.classList.add('av69','atento'); if(/recortar gastos|no alcanza nada|sin capacidad/i.test(a.textContent)){ a.classList.remove('atento'); a.classList.add('mal'); } }); });
+/* Consejos de ingresos extra: azul (es información) */
+document.addEventListener('DOMContentLoaded',function(){ try{ new MutationObserver(function(ms){ for(var i=0;i<ms.length;i++){ var n=ms[i].addedNodes; for(var j=0;j<n.length;j++){ var el=n[j]; if(el.nodeType!==1) continue;
+  if(el.classList.contains('rp63')) el.classList.add('av69','info'); else if(el.querySelectorAll){ var q=el.querySelectorAll('.rp63'); for(var k=0;k<q.length;k++) q[k].classList.add('av69','info'); } } } }).observe(document.body,{childList:true,subtree:true}); }catch(e){} });
+
+/* ── Salud financiera: la etiqueta de Inicio con su color ── */
+_w43('updateHomeWidget',function(){ var l=document.getElementById('ws-label'); if(!l) return; try{ var s=calcSaludFinanciera().score; l.classList.remove('mal','atento','bien','st69'); l.classList.add('st69',tono69(s,65,39)); }catch(e){} });
+
+/* ── Cifras negativas del cuadro del dinero: "−$" y en rojo ── */
+_w43('updateHomeWidget',function(){ ['home-total','home-efectivo','home-cuentas'].forEach(function(id){ var e=document.getElementById(id); if(!e) return;
+  var t=e.textContent, neg=/^\s*(\$\s*-|-\s*\$|−\s*\$)/.test(t); if(/^\s*\$\s*-/.test(t)) e.textContent=t.replace(/^\s*\$\s*-\s*/,'−$');
+  e.classList.toggle('st69',neg); e.classList.toggle('mal',neg); }); });
 
 </script>
 <script>
