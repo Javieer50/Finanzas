@@ -3200,6 +3200,185 @@ html.t-claro .pg73-c{background:#fff;box-shadow:0 18px 40px -16px rgba(60,40,140
 .pg73-c small{font-size:12px;opacity:.7} html:not(.t-claro) .pg73-c small{color:#fff} html.t-claro .pg73-c small{color:#18142f}
 .pg73-m{position:absolute;top:22px;left:50%;margin-left:-8px;width:16px;height:16px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fde68a,#f59e0b);box-shadow:inset 0 0 0 1.5px #b45309;opacity:0}
 
+/* ══ v7.3 · Pestaña Más ══ */
+/* Buscador */
+.mb74w{display:flex;align-items:center;gap:8px;margin:2px 0 14px;padding:0 12px;height:42px;border-radius:14px;background:var(--card);border:.5px solid var(--card-b);color:var(--ink-3)}
+.mb74w input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--ink);font:500 16px -apple-system,sans-serif;-webkit-appearance:none;appearance:none;-webkit-user-select:text;user-select:text}
+.mb74w input::placeholder{color:var(--ink-3)}
+.mb74w input::-webkit-search-cancel-button{display:none}
+.mb74x{visibility:hidden;width:22px;height:22px;border-radius:50%;border:0;background:var(--ink-3);color:var(--card-solid,#1a1530);font:700 15px/22px -apple-system,sans-serif;padding:0;flex-shrink:0}
+html.t-claro .mb74x{color:#fff}
+.busca74 .mn74{display:none}
+.mv74{text-align:center;font-size:13.5px;color:var(--ink-3);padding:26px 20px}
+.mver74{text-align:center;font-size:11px;color:var(--ink-3);opacity:.6;padding:6px 0 4px}
+
+/* Resumen */
+.rs74{display:block;width:100%;text-align:left;border:0;padding:16px 16px 12px;border-radius:var(--r-card,22px);color:var(--ink);cursor:pointer;position:relative;overflow:hidden}
+html:not(.t-claro) .rs74{background:linear-gradient(150deg,rgba(124,58,237,.30),rgba(124,58,237,.10) 60%,rgba(255,255,255,.04));box-shadow:inset 0 0 0 .5px rgba(167,139,250,.35)}
+html.t-claro .rs74{background:linear-gradient(150deg,#efe9ff,#fff 70%);box-shadow:inset 0 0 0 .5px rgba(109,40,217,.18),0 10px 26px -20px rgba(22,19,43,.35)}
+.rs74>small{display:block;font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.rs74-v{display:block;font:780 32px var(--num,-apple-system);letter-spacing:-.8px;margin:2px 0 10px;font-variant-numeric:tabular-nums}
+.rs74-v.neg{color:var(--s-bad)}
+.rs74-3{display:flex;gap:6px}
+.rs74-3>span{flex:1;min-width:0;font-size:11.5px;font-weight:600;color:var(--ink-3);display:flex;flex-wrap:wrap;align-items:center;gap:0 5px}
+.rs74-3 i{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rs74-3 i.ok{background:var(--s-ok)} .rs74-3 i.info{background:var(--s-info)} .rs74-3 i.bad{background:var(--s-bad)}
+.rs74-3 em{flex-basis:100%;font:700 14.5px var(--num,-apple-system);font-style:normal;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rs74>u{display:flex;align-items:center;gap:2px;text-decoration:none;font-size:11.5px;font-weight:600;color:var(--ink-3);margin-top:10px}
+.rs74:active{transform:scale(.985)}
+.rs74{transition:transform .22s cubic-bezier(.3,1.4,.5,1)}
+
+/* Frecuentes */
+.mf74{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 18px}
+.mf74-b{position:relative;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 4px 10px;border-radius:18px;border:.5px solid var(--card-b);background:var(--card);color:var(--ink);cursor:pointer;transition:transform .22s cubic-bezier(.3,1.4,.5,1)}
+.mf74-b:active{transform:scale(.94)}
+.mf74-b b{font-size:11.5px;font-weight:600;line-height:1.2;text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mf74-b .pf74{position:absolute;top:8px;right:10px;margin:0}
+
+/* Colores según tu situación */
+.mx-i.t74-bad{background:var(--s-bad)!important;color:#fff}
+.mx-i.t74-warn{background:var(--s-warn)!important;color:#fff}
+.mx-i.t74-ok{background:var(--s-ok)!important;color:#fff}
+.mx-i.t74-info{background:var(--s-info)!important;color:#fff}
+html:not(.t-claro) .mx-i.t74-warn{color:#3a2600}
+html:not(.t-claro) .mx-i.t74-neu{background:rgba(167,139,250,.22)!important;color:#d9ccff}
+html.t-claro .mx-i.t74-neu{background:#efeafc!important;color:#6d28d9}
+html:not(.t-claro) .mx-t small.s74-bad,html.t-claro .mx-t small.s74-bad{color:var(--s-bad)!important;font-weight:600}
+html:not(.t-claro) .mx-t small.s74-warn,html.t-claro .mx-t small.s74-warn{color:var(--s-warn)!important;font-weight:600}
+html:not(.t-claro) .mx-t small.s74-ok,html.t-claro .mx-t small.s74-ok{color:var(--s-ok)!important}
+
+/* Punto de aviso */
+.pf74{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-right:2px}
+.pf74.bad{background:var(--s-bad);box-shadow:0 0 0 3px var(--s-bad-bg)} .pf74.warn{background:var(--s-warn);box-shadow:0 0 0 3px var(--s-warn-bg)}
+#tabbar button[data-t="mas"]{position:relative}
+.pm74{position:absolute;top:7px;left:calc(50% + 7px);width:9px;height:9px;border-radius:50%;pointer-events:none;z-index:2;animation:pm74 .45s cubic-bezier(.2,.9,.25,1.2) both}
+.pm74.bad{background:var(--s-bad)} .pm74.warn{background:var(--s-warn)}
+html:not(.t-claro) .pm74{box-shadow:0 0 0 2px #1b1530} html.t-claro .pm74{box-shadow:0 0 0 2px #fff}
+@keyframes pm74{from{transform:scale(0)}to{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){.pm74{animation:none}}
+
+/* Desglose */
+.ne74{font-size:12px;color:var(--vz-ink2,var(--ink-3));line-height:1.4;margin-top:4px}
+.cd72-r b span.bien{color:var(--s-ok)} .cd72-r b span.mal{color:var(--s-bad)}
+
+/* Comisión AGROLEON */
+.co74{display:flex;align-items:center;gap:14px;padding:16px;border-radius:var(--r-card,22px);margin-bottom:12px}
+html:not(.t-claro) .co74{background:linear-gradient(150deg,rgba(132,204,22,.22),rgba(132,204,22,.06));box-shadow:inset 0 0 0 .5px rgba(163,230,53,.3)}
+html.t-claro .co74{background:linear-gradient(150deg,#effbe0,#fff);box-shadow:inset 0 0 0 .5px rgba(77,124,15,.2)}
+.co74 img{width:52px;height:52px;border-radius:14px;object-fit:contain;background:#fff;padding:4px;flex-shrink:0}
+.co74 small{display:block;font-size:12px;font-weight:600;color:var(--ink-2)}
+.co74-v{display:block;font:780 28px var(--num,-apple-system);letter-spacing:-.6px;color:var(--ink)}
+.co74 span{font-size:12.5px;color:var(--ink-3)}
+#comision-content .av69{margin-bottom:10px}
+.cb74{padding:14px 16px!important;margin-bottom:12px}
+.cb74>b{display:block;font-size:14.5px;margin-bottom:8px;color:var(--ink)}
+.cb74-r{display:flex;align-items:center;gap:10px;padding:4px 0;font-size:12.5px;color:var(--ink-3)}
+.cb74-r>span{width:30px}
+.cb74-r>i{flex:1;height:10px;border-radius:5px;background:var(--vz-grid,rgba(255,255,255,.08));overflow:hidden}
+.cb74-r>i em{display:block;height:100%;border-radius:5px;background:var(--s-ok);transform-origin:left center}
+.cb74-r>b{font:700 13.5px var(--num,-apple-system);color:var(--ink);min-width:62px;text-align:right}
+.co74-n{margin:12px 4px 20px}
+
+/* Modo privado */
+html.priv51 .rs74-v,html.priv51 .rs74-3 em,html.priv51 .co74-v,html.priv51 .cb74-r>b{filter:blur(8px);transition:filter .2s}
+
+#mas-content [hidden]{display:none!important}
+.cd72-s.fin74 .cd72-r.t{border-top:0;margin-top:0;padding-top:2px;font-size:15px}
+html.t-claro .mx-i.t74-bad,html.t-claro .mx-i.t74-warn,html.t-claro .mx-i.t74-ok,html.t-claro .mx-i.t74-info{color:#fff!important}
+html:not(.t-claro) .mx-i.t74-bad,html:not(.t-claro) .mx-i.t74-ok,html:not(.t-claro) .mx-i.t74-info{color:#fff!important}
+html:not(.t-claro) .mx-i.t74-warn{color:#3a2600!important}
+
+/* ══ v7.4 · Diseño del resto de pantallas ══ */
+/* 8. Todos los números ocupan el mismo ancho: los montos quedan en columna */
+body{font-variant-numeric:tabular-nums}
+
+/* 1. Cifras grandes: mismo diseño que Inicio */
+:is(html:not(.t-claro),html.t-claro) :is(.cu-hero,.dv-hero,.reimb-header-card,.kits-header,.cc-hero){text-align:left!important;padding:18px 18px 16px!important;border-radius:var(--r-card,24px)!important}
+:is(html:not(.t-claro),html.t-claro) :is(.cu-lbl,.dv-hero small,.reimb-total-label,.kits-label,.cc-hero-label){font:600 13px -apple-system,system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important;color:var(--ink-2)!important;margin:0!important}
+:is(html:not(.t-claro),html.t-claro) :is(.cu-tot,.reimb-total-amount,.kits-amount,.cc-hero-val){font:780 34px/1.15 var(--num,-apple-system)!important;letter-spacing:-.9px!important;margin:3px 0 8px!important}
+:is(html:not(.t-claro),html.t-claro) .cu-tot{color:var(--ink)!important}
+:is(html:not(.t-claro),html.t-claro) .reimb-total-amount{color:var(--s-info)!important}
+:is(html:not(.t-claro),html.t-claro) .kits-amount{color:var(--ink)!important}
+:is(html:not(.t-claro),html.t-claro) .cc-hero-val{color:var(--s-ok)!important} :is(html:not(.t-claro),html.t-claro) .cc-hero-val.neg75{color:var(--s-bad)!important}
+.kits-header .kits-label:last-child{display:flex;align-items:center;gap:6px;font-weight:500!important;color:var(--ink-3)!important}
+.kits-header .kits-label:last-child::before{content:'';width:14px;height:14px;flex-shrink:0;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9.5' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9.5' rx='2'/%3E%3Cpath d='M8 11V8a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E") center/contain no-repeat}
+/* Deudas: dos cifras alineadas a la izquierda */
+:is(html:not(.t-claro),html.t-claro) .dv-hero-grid div{text-align:left!important}
+:is(html:not(.t-claro),html.t-claro) .dv-hero-grid{grid-template-columns:1fr 1px 1fr!important;gap:0 16px}
+:is(html:not(.t-claro),html.t-claro) .dv-hero b{font:780 28px/1.15 var(--num,-apple-system)!important;letter-spacing:-.7px!important;margin-top:3px!important}
+:is(html:not(.t-claro),html.t-claro) .dv-hero p{text-align:left!important;margin-top:12px!important;padding-top:10px;border-top:.5px solid var(--card-b)}
+:is(html:not(.t-claro),html.t-claro) .dv-hero p .dt56 b{display:inline!important;font:700 15px var(--num,-apple-system)!important;letter-spacing:0!important}
+
+/* 2. Colores con sentido */
+:is(html:not(.t-claro),html.t-claro) .v75-bad{color:var(--s-bad)!important} :is(html:not(.t-claro),html.t-claro) .v75-ok{color:var(--s-ok)!important}
+:is(html:not(.t-claro),html.t-claro) .v75-info{color:var(--s-info)!important} :is(html:not(.t-claro),html.t-claro) .v75-mut{color:var(--ink-3)!important}
+:is(html:not(.t-claro),html.t-claro) .cg55-big.cero75{color:var(--ink-3)!important}
+
+/* 3. Cajas de ícono que antes tenían emoji */
+:is(.la-ic,.pa-h>span,.fe-head>span,.ru-h>span,.ccm-ic,.rc75).ic73c{display:inline-flex!important;align-items:center;justify-content:center;width:40px!important;height:40px!important;border-radius:12px;font-size:0!important;flex-shrink:0}
+:is(.la-ic,.rc75).ic73c{background:var(--s-warn-bg);color:var(--s-warn)!important}
+.fe-head>span.ic73c{background:var(--s-ok-bg);color:var(--s-ok)!important}
+:is(.pa-h>span,.ccm-ic).ic73c{background:var(--s-ok-bg);color:var(--s-ok)!important}
+.ru-h>span.ic73c{background:var(--s-info-bg);color:var(--s-info)!important}
+.ccm-ic.ic73c{width:34px!important;height:34px!important;border-radius:10px}
+:is(.la-ic,.pa-h>span,.fe-head>span,.ru-h>span,.ccm-ic,.rc75).ic73c svg{width:21px;height:21px}
+.profile-avatar-edit.ic73c{display:flex;align-items:center;justify-content:center;color:#fff}
+.profile-avatar-edit.ic73c svg{width:14px;height:14px}
+.empty-state.es75-ok::before{background:var(--s-ok)!important;opacity:.85}
+
+/* 4. Perfil */
+.oc75{display:none!important}
+.cp75{display:flex;align-items:center;gap:12px;width:100%;margin:4px 0;padding:11px 0;border:0;background:none;text-align:left;color:var(--ink);border-bottom:.5px solid var(--card-b);cursor:pointer}
+.cp75>span:nth-child(2){flex:1;min-width:0}
+.cp75 b{display:block;font-size:15px;font-weight:600}
+.cp75 small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp75-i{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--s-info-bg);color:var(--s-info)}
+.cp75>svg{color:var(--ink-3);flex-shrink:0}
+
+/* 5. Cuentas */
+.cu-card .ul75{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+
+/* 6. Por mes */
+.pm75{padding:16px!important}
+.pm75-h{margin-bottom:12px}
+.pm75-h b{display:block;font-size:17px;font-weight:700;color:var(--ink)}
+.pm75-h small{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.pm75-b{margin-bottom:12px}
+.pm75-bt{display:flex;align-items:baseline;gap:8px;margin-bottom:5px}
+.pm75-bt span{font-size:13px;font-weight:600;color:var(--ink-2);width:44px}
+.pm75-v{font:760 20px var(--num,-apple-system);letter-spacing:-.4px;color:var(--ink)}
+.pm75-b>i{display:block;height:10px;border-radius:5px;background:var(--vz-grid,rgba(127,127,127,.15));overflow:hidden}
+.pm75-b>i em{display:block;height:100%;border-radius:5px;transform-origin:left center}
+.pm75-b em.in{background:var(--s-ok)} .pm75-b em.out{background:var(--s-bad)}
+.pm75-b>small{display:block;font-size:11.5px;color:var(--ink-3);margin-top:4px;line-height:1.35}
+.dl75{font:700 11.5px -apple-system,sans-serif;font-style:normal;padding:2px 7px;border-radius:999px;margin-left:auto}
+.dl75.ok{color:var(--s-ok);background:var(--s-ok-bg)} .dl75.bad{color:var(--s-bad);background:var(--s-bad-bg)} .dl75.mut{color:var(--ink-3);background:var(--vz-grid,rgba(127,127,127,.15))}
+.pm75 .av69{margin:4px 0 10px}
+.pm75-l{border-top:.5px solid var(--card-b)}
+.pm75-r{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:.5px solid var(--card-b)}
+.pm75-r:last-child{border-bottom:0}
+.pm75-i{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pm75-i.t75-ok{background:var(--s-ok-bg);color:var(--s-ok)} .pm75-i.t75-warn{background:var(--s-warn-bg);color:var(--s-warn)} .pm75-i.t75-bad{background:var(--s-bad-bg);color:var(--s-bad)}
+.pm75-i.t75-neu,.pm75-i.t75-mut{background:var(--vz-grid,rgba(127,127,127,.15));color:var(--ink-2)}
+.pm75-t{flex:1;min-width:0}
+.pm75-t b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+.pm75-t small{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px;line-height:1.3}
+.pm75-n{font:720 15.5px var(--num,-apple-system);white-space:nowrap;color:var(--ink)}
+.pm75-n.s75-ok{color:var(--s-ok)} .pm75-n.s75-warn{color:var(--s-warn)} .pm75-n.s75-bad{color:var(--s-bad)} .pm75-n.s75-mut{color:var(--ink-3)}
+
+/* 7. Saludo de Inicio */
+html.hd75 #screen-home .hd-left>div{display:flex;flex-direction:column}
+html.hd75 #screen-home .hd-fecha{order:-1;margin:0 0 1px!important;font-size:13px;font-weight:500}
+html.hd75 #screen-home .hd-hola{font-size:24px}
+
+/* Modo privado */
+html.priv51 .pm75-v,html.priv51 .pm75-n,html.priv51 .cu-tot,html.priv51 #deudas-total,html.priv51 #cobros-total,html.priv51 #kits-total-screen,html.priv51 .dv-hero .dt56 b{filter:blur(8px);transition:filter .2s}
+
+/* Plan › Flujo: mismas etiquetas que las demás cifras grandes */
+:is(html:not(.t-claro),html.t-claro) .fl73-w>div:first-child>div>div:first-child{font:600 13px -apple-system,system-ui,sans-serif!important;text-transform:none!important;letter-spacing:0!important;color:var(--ink-2)!important}
+:is(html:not(.t-claro),html.t-claro) .fl73-w>div:first-child>div:first-child>div:nth-child(2){font:780 30px/1.15 var(--num,-apple-system)!important;letter-spacing:-.8px!important}
+:is(html:not(.t-claro),html.t-claro) .cero75,:is(html:not(.t-claro),html.t-claro) .cero75 *{color:var(--ink-3)!important;-webkit-text-fill-color:currentColor}
+
 </style>
 </head>
 <body>
@@ -3828,7 +4007,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='7.2.0';
+var APP_VERSION='7.4.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -4751,7 +4930,7 @@ function renderDeudas(){
         +'<button onclick="vincularPagoDeuda(\''+d.id+'\')" style="padding:9px;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.15);border-radius:10px;color:rgba(255,255,255,0.8);font-size:13px;font-weight:700">Ya lo pagué</button>'
       +'</div></div>';
   });
-  document.getElementById('list-deudas').innerHTML=h||'<div class="empty-state">🎉 Sin deudas</div>';
+  document.getElementById('list-deudas').innerHTML=h||'<div class="empty-state es75-ok">Sin deudas</div>';
   var ch='';
   (userCobros||[]).forEach(function(c){
     ch+='<div class="deuda-item" style="border-color:rgba(52,211,153,0.2);background:rgba(52,211,153,0.05)">'
@@ -5340,7 +5519,7 @@ function htmlFlujo(){
   // ── Racha sin avances ──
   var r=rachaSinAvances();
   h+='<div class="cc-card" style="padding:14px 16px;display:flex;align-items:center;gap:14px">'
-    +'<div style="font-size:30px">'+(r.esteMes>0?'🔁':'🔥')+'</div>'
+    +'<div class="rc75" style="font-size:30px">'+(r.esteMes>0?'🔁':'🔥')+'</div>'
     +'<div style="flex:1"><div style="font-size:14px;font-weight:700;color:#fff">'+(r.esteMes>0?'Este mes recibiste '+fmt$(r.esteMes)+' en avances/préstamos':(r.racha>0?r.racha+' mes'+(r.racha>1?'es':'')+' + este sin avances':'Este mes vas sin avances'))+'</div>'
     +'<div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px">'+(r.esteMes>0?'El contador vuelve a empezar el próximo mes. Meta: un mes completo sin pedir.':'Cada mes sin avances es interés que no pagas y un paso fuera del ciclo de deuda.')+'</div></div>'
   +'</div>';
@@ -9847,9 +10026,8 @@ function renderAnalisis(){
       {icon:'💳',label:'Deudas con personas',val:'$'+deudaTotal.toFixed(2),color:deudaTotal>0?'var(--orange)':'var(--green)',tip:'Sin tu crédito (ese va en Cuotas crédito)'},
       {icon:'💵',label:'Disponible',val:'$'+saldoDisp.toFixed(2),color:saldoC,tip:'Saldo en cuentas menos kits'}
     ];
-    var h='<div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:baseline;gap:8px;margin-bottom:12px"><div class="card-title" style="margin-bottom:0">'+periodoLabel+'</div><div style="font-size:11px;color:rgba(255,255,255,0.3)">Resumen financiero</div></div>'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px">';
-    cells.forEach(function(c){
+    var h=resumenMes75({ing:ing,eg:eg,net:net,tasa:tasaAhorro,fijos:gastosFijos,variables:gastosVariables,deuda:deudaTotal,disp:saldoDisp,single:isSingleMes,mes:anaSelectedMes,label:periodoLabel,cur:_cur56,cells:cells});
+    if(0) cells.forEach(function(c){
       h+='<div style="background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.09);border-radius:14px;padding:11px">'
         +'<div style="font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">'+c.icon+' '+c.label+'</div>'
         +'<div style="font-size:17px;font-weight:800;color:'+c.color+';margin-bottom:2px">'+c.val+'</div>'
@@ -13001,7 +13179,7 @@ function notifExtras43(){
   });
   _w43('renderCurva',function(){
     var inc=mesesIncompletos(), el=document.getElementById('ana-curva-card'); if(!inc.length||!el||!el.firstElementChild) return;
-    var n=document.createElement('div'); n.className='mi-note'; n.innerHTML='ℹ️ '+inc.map(function(m){return _mesCorto(m).slice(0,3);}).join(', ')+' '+inc[inc.length-1].slice(0,4)+' tienen pocos registros: no se usan en promedios ni comparaciones.'; el.firstElementChild.appendChild(n);
+    var n=document.createElement('div'); n.className='mi-note'; n.innerHTML=ic46('info',14,'ic73i')+' '+inc.map(function(m){return _mesCorto(m).slice(0,3);}).join(', ')+' '+inc[inc.length-1].slice(0,4)+' tienen pocos registros: no se usan en promedios ni comparaciones.'; el.firstElementChild.appendChild(n);
   });
   _w43('construirNotificaciones',function(L){
     var ids={}; L.forEach(function(n){ ids[n.id]=1; });
@@ -16665,6 +16843,276 @@ function alcancia73(m){ if(!anim59()) return; var ov=document.createElement('div
   setTimeout(function(){ var a=anima70(c,[{opacity:1},{opacity:0,transform:'translateY(-10px)'}],{duration:260,fill:'forwards'}); setTimeout(function(){ ov.remove(); },300); },1700); }
 _w43('saveState',function(){ try{ var s=_aportes73(); if(_ap73!==null&&s>_ap73+0.004) alcancia73(r2(s-_ap73)); _ap73=s; }catch(e){} });
 document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){ try{ _ap73=_aportes73(); }catch(e){} },400); });
+
+/* ══ v7.3 · Pestaña Más renovada ══
+   1. Resumen "Lo que vale tu dinero hoy" (el mismo patrimonio neto de Inicio) con desglose.
+   2. Cada fila muestra tu dato real y un color según tu situación (rojo mal, ámbar atención, verde bien, azul info).
+   3. Punto de aviso en las filas que necesitan algo de ti, y en el ícono "Más" de la barra.
+   4. Grupos más cortos, "Herramientas" nuevo y accesos frecuentes aprendidos de tu uso.
+   5. Buscador. 6. Animaciones (solo movimiento y transparencia). 7. Comisión AGROLEON con pantalla propia. */
+IC46.search='<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>';
+IC46.history='<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4.5v4h4"/><path d="M12 8v4.5l3 1.8"/>';
+IC46.scan='<path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><path d="M8 12h8"/>';
+
+function _t74(f,d){ try{ var r=f(); return r==null?d:r; }catch(e){ return d; } }
+/* ── Estado de las obligaciones del mes (mismo criterio que la campana) ── */
+function obligEstado74(){
+  var hoy=hoyLocal(), mes=mesLocal(), ob=getObligacionesMes(), venc=[], pronto=[], pag=0, tot=0;
+  ob.forEach(function(o){ tot=r2(tot+(o.montoActual||0)); if(o.pagadaEsteMes){ pag++; return; }
+    var f=o.duracion==='puntual'?(o.fechaInicio||hoy):mes+'-'+String(Math.min(o.diaPago||1,diasDelMes(mes))).padStart(2,'0'), d=difDias(hoy,f);
+    if(d<0) venc.push(o); else if(d<=3) pronto.push(o); });
+  return {n:ob.length,pag:pag,tot:tot,venc:venc,pronto:pronto};
+}
+/* ── Respaldo: ¿tus datos están solo en este teléfono? ── */
+function respaldoEstado74(){
+  var c=_t74(nubeCfg,{}), on=_t74(nubeLista,false), d=_t74(diasSinRespaldo,null);
+  return {nube:on,err:on&&c.error?c.error:'',ultNube:c.ultimo||null,dias:d,riesgo:!on&&(d===null||d>30)};
+}
+/* ── Avisos que van con punto (los mismos de la fila y del ícono Más) ── */
+function avisosMas74(){
+  var a={};
+  _t74(function(){ var o=obligEstado74(); if(o.venc.length) a.oblig='bad'; else if(o.pronto.length) a.oblig='warn'; });
+  _t74(function(){ var f=financiaEmpresas(); if(f.AG.mas30n) a.reimb='warn'; });
+  _t74(function(){ if(comAGMeses().some(function(m){ return m.estado==='pendiente'; })) a.comision='warn'; });
+  _t74(function(){ var r=respaldoEstado74(); if(r.err) a.nube='warn'; else if(r.riesgo) a.archivo='warn'; });
+  return a;
+}
+function puntoMas74(){ var b=document.querySelector('#tabbar button[data-t="mas"]'); if(!b) return; var a=avisosMas74(), k=Object.keys(a), bad=k.some(function(x){ return a[x]==='bad'; });
+  var d=b.querySelector('.pm74'); if(!k.length){ if(d) d.remove(); return; }
+  if(!d){ d=document.createElement('i'); d.className='pm74'; d.setAttribute('aria-hidden','true'); b.appendChild(d); }
+  d.className='pm74 '+(bad?'bad':'warn'); b.setAttribute('aria-label','Más, '+k.length+' aviso'+(k.length>1?'s':'')); }
+_w43('saveState',function(){ _libre70(puntoMas74,1500); });
+document.addEventListener('DOMContentLoaded',function(){ setTimeout(function(){ try{ puntoMas74(); }catch(e){} },1600); });
+
+/* ── Las filas ── */
+var _R74={}, USO74_DEF=['cuentas','oblig','reimb','alcanza'];
+function filasMas74(){
+  var hoy=hoyLocal(), pm=ymAdd(mesLocal(),-1), av=avisosMas74(), x=X();
+  var P=_t74(patrimonio53,{disp:0,ap:0,reimb:0,cob:0,deu:0,neto:0}), B=_t74(calcBalances,{}), K=_t74(calcKits,{});
+  var enCtas=r2(Object.keys(B).reduce(function(s,c){ return s+B[c]; },0)), kits=r2(Object.keys(K).reduce(function(s,c){ return s+(K[c]||0); },0)), bienes=_t74(totalBienes,0);
+  var R={};
+  // Mi dinero
+  R.cuentas={g:'dinero',ic:'bank',t:'Cuentas y bienes',s:fmt$(P.disp)+' tuyos'+(kits>0.004?' · '+fmt$(enCtas)+' en cuentas':'')+(bienes>0?' · bienes '+fmt$(bienes):''),tono:P.disp<0?'bad':'info',kw:'saldo banco efectivo pichincha jardin azuayo guayaquil cuadre bienes'};
+  var fo=(state.objetivos||[]).find(function(o){ return o.tipo==='emergencia'; }), nm=(state.objetivos||[]).filter(function(o){ return o.tipo!=='emergencia'&&!o.completado; }).length;
+  R.plan={g:'dinero',ic:'plan',t:'Plan y metas',s:(fo?'Fondo '+fmt$(fo.acumulado||0)+(fo.meta?' de '+fmt$(fo.meta):''):'Flujo, fondo de emergencia y metas')+(nm?' · '+nm+' meta'+(nm>1?'s':''):''),tono:'neu',kw:'flujo fondo emergencia metas ahorro 12 meses presupuesto'};
+  // Lo que debo
+  var D=_t74(deudasTotales,{credito:0,personales:0,total:0}), nd=(userDeudas||[]).filter(function(d){ return (d.monto||0)>0; }).length;
+  R.deudas={g:'debo',ic:'shield',t:'Deudas',s:D.total>0?'Debes '+fmt$(D.total)+(nd?' · '+nd+' persona'+(nd>1?'s':''):''):'Sin deudas pendientes',tono:D.total<=0?'ok':D.total>P.disp?'bad':'info',kw:'deber prestamo hermana pagar'};
+  var cr=(userCreditos||[])[0], crS='Tarjeta, avances y lo que comprometen', crT='neu';
+  if(cr&&cr.limite>0){ var u=cr.deuda||0, pc=u/cr.limite; crS='Usado '+fmt$(u)+' de '+fmt$(cr.limite)+(cr.debitoDia?' · débito el día '+cr.debitoDia:''); crT=pc>=0.7?'bad':pc>=0.3?'warn':'ok'; }
+  R.credito={g:'debo',ic:'card',t:'Crédito',s:crS,tono:crT,kw:'tarjeta avance linea jardin azuayo cuota interes'};
+  var O=_t74(obligEstado74,{n:0,pag:0,tot:0,venc:[],pronto:[]});
+  R.oblig={g:'debo',ic:'cal',t:'Obligaciones',s:!O.n?'Agrega tus pagos mensuales':O.venc.length?O.venc.length+' vencido'+(O.venc.length>1?'s':'')+': '+O.venc.map(function(o){ return o.nombre; }).join(', '):O.pronto.length?O.pronto.map(function(o){ return o.nombre; }).join(', ')+' vence'+(O.pronto.length>1?'n':'')+' pronto':O.pag===O.n?'Todo pagado este mes · '+fmt$(O.tot):O.pag+' de '+O.n+' pagados · '+fmt$(O.tot)+' al mes',
+    tono:!O.n?'neu':O.venc.length?'bad':O.pronto.length?'warn':O.pag===O.n?'ok':'info',kw:'pagos fijos mensuales arriendo internet vencido'};
+  // Mi trabajo
+  var F=_t74(financiaEmpresas,{total:0,AG:{mas30n:0,mas30:0}});
+  R.reimb={g:'trabajo',ic:'repeat',t:'Reembolsos',s:F.total>0?'Te deben '+fmt$(F.total)+(F.AG.mas30n?' · reclama '+fmt$(F.AG.mas30):''):'Nada pendiente de cobro',tono:F.AG.mas30n?'warn':F.total>0?'info':'ok',kw:'ecuaquimica agroleon facturas cobrar empresa'};
+  R.kits={g:'trabajo',ic:'box',t:'KITS',s:kits>0.004?fmt$(kits)+' de la empresa a tu cargo':'Sin dinero de la empresa a tu cargo',tono:'info',kw:'custodia seguro empresa ministerio productores'};
+  var C=_t74(comAGMeses,[]), cp=C.filter(function(m){ return m.estado==='pendiente'; }), cu=C.filter(function(m){ return m.estado==='pagada'; }).pop(), cc=C.filter(function(m){ return m.estado==='en_curso'; })[0];
+  R.comision={g:'trabajo',ic:'coins',t:'Comisión AGROLEON',s:cp.length?cp.length+' mes'+(cp.length>1?'es':'')+' por confirmar ('+cp.map(function(m){ return _mesCorto(m.ym); }).join(', ')+')':cc?_cap47(_mesCorto(cc.ym))+' en curso'+(cu?' · la última fue '+fmt$(cu.monto):''):'Al día',tono:cp.length?'warn':'info',kw:'agroleon comision rotacion'};
+  R.facturas={g:'trabajo',ic:'receipt',t:'Reporte de facturas',s:'Imagen, CSV o impresión para entregar',tono:'neu',kw:'factura reporte csv imprimir entregar'};
+  // Análisis
+  R.analisis={g:'ana',ic:'bars',t:'Análisis y gráficos',s:'Centro de Control, Gráficos y Por mes',tono:'neu',kw:'centro control graficos analisis categorias tendencias mes estadisticas'};
+  var sc=_t74(function(){ var v=parseInt((document.getElementById('ws-score')||{}).textContent,10); return isNaN(v)?null:v; },null), sl=sc==null?'':sc>=80?'Excelente':sc>=65?'Buena':sc>=50?'Atención':sc>=30?'Débil':'Crítica';
+  R.salud={g:'ana',ic:'heart',t:'Salud financiera',s:sc==null?'Tu puntaje y qué mejorar':sc+'/100 · '+sl,tono:sc==null?'neu':sc>=65?'ok':sc>=30?'warn':'bad',kw:'puntaje score salud'};
+  // Herramientas
+  R.alcanza={g:'herr',ic:'scale',t:'¿Me alcanza?',s:'Antes de comprar, mira si llegas a tu próximo cobro',tono:'neu',kw:'alcanza comprar gasto puedo'};
+  var fd=_t74(function(){ return fijosDetectados71().length; },0);
+  R.fijos={g:'herr',ic:'scan',t:'Pagos fijos detectados',s:fd?fd+' gasto'+(fd>1?'s':'')+' que se repite'+(fd>1?'n':'')+' cada mes':'Ninguno nuevo por ahora',tono:fd?'info':'neu',kw:'fijos detectados repetidos mensuales'};
+  R.cierre={g:'herr',ic:'trophy',t:'Cierre de '+_mesCorto(pm),s:'Cómo te fue el mes pasado, con imagen para guardar',tono:'neu',kw:'cierre mes resumen historias pasado'};
+  R.copias={g:'herr',ic:'history',t:'Copias automáticas',s:'Los últimos 7 días, guardadas en este teléfono',tono:'neu',kw:'copia respaldo restaurar recuperar backup'};
+  // Ajustes
+  var RS=_t74(respaldoEstado74,{nube:false,err:'',dias:null,riesgo:true});
+  R.perfil={g:'aj',ic:'user',t:'Mi perfil',s:'Sueldo, fecha de ingreso y Face ID',tono:'neu',kw:'sueldo ingreso face id seguridad'};
+  R.tema={g:'aj',ic:temaEfectivo46()==='claro'?'sun':'moon',t:'Apariencia',s:TEMA_NOM46[temaPref46()],tono:'neu',kw:'tema oscuro claro modo apariencia'};
+  R.nube={g:'aj',ic:'cloud',t:'Respaldo en la nube',s:RS.err?'Falló el último respaldo: '+RS.err:RS.nube?'Activo'+(RS.ultNube?' · último '+fechaCorta(RS.ultNube):''):'Desactivado · tus datos solo están en este teléfono',tono:RS.err?'warn':RS.nube?'ok':'neu',kw:'nube cloudflare respaldo cifrado'};
+  var dd=RS.dias;
+  R.archivo={g:'aj',ic:'download',t:'Guardar copia en Archivos',s:dd===null?'Aún no tienes una copia fuera del teléfono':dd===0?'Última copia: hoy':'Última copia: hace '+dd+' día'+(dd===1?'':'s'),tono:RS.riesgo?'warn':dd!==null&&dd<=30?'ok':'neu',kw:'respaldo exportar archivos icloud copia backup'};
+  R.cats={g:'aj',ic:'tag',t:'Categorías',s:'Crear, renombrar y unir categorías',tono:'neu',kw:'categorias renombrar unir'};
+  Object.keys(R).forEach(function(k){ R[k].k=k; R[k].punto=av[k]||null; });
+  _R74=R; return {R:R,P:P};
+}
+var GRUPOS74=[['dinero','Mi dinero',['cuentas','plan']],['debo','Lo que debo',['deudas','credito','oblig']],['trabajo','Mi trabajo',['reimb','kits','comision','facturas']],
+  ['ana','Análisis',['analisis','salud']],['herr','Herramientas',['alcanza','fijos','cierre','copias']],['aj','Ajustes',['perfil','tema','nube','archivo','cats']]];
+function frecuentes74(R){ var u=X().usoMas74||{}, k=Object.keys(R).filter(function(z){ return u[z]>0; }).sort(function(a,b){ return u[b]-u[a]; });
+  USO74_DEF.forEach(function(z){ if(k.indexOf(z)<0) k.push(z); }); return k.slice(0,4); }
+function usoMas74(k){ var x=X(); x.usoMas74=x.usoMas74||{}; x.usoMas74[k]=(x.usoMas74[k]||0)+1; }
+function filaMas74(r){
+  return '<button class="mx-r mr74" data-k="'+r.k+'" data-q="'+esc(_sinTilde74(r.t+' '+r.s+' '+r.kw))+'"><span class="mx-i t74-'+r.tono+'">'+ic46(r.ic,19)+'</span><span class="mx-t"><b>'+r.t+'</b><small class="s74-'+r.tono+'">'+esc(r.s)+'</small></span>'
+    +(r.punto?'<i class="pf74 '+r.punto+'" aria-label="Necesita tu atención"></i>':'')+'<span class="mx-c">'+ic46('chev',16)+'</span></button>';
+}
+function _sinTilde74(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
+var _masAbierto74=0;
+function renderMas(){
+  var box=document.getElementById('mas-content'); if(!box) return;
+  var D=filasMas74(), R=D.R, P=D.P, q=(document.getElementById('mb74')||{}).value||'';
+  var h='<label class="mb74w">'+ic46('search',17)+'<input id="mb74" type="search" placeholder="Buscar en Más" autocomplete="off" enterkeyhint="search" value="'+esc(q)+'"><button type="button" class="mb74x" aria-label="Borrar búsqueda">×</button></label>';
+  h+='<div class="mn74">'
+    +'<button class="rs74" onclick="desgloseNeto74()" aria-label="Ver cómo se calcula lo que vale tu dinero hoy">'
+      +'<small>Lo que vale tu dinero hoy</small><b class="rs74-v '+(P.neto<0?'neg':'')+'" data-v="'+P.neto+'">'+fmt$(P.neto)+'</b>'
+      +'<span class="rs74-3"><span><i class="ok"></i>Tienes<em>'+fmt$(P.disp)+'</em></span><span><i class="info"></i>Te deben<em>'+fmt$(r2(P.reimb+P.cob))+'</em></span><span><i class="bad"></i>Debes<em>'+fmt$(P.deu)+'</em></span></span>'
+      +'<u>Toca para ver el detalle '+ic46('chev',13)+'</u></button>'
+    +'<div class="mf74">'+frecuentes74(R).map(function(k){ var r=R[k]; return '<button data-k="'+k+'" class="mf74-b"><span class="mx-i t74-'+r.tono+'">'+ic46(r.ic,19)+'</span><b>'+r.t+'</b>'+(r.punto?'<i class="pf74 '+r.punto+'"></i>':'')+'</button>'; }).join('')+'</div>'
+  +'</div>';
+  h+=GRUPOS74.map(function(g){ return '<div class="mx-g" data-g="'+g[0]+'"><div class="mx-gt">'+g[1]+'</div><div class="mx-l">'+g[2].map(function(k){ return filaMas74(R[k]); }).join('')+'</div></div>'; }).join('');
+  h+='<div class="mv74" hidden>No encontramos nada con esa palabra. Prueba con "kits", "tema" o "respaldo".</div>';
+  h+='<div class="mver74">FinanzasJR v'+APP_VERSION+'</div>';
+  box.innerHTML=h;
+  var inp=document.getElementById('mb74'); inp.addEventListener('input',function(){ filtrarMas74(inp.value); });
+  box.querySelector('.mb74x').onclick=function(){ inp.value=''; filtrarMas74(''); inp.blur(); };
+  if(q) filtrarMas74(q);
+  var v=box.querySelector('.rs74-v'); try{ centavos73(v); }catch(e){}
+  puntoMas74();
+  // Animación de entrada: solo la primera vez que abres Más en esta visita
+  if(state.currentScreen==='mas'&&Date.now()-_masAbierto74>4000&&anim59()){
+    [].forEach.call(box.querySelectorAll('.mn74,.mx-g'),function(g,i){ anima70(g,[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'none'}],{duration:380,delay:Math.min(i,6)*45,easing:SUAVE70,fill:'backwards'}); });
+    contar74(v,P.neto); }
+  _masAbierto74=Date.now();
+}
+function filtrarMas74(q){
+  var box=document.getElementById('mas-content'); if(!box) return; var t=_sinTilde74(q).trim(), w=t.split(/\s+/).filter(Boolean), n=0;
+  box.classList.toggle('busca74',!!t); box.querySelector('.mb74x').style.visibility=t?'visible':'hidden';
+  [].forEach.call(box.querySelectorAll('.mx-g'),function(g){ var vis=0; [].forEach.call(g.querySelectorAll('.mr74'),function(r){ var ok=!w.length||w.every(function(p){ return r.dataset.q.indexOf(p)>=0; }); r.hidden=!ok; if(ok) vis++; }); g.hidden=!vis; n+=vis; });
+  box.querySelector('.mv74').hidden=!!n||!t;
+}
+/* La cifra sube contando (solo cambia texto en un elemento: no mueve nada más) */
+function contar74(el,fin){ if(!el||!(Math.abs(fin)>=1)) return; var t0=performance.now(), D=620;
+  (function paso(t){ var k=Math.min(1,(t-t0)/D), e=1-Math.pow(1-k,3); if(!el.isConnected) return; if(k<1){ el.textContent=fmt$(r2(fin*e)); requestAnimationFrame(paso); } else { el.textContent=fmt$(fin); try{ centavos73(el); }catch(er){} } })(t0);
+  el.textContent=fmt$(0); }
+/* Toques: guarda el uso (para frecuentes), mueve el ícono y abre */
+var ACC74={cuentas:function(){ goTo('cuentas'); },plan:function(){ tabIr('plan'); },deudas:function(){ goTo('deudas'); },credito:function(){ goTo('credito'); },oblig:function(){ goTo('oblig'); },
+  reimb:function(){ goTo('reimb'); },kits:function(){ goTo('kits'); },comision:function(){ goTo('comision'); },facturas:function(){ reporteFacturas(); },analisis:function(){ goTo('estad'); },
+  salud:function(){ openSaludModal(); },alcanza:function(){ abrirMeAlcanza70(); },fijos:function(){ goTo('oblig'); setTimeout(function(){ var c=document.querySelector('.fj71'); if(c) c.scrollIntoView({behavior:'smooth',block:'center'}); },450); },
+  cierre:function(){ abrirCierre(ymAdd(mesLocal(),-1)); },copias:function(){ abrirCopias70(); },perfil:function(){ goTo('perfil'); },tema:function(){ temaModal(); },nube:function(){ nubeAjustes(); },
+  archivo:function(){ exportarDatos(); },cats:function(){ categoriasModal(); }};
+document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('#mas-content [data-k]'); if(!b) return; var k=b.dataset.k, fn=ACC74[k]; if(!fn) return;
+  usoMas74(k); var s=b.querySelector('.mx-i svg'); anima70(s,[{transform:'none'},{transform:'scale(1.2) rotate(-8deg)'},{transform:'none'}],{duration:360,easing:SALTO70});
+  try{ fn(); }catch(er){ console.warn('mas74',er); } _libre70(function(){ try{ saveState(); }catch(er){} },1500); });
+
+/* ── Desglose de "Lo que vale tu dinero hoy" ── */
+function desgloseNeto74(){
+  var P=patrimonio53(), B=calcBalances(), K=calcKits(), F=financiaEmpresas(), kits=r2(Object.keys(K).reduce(function(s,c){ return s+(K[c]||0); },0)), bienes=_t74(totalBienes,0);
+  var fila=function(a,b,c){ return '<div class="cd72-r'+(c?' '+c:'')+'"><span>'+a+'</span><b>'+b+'</b></div>'; };
+  var h='<div class="fl52-p">Es todo tu dinero si hoy cobraras lo que te deben y pagaras lo que debes. Es el mismo número de Inicio.</div>';
+  h+='<div class="cd72-s"><b>Tienes</b>'+CUENTAS_TODAS.concat(Object.keys(B).filter(function(c){ return CUENTAS_TODAS.indexOf(c)<0; })).map(function(c){ var v=r2((B[c]||0)-(K[c]||0)); return Math.abs(v)<0.005&&!B[c]?'':fila(esc(c)+((K[c]||0)>0.004?' <small>(sin '+fmt$(K[c])+' de KITS)</small>':''),fmt$(v),'m'); }).join('')
+    +fila('Total tuyo',fmt$(P.disp),'t')+(P.ap>0?'<div class="ne74">De esto, '+fmt$(P.ap)+' está apartado para tus metas.</div>':'')+(kits>0.004?'<div class="ne74">No se cuentan '+fmt$(kits)+' de KITS: es dinero de la empresa que tienes a cargo.</div>':'')+'</div>';
+  var cb=(userCobros||[]).filter(function(c){ return (c.monto||0)>0; });
+  h+='<div class="cd72-s"><b>Te deben</b>'+(F.EQ.tot>0?fila('ECUAQUIMICA',fmt$(F.EQ.tot),'m'):'')+(F.AG.tot>0?fila('AGROLEON',fmt$(F.AG.tot),'m'):'')+cb.map(function(c){ return fila(esc(c.nombre||c.desc||'Cobro'),fmt$(c.monto),'m'); }).join('')
+    +fila('Total',fmt$(r2(P.reimb+P.cob)),'t')+'</div>';
+  h+='<div class="cd72-s"><b>Debes</b>'+(userCreditos||[]).filter(function(c){ return (c.deuda||0)>0; }).map(function(c){ return fila(esc(c.nombre||'Crédito'),'−'+fmt$(c.deuda),'m p'); }).join('')
+    +(userDeudas||[]).filter(function(d){ return (d.monto||0)>0; }).map(function(d){ return fila(esc(d.nombre||'Deuda'),'−'+fmt$(d.monto),'m p'); }).join('')+fila('Total','−'+fmt$(P.deu),'t p')+'</div>';
+  h+='<div class="cd72-s fin74">'+fila('Lo que vale tu dinero hoy','<span class="'+(P.neto<0?'mal':'bien')+'">'+fmt$(P.neto)+'</span>','t')
+    +'<div class="ne74">'+fmt$(P.disp)+' + '+fmt$(r2(P.reimb+P.cob))+' − '+fmt$(P.deu)+' = '+fmt$(P.neto)+'</div>'
+    +(bienes>0?'<div class="ne74">Aparte tienes bienes por '+fmt$(bienes)+'. No se suman porque no es dinero que puedas usar hoy.</div>':'')+'</div>';
+  h+='<button onclick="document.getElementById(\'dn74\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>';
+  _modalBase('dn74','Lo que vale tu dinero hoy',h);
+}
+
+/* ── Comisión AGROLEON: pantalla propia ── */
+(function(){ var m=document.getElementById('screen-mas'); if(!m||document.getElementById('screen-comision')) return;
+  m.insertAdjacentHTML('afterend','<div class="inner-screen" id="screen-comision"><div class="nav-header"><button class="back-btn" onclick="goBack()">‹</button><div class="nav-title">Comisión AGROLEON</div></div><div class="scroll-content"><div id="comision-content"></div></div></div>'); })();
+function renderComision74(){
+  var box=document.getElementById('comision-content'); if(!box) return;
+  var C=comAGMeses(), pag=C.filter(function(m){ return m.estado==='pagada'&&m.monto>0; }), tot=r2(pag.reduce(function(s,m){ return s+m.monto; },0)), prom=pag.length?r2(tot/pag.length):0;
+  var cp=C.filter(function(m){ return m.estado==='pendiente'; }), cc=C.filter(function(m){ return m.estado==='en_curso'; })[0], ult=comAGUltimo(), h='';
+  h+='<div class="co74"><img src="'+LOGO_AG+'" alt="AGROLEON"><div><small>Recibido en total</small><b class="co74-v">'+fmt$(tot)+'</b><span>'+(pag.length?pag.length+' mes'+(pag.length>1?'es':'')+' · promedio '+fmt$(prom):'Aún sin comisiones registradas')+'</span></div></div>';
+  if(cp.length) h+=aviso69('atento',cp.length+' mes'+(cp.length>1?'es':'')+' por confirmar','Marca si te pagaron la comisión de '+cp.map(function(m){ return _nomMes(m.ym); }).join(', ')+' o si no hubo. Mientras tanto, tu proyección la cuenta como posible'+(ult?' (~'+fmt$(ult)+')':'')+'.',{icon:'alert'});
+  if(cc){ var f=habilDespues(ymAdd(cc.ym,1)+'-14'); h+=aviso69('info','La de '+_mesCorto(cc.ym)+' se paga cerca del '+fechaCorta(f),ult?'Si es como la última, serían unos '+fmt$(ult)+'. No se cuenta como seguro en tu flujo hasta que la registres.':'Cuando te paguen, regístrala aquí.',{icon:'cal'}); }
+  if(pag.length>=2){ var mx=Math.max.apply(null,pag.map(function(m){ return m.monto; }));
+    h+='<div class="glass-card cb74"><b>Mes a mes</b>'+pag.slice(-6).map(function(m){ return '<div class="cb74-r"><span>'+_cap47(_mesCorto(m.ym)).slice(0,3)+'</span><i><em style="transform:scaleX('+(m.monto/mx).toFixed(3)+')"></em></i><b>'+fmt$(m.monto)+'</b></div>'; }).join('')+'</div>'; }
+  h+=htmlComAG();
+  h+='<div class="ne74 co74-n">AGROLEON paga la comisión del mes siguiente por la rotación de la línea agrícola. No tiene una meta fija, por eso la app no la da por segura.</div>';
+  box.innerHTML=h;
+  if(anim59()) [].forEach.call(box.querySelectorAll('.cb74-r em'),function(e,i){ anima70(e,[{transform:'scaleX(0)'},{transform:e.style.transform}],{duration:520,delay:i*60,easing:SUAVE70,fill:'backwards'}); });
+}
+_w43('renderScreen',function(r,s){ if(s==='comision') renderComision74(); });
+window.irComision46=function(){ goTo('comision'); };
+_w43('comAGMarcar',function(){ if(state.currentScreen==='comision') renderComision74(); });
+_w43('deshacerComAG',function(){ if(state.currentScreen==='comision') renderComision74(); });
+
+/* ══ v7.4 · Diseño: el resto de pantallas al nivel de Inicio y Más ══
+   1. Cifras grandes con el mismo diseño y centavos pequeños en todas las pantallas.
+   2. Colores que dicen la verdad (cero no es rojo ni verde).
+   3. Los últimos emojis pasan a íconos propios.
+   4. Perfil más limpio. 5. Tarjetas de cuentas claras. 6. "Por mes" con barras y lista.
+   7. Saludo de Inicio sin cortes. 8. Números alineados y estados vacíos coherentes. */
+IC46.clock='<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>';
+IC46.globe='<circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.6 3.6 5.4 3.6 8.5s-1.1 5.9-3.6 8.5c-2.5-2.6-3.6-5.4-3.6-8.5s1.1-5.9 3.6-8.5z"/>';
+IC46.wrench='<path d="M14.5 6.5a4 4 0 0 0 5 5l-8.8 8.8a2.1 2.1 0 0 1-3-3l8.8-8.8a4 4 0 0 0-2-2z"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5"/>';
+IC46.info='<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.8v.01"/>';
+IC46.minus='<path d="M6 12h12"/>';
+Object.assign(EMO72,{'⏰':'clock','⏳':'clock','⌛':'clock','🕐':'clock','🌍':'globe','🌎':'globe','🌏':'globe','🌐':'globe','🔧':'wrench','🛠':'wrench','ℹ':'info','💪':'piggy','🔁':'repeat','🎉':'party'});
+CAJA73+=',.la-ic,.pa-h>span,.fe-head>span,.ru-h>span,.ccm-ic,.profile-avatar-edit,.rc75';
+CENT73+=',.fl73-w>div:first-child>div>div:nth-child(2),.cu-tot,#deudas-total,#cobros-total,#reimb-total-cobrar,#kits-total-screen,.cc-hero-val,.cg55-big,.co74-v,.dv-hero .dt56 b,.pm75-v';
+
+/* ── 2. Colores con sentido ── */
+function _tono75(el,t){ if(!el) return; el.classList.remove('v75-bad','v75-ok','v75-info','v75-mut'); el.classList.add('v75-'+t); el.style.color=''; }
+_w43('renderDeudas',function(){ var d=document.getElementById('deudas-total'), c=document.getElementById('cobros-total');
+  var dv=_t74(function(){ return (userDeudas||[]).reduce(function(s,x){ return s+(x.monto||0); },0); },0), cv=_t74(function(){ return (userCobros||[]).reduce(function(s,x){ return s+(x.monto||0); },0); },0);
+  _tono75(d,dv>0.004?'bad':'ok'); _tono75(c,cv>0.004?'info':'mut'); });
+_w43('pintarGastos55',function(){ var b=document.querySelector('#cc-gastos .cg55-big'); if(b) b.classList.toggle('cero75',!/[1-9]/.test(b.textContent)); });
+/* Control: "Dinero disponible ahora" en verde solo si es positivo */
+_w43('renderDashboard',function(){ var v=document.querySelector('#screen-dashboard .cc-hero-val'); if(!v) return; var n=parseFloat(v.textContent.replace(/[^\d.\-−]/g,'').replace('−','-')); v.classList.toggle('neg75',n<0); });
+
+/* ── 4. Perfil: los datos vacíos en una sola fila ── */
+_w43('renderPerfil',function(){ var box=document.getElementById('perfil-content'); if(!box||box.querySelector('.cp75')) return;
+  var vac=[].filter.call(box.querySelectorAll('.profile-field-row'),function(r){ return r.querySelector('.profile-field-val.add50'); }); if(!vac.length) return;
+  var nombres=vac.map(function(r){ return (r.querySelector('.profile-field-label')||{}).textContent||''; }).map(function(s){ return s.trim().toLowerCase(); });
+  vac.forEach(function(r){ r.classList.add('oc75'); });
+  var ref=vac[0], b=document.createElement('button'); b.type='button'; b.className='cp75'; b.onclick=function(){ try{ editPerfil(); }catch(e){} };
+  b.innerHTML='<span class="cp75-i">'+ic46('pencil',16)+'</span><span><b>Completa tu perfil ('+vac.length+')</b><small>'+esc(_cap47(nombres.join(', ')))+'</small></span>'+ic46('chev',15);
+  ref.parentNode.insertBefore(b,ref); });
+
+/* ── 5. Cuentas: sin "+ Agregar número" repetido; último movimiento con fecha primero ── */
+_w43('renderCuentas',function(){ [].forEach.call(document.querySelectorAll('#cuentas-content .cu-card'),function(c){
+  var n=c.querySelector('.cu-num'); if(n&&/^＋/.test(n.textContent.trim())) n.remove();
+  [].forEach.call(c.querySelectorAll('.cu-info small'),function(s){ var m=s.textContent.match(/^Último:\s*(.+)\s·\s([^·]+)$/); if(!m) return; s.classList.add('ul75'); s.textContent=_cap47(m[2].trim())+' · '+m[1].trim(); }); }); });
+
+/* ── 7. Inicio: "Buenos días" pequeño arriba y tu nombre grande ── */
+_w43('updateClock',function(){ var hl=document.getElementById('hd-hola'), fd=document.getElementById('header-date'); if(!hl||!fd) return;
+  var now=getLocalDate(), nom=((state.perfil&&state.perfil.nombre)||'').split(' ')[0], hr=now.getHours(), sal=hr<12?'Buenos días':hr<19?'Buenas tardes':'Buenas noches';
+  var dia=DIAS[now.getDay()].slice(0,3)+' '+now.getDate()+' '+MESES[now.getMonth()].slice(0,3);
+  var a=nom?nom:sal, b=nom?sal+' · '+dia:_cap47(DIAS[now.getDay()])+' '+now.getDate()+' de '+MESES[now.getMonth()];
+  if(hl.textContent!==a) hl.textContent=a; if(fd.textContent!==b) fd.textContent=b; document.documentElement.classList.add('hd75'); });
+
+/* ── 6. Análisis "Por mes": entró contra salió, resultado y lista ── */
+function _ingEg75(ym,hasta){ var ing=0,eg=0; state.transactions.forEach(function(t){ if(t.fecha.slice(0,7)!==ym||(hasta&&+t.fecha.slice(8,10)>hasta)) return; var f=flujoTx(t);
+  if(f.ingOrd||f.ingExtra){ ing+=f.ingOrd+f.ingExtra; return; } if(t.tipo==='EGRESO'&&t.reimb==='SÍ'&&f.nat==='operativo') return; if(f.gasto) eg+=f.gasto; }); return {ing:r2(ing),eg:r2(eg)}; }
+function _delta75(v,p,subeBien){ if(!(p>0)) return ''; var d=Math.round((v-p)/p*100); if(d===0) return '<em class="dl75 mut">igual</em>';
+  var bien=subeBien?d>0:d<0; return '<em class="dl75 '+(bien?'ok':'bad')+'">'+(d>0?'▲':'▼')+' '+Math.abs(d)+'%</em>'; }
+function resumenMes75(o){
+  var mx=Math.max(o.ing,o.eg,0.01), cmp=null, prevLbl='';
+  if(o.single){ var pm=ymAdd(o.mes,-1), hasta=o.cur?+hoyLocal().slice(8,10):0; cmp=_ingEg75(pm,hasta); prevLbl=_cap47(MESES[+pm.slice(5,7)-1])+(o.cur?' al día '+hasta:''); if(!(cmp.ing>0||cmp.eg>0)) cmp=null; }
+  var barra=function(lbl,v,cls,tip,d){ return '<div class="pm75-b"><div class="pm75-bt"><span>'+lbl+'</span><b class="pm75-v">'+fmt$(v)+'</b>'+(d||'')+'</div><i><em class="'+cls+'" style="transform:scaleX('+(v/mx).toFixed(4)+')"></em></i><small>'+esc(tip)+'</small></div>'; };
+  var c=o.cells||[], tip=function(i){ return (c[i]&&c[i].tip)||''; };
+  var h='<div class="card pm75"><div class="pm75-h"><b>'+o.label+'</b><small>Resumen financiero'+(cmp?' · comparado con '+prevLbl:'')+'</small></div>';
+  h+=barra('Entró',o.ing,'in',tip(0),cmp?_delta75(o.ing,cmp.ing,true):'')+barra('Salió',o.eg,'out',tip(1),cmp?_delta75(o.eg,cmp.eg,false):'');
+  h+=o.net>=0?aviso69('bien','Te sobró +'+fmt$(o.net),'Lo que entró menos lo que salió.',{icon:'check'}):aviso69('mal','Salió '+fmt$(-o.net)+' más de lo que entró','Esa diferencia salió de tu saldo, de avances o de tus ahorros.',{icon:'alert'});
+  var taT=!(o.ing>0)?'mut':o.tasa>=20?'ok':o.tasa>=10?'warn':'bad';
+  var fila=function(ic,t,s,v,tono){ return '<div class="pm75-r"><span class="pm75-i t75-'+tono+'">'+ic46(ic,17)+'</span><span class="pm75-t"><b>'+t+'</b><small>'+esc(s)+'</small></span><b class="pm75-n s75-'+tono+'">'+v+'</b></div>'; };
+  h+='<div class="pm75-l">'
+    +fila('piggy','Tasa de ahorro',tip(3),o.ing>0?o.tasa+'%':'—',taT)
+    +(o.single?fila('home','Gastos fijos',tip(4),fmt$(o.fijos),'neu')+fila('cart','Gastos variables',tip(5),fmt$(o.variables),'neu'):'')
+    +fila('hand','Deudas con personas',tip(6),fmt$(o.deuda),o.deuda>0?'warn':'ok')
+    +fila('wallet','Disponible',tip(7),fmt$(o.disp),o.disp>0?'ok':'bad')
+    +'</div><div>';
+  return h;
+}
+/* "Reducir "📌 Hogar…" → sin el emoji dentro del texto */
+_w43('renderAnalisis',function(){ var sc=document.getElementById('screen-analisis'); if(!sc) return; var R=/(["“«])\s*\p{Extended_Pictographic}️?\s*/gu, w=document.createTreeWalker(sc,NodeFilter.SHOW_TEXT), n;
+  while((n=w.nextNode())){ if(R.test(n.nodeValue)){ R.lastIndex=0; n.nodeValue=n.nodeValue.replace(R,'$1'); } R.lastIndex=0; }
+  if(anim59()) [].forEach.call(sc.querySelectorAll('.pm75-b>i>em'),function(e,i){ anima70(e,[{transform:'scaleX(0)'},{transform:e.style.transform}],{duration:560,delay:i*90,easing:SUAVE70,fill:'backwards'}); }); });
+
+/* ── 2b. Un $0.00 nunca va en rojo, verde ni ámbar: cero no es ni bueno ni malo ── */
+var RXC75=/^[+−\-]?\$0\.00$/;
+function _esColor75(el){ var m=getComputedStyle(el).color.match(/\d+/g); if(!m) return false; var r=+m[0],g=+m[1],b=+m[2]; return (r>180&&g<165&&b<190)||(g>150&&r<120)||(r>200&&g>140&&b<110); }
+function ceros75(root){ if(!root||root.nodeType!==1||!root.isConnected) return; var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){ return n.nodeValue.indexOf('$0')>=0?NodeFilter.FILTER_ACCEPT:NodeFilter.FILTER_SKIP; }}), n, vistos=new Set();
+  while((n=w.nextNode())){ var el=n.parentElement; for(var k=0;el&&k<3;k++,el=el.parentElement){ if(vistos.has(el)) break; var t=el.textContent.replace(/\s/g,''); if(RXC75.test(t)){ vistos.add(el); if(!el.classList.contains('cero75')&&!el.closest('input,.cg55-big,.rs74,.mx-t')&&_esColor75(el)) el.classList.add('cero75'); break; } if(t.length>9) break; } }
+  var cc=[].slice.call(root.querySelectorAll('.cero75')); if(root.classList.contains('cero75')) cc.push(root); var up=root.closest&&root.closest('.cero75'); if(up) cc.push(up);
+  cc.forEach(function(e){ if(!RXC75.test(e.textContent.replace(/\s/g,''))) e.classList.remove('cero75'); }); }
+(function(){ var cola=new Set(), pend=false; function vaciar(){ pend=false; var l=[]; cola.forEach(function(x){ l.push(x); }); cola.clear(); l.forEach(function(x){ try{ ceros75(x); }catch(e){} }); }
+  new MutationObserver(function(ms){ ms.forEach(function(m){ var t=m.target.nodeType===1?m.target:m.target.parentElement; if(t&&t.closest&&t.closest('.screen,.inner-screen')) cola.add(t); });
+    if(!pend&&cola.size){ pend=true; _libre70(vaciar,600); } }).observe(document.body,{childList:true,subtree:true}); })();
 
 </script>
 <script>
