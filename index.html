@@ -3086,6 +3086,50 @@ html:not(.t-claro) .ma70-ac button+button{background:transparent;color:rgba(255,
 html:not(.t-claro) .fj71-a .si{background:rgba(52,211,153,.18);color:#6ee7b7} html.t-claro .fj71-a .si{background:#e8f8f0;color:#0b7f56}
 html:not(.t-claro) .fj71-a .no{background:rgba(255,255,255,.07);color:rgba(255,255,255,.6)} html.t-claro .fj71-a .no{background:#f1eff8;color:rgba(24,20,48,.6)}
 
+/* ══ v7.2 ══ */
+/* Cómo cierras el mes (en el cuadro del dinero) */
+.hoy52>div.cm72{cursor:pointer;flex-basis:100%}
+.cm72 span{flex:1}
+.cm72 b{font-size:18px!important}
+.cm72>i{flex-shrink:0}
+.cm72 em{font-style:normal!important;font-size:11.5px!important;line-height:1.3!important;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.cm72>u{text-decoration:none;opacity:.45;margin-left:auto;flex-shrink:0}
+html:not(.t-claro) .hoy52 .cm72.bien i,html.t-claro .hoy52 .cm72.bien i{background:var(--s-ok-bg);color:var(--s-ok)}
+html:not(.t-claro) .hoy52 .cm72.atento i,html.t-claro .hoy52 .cm72.atento i{background:var(--s-warn-bg);color:var(--s-warn)}
+html:not(.t-claro) .hoy52 .cm72.mal i,html.t-claro .hoy52 .cm72.mal i{background:var(--s-bad-bg);color:var(--s-bad)}
+html:not(.t-claro) .cm72.bien em,html.t-claro .cm72.bien em{color:var(--s-ok)!important}
+html:not(.t-claro) .cm72.atento em,html.t-claro .cm72.atento em{color:var(--s-warn)!important}
+html:not(.t-claro) .cm72.mal em,html.t-claro .cm72.mal em{color:var(--s-bad)!important}
+html:not(.t-claro) .cm72.mal b,html.t-claro .cm72.mal b{color:var(--s-bad)!important}
+/* Detalle */
+.cd72-s{margin-top:14px;padding-top:12px;border-top:.5px solid var(--vz-grid)}
+.cd72-s>b{display:block;font-size:14.5px;color:var(--vz-ink);margin-bottom:6px}
+.cd72-r{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:5px 0;font-size:13.5px;color:var(--vz-ink2)}
+.cd72-r b{font:700 14.5px var(--num,-apple-system);color:var(--vz-ink);white-space:nowrap}
+.cd72-r small{font-size:11.5px;opacity:.8}
+.cd72-r.m span{padding-left:10px} .cd72-r.m b{color:var(--vz-ink2)}
+.cd72-r.t{border-top:.5px solid var(--vz-grid);margin-top:4px;padding-top:8px;color:var(--vz-ink);font-weight:650}
+.cd72-r b.bien{color:var(--s-ok)} .cd72-r b.atento{color:var(--s-warn)} .cd72-r b.mal{color:var(--s-bad)}
+.cd72-r.p b{color:var(--s-bad)}
+.cd72-t{height:10px;border-radius:5px;background:var(--vz-grid);overflow:hidden;margin:2px 0 6px}
+.cd72-t em{display:block;height:100%;width:100%;border-radius:5px;transform-origin:left center;background:var(--vz-l2)}
+.cd72-t em.bien{background:var(--s-ok)} .cd72-t em.atento{background:var(--s-warn)} .cd72-t em.mal{background:var(--s-bad)}
+/* Campana nueva */
+.nr72{display:flex;gap:8px;margin:2px 0 12px}
+.nr72>div{flex:1;min-width:0;padding:10px 12px;border-radius:16px}
+.nr72 small{display:block;font-size:11.5px;font-weight:600}
+.nr72 b{display:block;font:750 19px var(--num,-apple-system);letter-spacing:-.3px;margin-top:2px}
+.nr72 .mal{background:var(--s-bad-bg);box-shadow:inset 0 0 0 .5px var(--s-bad-bd)} .nr72 .mal small,.nr72 .mal b{color:var(--s-bad)}
+.nr72 .ok{background:var(--s-ok-bg);box-shadow:inset 0 0 0 .5px var(--s-ok-bd)} .nr72 .ok small,.nr72 .ok b{color:var(--s-ok)}
+.nr72 .info{background:var(--s-info-bg);box-shadow:inset 0 0 0 .5px var(--s-info-bd)} .nr72 .info small,.nr72 .info b{color:var(--s-info)}
+.nc72-s.accion{color:var(--s-bad)!important} .nc72-s.gasto{color:var(--s-warn)!important} .nc72-s.cobro{color:var(--s-info)!important} .nc72-s.ahorro{color:var(--s-ok)!important}
+.nc72-m{font:750 15px var(--num,-apple-system);white-space:nowrap;padding:2px 8px;border-radius:999px;flex-shrink:0;align-self:flex-start}
+.nc72-m.in{color:var(--s-ok);background:var(--s-ok-bg)} .nc72-m.out{color:var(--s-bad);background:var(--s-bad-bg)}
+.nc72-m:not(.in):not(.out){color:var(--vz-ink);background:var(--vz-grid)}
+.nc72-v{font-size:16px;font-weight:700;margin-top:8px}
+.nc72-resp{display:block;width:100%;margin:6px 0 4px;padding:11px 12px;border-radius:14px;border:0;font:600 13px -apple-system,sans-serif;text-align:left}
+html:not(.t-claro) .nc72-resp{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7)} html.t-claro .nc72-resp{background:#f1eff8;color:rgba(24,20,48,.7)}
+
 </style>
 </head>
 <body>
@@ -3714,7 +3758,7 @@ var BASE_BALANCES={'Efectivo':0,'Banco Pichincha':0,'Jardín Azuayo':0,'Banco Gu
    NÚCLEO v3.3 — almacenamiento, dinero, clasificación de flujos,
    respaldo y seguridad
    ══════════════════════════════════════════════════════════════ */
-var APP_VERSION='7.0.0';
+var APP_VERSION='7.1.0';
 var STORE_KEY='finanzas_jr_v4';          // formato actual (todo el historial)
 var STORE_KEY_V3='finanzas_javier_v3';   // formato anterior (se conserva como respaldo)
 var STORE_KEY_PREV='finanzas_jr_v4_antes_import'; // copia automática antes de importar
@@ -16191,6 +16235,173 @@ try{ memo65('fijosDetectados71'); }catch(e){}
       var n={id:id,grupo:'consejo',nivel:'medio',icon:'🔁',impacto:tot,titulo:(F.length===1?F[0].nombre+' se repite cada mes':F.length+' pagos se repiten cada mes')+' ('+fmt$(tot)+')',texto:'No están en tus pagos fijos, así que el flujo de caja no los cuenta. Agrégalos con un toque.',nav:'oblig',accion:{lbl:'Revisar',fn:function(){ goTo('oblig'); }},descarte:'manana'};
       // entra entre los 2 consejos si pesa más que alguno
       if(con.length<2) L.push(n); else { var menor=con.reduce(function(a,b){ return _monto67(a)<=_monto67(b)?a:b; }); if(_monto67(menor)<tot){ L=L.filter(function(x){ return x!==menor; }); L.push(n); } } } } }catch(e){ console.warn('nc71',e); } return L; }; })();
+
+/* ══ v7.2 · Cómo cierras el mes · Notificaciones que mueven tu dinero ══ */
+
+/* ───────── A. Cómo cierras el mes ─────────
+   Mismo cálculo que Flujo de caja › "Este mes". Separa lo que entró de una sola vez (décimos, bonos, utilidades)
+   y los préstamos, para saber si tu mes NORMAL te deja mejor o peor. Y muestra cuánto ya tiene destino. */
+function _pad72(n){ return String(n).padStart(2,'0'); }
+function cierreMes72(){
+  var hoy=hoyLocal(), mes=mesLocal(), finM=mes+'-'+_pad72(diasDelMes(mes)), proy=finM>hoy;
+  var p=proy?proyectarFlujo(null,finM):proyectarFlujo(), balFin=r2(proy&&p.dias.length?p.dias[p.dias.length-1].bal:p.inicio);
+  var evRest=proy?(p.ev||[]).filter(function(e){ return e.fecha<=finM; }):[];
+  // Lo que ya pasó en el mes (todo lo que mueve TU dinero; los KITS y las transferencias entre tus cuentas no)
+  var net=0, extra=0, prest=0, fx={};
+  state.transactions.forEach(function(t){ if(t.arch||t.fecha<mes+'-01') return; var n=natOf(t); if(n==='custodia'||n==='transferencia') return;
+    var v=(t.tipo==='INGRESO'?1:-1)*(t.monto||0); net+=v;
+    if(t.fecha>finM) return;
+    if(t.tipo==='INGRESO'&&n==='extraordinario'){ extra+=t.monto; fx[t.desc||'Ingreso extra']=1; }
+    if(n==='financiamiento') prest+=(t.tipo==='INGRESO'?1:-1)*t.monto; /* préstamos recibidos menos lo que prestaste */ });
+  evRest.forEach(function(e){ if(e.tipo==='ING'&&e.extra){ extra+=e.monto; fx[e.desc]=1; } });
+  prest=r2(prest); var ini1=r2(p.inicio-net), delta=r2(balFin-ini1), real=r2(delta-extra-prest);
+  // Lo que ya tiene dueño: pagos desde el día 1 hasta tu primer cobro del mes siguiente
+  var sig=eventosProgramados(addDias(finM,1),addDias(finM,40)), cobro=sig.filter(function(e){ return e.tipo==='ING'&&(e.clave==='q'||e.clave==='s'); })[0];
+  var hastaC=cobro?cobro.fecha:addDias(finM,15), comp=sig.filter(function(e){ return e.tipo!=='ING'&&e.fecha<=hastaC; }).sort(function(a,b){ return a.fecha<b.fecha?-1:1; });
+  var compT=r2(comp.reduce(function(s,e){ return s+e.monto; },0)), libres=r2(balFin-compT);
+  var sueldo=0; try{ var c=cfgIngresos(); sueldo=r2((c.quincena||0)+(c.saldoSueldo||0)); }catch(e){} var col=0; try{ col=colchon54(); }catch(e){}
+  var tono=balFin<0||libres<0?'mal':(real<Math.max(5,sueldo*0.05)||balFin<col)?'atento':'bien';
+  var nx=Object.keys(fx), sinTxt=extra>0||prest!==0?'sin '+(extra>0?(nx.length===1&&/d[ée]cimo/i.test(nx[0])?'el décimo':nx.length===1&&/utilidad/i.test(nx[0])?'las utilidades':'los ingresos extra'):'')+(extra>0&&prest!==0?' ni ':'')+(prest>0?'los préstamos':prest<0?'lo que prestaste':''):'';
+  return {mes:mes,finM:finM,proy:proy,ini1:ini1,balFin:balFin,delta:delta,real:real,extra:r2(extra),prest:r2(prest),fuentesExtra:nx,sinTxt:sinTxt,comp:comp,compT:compT,libres:libres,hastaC:hastaC,cobro:cobro,tono:tono,col:col,sueldo:sueldo,gv:p.gv}; }
+function _sig72(v){ return (v>=0?'+':'−')+fmt$(Math.abs(v)); }
+function chipCierre72(){ var c=cierreMes72(), nom=MESES[+c.mes.slice(5,7)-1];
+  var sub=c.sinTxt?c.sinTxt+', '+_sig72(c.real):'este mes '+_sig72(c.delta);
+  return '<div class="cm72 '+c.tono+'" role="button" tabindex="0" onclick="event.stopPropagation();detalleCierre72()"><i>'+ic46(c.tono==='bien'?'up':c.tono==='mal'?'down':'scale',16)+'</i><span><small>Fin de '+nom+(c.proy?'':' (hoy)')+'</small><b>'+(c.balFin<0?'−':'')+fmt$(Math.abs(c.balFin))+'</b><em>'+sub+'</em></span><u>'+ic46('chev',13)+'</u></div>'; }
+function detalleCierre72(){ var c=cierreMes72(), nom=MESES[+c.mes.slice(5,7)-1], d1='1 '+nom.slice(0,3), dF=_dc47(c.finM).toLowerCase();
+  var mx=Math.max(Math.abs(c.ini1),Math.abs(c.balFin),1), bar=function(v,k){ return '<div class="cd72-t"><em class="'+k+'" style="transform:scaleX('+Math.max(0,Math.min(1,v/mx)).toFixed(3)+')"></em></div>'; };
+  var h='<div class="fl52-p">'+(c.proy?'Si sigues gastando a tu ritmo ('+fmt$(c.gv)+'/día) y entra lo programado, así terminarías '+nom+'. Es el mismo cálculo de Flujo de caja › "Este mes".':'Hoy es el último día de '+nom+'.')+'</div>';
+  h+='<div class="cd72-s"><b>1. Con cuánto llegas</b><div class="cd72-r"><span>El '+d1+' tenías</span><b>'+fmt$(c.ini1)+'</b></div>'+bar(c.ini1,'n')+'<div class="cd72-r"><span>El '+dF+' tendrías</span><b class="'+c.tono+'">'+(c.balFin<0?'−':'')+fmt$(Math.abs(c.balFin))+'</b></div>'+bar(c.balFin,c.tono)+'</div>';
+  h+='<div class="cd72-s"><b>2. ¿Tu mes te deja mejor o peor?</b><div class="cd72-r"><span>Tu dinero cambia</span><b>'+_sig72(c.delta)+'</b></div>';
+  if(c.extra>0) h+='<div class="cd72-r m"><span>Ingresos que no se repiten'+(c.fuentesExtra.length?' ('+esc(c.fuentesExtra.slice(0,2).join(', '))+')':'')+'</span><b>−'+fmt$(c.extra)+'</b></div>';
+  if(c.prest>0) h+='<div class="cd72-r m"><span>Préstamos y avances recibidos</span><b>−'+fmt$(c.prest)+'</b></div>';
+  if(c.prest<0) h+='<div class="cd72-r m"><span>Lo que prestaste (te lo devuelven)</span><b>+'+fmt$(-c.prest)+'</b></div>';
+  if(c.extra>0||c.prest!==0) h+='<div class="cd72-r t"><span>Tu mes normal</span><b class="'+c.tono+'">'+_sig72(c.real)+'</b></div>';
+  h+=aviso69(c.tono,c.real>=Math.max(5,c.sueldo*0.05)?'Tu sueldo normal te deja dinero':c.real>=0?'Tu sueldo normal apenas cubre tus gastos':'Tu sueldo normal no alcanza para tus gastos',
+    c.real>=Math.max(5,c.sueldo*0.05)?'Sin contar ingresos extra ni préstamos, este mes guardas '+fmt$(c.real)+'. Apártalo antes de que se gaste.':(c.extra>0?'El '+(c.fuentesExtra.length===1&&/d[ée]cimo/i.test(c.fuentesExtra[0])?'décimo':'ingreso extra')+' hace ver el mes bueno, pero no se repite: no lo cuentes para el día a día. ':'')+'Para que tu mes normal te deje algo, necesitas gastar menos o sumar ingresos.',{cls:'av69-in'})+'</div>';
+  h+='<div class="cd72-s"><b>3. Cuánto ya tiene dueño</b><div class="fl52-p" style="margin:4px 0 6px">Pagos desde el 1 de '+MESES[+addDias(c.finM,1).slice(5,7)-1]+' hasta tu '+(c.cobro?(c.cobro.clave==='q'?'quincena':'sueldo')+' del '+fechaCorta(c.cobro.fecha):'próximo cobro')+':</div>'
+    +(c.comp.length?c.comp.map(function(e){ return '<div class="cd72-r p"><span>'+(e.icon||'📅')+' '+esc(e.desc)+' <small>'+fechaCorta(e.fecha)+'</small></span><b>−'+fmt$(e.monto)+'</b></div>'; }).join(''):'<div class="cd72-r p"><span>Sin pagos programados</span><b>$0.00</b></div>')
+    +'<div class="cd72-r t"><span>Comprometido</span><b>−'+fmt$(c.compT)+'</b></div><div class="cd72-r t"><span>Te quedan libres</span><b class="'+(c.libres<0?'mal':c.libres<c.col?'atento':'bien')+'">'+(c.libres<0?'−':'')+fmt$(Math.abs(c.libres))+'</b></div></div>';
+  h+='<button onclick="document.getElementById(\'cd72m\').remove();goTo(\'plan\');setTimeout(function(){try{flujoH66=0;setPlanTab(\'flujo\')}catch(e){}},60)" style="'+_btnP+'background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff">Ver el flujo del mes</button><button onclick="document.getElementById(\'cd72m\').remove()" style="'+_btnP+'background:transparent">Cerrar</button>';
+  _modalBase('cd72m','Cómo cierras '+nom,h);
+  [].forEach.call(document.querySelectorAll('#cd72m .cd72-t em'),function(e,i){ var t=e.style.transform; anima70(e,[{transform:'scaleX(0)'},{transform:t}],{duration:700,delay:150+i*150,easing:SUAVE70,fill:'backwards'}); }); }
+/* En el cuadro del dinero: reemplaza "Próximo cobro" (ya está en Esta semana) */
+_w43('hoy52',function(){ var box=document.getElementById('hoy52'); if(!box) return;
+  [].forEach.call(box.querySelectorAll('.g'),function(g){ if(/Próximo cobro/.test(g.textContent)) g.remove(); });
+  var v=box.querySelector('.cm72'); if(v) v.remove(); try{ box.insertAdjacentHTML('beforeend',chipCierre72()); }catch(e){ console.warn('cm72',e); }
+  box.style.display=box.children.length?'':'none'; });
+try{ memo65('cierreMes72'); }catch(e){}
+
+/* ───────── B. Notificaciones que mueven tu dinero ─────────
+   4 grupos con su color: Atiende ahora (rojo) · Gasto que se te va (ámbar) · Por cobrar (azul) · Para ganar dinero (verde).
+   Cada aviso dice cuánto dinero está en juego y qué hacer. Se eligen por ese monto. */
+NC_GRUPOS={accion:{lbl:'Atiende ahora',icon:'🔴'},gasto:{lbl:'Gasto que se te va',icon:'🟡'},cobro:{lbl:'Por cobrar',icon:'🔵'},ahorro:{lbl:'Para ganar dinero',icon:'🟢'},consejo:{lbl:'Consejos',icon:'💡'},logro:{lbl:'Logros',icon:'🏆'}};
+var COLG72={accion:'var(--s-bad)',gasto:'var(--s-warn)',cobro:'var(--s-info)',ahorro:'var(--s-ok)'};
+try{ MAX67=99; }catch(e){}
+function _mesNom72(ym){ return MESES[+ym.slice(5,7)-1]; }
+function avisosDinero72(){
+  var out=[], hoy=hoyLocal(), mes=mesLocal(), dia=+hoy.slice(8,10), dm=diasDelMes(mes);
+  // 4. Topes: aviso ANTES de pasarte
+  try{ var pres=state.presupuesto||{}; if(dia>=5) Object.keys(pres).forEach(function(c){ var t=pres[c]&&pres[c].monto; if(!t) return; var g=gastoCatMes(c); if(g>=t||g<=0) return;
+    var proy=g/dia*dm; if(proy<t*1.05) return; var cruce=Math.min(dm,Math.ceil(t/(g/dia))); var f=mes+'-'+_pad72(cruce);
+    out.push({id:'tope72_'+mes+'_'+c,grupo:'gasto',nivel:'medio',icon:CAT_ICONS[c]||'🎯',impacto:r2(proy-t),monto:r2(proy-t),signo:'-',
+      titulo:'A este ritmo pasas tu tope de '+c+' el '+fechaCorta(f),texto:'Llevas '+fmt$(g)+' de '+fmt$(t)+'. Terminarías el mes en '+fmt$(r2(proy))+' ('+fmt$(r2(proy-t))+' de más). Para no pasarte: máximo '+fmt$(r2(Math.max(0,(t-g)/(dm-dia+1))))+'/día en esto.',nav:'plan',descarte:'manana'}); }); }catch(e){ console.warn('t72',e); }
+  // 7. Facturas por entregar (últimos 5 días del mes)
+  try{ if(dia>=dm-4){ var paid=new Set(state.reimbPagados||[]), en=new Set(); (state.ciclosEQ||[]).forEach(function(c){ (c.txIds||[]).forEach(function(id){ en.add(id); }); });
+    var fx=state.transactions.filter(function(t){ return t.reimb==='SÍ'&&t.empresa==='ECUAQUIMICA'&&t.fecha.slice(0,7)===mes&&!paid.has(t.id)&&!en.has(t.id)&&t.cat!=='Custodia/Paso'; }), tot=r2(fx.reduce(function(s,t){ return s+t.monto; },0));
+    if(tot>0){ var fp=habilDespues(ymAdd(mes,1)+'-16'); out.push({id:'fact72_'+mes,grupo:'cobro',nivel:dia>=dm-1?'alto':'medio',icon:'🧾',impacto:tot,monto:tot,signo:'+',
+      titulo:'Entrega tus facturas de '+_mesNom72(mes)+' a ECUAQUIMICA',texto:fx.length+' facturas por '+fmt$(tot)+'. Si las entregas a tiempo te pagan el '+fechaCorta(fp)+'; si no, se van al mes siguiente.',nav:'reimb',accion:{lbl:'Ver facturas',fn:function(){ goTo('reimb'); }},descarte:'manana'}); } } }catch(e){ console.warn('f72',e); }
+  // 9. Comisión AGROLEON del mes pasado sin registrar
+  try{ var pm=ymAdd(mes,-1), ca=comAGMeses().find(function(c){ return c.ym===pm; }), fe=habilDespues(mes+'-14');
+    if(ca&&(ca.estado==='pendiente'||ca.estado==='en_curso')&&hoy>fe){ var prom=comisionPromedio63(); out.push({id:'com72_'+pm,grupo:'cobro',nivel:'alto',icon:'🎯',impacto:prom||50,monto:prom||null,signo:'+',
+      titulo:'¿Ya te pagaron la comisión de '+_mesNom72(pm)+'?',texto:'Debía llegar cerca del '+fechaCorta(fe)+'.'+(prom?' Tu promedio es '+fmt$(prom)+'.':'')+' Si ya llegó, regístrala; si no, reclámala a AGROLEON.',nav:'perfil',accion:{lbl:'Registrarla',fn:function(){ goTo('perfil'); }},descarte:'manana'}); } }catch(e){ console.warn('c72',e); }
+  // 10. Plan para tu sueldo (el día antes y el día de cobro)
+  try{ var h=hoy54(), pr=h&&h.pr, px=pr&&pr.proxSueldo; if(px){ var dd=difDias(hoy,px.fecha); if(dd>=0&&dd<=1){
+    var sigC=(pr.ev||[]).filter(function(e){ return e.tipo==='ING'&&(e.clave==='q'||e.clave==='s')&&e.fecha>px.fecha; })[0], hasta=sigC?addDias(sigC.fecha,-1):addDias(px.fecha,15);
+    var fij=r2((pr.ev||[]).filter(function(e){ return e.tipo!=='ING'&&e.fecha>=px.fecha&&e.fecha<=hasta; }).reduce(function(s,e){ return s+e.monto; },0));
+    var ah=0; try{ ah=r2(ahorroEventos54(pr).filter(function(e){ return e.fecha===px.fecha||(e.hoy&&dd===0); }).reduce(function(s,e){ return s+e.monto; },0)); }catch(e){}
+    var dias=difDias(px.fecha,hasta)+1, libre=r2(px.monto-fij-ah);
+    var rit=pr.gvPropio||pr.gv||0, xd=dias>0?r2(libre/dias):0;
+    out.push({id:'plan72_'+px.fecha,grupo:'ahorro',nivel:'alto',icon:'💼',impacto:px.monto,monto:px.monto,signo:'+',
+      titulo:(dd===0?'Hoy':'Mañana')+' entran '+fmt$(px.monto)+': así repártelos',texto:'Pagos fijos hasta el '+fechaCorta(hasta)+': '+fmt$(fij)+(ah>0?' · ahorro: '+fmt$(ah):'')+' · '+(libre>=0?'te quedan '+fmt$(libre)+' para el día a día: '+fmt$(xd)+'/día'+(rit>0?(xd<rit?'. Ojo: hoy gastas '+fmt$(rit)+'/día; si sigues así, lo que falta sale de tu saldo.':'. Tu ritmo actual ('+fmt$(rit)+'/día) cabe.'):'.'):'no alcanza: faltan '+fmt$(-libre)+' que salen de tu saldo.'),nav:'plan',descarte:'manana'}); } } }catch(e){ console.warn('p72',e); }
+  // 12. Lo que te cuestan los avances (el interés va por avance: no pedir el próximo es lo que ahorra)
+  try{ var av=avancesMes63(), it=intereses63(); if(av>0){ var tm=it.tasaMes||0.016, cuesta=r2(av*tm*12);
+    out.push({id:'av72_'+mes,grupo:'ahorro',nivel:'medio',icon:'💳',impacto:cuesta,monto:cuesta,signo:'-',
+      titulo:'Los avances te cuestan '+fmt$(cuesta)+' al año',texto:'Pides en promedio '+fmt$(av)+' al mes y cada avance cobra '+(tm*100).toFixed(1)+'% de interés. En '+hoy.slice(0,4)+' ya pagaste '+fmt$(it.total)+'. Para salir sin quedarte corto: pide la mitad el próximo mes ('+fmt$(r2(av/2))+') y nada el siguiente.',nav:'credito',descarte:'manana'}); } }catch(e){ console.warn('a72',e); }
+  // 13. Fondo de emergencia: lo que falta y cuándo llegas
+  try{ var f=estadoFondo(); if(f.act){ var falta=r2(f.act.monto-f.ac), cap=capacidadAhorroMensual(), meses=cap>0?Math.ceil(falta/cap):null;
+    out.push({id:'fondo72_'+mes+'_'+f.act.n,grupo:'ahorro',nivel:'bajo',icon:'🛟',impacto:Math.min(falta,cap>0?cap:falta),monto:falta,
+      titulo:'Te faltan '+fmt$(falta)+' para el escalón '+f.act.n+' de tu fondo',texto:f.act.txt+' ('+fmt$(f.act.monto)+'). '+(meses?'A tu ritmo de ahorro llegas en '+(meses===1?'1 mes':meses+' meses')+'.':'Hoy no te sobra dinero en un mes normal: este fondo solo crece si apartas algo cada quincena.')+' Es lo que te evita pedir avances cuando algo se daña.',nav:'plan',descarte:'manana'}); } }catch(e){}
+  return out; }
+/* Reetiquetar lo que ya existía y quitar lo que no mueve tu dinero */
+var RUIDO72=/^(tip_(fijos|finde|diacaro|comp|cat|hoy|llega|meta|hormiga|fondo|interes|empresas)_|semana_|cuadre_|ajustes_|fijos_|util_)/;
+function grupo72(n){ var id=n.id||'';
+  if(/^(flujo_neg|obs67_|ob_|deb_|kitsmix_|sueldo61_|vinc_|sinreg_)/.test(id)) return 'accion';
+  if(/^(topes67_|tope100_|tope80_|horm_|sem67_|ritmo_alto_|cat_sube_|tope72_)/.test(id)) return 'gasto';
+  if(/^(cobrar_|cobros_|fact72_|com72_)/.test(id)) return 'cobro';
+  if(/^(semb67_|ritmo_bajo_|extra_|meta_|racha_|plan72_|av72_|fondo72_|fijos71_|avance_)/.test(id)) return 'ahorro';
+  return n.grupo==='accion'?'accion':n.grupo==='cobro'?'cobro':n.grupo==='logro'?'ahorro':'gasto'; }
+var _resp72=null;
+(function(){ var cn=window.construirNotificaciones; if(typeof cn!=='function') return;
+  window.construirNotificaciones=function(){ var L=cn.apply(this,arguments); try{
+    var ids={}; L.forEach(function(n){ ids[n.id]=1; }); avisosDinero72().forEach(function(n){ if(!ids[n.id]&&!_descartada(n.id)) L.push(n); });
+    // El respaldo sale de la lista: queda como una línea abajo (y solo si llevas 30+ días o nunca respaldaste)
+    _resp72=null; L=L.filter(function(n){ if(/^resp_/.test(n.id)){ var d=state.ultimoRespaldo?_diasEntre(state.ultimoRespaldo,hoyLocal()):999; if(d>=30) _resp72=n; return false; } return true; });
+    L=L.filter(function(n){ return !RUIDO72.test(n.id); });
+    if(X().ocultos72===hoyLocal()) L=L.filter(function(n){ var g=grupo72(n); return !((g==='gasto'||g==='ahorro')&&n.nivel!=='critico'&&n.nivel!=='alto'); });
+    // Si ya hay aviso anticipado de un tope, no repetir con el genérico de ritmo
+    L.forEach(function(n){ n.grupo=grupo72(n); n.impacto=n.impacto!=null?n.impacto:_monto67(n); });
+    // Por cobrar: un solo aviso de reembolsos (incluye lo adelantado)
+    var cb=L.find(function(n){ return /^cobrar_/.test(n.id); }); if(cb){ try{ var di=_ingresoDiario(), tot=financiaEmpresas().total; if(tot>0){ cb.monto=r2(tot); cb.signo='+'; cb.impacto=tot; if(di>0&&!/días de tu sueldo/.test(cb.texto)) cb.texto+=' Son '+(Math.round(tot/di*10)/10)+' días de tu sueldo que hoy no puedes usar.'; } }catch(e){} }
+    var sr=L.find(function(n){ return /^sinreg_/.test(n.id); }); if(sr&&!/inflad/.test(sr.texto)) sr.texto=sr.texto.replace(/Anótalos para que el flujo de caja sea exacto\./,'Mientras no los anotes, "Hoy puedes gastar" y tu cierre del mes salen más altos de lo real.');
+    // Selección: lo urgente nunca se esconde; luego por dinero en juego, máximo 2 por grupo, 6 en total
+    var por=function(g){ return L.filter(function(n){ return n.grupo===g; }).sort(function(a,b){ return NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]||(b.impacto||0)-(a.impacto||0); }); };
+    var acc=por('accion'), urg=acc.filter(function(n){ return n.nivel==='critico'||n.nivel==='alto'||/^sueldo61_/.test(n.id); });
+    var resto=acc.filter(function(n){ return urg.indexOf(n)<0; }).concat(por('gasto').slice(0,2),por('cobro').slice(0,2),por('ahorro').slice(0,2))
+      .sort(function(a,b){ return (b.impacto||0)-(a.impacto||0); });
+    var fin=urg.concat(resto.slice(0,Math.max(0,6-urg.length)));
+    var G={accion:0,gasto:1,cobro:2,ahorro:3}; fin.sort(function(a,b){ return G[a.grupo]-G[b.grupo]||NC_NIVEL[a.nivel]-NC_NIVEL[b.nivel]||(b.impacto||0)-(a.impacto||0); });
+    return fin; }catch(e){ console.warn('nc72',e); return L; } }; })();
+/* Resumen de la campana: lo que está en juego */
+/* Cuánto podrías ahorrar este mes con un aviso de gasto: lo que pasa del tope o del plan (no lo gastado) */
+function ahorroDe72(n){ var t=(n.titulo||'')+' '+(n.texto||''), m;
+  if(/^(horm_|tope100_|topes67_)/.test(n.id)){ var re=/\$([\d,]+\.\d\d) de (?:tu tope de )?\$([\d,]+\.\d\d)/g, s=0; while((m=re.exec(t))){ s+=Math.max(0,parseFloat(m[1].replace(/,/g,''))-parseFloat(m[2].replace(/,/g,''))); } return r2(s); }
+  return n.impacto||0; }
+function resumen72(L){ var r={riesgo:0,ahorro:0,cobro:0};
+  L.forEach(function(n){ var m=+n.monto||0;
+    if(n.grupo==='accion'){ if(/^flujo_neg/.test(n.id)){ var x=(n.titulo.match(/−\$([\d,.]+)/)||[])[1]; if(x) r.riesgo+=parseFloat(x.replace(/,/g,'')); } else if(n.signo==='-') r.riesgo+=m; }
+    else if(n.grupo==='gasto') r.ahorro+=ahorroDe72(n); else if(n.grupo==='ahorro'&&/^semb67_/.test(n.id)) r.ahorro+=(n.impacto||0); });
+  // Por cobrar sin contar dos veces: lo que te deben las empresas + comisión pendiente
+  try{ r.cobro=financiaEmpresas().total||0; }catch(e){} var cm=L.find(function(n){ return /^com72_/.test(n.id); }); if(cm) r.cobro+=(+cm.monto||0);
+  Object.keys(r).forEach(function(k){ r[k]=r2(r[k]); }); return r; }
+/* La campana con el nuevo diseño */
+window.renderCentroNotif=function(){
+  var chips=document.getElementById('nc-chips'), list=document.getElementById('nc-list'); if(!list) return;
+  var L=_ncLista, cnt={todas:L.length}; Object.keys(NC_GRUPOS).forEach(function(g){ cnt[g]=L.filter(function(n){ return n.grupo===g; }).length; });
+  if(_ncFiltro!=='todas'&&!cnt[_ncFiltro]) _ncFiltro='todas';
+  chips.innerHTML=['todas'].concat(Object.keys(NC_GRUPOS)).filter(function(k){ return k==='todas'||cnt[k]; }).map(function(k){
+    return '<button class="nc-chip'+(_ncFiltro===k?' sel':'')+'" onclick="ncSetFiltro(\''+k+'\')">'+(k==='todas'?'Todas':NC_GRUPOS[k].lbl)+'<span>'+cnt[k]+'</span></button>'; }).join('');
+  document.getElementById('nc-count').textContent=L.length?(L.length+' aviso'+(L.length>1?'s':'')):'';
+  var vis=L.filter(function(n){ return _ncFiltro==='todas'||n.grupo===_ncFiltro; }), r=resumen72(L), h='';
+  if(_ncFiltro==='todas'&&(r.riesgo||r.ahorro||r.cobro)) h+='<div class="nr72">'+(r.riesgo?'<div class="mal"><small>En riesgo</small><b>'+fmt$(r.riesgo)+'</b></div>':'')+(r.ahorro?'<div class="ok"><small>Puedes ahorrar este mes</small><b>'+fmt$(r.ahorro)+'</b></div>':'')+(r.cobro?'<div class="info"><small>Por cobrar</small><b>'+fmt$(r.cobro)+'</b></div>':'')+'</div>';
+  if(!vis.length){ h+='<div class="nc-empty"><div style="font-size:42px">✅</div><div class="nc72-v">Todo en orden</div><div style="font-size:13px;margin-top:4px">No hay nada que mueva tu dinero ahora mismo.</div></div>'; }
+  var ant='';
+  vis.forEach(function(n){ if(_ncFiltro==='todas'&&n.grupo!==ant){ ant=n.grupo; h+='<div class="nc-sec nc72-s '+n.grupo+'">'+NC_GRUPOS[n.grupo].lbl+'</div>'; }
+    var col=COLG72[n.grupo]||NC_COLOR[n.nivel], m=+n.monto||0;
+    h+='<div class="nc-wrap" data-id="'+esc(n.id)+'"><div class="nc-under"><span>'+(n.descarte==='manana'?'Mañana':'Ocultar')+'</span></div>'
+      +'<div class="nc-card nc72-c" style="--c:'+col+'" onclick="ncTocar(\''+esc(n.id)+'\')">'
+        +'<div class="nc-ico" style="--c:'+col+'">'+n.icon+(_ncNoVista(n)?'<i class="nc-new"></i>':'')+'</div>'
+        +'<div class="nc-body"><div class="nc-row"><div class="nc-t">'+esc(n.titulo)+'</div>'+(m?'<div class="nc72-m '+(n.signo==='+'?'in':n.signo==='-'?'out':'')+'">'+(n.signo==='+'?'+':n.signo==='-'?'−':'')+fmt$(m)+'</div>':'')+'</div>'
+        +'<div class="nc-x">'+esc(n.texto)+'</div>'
+        +(n.accion?'<button class="nc-btn" style="--c:'+col+'" onclick="event.stopPropagation();ncAccion(\''+esc(n.id)+'\')">'+esc(n.accion.lbl)+' ›</button>':'')+'</div></div></div>'; });
+  if(_resp72&&_ncFiltro==='todas') h+='<button class="nc72-resp" onclick="cerrarCentroNotif();setTimeout(exportarDatos,300)">💾 '+esc(_resp72.titulo)+' · Respaldar ›</button>';
+  h+='<div class="nc-foot">Desliza una tarjeta a la izquierda para ocultarla · desliza hacia abajo para cerrar</div>';
+  list.innerHTML=h; ncInitSwipeCards(); };
+/* "Ocultar consejos" ahora oculta hasta mañana lo que no es urgente (gasto y oportunidades) */
+window.ncLimpiarConsejos=function(){ var hoy=hoyLocal(); state.notifDescartadas=state.notifDescartadas||{}; var n=0;
+  _ncLista.forEach(function(x){ if((x.grupo==='gasto'||x.grupo==='ahorro')&&x.nivel!=='critico'&&x.nivel!=='alto'){ state.notifDescartadas[x.id]=hoy; n++; } });
+  X().ocultos72=hoy; /* también los que esperaban turno */
+  if(!n){ showToast('No hay avisos que se puedan ocultar'); return; }
+  saveState(); _ncLista=construirNotificaciones(); renderCentroNotif(); window._renderNotifAhora70(); showToast(n+' aviso'+(n>1?'s':'')+' ocultado'+(n>1?'s':'')+' hasta mañana'); };
 
 </script>
 <script>
